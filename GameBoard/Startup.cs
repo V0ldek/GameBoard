@@ -42,7 +42,7 @@ namespace GameBoard
             LogicLayer.Configuration.ConfigureServices(services);
 
             services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+                //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDbContextStores();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
