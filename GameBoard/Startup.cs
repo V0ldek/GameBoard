@@ -35,10 +35,16 @@ namespace GameBoard
 
             LogicLayer.Configuration.ConfigureServices(services);
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<IdentityUser>(
+                    options =>
+                    {
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.User.RequireUniqueEmail = true;
+                    })
                 //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDbContextStores();
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
