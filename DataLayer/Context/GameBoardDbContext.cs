@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.DataLayer.Context
 {
-    internal sealed class GameBoardDbContext : IdentityDbContext, IGameBoardRepository
+    internal sealed partial class GameBoardDbContext : IdentityDbContext, IGameBoardRepository
     {
         public GameBoardDbContext(DbContextOptions<GameBoardDbContext> options)
             : base(options)

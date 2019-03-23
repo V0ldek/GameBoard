@@ -8,7 +8,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\</OutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
+    <IntermediateOutputPath>..\obj\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\bin\Release</OutputPath>
+    <IntermediateOutputPath>..\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,5 +27,5 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LogicLayer\LogicLayer\LogicLayer.csproj" />
+    <ProjectReference Include="..\LogicLayer\LogicLayer.csproj" />
   </ItemGroup></Project>

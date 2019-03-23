@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameBoard", "GameBoard\Game
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{63EEDF15-BE49-4747-90DF-646FCE935063}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\LogicLayer\LogicLayer.csproj", "{2DF4E2C5-831E-489F-A9B8-E4E15209C814}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{2DF4E2C5-831E-489F-A9B8-E4E15209C814}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
