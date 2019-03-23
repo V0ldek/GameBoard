@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameBoard.DataLayer;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameBoard.LogicLayer
@@ -12,7 +8,8 @@ namespace GameBoard.LogicLayer
         public static void ConfigureDbContext(IServiceCollection services, string connectionString) =>
             DataLayer.Configuration.ConfigureDbContext(services, connectionString);
 
-        public static void ConfigureServices(IServiceCollection services) => DataLayer.Configuration.ConfigureServices(services);
+        public static void ConfigureServices(IServiceCollection services) =>
+            DataLayer.Configuration.ConfigureServices(services);
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>
             DataLayer.Configuration.AddDbContextStores(builder);

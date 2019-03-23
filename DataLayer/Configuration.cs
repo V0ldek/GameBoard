@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameBoard.DataLayer.Context;
+﻿using GameBoard.DataLayer.Context;
 using GameBoard.DataLayer.Repositories;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
