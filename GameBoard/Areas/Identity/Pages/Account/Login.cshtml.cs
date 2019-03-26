@@ -74,7 +74,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             if (Input.UserNameOrEmail.Contains('@'))
             {
                 var user = await _userManager.FindByEmailAsync(Input.UserNameOrEmail);
-                userName = user?.UserName;
+                userName = user == null ? string.Empty : user.UserName;
             }
             else
             {
@@ -94,12 +94,6 @@ namespace GameBoard.Areas.Identity.Pages.Account
             }
 
             var userName = await GetUserNameAsync();
-
-            if (string.IsNullOrEmpty(userName))
-            {
-                ModelState.AddModelError(string.Empty, "Invalid username or email.");
-                return Page();
-            }
 
             var result = await _signInManager.PasswordSignInAsync(
                 userName,
