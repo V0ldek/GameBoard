@@ -39,8 +39,8 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [Display(Name = "Username or email")]
+            public string UserNameOrEmail { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -67,6 +67,23 @@ namespace GameBoard.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        private async Task<string> GetUserNameAsync()
+        {
+            string userName;
+
+            if (Input.UserNameOrEmail.Contains('@'))
+            {
+                var user = await _userManager.FindByEmailAsync(Input.UserNameOrEmail);
+                userName = user?.UserName;
+            }
+            else
+            {
+                userName = Input.UserNameOrEmail;
+            }
+
+            return userName;
+        }
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -76,32 +93,37 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input.Email);
+            var userName = await GetUserNameAsync();
 
-            if (user != null)
+            if (string.IsNullOrEmpty(userName))
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    user.UserName,
-                    Input.Password,
-                    Input.RememberMe,
-                    lockoutOnFailure: true);
+                ModelState.AddModelError(string.Empty, "Invalid username or email.");
+                return Page();
+            }
 
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage(
-                        "./LoginWith2fa",
-                        new {ReturnUrl = returnUrl, RememberMe = Input.RememberMe});
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
+            var result = await _signInManager.PasswordSignInAsync(
+                userName,
+                Input.Password,
+                Input.RememberMe,
+                lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User logged in.");
+                return LocalRedirect(returnUrl);
+            }
+
+            if (result.RequiresTwoFactor)
+            {
+                return RedirectToPage(
+                    "./LoginWith2fa",
+                    new {ReturnUrl = returnUrl, RememberMe = Input.RememberMe});
+            }
+
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning("User account locked out.");
+                return RedirectToPage("./Lockout");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
