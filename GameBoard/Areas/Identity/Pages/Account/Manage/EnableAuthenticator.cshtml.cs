@@ -1,10 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,21 +12,10 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private readonly ILogger<EnableAuthenticatorModel> _logger;
         private readonly UrlEncoder _urlEncoder;
-
-        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
-
-        public EnableAuthenticatorModel(
-            UserManager<IdentityUser> userManager,
-            ILogger<EnableAuthenticatorModel> logger,
-            UrlEncoder urlEncoder)
-        {
-            _userManager = userManager;
-            _logger = logger;
-            _urlEncoder = urlEncoder;
-        }
+        private readonly UserManager<IdentityUser> _userManager;
 
         public string SharedKey { get; set; }
 
@@ -44,13 +30,14 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
+        public EnableAuthenticatorModel(
+            UserManager<IdentityUser> userManager,
+            ILogger<EnableAuthenticatorModel> logger,
+            UrlEncoder urlEncoder)
         {
-            [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Verification Code")]
-            public string Code { get; set; }
+            _userManager = userManager;
+            _logger = logger;
+            _urlEncoder = urlEncoder;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -84,7 +71,9 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+                user,
+                _userManager.Options.Tokens.AuthenticatorTokenProvider,
+                verificationCode);
 
             if (!is2faTokenValid)
             {
@@ -105,10 +94,8 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
                 RecoveryCodes = recoveryCodes.ToArray();
                 return RedirectToPage("./ShowRecoveryCodes");
             }
-            else
-            {
-                return RedirectToPage("./TwoFactorAuthentication");
-            }
+
+            return RedirectToPage("./TwoFactorAuthentication");
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(IdentityUser user)
@@ -130,12 +117,13 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
         private string FormatKey(string unformattedKey)
         {
             var result = new StringBuilder();
-            int currentPosition = 0;
+            var currentPosition = 0;
             while (currentPosition + 4 < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
                 currentPosition += 4;
             }
+
             if (currentPosition < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition));
@@ -144,13 +132,22 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             return result.ToString().ToLowerInvariant();
         }
 
-        private string GenerateQrCodeUri(string email, string unformattedKey)
+        private string GenerateQrCodeUri(string email, string unformattedKey) => string.Format(
+            AuthenticatorUriFormat,
+            _urlEncoder.Encode("GameBoard"),
+            _urlEncoder.Encode(email),
+            unformattedKey);
+
+        public class InputModel
         {
-            return string.Format(
-                AuthenticatorUriFormat,
-                _urlEncoder.Encode("GameBoard"),
-                _urlEncoder.Encode(email),
-                unformattedKey);
+            [Required]
+            [StringLength(
+                7,
+                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Verification Code")]
+            public string Code { get; set; }
         }
     }
 }

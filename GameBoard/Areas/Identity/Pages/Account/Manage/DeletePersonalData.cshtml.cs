@@ -10,9 +10,14 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        [BindProperty]
+        public InputModel Input { get; set; }
+
+        public bool RequirePassword { get; set; }
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
@@ -23,18 +28,6 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _logger = logger;
         }
-
-        [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-        }
-
-        public bool RequirePassword { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
@@ -78,6 +71,13 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
 
             return Redirect("~/");
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
         }
     }
 }

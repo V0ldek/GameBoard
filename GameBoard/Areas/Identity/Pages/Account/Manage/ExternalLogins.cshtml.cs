@@ -11,16 +11,8 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-
-        public ExternalLoginsModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<IdentityUser> _userManager;
 
         public IList<UserLoginInfo> CurrentLogins { get; set; }
 
@@ -30,6 +22,14 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
 
         [TempData]
         public string StatusMessage { get; set; }
+
+        public ExternalLoginsModel(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -59,7 +59,8 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             if (!result.Succeeded)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
-                throw new InvalidOperationException($"Unexpected error occurred removing external login for user with ID '{userId}'.");
+                throw new InvalidOperationException(
+                    $"Unexpected error occurred removing external login for user with ID '{userId}'.");
             }
 
             await _signInManager.RefreshSignInAsync(user);
@@ -73,8 +74,11 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Page("./ExternalLogins", pageHandler: "LinkLoginCallback");
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
+            var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+                provider,
+                redirectUrl,
+                _userManager.GetUserId(User));
             return new ChallengeResult(provider, properties);
         }
 
@@ -89,13 +93,15 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             var info = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
             if (info == null)
             {
-                throw new InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
+                throw new InvalidOperationException(
+                    $"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
             }
 
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
+                throw new InvalidOperationException(
+                    $"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
             }
 
             // Clear the existing external cookie to ensure a clean login process

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,16 +14,9 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+        private readonly ILogger<LoginModel> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, ILogger<LoginModel> logger)
-        {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
-        }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -36,18 +28,14 @@ namespace GameBoard.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public class InputModel
+        public LoginModel(
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            ILogger<LoginModel> logger)
         {
-            [Required]
-            [Display(Name = "Username or email")]
-            public string UserNameOrEmail { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -99,7 +87,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 userName,
                 Input.Password,
                 Input.RememberMe,
-                lockoutOnFailure: true);
+                true);
 
             if (result.Succeeded)
             {
@@ -111,7 +99,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             {
                 return RedirectToPage(
                     "./LoginWith2fa",
-                    new {ReturnUrl = returnUrl, RememberMe = Input.RememberMe});
+                    new {ReturnUrl = returnUrl, Input.RememberMe});
             }
 
             if (result.IsLockedOut)
@@ -122,6 +110,20 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return Page();
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [Display(Name = "Username or email")]
+            public string UserNameOrEmail { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
         }
     }
 }
