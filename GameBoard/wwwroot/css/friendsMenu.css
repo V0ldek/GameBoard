@@ -1,0 +1,23 @@
+﻿#friends-menu {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#friends-menu.active { margin-left: -250px; }
+
+#friends-menu .sidebar-header { padding: 20px; }
+
+#friends-menu ul.components { padding: 20px 0; }
+
+#friends-menu ul.components * { padding: 0 10px; }
+
+#friends-menu ul p {
+    color: #fff;
+    padding: 10px;
+}
