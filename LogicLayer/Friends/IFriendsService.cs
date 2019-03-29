@@ -7,7 +7,7 @@ using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.Friends
 {
-    public interface IFriendService
+    public interface IFriendsService
     {
         Task<IEnumerable<UserDto>> GetFriendsByUserIdAsync(string userId);
 

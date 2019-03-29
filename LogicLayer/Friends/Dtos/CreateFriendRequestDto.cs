@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameBoard.LogicLayer.Friends.Dtos
+﻿namespace GameBoard.LogicLayer.Friends.Dtos
 {
     public sealed class CreateFriendRequestDto
     {
