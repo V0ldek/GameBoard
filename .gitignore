@@ -27,10 +27,10 @@ bld/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 # Exclude files generated with gulp pipeline.
-wwwroot/lib
-wwwroot/scripts
+GameBoard/wwwroot/lib
+GameBoard/wwwroot/scripts
 # Exclude compiled TypeScript files .js and .js.map
-Scripts/*.js*
+GameBoard/Scripts/*.js*
 
 
 # MSTest test Results
@@ -266,3 +266,4 @@ paket-files/
 __pycache__/
 *.pyc
 /GameBoard/wwwroot/lib/malihu-custom-scrollbar-plugin
+/GameBoard/wwwroot/lib

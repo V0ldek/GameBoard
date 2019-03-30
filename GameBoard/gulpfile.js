@@ -9,7 +9,14 @@ var del = require("del");
 
 var paths = {
     scripts: ["Scripts/**/*.js", "Scripts/**/*.ts", "Scripts/**/*.map"],
-    libs: ["node_modules/jquery/**/*", "node_modules/font-awesome/**/*", "node_modules/malihu-custom-scrollbar-plugin/**/*"]
+    libs: [
+        "node_modules/bootstrap/**/*",
+        "node_modules/jquery/**/*",
+        "node_modules/font-awesome/**/*",
+        "node_modules/malihu-custom-scrollbar-plugin/**/*",
+        "node_modules/jquery-validation/**/*",
+        "node_modules/jquery-validation-unobtrusive/**/*"
+    ]
 };
 
 gulp.task("lib", function() {

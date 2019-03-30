@@ -5,13 +5,20 @@
         <h3>Friends</h3>
         <hr/>
         <ul class="list-unstyled components border-bottom">
-            @foreach(var user in Model)
+            @foreach (var user in Model)
             {
                 <li class="active">@await Component.InvokeAsync("FriendCard", user)</li>
             }
         </ul>
     </div>
-    <button id="friends-sidebar-collapse" class="btn btn-light" type="button">
-        <i id="friends-sidebar-collapse-icon" class="fa fa-align-left"></i>
-    </button>
+    <form id="friends-sidebar-search-form" autocomplete="off" class="form-inline bg-white border-top border-right border-bottom box-shadow text-dark">
+        <label class="">Add friends</label>
+        <div id="friends-sidebar-search-box">
+            <input id="friends-sidebar-searchbox-input" class="form-control" type="text" name="user-search-input" placeholder="Search for users..."/>
+            <i class="fa fa-search"></i>
+        </div>
+    </form>
+<button id="friends-sidebar-collapse" class="btn btn-light" type="button">
+    <i id="friends-sidebar-collapse-icon" class="fa fa-align-left"></i>
+</button>
 </div>

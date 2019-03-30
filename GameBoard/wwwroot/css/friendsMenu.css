@@ -25,7 +25,7 @@
     position: relative;
     top: 0;
     left: 0;
-    height: 85vh;
+    height: 77vh;
     z-index: 999;
     transition: all 0.3s;
 }
@@ -58,4 +58,13 @@
     max-height: 64px;
     min-width: 16px;
     min-height: 16px;
+}
+
+#friends-sidebar-search-box {
+    
+}
+
+#friends-sidebar-search-form {
+    padding: 10px;
+    width: 250px;
 }
