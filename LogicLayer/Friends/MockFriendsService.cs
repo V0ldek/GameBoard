@@ -9,7 +9,7 @@ namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class MockFriendsService : IFriendsService
     {
-        public Task<IEnumerable<UserDto>> GetFriendsByUserIdAsync(string userId) => userId == "V0ldek" ? Task.FromResult(
+        public Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName) => userName == "V0ldek" ? Task.FromResult(
             new List<UserDto>
             {
                 new UserDto("1", "Alice", "alice@gmail.com"),
