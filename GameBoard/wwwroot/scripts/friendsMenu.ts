@@ -1,5 +1,9 @@
-import $ from "jquery";
+$("#friends-menu-collapse").click(() => {
+    $("#friends-menu").toggleClass("active");
+});
 
-$(document).ready(() => {
-    console.log("Hello World!");
+$().ready(() => {
+    if (window.screen.availHeight > 768) {
+        $("#friends-menu").toggleClass("active");
+    }
 });

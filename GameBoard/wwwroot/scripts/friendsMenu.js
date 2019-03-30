@@ -1,7 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var jquery_1 = require("jquery");
-jquery_1.default(document).ready(function () {
-    console.log("Hello World!");
+$("#friends-menu-collapse").click(function () {
+    $("#friends-menu").toggleClass("active");
+});
+$().ready(function () {
+    if (window.screen.availHeight > 768) {
+        $("#friends-menu").toggleClass("active");
+    }
 });
 //# sourceMappingURL=friendsMenu.js.map

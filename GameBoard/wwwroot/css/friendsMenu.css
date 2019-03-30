@@ -1,23 +1,42 @@
 ﻿#friends-menu {
     width: 250px;
-    position: fixed;
+    margin-left: -250px;
+    position: relative;
+    margin-right: 20px;
     top: 0;
     left: 0;
     height: 100vh;
     z-index: 999;
-    color: #fff;
     transition: all 0.3s;
 }
 
-#friends-menu.active { margin-left: -250px; }
+#friends-menu-collapse {
+    position: absolute;
+    left: 250px;
+    top: 50px;
+}
+
+#friends-menu.active { margin-left: 0; }
 
 #friends-menu .sidebar-header { padding: 20px; }
 
 #friends-menu ul.components { padding: 20px 0; }
 
-#friends-menu ul.components * { padding: 0 10px; }
+#friends-menu ul.components li { padding: 0 10px; }
 
 #friends-menu ul p {
     color: #fff;
     padding: 10px;
+}
+
+.friend-card {
+    padding: 5%;
+    border: 1px solid #e5e5e5
+}
+
+.friend-gravatar {
+    max-width: 64px;
+    max-height: 64px;
+    min-width: 16px;
+    min-height: 16px;
 }
