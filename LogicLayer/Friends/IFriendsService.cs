@@ -15,6 +15,10 @@ namespace GameBoard.LogicLayer.Friends
 
         Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId);
 
+        Task<FriendRequestDto> GetFriendRequestAsync(string userNameFrom, string userNameTo);
+
         Task AcceptFriendRequestAsync(string friendRequestId);
+
+        Task RejectFriendRequestAsync(string friendRequestId);
     }
 }
