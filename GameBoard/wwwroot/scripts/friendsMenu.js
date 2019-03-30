@@ -1,9 +1,7 @@
-$("#friends-menu-collapse").click(function () {
-    $("#friends-menu").toggleClass("active");
+$("#friends-sidebar").mCustomScrollbar({
+    theme: "minimal"
 });
-$().ready(function () {
-    if (window.screen.availHeight > 768) {
-        $("#friends-menu").toggleClass("active");
-    }
+$("#friends-sidebar-collapse").click(function () {
+    $("#friends-sidebar-container").toggleClass("toggled");
 });
 //# sourceMappingURL=friendsMenu.js.map

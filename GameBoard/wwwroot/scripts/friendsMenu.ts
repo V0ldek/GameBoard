@@ -1,9 +1,7 @@
-$("#friends-menu-collapse").click(() => {
-    $("#friends-menu").toggleClass("active");
+$("#friends-sidebar").mCustomScrollbar({
+    theme: "minimal"
 });
 
-$().ready(() => {
-    if (window.screen.availHeight > 768) {
-        $("#friends-menu").toggleClass("active");
-    }
+$("#friends-sidebar-collapse").click(() => {
+    $("#friends-sidebar-container").toggleClass("toggled");
 });

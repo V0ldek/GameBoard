@@ -1,0 +1,17 @@
+﻿@model IEnumerable<GameBoard.Models.User.UserViewModel>
+
+<div id="friends-sidebar-container">
+    <div id="friends-sidebar" class="bg-white border-top border-right box-shadow text-dark">
+        <h3>Friends</h3>
+        <hr/>
+        <ul class="list-unstyled components border-bottom">
+            @foreach(var user in Model)
+            {
+                <li class="active">@await Component.InvokeAsync("FriendCard", user)</li>
+            }
+        </ul>
+    </div>
+    <button id="friends-sidebar-collapse" class="btn btn-light" type="button">
+        <i id="friends-sidebar-collapse-icon" class="fa fa-align-left"></i>
+    </button>
+</div>

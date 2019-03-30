@@ -9,7 +9,7 @@ var del = require("del");
 
 var paths = {
     scripts: ["Scripts/**/*.js", "Scripts/**/*.ts", "Scripts/**/*.map"],
-    libs: ["node_modules/jquery/**/*", "node_modules/font-awesome/**/*"]
+    libs: ["node_modules/jquery/**/*", "node_modules/font-awesome/**/*", "node_modules/malihu-custom-scrollbar-plugin/**/*"]
 };
 
 gulp.task("lib", function() {

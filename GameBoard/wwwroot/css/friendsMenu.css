@@ -1,37 +1,56 @@
-﻿#friends-menu {
-    width: 250px;
+﻿#friends-sidebar-container {
     margin-left: -250px;
+    margin-right: 5%;
+    transition: all 0.3s;
     position: relative;
-    margin-right: 20px;
+}
+
+#friends-sidebar-container.toggled { margin-left: 0; }
+
+@media (min-width: 768px) { 
+    #friends-sidebar-container {
+        margin-left: 0;
+        margin-right: 5%;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    #friends-sidebar-container.toggled { margin-left: -250px; }
+}
+
+#friends-sidebar {
+    width: 250px;
+    min-width: 250px;
+    padding: 20px;
+    position: relative;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: 85vh;
     z-index: 999;
     transition: all 0.3s;
 }
 
-#friends-menu-collapse {
+#friends-sidebar-collapse {
     position: absolute;
     left: 250px;
     top: 50px;
+    border: 1px solid #e5e5e5;
+    z-index: 999;
 }
 
-#friends-menu.active { margin-left: 0; }
+#friends-sidebar ul.components { padding: 20px 0; }
 
-#friends-menu .sidebar-header { padding: 20px; }
+#friends-sidebar ul.components li { padding: 0 10px; }
 
-#friends-menu ul.components { padding: 20px 0; }
-
-#friends-menu ul.components li { padding: 0 10px; }
-
-#friends-menu ul p {
+#friends-sidebar ul p {
     color: #fff;
     padding: 10px;
 }
 
 .friend-card {
     padding: 5%;
-    border: 1px solid #e5e5e5
+    border: 1px solid #e5e5e5;
+    margin-bottom: 3px;
 }
 
 .friend-gravatar {

@@ -5,7 +5,9 @@
   "dependencies": {
     "jquery": "3.3.1",
     "@types/jquery": "3.3.29",
-    "font-awesome": "4.7.0"
+    "font-awesome": "4.7.0",
+    "malihu-custom-scrollbar-plugin": "3.1.5",
+    "@types/mcustomscrollbar": "2.8.32"
   },
   "devDependencies": {
     "gulp": "3.9.1",
