@@ -9,7 +9,7 @@ namespace GameBoard.LogicLayer.Friends
 {
     public interface IFriendsService
     {
-        Task<IEnumerable<UserDto>> GetFriendsByUserIdAsync(string userId);
+        Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName);
 
         Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest);
 
