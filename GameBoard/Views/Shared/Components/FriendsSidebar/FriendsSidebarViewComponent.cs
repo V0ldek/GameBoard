@@ -22,7 +22,7 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                 return View("FriendsSidebarUnauthenticated");
             }
 
-            var friends = await _friendsService.GetFriendsByUserIdAsync(User.Identity.Name);
+            var friends = await _friendsService.GetFriendsByUserNameAsync(User.Identity.Name);
 
             return View("FriendsSidebar", friends.Select(u => u.ToViewModel()));
         }
