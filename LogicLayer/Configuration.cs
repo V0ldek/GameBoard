@@ -1,4 +1,5 @@
 ﻿using GameBoard.LogicLayer.Friends;
+using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,7 @@ namespace GameBoard.LogicLayer
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IFriendsService, MockFriendsService>();
+            services.AddScoped<IUserSearchService, MockUserSearchService>();
             DataLayer.Configuration.ConfigureServices(services);
         }
 

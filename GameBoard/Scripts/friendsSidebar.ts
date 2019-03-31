@@ -11,6 +11,7 @@ $().ready(() => {
     setupAutocomplete($("#friends-sidebar-searchbox-input"));
 });
 
+
 function toggleSidebarCollapseIcon() {
     if ($("#friends-sidebar-collapse-icon").hasClass("fa-angle-left")) {
         $("#friends-sidebar-collapse-icon").removeClass("fa-angle-left");

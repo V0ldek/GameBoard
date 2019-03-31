@@ -4,7 +4,20 @@
 function setupAutocomplete(input: JQuery<HTMLInputElement>) {
     input.on("input", () => showAutocompleteResults(input));
     input.focusin(() => showAutocompleteResults(input));
-    input.focusout(closeAllAutocompleteResults);
+    console.log("dupa");
+    $("body").click((e) => {
+        const target = $(e.target);
+        console.log(target);
+        if (target.closest("#friends-sidebar-search-form").length === 0) {
+            closeAllAutocompleteResults();
+        }
+    });
+}
+
+interface IUser {
+    id: string;
+    username: string;
+    email: string;
 }
 
 function showAutocompleteResults(input : JQuery<HTMLInputElement>) {
@@ -16,25 +29,46 @@ function showAutocompleteResults(input : JQuery<HTMLInputElement>) {
 
     closeAllAutocompleteResults();
 
-    const resultDiv = $(document.createElement("div"));
-    resultDiv.attr("id", input.attr("id") + "-autocomplete-results");
-    resultDiv.attr("class", "autocomplete-items");
+    const requestData: JQuery.PlainObject = {
+        input: value
+    };
 
-    input.parent().prepend(resultDiv);
+    $.ajax({
+        type: "GET",
+        url: "User/Search",
+        dataType: "html",
+        data: requestData,
+        success: (response : string) => {
+            input.parent().prepend(response);
+            const resultDiv = input.parent().children(".autocomplete-items");
+            resultDiv.css("top", `-${resultDiv.height() + 50}px`);
+            /*
+            const resultDiv = $(document.createElement("div"));
+            resultDiv.attr("id", input.attr("id") + "-autocomplete-results");
+            resultDiv.attr("class", "autocomplete-items");
+            
+            for (let item of response) {
+                resultDiv.append(createResultItem(item));
+            }
 
-    for (let item of countries) {
-        resultDiv.append(createResultItem(item));
-    }
+            resultDiv.mCustomScrollbar();
 
-    resultDiv.mCustomScrollbar();
+            input.parent().prepend(resultDiv);
+            resultDiv.css("top", `-${resultDiv.height() + 50}px`);
+            console.log(resultDiv);*/
+        },
+        error: (xhr) => {
+            console.log("xhr: ", xhr);
+        }
+    });
 }
 
-function createResultItem(item: string): JQuery<HTMLDivElement> {
+/*function createResultItem(item: IUser): JQuery<HTMLDivElement> {
     const itemDiv = $(document.createElement("div"));
     const itemText = $(document.createElement("p"));
 
     itemDiv.attr("class", "autocomplete-item");
-    itemText.text(item);
+    itemText.text(item.username);
 
     const sendButton = createFriendRequestButton(itemDiv);
 
@@ -44,9 +78,14 @@ function createResultItem(item: string): JQuery<HTMLDivElement> {
     return itemDiv;
 }
 
-function createFriendRequestButton(itemDiv: JQuery<HTMLDivElement>) : JQuery<HTMLButtonElement> {
+function createFriendRequestForm(itemDiv: JQuery<HTMLDivElement>): JQuery<HTMLButtonElement> {
+    const form = $(document.createElement("form"));
+    form.attr("action", "/FriendRequest/Create");
+    form.attr("method")
+
     const button = $(document.createElement("button"));
     button.attr("class", "btn btn-success friend-request-button");
+    button.attr("type", "submit");
 
     const icon = $(document.createElement("i"));
     icon.attr("class", "fa fa-user-plus");
@@ -54,7 +93,7 @@ function createFriendRequestButton(itemDiv: JQuery<HTMLDivElement>) : JQuery<HTM
     button.append(icon);
 
     return button;
-}
+}*/
 
 function closeAllAutocompleteResults() {
     $(".autocomplete-items").remove();

@@ -1,0 +1,17 @@
+﻿@model IEnumerable<GameBoard.LogicLayer.UserSearch.Dtos.UserDto>
+
+<div class="autocomplete-items">
+    @foreach (var user in Model)
+    {
+        <div class="autocomplete-item">
+            <p>@user.Username</p>
+            <form asp-controller="Friends" asp-action="CreateFriendRequest">
+                <input readonly hidden name="userNameFrom" value="@User.Identity.Name"/>
+                <input readonly hidden name="userNameTo" value="@user.Username"/>
+                <button class="btn btn-success" type="submit">
+                    <i class="fa fa-user-plus"></i>
+                </button>
+            </form>
+        </div>
+    }
+</div>

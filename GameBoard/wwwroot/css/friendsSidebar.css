@@ -68,7 +68,6 @@
 .autocomplete-items {
     position: absolute;
     z-index: 999;
-    top: -30vh;
     left: 0;
     right: 0;
     border: 2px solid #1d1c1b;
