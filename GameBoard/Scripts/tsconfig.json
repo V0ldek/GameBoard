@@ -10,5 +10,8 @@
   "files": [
     "friendsMenu.ts"
   ],
+  "exclude": [
+    "wwwroot/*"
+  ],
   "compileOnSave": true
 }
