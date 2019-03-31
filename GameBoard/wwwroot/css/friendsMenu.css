@@ -34,7 +34,6 @@
     position: absolute;
     left: 250px;
     top: 50px;
-    border: 1px solid #e5e5e5;
     z-index: 999;
 }
 
@@ -43,25 +42,19 @@
 #friends-sidebar ul.components li { padding: 0 10px; }
 
 #friends-sidebar ul p {
-    color: #fff;
     padding: 10px;
 }
 
 .friend-card {
     padding: 5%;
-    border: 1px solid #e5e5e5;
     margin-bottom: 3px;
 }
 
 .friend-gravatar {
-    max-width: 64px;
-    max-height: 64px;
+    max-width: 32px;
+    max-height: 32px;
     min-width: 16px;
     min-height: 16px;
-}
-
-#friends-sidebar-search-box {
-    
 }
 
 #friends-sidebar-search-form {

@@ -11,26 +11,26 @@
         <section>
             <form id="account" method="post">
                 <h4>Use a local account to log in.</h4>
-                <hr/>
+                <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Input.UserNameOrEmail"></label>
-                    <input asp-for="Input.UserNameOrEmail" class="form-control"/>
+                    <input asp-for="Input.UserNameOrEmail" class="form-control" />
                     <span asp-validation-for="Input.UserNameOrEmail" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control"/>
+                    <input asp-for="Input.Password" class="form-control" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-check">
                     <label asp-for="Input.RememberMe" class="form-check-label">
-                        <input asp-for="Input.RememberMe" class="form-check-input"/>
+                        <input asp-for="Input.RememberMe" class="form-check-input" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Log in</button>
+                    <button type="submit" class="btn btn-dark">Log in</button>
                 </div>
                 <div class="form-group" hidden>
                     <p>
@@ -59,12 +59,12 @@
                 }
                 else
                 {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-row">
                         <div>
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="btn btn-dark" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
                             </p>
                         </div>

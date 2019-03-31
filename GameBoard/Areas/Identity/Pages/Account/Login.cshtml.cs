@@ -87,7 +87,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 userName,
                 Input.Password,
                 Input.RememberMe,
-                true);
+                false);
 
             if (result.Succeeded)
             {
