@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Scripts\friendsMenu.ts" />
+    <Content Include="Scripts\friendsSidebar.ts" />
   </ItemGroup>
 
   <ItemGroup>

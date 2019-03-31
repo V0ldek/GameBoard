@@ -8,10 +8,7 @@
     "allowSyntheticDefaultImports": true
   },
   "files": [
-    "friendsMenu.ts"
-  ],
-  "exclude": [
-    "wwwroot/*"
+    "friendsSidebar.ts"
   ],
   "compileOnSave": true
 }
