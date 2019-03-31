@@ -19,6 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\friendsAutocomplete.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Scripts\friendsSidebar.ts" />
   </ItemGroup>
 
@@ -33,6 +37,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LogicLayer\LogicLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\friendsAutocomplete.ts" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

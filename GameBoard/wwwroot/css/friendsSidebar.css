@@ -7,7 +7,7 @@
 
 #friends-sidebar-container.toggled { margin-left: 0; }
 
-@media (min-width: 768px) { 
+@media (min-width: 768px) {
     #friends-sidebar-container {
         margin-left: 0;
         margin-right: 5%;
@@ -41,9 +41,7 @@
 
 #friends-sidebar ul.components li { padding: 0 10px; }
 
-#friends-sidebar ul p {
-    padding: 10px;
-}
+#friends-sidebar ul p { padding: 10px; }
 
 .friend-card {
     padding: 5%;
@@ -61,3 +59,29 @@
     padding: 10px;
     width: 250px;
 }
+
+.friends-autocomplete {
+    position: relative;
+    display: inline-block;
+}
+
+.autocomplete-items {
+    position: absolute;
+    z-index: 999;
+    top: -30vh;
+    left: 0;
+    right: 0;
+    border: 2px solid #1d1c1b;
+    max-height: 25vh;
+}
+
+.autocomplete-items .autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #1a1c1e; /* Fallback  color. */
+    background-color: rgba(26, 28, 30, 0.5);
+    display: flex;
+    justify-content: space-between;
+}
+
+.autocomplete-items .autocomplete-item:hover { background-color: #3a3c3e; }

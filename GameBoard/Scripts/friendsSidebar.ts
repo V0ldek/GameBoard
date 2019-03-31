@@ -1,10 +1,14 @@
 ﻿$("#friends-sidebar").mCustomScrollbar({
-    theme: "minimal"
+    theme: ""
 });
 
 $("#friends-sidebar-collapse").click(() => {
     $("#friends-sidebar-container").toggleClass("toggled");
     toggleSidebarCollapseIcon();
+});
+
+$().ready(() => {
+    setupAutocomplete($("#friends-sidebar-searchbox-input"));
 });
 
 function toggleSidebarCollapseIcon() {
@@ -16,3 +20,4 @@ function toggleSidebarCollapseIcon() {
         $("#friends-sidebar-collapse-icon").addClass("fa-angle-left");
     }
 }
+
