@@ -1,5 +1,5 @@
 ﻿$("#friends-sidebar").mCustomScrollbar({
-    theme: ""
+    theme: "minimal"
 });
 
 $("#friends-sidebar-collapse").click(() => {
@@ -11,6 +11,9 @@ $().ready(() => {
     setupAutocomplete($("#friends-sidebar-searchbox-input"));
 });
 
+$(window).resize((e) => {
+    console.log(e);
+});
 
 function toggleSidebarCollapseIcon() {
     if ($("#friends-sidebar-collapse-icon").hasClass("fa-angle-left")) {
