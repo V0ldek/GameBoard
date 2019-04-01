@@ -1,14 +1,19 @@
-﻿namespace GameBoard.LogicLayer.Friends.Dtos
+﻿using JetBrains.Annotations;
+
+namespace GameBoard.LogicLayer.Friends.Dtos
 {
     public sealed class CreateFriendRequestDto
     {
-        public string UserIdFrom { get; }
-        public string UserIdTo { get; }
+        [NotNull]
+        public string UserNameFrom { get; }
 
-        public CreateFriendRequestDto(string userIdFrom, string userIdTo)
+        [NotNull]
+        public string UserNameTo { get; }
+
+        public CreateFriendRequestDto([NotNull] string userNameFrom, [NotNull] string userNameTo)
         {
-            UserIdFrom = userIdFrom;
-            UserIdTo = userIdTo;
+            UserNameFrom = userNameFrom;
+            UserNameTo = userNameTo;
         }
     }
 }

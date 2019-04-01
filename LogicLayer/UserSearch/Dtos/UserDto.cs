@@ -1,15 +1,22 @@
-﻿namespace GameBoard.LogicLayer.UserSearch.Dtos
+﻿using JetBrains.Annotations;
+
+namespace GameBoard.LogicLayer.UserSearch.Dtos
 {
     public sealed class UserDto
     {
+        [NotNull]
         public string Id { get; }
-        public string Username { get; }
+
+        [NotNull]
+        public string UserName { get; }
+
+        [NotNull]
         public string Email { get; }
 
-        public UserDto(string id, string username, string email)
+        public UserDto([NotNull] string id, [NotNull] string userName, [NotNull] string email)
         {
             Id = id;
-            Username = username;
+            UserName = userName;
             Email = email;
         }
     }
