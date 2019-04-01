@@ -1,4 +1,5 @@
 ﻿using GameBoard.LogicLayer.UserSearch.Dtos;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.Friends.Dtos
 {
@@ -11,12 +12,22 @@ namespace GameBoard.LogicLayer.Friends.Dtos
             Rejected
         }
 
+        [NotNull]
         public string Id { get; }
+
+        [NotNull]
         public UserDto UserFrom { get; }
+
+        [NotNull]
         public UserDto UserTo { get; }
+
         public FriendRequestStatus Status { get; }
 
-        public FriendRequestDto(string id, UserDto userFrom, UserDto userTo, FriendRequestStatus status)
+        public FriendRequestDto(
+            [NotNull] string id,
+            [NotNull] UserDto userFrom,
+            [NotNull] UserDto userTo,
+            FriendRequestStatus status)
         {
             Id = id;
             UserFrom = userFrom;
