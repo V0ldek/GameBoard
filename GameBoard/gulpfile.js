@@ -12,6 +12,7 @@ var paths = {
     libs: [
         "node_modules/bootstrap/**/*",
         "node_modules/jquery/**/*",
+        "node_modules/jquery-ajax-unobtrusive/**/*",
         "node_modules/font-awesome/**/*",
         "node_modules/malihu-custom-scrollbar-plugin/**/*",
         "node_modules/jquery-validation/**/*",

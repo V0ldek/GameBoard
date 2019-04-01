@@ -4,10 +4,8 @@
 function setupAutocomplete(input: JQuery<HTMLInputElement>) {
     input.on("input", () => showAutocompleteResults(input));
     input.focusin(() => showAutocompleteResults(input));
-    console.log("dupa");
     $("body").click((e) => {
         const target = $(e.target);
-        console.log(target);
         if (target.closest("#friends-sidebar-search-form").length === 0) {
             closeAllAutocompleteResults();
         }

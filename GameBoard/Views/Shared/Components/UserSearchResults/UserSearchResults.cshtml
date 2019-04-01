@@ -5,7 +5,8 @@
     {
         <div class="autocomplete-item">
             <p>@user.Username</p>
-            <form asp-controller="Friends" asp-action="CreateFriendRequest">
+            <form asp-controller="Friends" asp-action="CreateFriendRequest" 
+                  data-ajax="true" data-ajax-method="POST" data-ajax-success="friendRequestSent" data-ajax-failure="friendRequestError">
                 <input readonly hidden name="userNameFrom" value="@User.Identity.Name"/>
                 <input readonly hidden name="userNameTo" value="@user.Username"/>
                 <button class="btn btn-success" type="submit">
