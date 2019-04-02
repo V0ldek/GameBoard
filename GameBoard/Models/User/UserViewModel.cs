@@ -19,7 +19,7 @@ namespace GameBoard.Models.User
         {
             Id = id;
             UserName = userName;
-            EmailHash = new Lazy<string>(() => Utilities.CalculateGravatarEmailHash(email));
+            EmailHash = new Lazy<string>(() => Utilities.GravatarEmailHasher.CalculateGravatarEmailHash(email));
         }
     }
 }

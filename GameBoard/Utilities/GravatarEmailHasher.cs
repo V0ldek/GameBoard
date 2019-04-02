@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace GameBoard
+namespace GameBoard.Utilities
 {
-    internal static class Utilities
+    internal static class GravatarEmailHasher
     {
         private static readonly MD5 Md5Hash = MD5.Create();
 

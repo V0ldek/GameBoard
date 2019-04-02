@@ -1,4 +1,5 @@
-﻿using GameBoard.LogicLayer;
+﻿using GameBoard.Configuration;
+using GameBoard.LogicLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,7 +48,9 @@ namespace GameBoard
                     })
                 //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDbContextStores();
-            
+
+            services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

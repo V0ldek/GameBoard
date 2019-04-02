@@ -33,7 +33,7 @@ function showAutocompleteResults(input : JQuery<HTMLInputElement>) {
 
     $.ajax({
         type: "GET",
-        url: "User/Search",
+        url: "/User/Search",
         dataType: "html",
         data: requestData,
         success: (response : string) => {

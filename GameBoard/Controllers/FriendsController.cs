@@ -1,26 +1,85 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using GameBoard.Configuration;
 using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
+using GameBoard.Models.FriendRequest;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameBoard.Controllers
 {
+    [Authorize]
     public class FriendsController : Controller
     {
         private readonly IFriendsService _friendsService;
+        private readonly ILogger<FriendsController> _logger;
+        private readonly HostConfiguration _hostConfiguration;
 
-        public FriendsController(IFriendsService friendsService)
+        public FriendsController(
+            IFriendsService friendsService,
+            IOptions<HostConfiguration> hostConfiguration,
+            ILogger<FriendsController> logger)
         {
             _friendsService = friendsService;
+            _logger = logger;
+            _hostConfiguration = hostConfiguration.Value;
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> FriendRequest(string id)
+        {
+            var friendRequest = await _friendsService.GetFriendRequestAsync(id);
+            
+            if (friendRequest == null)
+            {
+                return View("FriendRequestNotFound");
+            }
+            if (friendRequest.UserTo.UserName != User.Identity.Name)
+            {
+                return LocalRedirect("Identity/Account/AccessDenied");
+            }
+            if (friendRequest.Status == FriendRequestDto.FriendRequestStatus.Accepted ||
+                friendRequest.Status == FriendRequestDto.FriendRequestStatus.Rejected)
+            {
+                return View("FriendRequestAlreadyFinalized");
+            }
+
+            return View("FriendRequest", friendRequest.ToViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptFriendRequest(string id)
+        {
+            await _friendsService.AcceptFriendRequestAsync(id);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RejectFriendRequest(string id)
+        {
+            await _friendsService.RejectFriendRequestAsync(id);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFriendRequest(string userNameFrom, string userNameTo)
         {
-            var createFriendRequestDto = new CreateFriendRequestDto(userNameFrom, userNameTo);
+            var createFriendRequestDto = new CreateFriendRequestDto(
+                userNameFrom,
+                userNameTo,
+                friendRequestId => _hostConfiguration.HostAddress + Url.Action(
+                    "FriendRequest",
+                    "Friends",
+                    new {id = friendRequestId}));
 
             try
             {
@@ -37,7 +96,8 @@ namespace GameBoard.Controllers
             }
             catch
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError,
+                return StatusCode(
+                    (int) HttpStatusCode.InternalServerError,
                     new
                     {
                         title = "Error!",
@@ -49,8 +109,8 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Invite sent.",
-                    message =
-                        $"An email with your invitation has be sent to {userNameTo}. Once it's accepted you'll see them in your Friends menu."
+                    message = $"An email with your invitation has be sent to {userNameTo}." +
+                        " Once it's accepted you'll see them in your Friends menu."
                 });
         }
     }

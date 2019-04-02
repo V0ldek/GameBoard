@@ -35,11 +35,39 @@ namespace GameBoard.LogicLayer.Friends
             }
         }
 
-        public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId) =>
-            throw new NotImplementedException();
+        public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId)
+        {
+            if (friendRequestId == "1")
+            {
+                return Task.FromResult(
+                    new FriendRequestDto(
+                        "1",
+                        new UserDto("42", "johny", "johny@gmail.com"),
+                        new UserDto("43", "V0ldek", "V0ldek@gmail.com"),
+                        FriendRequestDto.FriendRequestStatus.Sent));
+            }
 
-        public Task<FriendRequestDto> GetFriendRequestAsync(string userNameFrom, string userNameTo) =>
-            throw new NotImplementedException();
+            if (friendRequestId == "2")
+            {
+                return Task.FromResult(
+                    new FriendRequestDto(
+                        "2",
+                        new UserDto("42", "johny", "johny@gmail.com"),
+                        new UserDto("43", "V0ldek", "V0ldek@gmail.com"),
+                        FriendRequestDto.FriendRequestStatus.Accepted));
+            }
+
+            if (friendRequestId == "3")
+            {
+                return Task.FromResult(
+                    new FriendRequestDto(
+                        "3",
+                        new UserDto("42", "johny", "johny@gmail.com"),
+                        new UserDto("43", "Voldek", "V0ldek@gmail.com"),
+                        FriendRequestDto.FriendRequestStatus.Sent));
+            }
+            return Task.FromResult((FriendRequestDto) null);
+        }
 
         public Task AcceptFriendRequestAsync(string friendRequestId) => throw new NotImplementedException();
 
