@@ -1,15 +1,22 @@
-﻿@model IEnumerable<GameBoard.LogicLayer.UserSearch.Dtos.UserDto>
+﻿@model IEnumerable<GameBoard.Models.User.UserViewModel>
 
 <div class="autocomplete-items">
     @foreach (var user in Model)
     {
         <div class="autocomplete-item">
-            <p>@user.Username</p>
-            <form asp-controller="Friends" asp-action="CreateFriendRequest" 
-                  data-ajax="true" data-ajax-method="POST" data-ajax-success="friendRequestSent" data-ajax-failure="friendRequestError">
+            <div class="media">
+                <img src="https://www.gravatar.com/avatar/@user.EmailHash.Value" class="friend-gravatar-mini rounded img-fluid align-self-center mr-3" alt="gravatar" />
+                <div class="media-body">
+                    <p>@user.UserName</p>
+                </div>
+            </div>
+            <form asp-controller="Friends" asp-action="CreateFriendRequest"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="friendRequestSent($('#friend-request-button-@user.Id'), xhr)"
+                  data-ajax-failure="friendRequestError($('#friend-request-button-@user.Id'), xhr)">
                 <input readonly hidden name="userNameFrom" value="@User.Identity.Name"/>
-                <input readonly hidden name="userNameTo" value="@user.Username"/>
-                <button class="btn btn-success" type="submit">
+                <input readonly hidden name="userNameTo" value="@user.UserName"/>
+                <button id="friend-request-button-@user.Id" class="btn btn-success" type="submit" data-toggle="popover">
                     <i class="fa fa-user-plus"></i>
                 </button>
             </form>

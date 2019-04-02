@@ -40,6 +40,7 @@ function showAutocompleteResults(input : JQuery<HTMLInputElement>) {
             input.parent().prepend(response);
             const resultDiv = input.parent().children(".autocomplete-items");
             resultDiv.css("top", `-${resultDiv.height() + 50}px`);
+            resultDiv.mCustomScrollbar();
             /*
             const resultDiv = $(document.createElement("div"));
             resultDiv.attr("id", input.attr("id") + "-autocomplete-results");
@@ -49,7 +50,6 @@ function showAutocompleteResults(input : JQuery<HTMLInputElement>) {
                 resultDiv.append(createResultItem(item));
             }
 
-            resultDiv.mCustomScrollbar();
 
             input.parent().prepend(resultDiv);
             resultDiv.css("top", `-${resultDiv.height() + 50}px`);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Friends.Dtos;
+using GameBoard.LogicLayer.Friends.Exceptions;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.Friends
@@ -18,7 +19,21 @@ namespace GameBoard.LogicLayer.Friends
                 } as IEnumerable<UserDto>)
             : Task.FromResult((IEnumerable<UserDto>) null);
 
-        public Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest) => throw new NotImplementedException();
+        public Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
+        {
+            if (friendRequest.UserNameFrom == "V0ldek" && friendRequest.UserNameTo == "Żochu")
+            {
+                return Task.CompletedTask;
+            }
+            else if(friendRequest.UserNameFrom == friendRequest.UserNameTo)
+            {
+                throw new FriendRequestAlreadyFinalizedException("You cannot invite yourself.");
+            }
+            else
+            {
+                throw new InvalidOperationException($"Sending from {friendRequest.UserNameFrom} to {friendRequest.UserNameTo} is forbidden.");
+            }
+        }
 
         public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId) =>
             throw new NotImplementedException();

@@ -16,12 +16,16 @@ var paths = {
         "node_modules/font-awesome/**/*",
         "node_modules/malihu-custom-scrollbar-plugin/**/*",
         "node_modules/jquery-validation/**/*",
-        "node_modules/jquery-validation-unobtrusive/**/*"
+        "node_modules/jquery-validation-unobtrusive/**/*",
+        "node_modules/popper.js/**/*"
     ]
 };
 
 gulp.task("lib", function() {
     gulp.src(paths.libs, { base: "node_modules" }).pipe(gulp.dest("wwwroot/lib/"));
+
+    // Fix for Boostrap being dumb and not seeing the type definition in popper.js.
+    gulp.src("node_modules/popper.js/index.d.ts", { base: "node_modules" }).pipe(gulp.dest("node_modules/@types/"));
 });
 
 gulp.task("clean", function () {

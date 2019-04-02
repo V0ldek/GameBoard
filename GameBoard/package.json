@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "4.3.1",
+    "@types/bootstrap": "4.3.0",
     "jquery": "3.3.1",
     "@types/jquery": "3.3.29",
     "jquery-ajax-unobtrusive": "3.2.6",
@@ -11,7 +12,8 @@
     "jquery-validation-unobtrusive": "3.2.11",
     "font-awesome": "4.7.0",
     "malihu-custom-scrollbar-plugin": "3.1.5",
-    "@types/mcustomscrollbar": "2.8.32"
+    "@types/mcustomscrollbar": "2.8.32",
+    "popper.js": "1.14.7"
   },
   "devDependencies": {
     "gulp": "3.9.1",

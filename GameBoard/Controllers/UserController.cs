@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using GameBoard.Models.User;
 
 namespace GameBoard.Controllers
 {
@@ -15,6 +17,6 @@ namespace GameBoard.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Search(string input) =>
-            ViewComponent("UserSearchResults", await _userSearchService.GetSearchCandidatesAsync(input));
+            ViewComponent("UserSearchResults", (await _userSearchService.GetSearchCandidatesAsync(input)).Select(u => u.ToViewModel()));
     }
 }

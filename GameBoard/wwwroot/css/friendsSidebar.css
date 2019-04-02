@@ -44,6 +44,13 @@
     min-height: 16px;
 }
 
+.friend-gravatar-mini {
+    max-width: 24px;
+    max-height: 24px;
+    min-width: 16px;
+    min-height: 16px;
+}
+
 #friends-sidebar-search-form {
     padding: 10px;
     width: 250px;
@@ -73,3 +80,20 @@
 }
 
 .autocomplete-items .autocomplete-item:hover { background-color: #3a3c3e; }
+
+.popover {
+    background-color: transparent
+}
+
+.popover-header-error {
+    background-color: #751a1a;
+}
+
+.popover-header-success {
+    background-color: #1a751a;
+}
+
+.popover-body {
+    color: #1d1c1b;
+    background-color: #aaacae;
+}
