@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "noEmitOnError": true,
+    "strictNullChecks": true,
     "removeComments": false,
     "sourceMap": true,
     "target": "es6"
@@ -10,6 +11,9 @@
     "friendsSidebar.ts",
     "friendsAutocomplete.ts",
     "friendsRequestPopups.ts"
+  ],
+  "exclude": [
+    "../wwwroot/scripts"
   ],
   "compileOnSave": true
 }
