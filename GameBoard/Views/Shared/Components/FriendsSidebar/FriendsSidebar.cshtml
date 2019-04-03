@@ -7,7 +7,7 @@
         <ul class="list-unstyled components border-bottom">
             @foreach (var user in Model)
             {
-                <li class="active">@await Component.InvokeAsync("FriendCard", user)</li>
+                <li class="active">@await Component.InvokeAsync("UserCard", new {user})</li>
             }
         </ul>
     </div>

@@ -4,12 +4,7 @@
     @foreach (var user in Model)
     {
         <div class="autocomplete-item">
-            <div class="media">
-                <img src="https://www.gravatar.com/avatar/@user.EmailHash.Value" class="friend-gravatar-mini rounded img-fluid align-self-center mr-3" alt="gravatar" />
-                <div class="media-body">
-                    <p>@user.UserName</p>
-                </div>
-            </div>
+            @await Component.InvokeAsync("UserCard", new {user, miniature = true})
             <form asp-controller="Friends" asp-action="CreateFriendRequest"
                   data-ajax="true" data-ajax-method="POST"
                   data-ajax-success="friendRequestSent($('#friend-request-button-@user.Id'), xhr)"

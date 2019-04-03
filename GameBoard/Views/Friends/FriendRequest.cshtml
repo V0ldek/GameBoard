@@ -1,4 +1,7 @@
 ﻿@model GameBoard.Models.FriendRequest.FriendRequestViewModel
+@{
+    ViewData["Title"] = $"{Model.UserNameFrom} friend request";
+}
 
 <div>
     <h2>Friend request from @Model.UserNameFrom.</h2>

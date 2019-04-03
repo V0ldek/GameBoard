@@ -37,6 +37,10 @@
     margin-bottom: 3px;
 }
 
+.friend-card-mini {
+    padding: 2%
+}
+
 .friend-gravatar {
     max-width: 32px;
     max-height: 32px;
