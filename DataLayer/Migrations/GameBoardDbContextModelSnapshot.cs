@@ -16,8 +16,29 @@ namespace GameBoard.DataLayer.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.FriendRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(32);
+
+                    b.Property<int>("FriendRequestStatus");
+
+                    b.Property<string>("UserFromId");
+
+                    b.Property<string>("UserToId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFromId");
+
+                    b.HasIndex("UserToId");
+
+                    b.ToTable("FriendRequests");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -71,6 +92,9 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -108,7 +132,9 @@ namespace GameBoard.DataLayer.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("user");
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -178,6 +204,26 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("user_token");
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.ToTable("user");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.FriendRequest", b =>
+                {
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "UserFrom")
+                        .WithMany("SentRequests")
+                        .HasForeignKey("UserFromId");
+
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "UserTo")
+                        .WithMany("ReceivedRequests")
+                        .HasForeignKey("UserToId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

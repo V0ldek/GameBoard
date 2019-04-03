@@ -1,4 +1,5 @@
 ﻿using GameBoard.LogicLayer;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +36,7 @@ namespace GameBoard
 
             LogicLayer.Configuration.ConfigureServices(services);
 
-            services.AddDefaultIdentity<IdentityUser>(
+            services.AddDefaultIdentity<ApplicationUser>(
                     options =>
                     {
                         options.Password.RequiredLength = 8;

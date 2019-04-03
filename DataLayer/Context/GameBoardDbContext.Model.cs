@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameBoard.DataLayer.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.DataLayer.Context
@@ -9,8 +10,28 @@ namespace GameBoard.DataLayer.Context
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityUser>(
+            builder.Entity<ApplicationUser>(
                 entity => entity.ToTable("user"));
+
+            builder.Entity<FriendRequest>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+
+                    entity.Property(e => e.Id)
+                        .HasMaxLength(32)
+                        .IsRequired();
+                    entity.Property(e => e.FriendRequestStatus)
+                        .IsRequired();
+
+                    entity.HasOne(e => e.UserFrom)
+                        .WithMany(u => u.SentRequests)
+                        .HasForeignKey(e => e.UserFromId);
+
+                    entity.HasOne(e => e.UserTo)
+                        .WithMany(u => u.ReceivedRequests)
+                        .HasForeignKey(e => e.UserToId);
+                });
 
             builder.Entity<IdentityRole>(
                 entity => entity.ToTable("role"));
