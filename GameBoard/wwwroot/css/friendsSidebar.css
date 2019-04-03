@@ -1,11 +1,11 @@
 ﻿#friends-sidebar-container {
-    margin-left: 0;
+    margin-left: -250px;
     margin-right: 5%;
     transition: all 0.3s;
     position: relative;
 }
 
-#friends-sidebar-container.toggled { margin-left: -250px; }
+#friends-sidebar-container.toggled { margin-left: 0; }
 
 #friends-sidebar {
     width: 250px;
