@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
     public class LoginWith2faModel : PageModel
     {
         private readonly ILogger<LoginWith2faModel> _logger;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -22,7 +23,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        public LoginWith2faModel(SignInManager<IdentityUser> signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2faModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

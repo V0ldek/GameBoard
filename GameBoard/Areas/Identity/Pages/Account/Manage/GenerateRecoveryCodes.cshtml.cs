@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +12,7 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
     public class GenerateRecoveryCodesModel : PageModel
     {
         private readonly ILogger<GenerateRecoveryCodesModel> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         [TempData]
         public string[] RecoveryCodes { get; set; }
@@ -20,7 +21,7 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
         public string StatusMessage { get; set; }
 
         public GenerateRecoveryCodesModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             ILogger<GenerateRecoveryCodesModel> logger)
         {
             _userManager = userManager;

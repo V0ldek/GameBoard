@@ -3,15 +3,17 @@ using System;
 using GameBoard.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    partial class GameBoardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403130908_AddedApplicationUserAndFriendship")]
+    partial class AddedApplicationUserAndFriendship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
