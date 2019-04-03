@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using GameBoard.Configuration;
 using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.Friends.Dtos;
-using GameBoard.LogicLayer.Friends.Exceptions;
 using GameBoard.Models.FriendRequest;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
@@ -31,24 +29,34 @@ namespace GameBoard.Controllers
             _hostConfiguration = hostConfiguration.Value;
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> FriendRequest(string id)
         {
             var friendRequest = await _friendsService.GetFriendRequestAsync(id);
-            
+
             if (friendRequest == null)
             {
-                return View("FriendRequestNotFound");
+                return this.Error(
+                    "Friend request not found",
+                    "The friend request you referenced does not exist in the system. " +
+                    "Please, make sure the link you followed is identical with the one in the email.",
+                    HttpStatusCode.NotFound,
+                    _logger);
             }
+
             if (friendRequest.UserTo.UserName != User.Identity.Name)
             {
-                return LocalRedirect("Identity/Account/AccessDenied");
+                return this.AccessDenied();
             }
+
             if (friendRequest.Status == FriendRequestDto.FriendRequestStatus.Accepted ||
                 friendRequest.Status == FriendRequestDto.FriendRequestStatus.Rejected)
             {
-                return View("FriendRequestAlreadyFinalized");
+                return this.Error(
+                    "Friend request expired",
+                    "The friend request you referenced has already been accepted or rejected.",
+                    HttpStatusCode.Conflict,
+                    _logger);
             }
 
             return View("FriendRequest", friendRequest.ToViewModel());
@@ -87,22 +95,14 @@ namespace GameBoard.Controllers
             }
             catch (ApplicationException exception)
             {
-                return BadRequest(
-                    new
-                    {
-                        title = "Error!",
-                        message = exception.Message
-                    });
+                return this.ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
             }
             catch
             {
-                return StatusCode(
-                    (int) HttpStatusCode.InternalServerError,
-                    new
-                    {
-                        title = "Error!",
-                        message = "An unexpected error has occured while processing your request."
-                    });
+                return this.ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
             }
 
             return Ok(

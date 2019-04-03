@@ -3,6 +3,7 @@ using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using GameBoard.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameBoard.Controllers
 {
@@ -15,6 +16,7 @@ namespace GameBoard.Controllers
             _userSearchService = userSearchService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Search(string input) =>
             ViewComponent("UserSearchResults", (await _userSearchService.GetSearchCandidatesAsync(input)).Select(u => u.ToViewModel()));
