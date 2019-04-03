@@ -13,7 +13,7 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<ApplicationUser>(
                 entity => entity.ToTable("user"));
 
-            builder.Entity<FriendRequest>(
+            builder.Entity<Friendship>(
                 entity =>
                 {
                     entity.HasKey(e => e.Id);
@@ -21,7 +21,7 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.Id)
                         .HasMaxLength(32)
                         .IsRequired();
-                    entity.Property(e => e.FriendRequestStatus)
+                    entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
 
                     entity.HasOne(e => e.UserFrom)

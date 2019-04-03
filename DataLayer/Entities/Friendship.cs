@@ -2,7 +2,7 @@
 
 namespace GameBoard.DataLayer.Entities
 {
-    public class FriendRequest
+    public class Friendship
     {
         public string Id { get; set; }
         //[Key, Column(Order = 0)]
@@ -12,6 +12,6 @@ namespace GameBoard.DataLayer.Entities
         public ApplicationUser UserFrom { get; set; }
         public ApplicationUser UserTo { get; set; }
 
-        public FriendRequestStatus FriendRequestStatus { get; set; }
+        public FriendshipStatus FriendshipStatus { get; set; }
     }
 }

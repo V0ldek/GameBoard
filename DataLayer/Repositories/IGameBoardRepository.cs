@@ -6,6 +6,6 @@ namespace GameBoard.DataLayer.Repositories
     public interface IGameBoardRepository
     {
         DbSet<ApplicationUser> ApplicationUsers { get; set; } //only get?
-        DbSet<FriendRequest> FriendRequests { get; set; } //only set?
+        DbSet<Friendship> Friendships { get; set; } //only get?
     }
 }

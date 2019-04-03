@@ -4,10 +4,10 @@ using System.Text;
 
 namespace GameBoard.DataLayer.Enums
 {
-    public enum FriendRequestStatus
+    public enum FriendshipStatus
     {
-        Sent,
-        Accepted,
-        Rejected
+        PendingFriendRequest,
+        RejectedFriendRequest,
+        Active,
     }
 }

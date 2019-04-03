@@ -5,7 +5,7 @@ namespace GameBoard.DataLayer.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<FriendRequest> SentRequests { get; set; }
-        public ICollection<FriendRequest> ReceivedRequests { get; set; }
+        public ICollection<Friendship> SentRequests { get; set; }
+        public ICollection<Friendship> ReceivedRequests { get; set; }
     }
 }

@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.DataLayer.Context
 {
-    internal sealed partial class GameBoardDbContext : IdentityDbContext, IGameBoardRepository
+    internal sealed partial class GameBoardDbContext : IdentityDbContext<ApplicationUser>, IGameBoardRepository
     {
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<FriendRequest> FriendRequests { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
 
         public GameBoardDbContext(DbContextOptions<GameBoardDbContext> options)
             : base(options)
