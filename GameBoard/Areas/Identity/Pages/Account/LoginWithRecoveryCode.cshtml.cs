@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
     public class LoginWithRecoveryCodeModel : PageModel
     {
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -22,7 +21,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         public LoginWithRecoveryCodeModel(
-            SignInManager<ApplicationUser> signInManager,
+            SignInManager<IdentityUser> signInManager,
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;
