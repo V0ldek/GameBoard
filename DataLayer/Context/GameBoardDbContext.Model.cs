@@ -24,13 +24,16 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
 
-                    entity.HasOne(e => e.UserFrom)
-                        .WithMany(u => u.SentRequests)
-                        .HasForeignKey(e => e.UserFromId);
+                    entity.HasIndex(e => new {e.RequestedById, e.RequestedToId})
+                        .IsUnique(true); //is it directed uniqueness?
 
-                    entity.HasOne(e => e.UserTo)
+                    entity.HasOne(e => e.RequestedBy)
+                        .WithMany(u => u.SentRequests)
+                        .HasForeignKey(e => e.RequestedById);
+
+                    entity.HasOne(e => e.RequestedTo)
                         .WithMany(u => u.ReceivedRequests)
-                        .HasForeignKey(e => e.UserToId);
+                        .HasForeignKey(e => e.RequestedToId);
                 });
 
             builder.Entity<IdentityRole>(

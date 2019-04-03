@@ -8,6 +8,6 @@ namespace GameBoard.DataLayer.Enums
     {
         PendingFriendRequest,
         RejectedFriendRequest,
-        Active,
+        Lasts,
     }
 }

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190403130908_AddedApplicationUserAndFriendship")]
+    [Migration("20190403171258_AddedApplicationUserAndFriendship")]
     partial class AddedApplicationUserAndFriendship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,15 +79,16 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<int>("FriendshipStatus");
 
-                    b.Property<string>("UserFromId");
+                    b.Property<string>("RequestedById");
 
-                    b.Property<string>("UserToId");
+                    b.Property<string>("RequestedToId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserFromId");
+                    b.HasIndex("RequestedToId");
 
-                    b.HasIndex("UserToId");
+                    b.HasIndex("RequestedById", "RequestedToId")
+                        .IsUnique();
 
                     b.ToTable("Friendships");
                 });
@@ -205,13 +206,13 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Friendship", b =>
                 {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "UserFrom")
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedBy")
                         .WithMany("SentRequests")
-                        .HasForeignKey("UserFromId");
+                        .HasForeignKey("RequestedById");
 
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "UserTo")
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedTo")
                         .WithMany("ReceivedRequests")
-                        .HasForeignKey("UserToId");
+                        .HasForeignKey("RequestedToId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

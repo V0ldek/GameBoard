@@ -11,36 +11,37 @@ namespace GameBoard.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(maxLength: 32, nullable: false),
-                    UserFromId = table.Column<string>(nullable: true),
-                    UserToId = table.Column<string>(nullable: true),
+                    RequestedById = table.Column<string>(nullable: true),
+                    RequestedToId = table.Column<string>(nullable: true),
                     FriendshipStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friendships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Friendships_user_UserFromId",
-                        column: x => x.UserFromId,
+                        name: "FK_Friendships_user_RequestedById",
+                        column: x => x.RequestedById,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendships_user_UserToId",
-                        column: x => x.UserToId,
+                        name: "FK_Friendships_user_RequestedToId",
+                        column: x => x.RequestedToId,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_UserFromId",
+                name: "IX_Friendships_RequestedToId",
                 table: "Friendships",
-                column: "UserFromId");
+                column: "RequestedToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_UserToId",
+                name: "IX_Friendships_RequestedById_RequestedToId",
                 table: "Friendships",
-                column: "UserToId");
+                columns: new[] { "RequestedById", "RequestedToId" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
