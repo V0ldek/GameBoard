@@ -10,7 +10,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/script/site.min.js",
+    "outputFileName": "wwwroot/scripts/site.min.js",
     "inputFiles": [
       "Scripts/*.js"
     ],

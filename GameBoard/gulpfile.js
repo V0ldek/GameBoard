@@ -41,10 +41,19 @@ gulp.task("lib:popperFix",
 
 gulp.task("lib", gulp.series(["lib:all", "lib:popperFix"]));
 
-gulp.task("clean",
+gulp.task("clean:bundles",
+    () => {
+        return Promise.all(getBundles(/.*/).map(bundle => {
+            return del([bundle.outputFileName]);
+        }));
+    });
+
+gulp.task("clean:typescript",
     () => {
         return del(["wwwroot/scripts/**/*"]);
     });
+
+gulp.task("clean", gulp.series(["clean:bundles", "clean:typescript"]));
 
 gulp.task("min:js",
     () => {
@@ -68,7 +77,12 @@ gulp.task("min:css",
 
 gulp.task("min", gulp.series(["min:js", "min:css"]));
 
-gulp.task("default", gulp.series(["min"]));
+gulp.task("copy",
+    () => {
+        return gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts/"));
+    });
+
+gulp.task("default", gulp.series(["min", "copy"]));
 
 function getBundles(regexPattern) {
     return bundleconfig.filter(bundle => {
