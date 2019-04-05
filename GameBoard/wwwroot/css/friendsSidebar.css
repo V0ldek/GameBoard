@@ -37,68 +37,9 @@
     margin-bottom: 3px;
 }
 
-.friend-card-mini { padding: 2% }
-
 .friend-gravatar {
     max-width: 32px;
     max-height: 32px;
     min-width: 16px;
     min-height: 16px;
-}
-
-.friend-gravatar-mini {
-    max-width: 24px;
-    max-height: 24px;
-    min-width: 16px;
-    min-height: 16px;
-}
-
-#friends-sidebar-search-form {
-    padding: 10px;
-    width: 250px;
-}
-
-.friends-autocomplete {
-    position: relative;
-    display: inline-block;
-}
-
-.autocomplete-items {
-    top: -6vh;
-    position: absolute;
-    z-index: 999;
-    left: 0;
-    right: 0;
-    border: 2px solid #1d1c1b;
-    max-height: 25vh;
-}
-
-.autocomplete-items .autocomplete-item {
-    padding: 5px;
-    margin: 1px;
-    cursor: pointer;
-    background-color: #1a1c1e; /* Fallback color. */
-    background-color: rgba(26, 28, 30, 0.5);
-    display: flex;
-    justify-content: space-between;
-}
-
-.autocomplete-items .autocomplete-item:hover { background-color: #3a3c3e; }
-
-.autocomplete-items.user-search-error {
-    padding: 5px;
-    margin: 1px;
-    background-color: #1a1c1e; /* Fallback  color. */
-    background-color: rgba(26, 28, 30, 0.5);
-}
-
-.popover { background-color: transparent }
-
-.popover-header-error { background-color: #751a1a; }
-
-.popover-header-success { background-color: #1a751a; }
-
-.popover-body {
-    color: #1d1c1b;
-    background-color: #aaacae;
 }

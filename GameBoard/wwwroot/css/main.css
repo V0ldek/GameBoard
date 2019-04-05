@@ -7,13 +7,9 @@ a.navbar-brand {
     word-break: break-all;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-
-html { font-size: 14px; }
-
-@media (min-width: 768px) {
-    html { font-size: 16px; }
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 .border-top { border-top: 2px solid #1d1c1b !important; }
@@ -27,6 +23,31 @@ html { font-size: 14px; }
 .border-full { border: 2px solid #1d1c1b !important; }
 
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.form-control {
+    background-color: #202122 !important;
+    border-color: #303132 !important;
+}
+
+.form-control::-webkit-input-placeholder { color: #a0a1a2; }
+
+.form-control:focus {
+    background-color: #303132 !important;
+    border-color: #404142 !important;
+    border-color: #171a1d !important;
+    color: #f8f9fa !important;
+    box-shadow: 0 0 0 0.1rem rgba(50, 56, 61, 0.5) !important;
+}
+
+.validation-summary-errors ul { list-style-type: none !important; }
+
+.nav-pills .nav-link { border-radius: 0.25rem; }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #414345;
+}
 
 .btn-dark {
     background-color: #202122 !important;
@@ -62,44 +83,19 @@ a:hover { color: #c8c9ca; }
 
 .alert-dark a { color: black }
 
-.alert-dark a:hover { color: #303132; text-decoration: underline }
-
-button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
-}
-
-.form-control {
-    background-color: #202122 !important;
-    border-color: #303132 !important;
-}
-
-.form-control::-webkit-input-placeholder { color: #a0a1a2; }
-
-.form-control:focus {
-    background-color: #303132 !important;
-    border-color: #404142 !important;
-    border-color: #171a1d !important;
-    color: #f8f9fa !important;
-    box-shadow: 0 0 0 0.1rem rgba(50, 56, 61, 0.5) !important;
-}
-
-.validation-summary-errors ul {
-    list-style-type: none !important;
-}
-
-.nav-pills .nav-link {
-    border-radius: 0.25rem;
-}
-
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #414345;
+.alert-dark a:hover {
+    color: #303132;
+    text-decoration: underline
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
+
+html { font-size: 14px; }
+
+@media (min-width: 768px) {
+    html { font-size: 16px; }
+}
 
 html {
     position: relative;

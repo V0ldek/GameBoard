@@ -2,8 +2,9 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      "wwwroot/css/site.css",
-      "wwwroot/css/friendsSidebar.css"
+      "wwwroot/css/main.css",
+      "wwwroot/css/friendsSidebar.css",
+      "wwwroot/css/friendsAutocomplete.css"
     ],
     "minify": {
       "enabled": true
