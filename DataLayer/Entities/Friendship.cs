@@ -1,10 +1,12 @@
-﻿using GameBoard.DataLayer.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using GameBoard.DataLayer.Enums;
 
 namespace GameBoard.DataLayer.Entities
 {
     public class Friendship
     {
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         public string RequestedById { get; set; }
         public string RequestedToId { get; set; }

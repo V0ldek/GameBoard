@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace GameBoard.DataLayer.Migrations
 {
@@ -10,7 +11,8 @@ namespace GameBoard.DataLayer.Migrations
                 name: "Friendships",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 32, nullable: false),
+                    Id = table.Column<int>(maxLength: 32, nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RequestedById = table.Column<string>(nullable: true),
                     RequestedToId = table.Column<string>(nullable: true),
                     FriendshipStatus = table.Column<int>(nullable: false)
