@@ -76,7 +76,7 @@ gulp.task("min:css",
     });
 
 gulp.task("min", gulp.series(["min:js", "min:css"]));
-
+    
 gulp.task("copy",
     () => {
         return gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts/"));

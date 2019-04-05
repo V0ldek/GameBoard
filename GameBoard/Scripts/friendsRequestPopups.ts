@@ -23,8 +23,8 @@ class FriendRequestPopupGenerator {
     private generatePopup(source: HTMLElement, template: string, jqXhr: JQueryXHR) {
         const response: IResponse = jqXhr.responseJSON;
 
-        $(source).attr("title", response.title);
-        $(source).attr("data-content", response.message);
+        source.setAttribute("title", response.title);
+        source.setAttribute("data-content", response.message);
         $(source).popover({
             trigger: "focus",
             template
