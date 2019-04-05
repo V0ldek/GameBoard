@@ -36,10 +36,3 @@
     padding: 5%;
     margin-bottom: 3px;
 }
-
-.friend-gravatar {
-    max-width: 32px;
-    max-height: 32px;
-    min-width: 16px;
-    min-height: 16px;
-}

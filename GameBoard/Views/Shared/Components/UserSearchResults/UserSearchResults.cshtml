@@ -11,7 +11,7 @@
                   data-ajax-failure="friendRequestPopupGenerator.generateErrorPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)">
                 <input readonly hidden name="userNameFrom" value="@User.Identity.Name"/>
                 <input readonly hidden name="userNameTo" value="@user.UserName"/>
-                <button id="friend-request-button-@user.Id" class="btn btn-success mt-1" type="submit" data-toggle="popover">
+                <button id="friend-request-button-@user.Id" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
                     <i class="fa fa-user-plus"></i>
                 </button>
             </form>

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GameBoard.Utilities
 {
-    internal static class GravatarEmailHasher
+    public static class GravatarEmailHasher
     {
         private static readonly MD5 Md5Hash = MD5.Create();
 
