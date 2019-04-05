@@ -1,91 +1,45 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
+/* Main elements 
+-------------------------------------------------- */
+
+html { font-size: 14px; }
+
+@media (min-width: 768px) {
+    html { font-size: 16px; }
 }
 
-button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
+html {
+    position: relative;
+    min-height: 100%;
 }
 
-.border-top { border-top: 2px solid #1d1c1b !important; }
-
-.border-bottom { border-bottom: 2px solid #1d1c1b !important; }
-
-.border-left { border-left: 2px solid #1d1c1b !important; }
-
-.border-right { border-right: 2px solid #1d1c1b !important; }
-
-.border-full { border: 2px solid #1d1c1b !important; }
-
-.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
-
-.form-control {
-    background-color: #202122 !important;
-    border-color: #303132 !important;
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #05080b;
+    color: #e0e8ef;
 }
 
-.form-control::-webkit-input-placeholder { color: #a0a1a2; }
-
-.form-control:focus {
-    background-color: #303132 !important;
-    border-color: #404142 !important;
-    border-color: #171a1d !important;
-    color: #f8f9fa !important;
-    box-shadow: 0 0 0 0.1rem rgba(50, 56, 61, 0.5) !important;
+main {
+    width: 100%;
+    padding: 1%;
 }
 
-.validation-summary-errors ul { list-style-type: none !important; }
-
-.nav-pills .nav-link { border-radius: 0.25rem; }
-
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #414345;
+.flex-container {
+    display: flex;
+    width: 100%;
 }
 
-.btn-dark {
-    background-color: #202122 !important;
-    color: inherit !important;
-}
-
-.btn-dark:hover { background-color: #151617 !important; }
-
-.btn-dark:focus, .btn-dark.focus { box-shadow: 0 0 0 0.1rem rgba(50, 56, 61, 0.5) !important; }
-
-.btn-dark.disabled, .btn-dark:disabled {
-    background-color: #303132 !important;
-    border-color: #404142 !important;
-}
-
-.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
-.show > .btn-dark.dropdown-toggle {
-    background-color: #15181b !important;
-    border-color: #171a1d !important;
-}
-
-.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
-.show > .btn-dark.dropdown-toggle:focus { box-shadow: 0 0 0 0.1rem rgba(50, 56, 61, 0.5) !important; }
-
-.bg {
-    background: #101112 !important;
-    color: #e8e9ea !important;
-}
-
-a { color: #f8f9fa; }
-
-a:hover { color: #c8c9ca; }
-
-.alert-dark a { color: black }
-
-.alert-dark a:hover {
-    color: #303132;
-    text-decoration: underline
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 /* Gravatars 
@@ -112,43 +66,102 @@ a:hover { color: #c8c9ca; }
     min-height: 64px;
 }
 
-/* Sticky footer styles
+/* Main styles
 -------------------------------------------------- */
 
-html { font-size: 14px; }
-
-@media (min-width: 768px) {
-    html { font-size: 16px; }
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+.border-top { border-top: 2px solid #202326 !important; }
+
+.border-bottom { border-bottom: 2px solid #202326 !important; }
+
+.border-left { border-left: 2px solid #202326 !important; }
+
+.border-right { border-right: 2px solid #202326 !important; }
+
+.border-full { border: 2px solid #202326 !important; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.form-control {
+    background-color: #26292c !important;
+    border-color: #36393c !important;
 }
 
-body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
-    background-color: black;
-    color: #e8e9ea;
+.form-control::-webkit-input-placeholder { color: #b0b1b2; }
+
+.form-control:focus {
+    background-color: #303336 !important;
+    border-color: #404346 !important;
+    color: #f3f6f9 !important;
+    box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important;
 }
 
-main {
-    width: 100%;
-    padding: 1%;
+.validation-summary-errors ul { list-style-type: none !important; }
+
+.nav-pills .nav-link { border-radius: 0.25rem; }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #414447;
 }
 
-.flex-container {
-    display: flex;
-    width: 100%;
+.btn-dark {
+    background-color: #283134 !important;
+    color: inherit !important;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    white-space: nowrap;
-    /* Set the fixed height of the footer here */
-    height: 60px;
-    line-height: 60px; /* Vertically center the text there */
+.btn-dark:hover { background-color: #15181a !important; }
+
+.btn-dark:focus, .btn-dark.focus { box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important; }
+
+.btn-dark.disabled, .btn-dark:disabled {
+    background-color: #303336 !important;
+    border-color: #404346 !important;
 }
+
+.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
+.show > .btn-dark.dropdown-toggle {
+    background-color: #35383a !important;
+    border-color: #1f2225 !important;
+}
+
+.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
+.show > .btn-dark.dropdown-toggle:focus { box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important; }
+
+.bg {
+    background: #101316 !important;
+    color: #e5e8ea !important;
+}
+
+a { color: #c0c4ef; }
+
+a:hover { color: #a0a4cf; }
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: #f0f4ff;
+}
+
+a.nav-link { color: #f0f4ff; }
+
+button.nav-link { color: #f0f4ff; }
+
+.alert-dark {
+    background-color: #a5a8aa;
+    color: black;
+    border-color: #b5b8ba;
+}
+
+.alert-dark a { color: #30347f }
+
+    .alert-dark a:hover {
+        color: #10145f;
+        text-decoration: underline
+    }
