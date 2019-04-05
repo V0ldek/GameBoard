@@ -1,4 +1,5 @@
-﻿using GameBoard.Configuration;
+﻿using System;
+using GameBoard.Configuration;
 using GameBoard.LogicLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,17 +19,30 @@ namespace GameBoard
         {
             Configuration = configuration;
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(
                 options =>
                 {
-                    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                     options.CheckConsentNeeded = context => true;
                     options.MinimumSameSitePolicy = SameSiteMode.None;
+                    options.ConsentCookie = new CookieBuilder
+                    {
+                        Name = "GameBoard.Consent",
+                        Expiration = TimeSpan.FromDays(365),
+                        IsEssential = true
+                    };
                 });
+
+            services.AddAntiforgery(
+                options => { options.Cookie = new CookieBuilder
+                {
+                    Name = "GameBoard.Antiforgery",
+                    SameSite = SameSiteMode.None,
+                    HttpOnly = true,
+                    IsEssential = true
+                };});
 
             LogicLayer.Configuration.ConfigureDbContext(
                 services,
@@ -46,15 +60,16 @@ namespace GameBoard
                         options.Password.RequireUppercase = false;
                         options.User.RequireUniqueEmail = true;
                     })
-                //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDbContextStores();
 
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
 
+            services.ConfigureApplicationCookie(
+                options => { options.Cookie.Name = "GameBoard.Identity"; });
+                
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
