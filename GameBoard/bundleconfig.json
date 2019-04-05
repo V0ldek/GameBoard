@@ -2,9 +2,7 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      "wwwroot/css/main.css",
-      "wwwroot/css/friendsSidebar.css",
-      "wwwroot/css/friendsAutocomplete.css"
+      "wwwroot/css/**/*.css"
     ],
     "minify": {
       "enabled": true
@@ -13,7 +11,7 @@
   {
     "outputFileName": "wwwroot/scripts/site.min.js",
     "inputFiles": [
-      "Scripts/*.js"
+      "Scripts/**/*.js"
     ],
     "minify": {
       "enabled": true,

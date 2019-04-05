@@ -1,18 +1,18 @@
-﻿.friend-card-mini { padding: 2% }
+﻿.user-card-mini { padding: 2% }
 
-.friend-gravatar-mini {
+.user-gravatar-mini {
     max-width: 24px;
     max-height: 24px;
     min-width: 16px;
     min-height: 16px;
 }
 
-#friends-sidebar-search-form {
+#user-search-form {
     padding: 10px;
     width: 250px;
 }
 
-.friends-autocomplete {
+.user-search-autocomplete {
     position: relative;
     display: inline-block;
 }

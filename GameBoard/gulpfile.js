@@ -50,7 +50,7 @@ gulp.task("clean:bundles",
 
 gulp.task("clean:typescript",
     () => {
-        return del(["wwwroot/scripts/**/*"]);
+        return del(["wwwroot/scripts/**/*", "Scripts/**/*.js", "Scripts/**/*.js.map"]);
     });
 
 gulp.task("clean", gulp.series(["clean:bundles", "clean:typescript"]));
@@ -58,6 +58,7 @@ gulp.task("clean", gulp.series(["clean:bundles", "clean:typescript"]));
 gulp.task("min:js",
     () => {
         return merge(getBundles(/\.js$/).map(bundle => {
+            gutil.log(bundle);
             return gulp.src(bundle.inputFiles, { base: "." })
                 .pipe(concat(bundle.outputFileName))
                 .pipe(terser())

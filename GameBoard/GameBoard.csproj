@@ -19,12 +19,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\friendsAutocomplete.ts" />
-    <None Remove="Scripts\friendsRequestPopups.ts" />
+    <None Remove="Scripts\autocomplete.ts" />
+    <None Remove="Scripts\popupGenerator.ts" />
+    <None Remove="Scripts\Site\friendsSidebar.ts" />
+    <None Remove="Scripts\Site\userSearchBox.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Scripts\friendsSidebar.ts" />
+    <Content Include="Scripts\Collapsible\collapsible.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\friendsAutocomplete.ts" />
-    <TypeScriptCompile Include="Scripts\friendsRequestPopups.ts" />
+    <TypeScriptCompile Include="Scripts\Autocomplete\autocomplete.ts" />
+    <TypeScriptCompile Include="Scripts\Popups\popupGenerator.ts" />
+    <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
+    <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

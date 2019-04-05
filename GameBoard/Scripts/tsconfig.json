@@ -8,9 +8,11 @@
     "target": "es6"
   },
   "files": [
-    "friendsSidebar.ts",
-    "friendsAutocomplete.ts",
-    "friendsRequestPopups.ts"
+    "Autocomplete/autocomplete.ts",
+    "Collapsible/Collapsible.ts",
+    "Popups/popupGenerator.ts",
+    "Site/friendsSidebar.ts",
+    "Site/userSearchBox.ts"
   ],
   "exclude": [
     "../wwwroot/scripts"
