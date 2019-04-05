@@ -1,4 +1,5 @@
-﻿using GameBoard.DataLayer.Entities;
+﻿using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.DataLayer.Repositories
@@ -7,5 +8,7 @@ namespace GameBoard.DataLayer.Repositories
     {
         DbSet<ApplicationUser> ApplicationUsers { get; set; } //only get?
         DbSet<Friendship> Friendships { get; set; } //only get?
+
+        Task SaveChangesAsync();
     }
 }

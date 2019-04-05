@@ -1,6 +1,7 @@
 ﻿using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GameBoard.DataLayer.Context
 {
@@ -54,5 +55,7 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<IdentityRoleClaim<string>>(
                 entity => entity.ToTable("role_claim"));
         }
+
+        public Task SaveChangesAsync() => base.SaveChangesAsync();
     }
 }
