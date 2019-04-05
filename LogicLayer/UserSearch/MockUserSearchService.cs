@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.UserSearch.Dtos;
@@ -25,7 +26,7 @@ namespace GameBoard.LogicLayer.UserSearch
                     new UserDto("4", "Żochu", "mzochowski@gmail.com"),
                     new UserDto("5", "johny", "johny@gmail.com"),
                     new UserDto("2", "Charlie", "example@example.com")
-                } as IEnumerable<UserDto>);
+                }.Concat(Enumerable.Repeat<UserDto>(new UserDto("11", "mock", "invalidEmail"), 100)));
         }
     }
 }
