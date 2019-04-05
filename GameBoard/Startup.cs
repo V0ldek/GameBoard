@@ -37,7 +37,12 @@ namespace GameBoard
                     services,
                     Configuration.GetConnectionString("Gameboard_Develop"));
             }
-
+            else if (Environment.IsProduction())
+            {
+                LogicLayer.Configuration.ConfigureDbContext(
+                    services,
+                    Configuration.GetConnectionString("Gameboard_Release"));
+            }
 
             LogicLayer.Configuration.ConfigureServices(services);
             
