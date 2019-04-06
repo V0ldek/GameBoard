@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190405150537_AddedApplicationUserAndFriendship")]
+    [Migration("20190406123113_AddedApplicationUserAndFriendship")]
     partial class AddedApplicationUserAndFriendship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,15 +79,15 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<int>("FriendshipStatus");
 
-                    b.Property<string>("RequestedById");
+                    b.Property<string>("UserGreaterId");
 
-                    b.Property<string>("RequestedToId");
+                    b.Property<string>("UserSmallerId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RequestedToId");
+                    b.HasIndex("UserGreaterId");
 
-                    b.HasIndex("RequestedById", "RequestedToId")
+                    b.HasIndex("UserSmallerId", "UserGreaterId")
                         .IsUnique();
 
                     b.ToTable("Friendships");
@@ -206,13 +206,13 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Friendship", b =>
                 {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedBy")
-                        .WithMany("SentRequests")
-                        .HasForeignKey("RequestedById");
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "UserGreater")
+                        .WithMany("GreaterIdInFriendships")
+                        .HasForeignKey("UserGreaterId");
 
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedTo")
-                        .WithMany("ReceivedRequests")
-                        .HasForeignKey("RequestedToId");
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "UserSmaller")
+                        .WithMany("SmallerIdInFriendships")
+                        .HasForeignKey("UserSmallerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

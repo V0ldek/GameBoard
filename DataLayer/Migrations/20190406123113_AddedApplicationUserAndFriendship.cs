@@ -13,36 +13,36 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     Id = table.Column<int>(maxLength: 32, nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    RequestedById = table.Column<string>(nullable: true),
-                    RequestedToId = table.Column<string>(nullable: true),
+                    UserSmallerId = table.Column<string>(nullable: true),
+                    UserGreaterId = table.Column<string>(nullable: true),
                     FriendshipStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friendships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Friendships_user_RequestedById",
-                        column: x => x.RequestedById,
+                        name: "FK_Friendships_user_UserGreaterId",
+                        column: x => x.UserGreaterId,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendships_user_RequestedToId",
-                        column: x => x.RequestedToId,
+                        name: "FK_Friendships_user_UserSmallerId",
+                        column: x => x.UserSmallerId,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_RequestedToId",
+                name: "IX_Friendships_UserGreaterId",
                 table: "Friendships",
-                column: "RequestedToId");
+                column: "UserGreaterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_RequestedById_RequestedToId",
+                name: "IX_Friendships_UserSmallerId_UserGreaterId",
                 table: "Friendships",
-                columns: new[] { "RequestedById", "RequestedToId" },
+                columns: new[] { "UserSmallerId", "UserGreaterId" },
                 unique: true);
         }
 

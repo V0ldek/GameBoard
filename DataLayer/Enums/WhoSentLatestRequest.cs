@@ -4,10 +4,9 @@ using System.Text;
 
 namespace GameBoard.DataLayer.Enums
 {
-    public enum FriendshipStatus
+    public enum WhoSentLatestRequest
     {
-        PendingFriendRequest,
-        Rejected,
-        Lasts,
+        UserWithSmallerId,
+        UserWithGreaterId
     }
 }
