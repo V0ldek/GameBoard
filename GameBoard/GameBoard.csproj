@@ -19,6 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\manifest.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Scripts\autocomplete.ts" />
     <None Remove="Scripts\popupGenerator.ts" />
     <None Remove="Scripts\Site\friendsSidebar.ts" />
@@ -47,6 +51,7 @@
     <TypeScriptCompile Include="Scripts\Popups\popupGenerator.ts" />
     <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
     <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
+    <TypeScriptCompile Include="Views\Shared\manifest.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

@@ -74,6 +74,11 @@ button.accept-policy {
     line-height: inherit;
 }
 
+.bg {
+    background: #101316 !important;
+    color: #e5e8ea !important;
+}
+
 .border-top { border-top: 2px solid #202326 !important; }
 
 .border-bottom { border-bottom: 2px solid #202326 !important; }
@@ -132,11 +137,6 @@ button.accept-policy {
 
 .btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
 .show > .btn-dark.dropdown-toggle:focus { box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important; }
-
-.bg {
-    background: #101316 !important;
-    color: #e5e8ea !important;
-}
 
 a { color: #c0c4ef; }
 
