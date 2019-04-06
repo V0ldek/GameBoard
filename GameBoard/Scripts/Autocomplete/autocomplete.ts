@@ -2,15 +2,19 @@
     private readonly source: HTMLInputElement;
     private readonly resultSource: HTMLElement;
     private readonly minimalCharactersThreshold: number;
+    private readonly timeoutDuration: number;
     private readonly getUrl: string;
     private static readonly autocompleteResultsClass = "autocomplete-items";
+    private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,
         resultSource: HTMLElement,
         getUrl: string,
-        minimalCharactersThreshold = 3) {
+        minimalCharactersThreshold = 3,
+        timeoutDuration = 500) {
         this.source = source;
         this.minimalCharactersThreshold = minimalCharactersThreshold;
+        this.timeoutDuration = timeoutDuration;
         this.resultSource = resultSource;
         this.getUrl = getUrl;
 
@@ -23,8 +27,8 @@
             throw new Error("Cannot setup autocomplete on with a null result source.");
         }
 
-        this.source.addEventListener("input", () => this.showAutocompleteResults());
-        this.source.addEventListener("focusin", () => this.showAutocompleteResults());
+        this.source.addEventListener("input", () => this.newResultsTimeout());
+        this.source.addEventListener("focusin", () => this.newResultsTimeout());
 
         document.body.addEventListener("click",
             (e) => {
@@ -36,14 +40,21 @@
             });
     }
 
+    private newResultsTimeout() {
+        if (this.currentTimeout) {
+            clearTimeout(this.currentTimeout);
+        }
+        this.currentTimeout = setTimeout(() => this.showAutocompleteResults(), this.timeoutDuration);
+    }
+
     showAutocompleteResults() {
         const value = this.source.value;
+
+        this.closeAllAutocompleteResults();
 
         if (!value || value.length < this.minimalCharactersThreshold) {
             return;
         }
-
-        this.closeAllAutocompleteResults();
 
         fetch(`${this.getUrl}?input=${value}`,
                 {
