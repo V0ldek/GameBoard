@@ -12,7 +12,8 @@
     "Collapsible/Collapsible.ts",
     "Popovers/popoverGenerator.ts",
     "Site/friendsSidebar.ts",
-    "Site/userSearchBox.ts"
+    "Site/userSearchBox.ts",
+    "productionConsoleSwitch.ts"
   ],
   "exclude": [
     "../wwwroot/scripts"

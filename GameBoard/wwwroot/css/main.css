@@ -153,11 +153,11 @@ a.navbar-brand {
 
 a.nav-link { color: #f0f4ff; }
 
-button.nav-link { color: #f0f4ff; }
+button.nav-link { color: #f0f4ff; background-color: transparent; }
 
-button.nav-link:hover { color: #f0f4ff; }
+button.nav-link:hover { color: #f0f4ff; background-color: transparent; }
 
-button.nav-link:active, button.nav-link:focus { box-shadow: none !important; }
+button.nav-link:active, button.nav-link:focus { box-shadow: none !important; background-color: transparent; }
 
 .alert-dark {
     background-color: #a5a8aa;
