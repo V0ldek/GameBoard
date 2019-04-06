@@ -19,7 +19,7 @@ namespace GameBoard
         {
             Configuration = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(
@@ -36,13 +36,16 @@ namespace GameBoard
                 });
 
             services.AddAntiforgery(
-                options => { options.Cookie = new CookieBuilder
+                options =>
                 {
-                    Name = "GameBoard.Antiforgery",
-                    SameSite = SameSiteMode.None,
-                    HttpOnly = true,
-                    IsEssential = true
-                };});
+                    options.Cookie = new CookieBuilder
+                    {
+                        Name = "GameBoard.Antiforgery",
+                        SameSite = SameSiteMode.None,
+                        HttpOnly = true,
+                        IsEssential = true
+                    };
+                });
 
             LogicLayer.Configuration.ConfigureDbContext(
                 services,
@@ -66,10 +69,10 @@ namespace GameBoard
 
             services.ConfigureApplicationCookie(
                 options => { options.Cookie.Name = "GameBoard.Identity"; });
-                
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

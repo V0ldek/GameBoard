@@ -43,9 +43,10 @@ gulp.task("lib", gulp.series(["lib:all", "lib:popperFix"]));
 
 gulp.task("clean:bundles",
     () => {
-        return Promise.all(getBundles(/.*/).map(bundle => {
-            return del([bundle.outputFileName]);
-        }));
+        return Promise.all(getBundles(/.*/)
+            .map(bundle => {
+                return del([bundle.outputFileName]);
+            }));
     });
 
 gulp.task("clean:typescript",
@@ -57,27 +58,29 @@ gulp.task("clean", gulp.series(["clean:bundles", "clean:typescript"]));
 
 gulp.task("min:js",
     () => {
-        return merge(getBundles(/\.js$/).map(bundle => {
-            gutil.log(bundle);
-            return gulp.src(bundle.inputFiles, { base: "." })
-                .pipe(concat(bundle.outputFileName))
-                .pipe(terser())
-                .pipe(gulp.dest("."));
-        }));
+        return merge(getBundles(/\.js$/)
+            .map(bundle => {
+                gutil.log(bundle);
+                return gulp.src(bundle.inputFiles, { base: "." })
+                    .pipe(concat(bundle.outputFileName))
+                    .pipe(terser())
+                    .pipe(gulp.dest("."));
+            }));
     });
 
 gulp.task("min:css",
     () => {
-        return merge(getBundles(/\.css$/).map(bundle => {
-            return gulp.src(bundle.inputFiles, { base: "." })
-                .pipe(concat(bundle.outputFileName))
-                .pipe(cleanCss())
-                .pipe(gulp.dest("."));
-        }));
+        return merge(getBundles(/\.css$/)
+            .map(bundle => {
+                return gulp.src(bundle.inputFiles, { base: "." })
+                    .pipe(concat(bundle.outputFileName))
+                    .pipe(cleanCss())
+                    .pipe(gulp.dest("."));
+            }));
     });
 
 gulp.task("min", gulp.series(["min:js", "min:css"]));
-    
+
 gulp.task("copy",
     () => {
         return gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts/"));

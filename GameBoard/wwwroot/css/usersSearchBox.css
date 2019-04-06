@@ -5,35 +5,33 @@
     width: 250px;
 }
 
-.user-search-autocomplete {
-    position: relative;
-}
+.user-search-autocomplete { position: relative; }
 
 .autocomplete-items {
-    top: -6vh;
-    position: absolute;
-    z-index: 999;
-    left: 0;
-    right: 0;
     border: 2px solid #1d1c1b;
+    left: 0;
     max-height: 25vh;
+    position: absolute;
+    right: 0;
+    top: -6vh;
+    z-index: 999;
 }
 
 .autocomplete-items .autocomplete-item {
-    padding: 5px;
-    margin: 1px;
-    cursor: pointer;
     background-color: #1a1d20; /* Fallback color. */
     background-color: rgba(26, 29, 32, 0.5);
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
+    margin: 1px;
+    padding: 5px;
 }
 
 .autocomplete-items .autocomplete-item:hover { background-color: #3a3d40; }
 
 .autocomplete-items.user-search-error {
-    padding: 5px;
-    margin: 1px;
     background-color: #1a1d20; /* Fallback  color. */
     background-color: rgba(26, 29, 32, 0.5);
+    margin: 1px;
+    padding: 5px;
 }

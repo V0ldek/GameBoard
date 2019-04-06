@@ -28,10 +28,11 @@ class PopoverGenerator {
 
         source.setAttribute("title", response.title);
         source.setAttribute("data-content", response.message);
-        $(source).popover({
-            trigger: "focus",
-            template
-        });
+        $(source)
+            .popover({
+                trigger: "focus",
+                template
+            });
         $(source).popover("show");
     }
 }

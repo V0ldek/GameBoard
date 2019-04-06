@@ -10,14 +10,16 @@
         this.sidebar = sidebar;
         this.sidebarCollapse = sidebarCollapse;
 
-        $(this.sidebar).mCustomScrollbar({
-            theme: "minimal"
-        });
+        $(this.sidebar)
+            .mCustomScrollbar({
+                theme: "minimal"
+            });
 
-        this.sidebarCollapse.addEventListener("click", () => {
-            this.sidebarContainer.classList.toggle("toggled");
-            this.toggleSidebarCollapseIcon();
-        });
+        this.sidebarCollapse.addEventListener("click",
+            () => {
+                this.sidebarContainer.classList.toggle("toggled");
+                this.toggleSidebarCollapseIcon();
+            });
     }
 
     toggleSidebarCollapseIcon() {

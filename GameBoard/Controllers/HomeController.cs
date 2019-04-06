@@ -34,12 +34,14 @@ namespace GameBoard.Controllers
             switch (exceptionFeature?.Error)
             {
                 case null:
+                    Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                     _logger.LogCritical(
                         "An unexpected error has occured and ExceptionHandlerPathFeature is unavailable. " +
                         $"Showing a generic message \"{errorViewModel.Message}\" to the user and returning 500",
                         Activity.Current);
                     break;
                 case ApplicationException exception:
+                    Response.StatusCode = (int) HttpStatusCode.BadRequest;
                     errorViewModel.Message = exception.Message;
                     _logger.LogError(
                         exception,
@@ -48,6 +50,7 @@ namespace GameBoard.Controllers
                         Activity.Current);
                     break;
                 case Exception exception:
+                    Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                     _logger.LogCritical(
                         exception,
                         "An unexpected error has occured. " +

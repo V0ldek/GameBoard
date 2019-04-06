@@ -14,7 +14,7 @@ namespace GameBoard.Utilities
 
             var builder = new StringBuilder();
 
-            foreach(var @byte in hashBytes)
+            foreach (var @byte in hashBytes)
             {
                 builder.Append(@byte.ToString("x2"));
             }

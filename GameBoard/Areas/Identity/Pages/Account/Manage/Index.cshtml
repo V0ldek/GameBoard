@@ -13,9 +13,11 @@
         <div>
             <label>Avatar</label>
             <div class="media row">
-                <img src="https://www.gravatar.com/avatar/@GravatarEmailHasher.CalculateGravatarEmailHash(Model.Input.Email)" class="gravatar-lg rounded align-self-center col-auto" alt="gravatar"/>
+                <img src="https://www.gravatar.com/avatar/@GravatarEmailHasher.CalculateGravatarEmailHash(Model.Input.Email)" 
+                     class="gravatar-lg rounded align-self-center col-auto" 
+                     alt="gravatar"/>
                 <div class="media-body col-auto">
-                    <p>GameBoard uses the Gravatar service (Globally Recognized Avatar) to provide user profile pictures.</p> 
+                    <p>GameBoard uses the Gravatar service (Globally Recognized Avatar) to provide user profile pictures.</p>
                     <p>You can set up your gravatar at <a href="https://gravatar.com/">the Gravatar website</a>, using the same email you registered with.</p>
                 </div>
             </div>
@@ -40,7 +42,9 @@
                 else
                 {
                     <input asp-for="Input.Email" class="form-control" disabled/>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link" hidden>Send verification email</button>
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link" hidden>
+                        Send verification email
+                    </button>
                 }
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>

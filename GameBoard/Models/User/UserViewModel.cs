@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using GameBoard.Utilities;
 
 namespace GameBoard.Models.User
 {
@@ -19,7 +17,7 @@ namespace GameBoard.Models.User
         {
             Id = id;
             UserName = userName;
-            EmailHash = new Lazy<string>(() => Utilities.GravatarEmailHasher.CalculateGravatarEmailHash(email));
+            EmailHash = new Lazy<string>(() => GravatarEmailHasher.CalculateGravatarEmailHash(email));
         }
     }
 }

@@ -5,10 +5,10 @@ using GameBoard.Configuration;
 using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.Models.FriendRequest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GameBoard.Controllers
 {
@@ -16,8 +16,8 @@ namespace GameBoard.Controllers
     public class FriendsController : Controller
     {
         private readonly IFriendsService _friendsService;
-        private readonly ILogger<FriendsController> _logger;
         private readonly HostConfiguration _hostConfiguration;
+        private readonly ILogger<FriendsController> _logger;
 
         public FriendsController(
             IFriendsService friendsService,

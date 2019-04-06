@@ -1,6 +1,4 @@
-﻿.popover {
-    background-color: transparent
-}
+﻿.popover { background-color: transparent }
 
 .popover-header-error {
     background-color: #751a1a;
@@ -13,6 +11,6 @@
 }
 
 .popover-body {
-    color: black;
     background-color: #a5a8aa;
+    color: black;
 }

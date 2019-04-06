@@ -1,27 +1,27 @@
 ﻿#friends-sidebar-container {
     margin-left: -250px;
     margin-right: 5%;
-    transition: all 0.3s;
     position: relative;
+    transition: all 0.3s;
 }
 
 #friends-sidebar-container.toggled { margin-left: 0; }
 
 #friends-sidebar {
-    width: 250px;
+    height: 77vh;
+    left: 0;
     min-width: 250px;
     padding: 20px;
     position: relative;
     top: 0;
-    left: 0;
-    height: 77vh;
-    z-index: 999;
     transition: all 0.3s;
+    width: 250px;
+    z-index: 999;
 }
 
 #friends-sidebar-collapse {
-    position: absolute;
     left: 250px;
+    position: absolute;
     top: 50px;
     z-index: 999;
 }
@@ -33,6 +33,6 @@
 #friends-sidebar ul p { padding: 10px; }
 
 .friend-card {
-    padding: 5%;
     margin-bottom: 3px;
+    padding: 5%;
 }

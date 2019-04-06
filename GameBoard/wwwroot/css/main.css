@@ -11,20 +11,20 @@ html { font-size: 14px; }
 }
 
 html {
-    position: relative;
     min-height: 100%;
+    position: relative;
 }
 
 body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
     background-color: #05080b;
     color: #e0e8ef;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
 
 main {
-    width: 100%;
     padding: 3%;
+    width: 100%;
 }
 
 .flex-container {
@@ -33,37 +33,37 @@ main {
 }
 
 .footer {
-    position: absolute;
     bottom: 0;
-    width: 100%;
-    white-space: nowrap;
     /* Set the fixed height of the footer here */
     height: 60px;
     line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    white-space: nowrap;
+    width: 100%;
 }
 
 /* Gravatars 
 -------------------------------------------------- */
 
 .gravatar {
-    max-width: 48px;
     max-height: 48px;
-    min-width: 24px;
+    max-width: 48px;
     min-height: 24px;
+    min-width: 24px;
 }
 
 .gravatar-sm {
-    max-width: 32px;
     max-height: 32px;
-    min-width: 16px;
+    max-width: 32px;
     min-height: 16px;
+    min-width: 16px;
 }
 
 .gravatar-lg {
-    max-width: 128px;
     max-height: 128px;
-    min-width: 64px;
+    max-width: 128px;
     min-height: 64px;
+    min-width: 64px;
 }
 
 /*
@@ -103,8 +103,8 @@ button.accept-policy {
 .form-control:focus {
     background-color: #303336 !important;
     border-color: #404346 !important;
-    color: #f3f6f9 !important;
     box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important;
+    color: #f3f6f9 !important;
 }
 
 .validation-summary-errors ul { list-style-type: none !important; }
@@ -113,8 +113,8 @@ button.accept-policy {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-    color: #fff;
     background-color: #414447;
+    color: #fff;
 }
 
 .btn-dark {
@@ -145,10 +145,10 @@ a { color: #c0c4ef; }
 a:hover { color: #a0a4cf; }
 
 a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
     color: #f0f4ff;
+    text-align: center;
+    white-space: normal;
+    word-break: break-all;
 }
 
 a.nav-link { color: #f0f4ff; }
@@ -161,8 +161,8 @@ button.nav-link:active, button.nav-link:focus { box-shadow: none !important; }
 
 .alert-dark {
     background-color: #a5a8aa;
-    color: black;
     border-color: #b5b8ba;
+    color: black;
 }
 
 .alert-dark a { color: #30347f }
