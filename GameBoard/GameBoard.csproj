@@ -48,10 +48,10 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Autocomplete\autocomplete.ts" />
-    <TypeScriptCompile Include="Scripts\Popups\popupGenerator.ts" />
+    <TypeScriptCompile Include="Scripts\Popovers\popoverGenerator.ts" />
     <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
     <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
-    <TypeScriptCompile Include="Views\Shared\manifest.json" />
+    <TypeScriptCompile Include="wwwroot\manifest.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

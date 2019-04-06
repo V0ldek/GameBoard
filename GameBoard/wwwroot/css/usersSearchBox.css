@@ -7,7 +7,6 @@
 
 .user-search-autocomplete {
     position: relative;
-    display: inline-block;
 }
 
 .autocomplete-items {
@@ -37,15 +36,4 @@
     margin: 1px;
     background-color: #1a1d20; /* Fallback  color. */
     background-color: rgba(26, 29, 32, 0.5);
-}
-
-.popover { background-color: transparent }
-
-.popover-header-error { background-color: #751a1a; }
-
-.popover-header-success { background-color: #1a751a; }
-
-.popover-body {
-    color: #1d2024;
-    background-color: #aaadb0;
 }

@@ -1,4 +1,4 @@
-﻿let friendRequestPopupGenerator = new PopupGenerator();
+﻿let friendRequestPopoverGenerator = new PopoverGenerator();
 let userSearchBox: Autocomplete;
 
 document.addEventListener("DOMContentLoaded",

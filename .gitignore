@@ -30,8 +30,8 @@ bld/
 GameBoard/wwwroot/lib
 GameBoard/wwwroot/scripts
 # Exclude compiled TypeScript files .js and .js.map
-GameBoard/Scripts/*.js
-GameBoard/Scripts/*.js.map
+GameBoard/Scripts/**/*.js
+GameBoard/Scripts/**/*.js.map
 # Exclude minified files
 *.min.js
 *.min.css

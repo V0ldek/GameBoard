@@ -1,0 +1,18 @@
+﻿.popover {
+    background-color: transparent
+}
+
+.popover-header-error {
+    background-color: #751a1a;
+    border-bottom: none;
+}
+
+.popover-header-success {
+    background-color: #1a751a;
+    border-bottom: none;
+}
+
+.popover-body {
+    color: black;
+    background-color: #a5a8aa;
+}

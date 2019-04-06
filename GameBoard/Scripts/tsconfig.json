@@ -10,7 +10,7 @@
   "files": [
     "Autocomplete/autocomplete.ts",
     "Collapsible/Collapsible.ts",
-    "Popups/popupGenerator.ts",
+    "Popovers/popoverGenerator.ts",
     "Site/friendsSidebar.ts",
     "Site/userSearchBox.ts"
   ],

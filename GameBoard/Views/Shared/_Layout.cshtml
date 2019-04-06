@@ -24,6 +24,7 @@
         
         <link rel="stylesheet" href="~/css/friendsSidebar.css"/>
         <link rel="stylesheet" href="~/css/usersSearchBox.css"/>
+        <link rel="stylesheet" href="~/css/popovers.css"/>
         <link rel="stylesheet" href="~/css/main.css" />
     </environment>
     <environment exclude="Development">
@@ -61,7 +62,9 @@
     <header>
         <nav class="navbar navbar-expand-sm flex-column flex-sm-row bg border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GameBoard</a>
+                <a class="navbar-brand logo" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="img-fluid" src="~/img/logo.png" alt="GameBoard"/>
+                </a>
                 <button class="navbar-toggler btn-dark" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
@@ -75,7 +78,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>
@@ -101,7 +104,7 @@
 
         <script src="~/scripts/Autocomplete/autocomplete.js"></script>
         <script src="~/scripts/Collapsible/collapsible.js"></script>
-        <script src="~/scripts/Popups/popupGenerator.js"></script>
+        <script src="~/scripts/Popovers/popoverGenerator.js"></script>
         <script src="~/scripts/Site/friendsSidebar.js"></script>
         <script src="~/scripts/Site/userSearchBox.js"></script>
     </environment>

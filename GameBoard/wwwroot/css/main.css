@@ -69,6 +69,8 @@ main {
 /*
 -------------------------------------------------- */
 
+.logo { max-width: 20%; }
+
 button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
@@ -153,6 +155,10 @@ a.nav-link { color: #f0f4ff; }
 
 button.nav-link { color: #f0f4ff; }
 
+button.nav-link:hover { color: #f0f4ff; }
+
+button.nav-link:active, button.nav-link:focus { box-shadow: none !important; }
+
 .alert-dark {
     background-color: #a5a8aa;
     color: black;
@@ -161,7 +167,7 @@ button.nav-link { color: #f0f4ff; }
 
 .alert-dark a { color: #30347f }
 
-    .alert-dark a:hover {
-        color: #10145f;
-        text-decoration: underline
-    }
+.alert-dark a:hover {
+    color: #10145f;
+    text-decoration: underline
+}

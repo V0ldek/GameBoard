@@ -3,7 +3,10 @@
     message: string;
 }
 
-class PopupGenerator {
+class PopoverGenerator {
+    private static headerSuccessClass = "popover-header-success";
+    private static headerErrorClass = "popover-header-error";
+
     private getHtmlTemplate(headerClass: string) {
         return `<div class="popover rounded" role="tooltip">
                     <div class="arrow"></div>
@@ -13,11 +16,11 @@ class PopupGenerator {
     }
 
     generateSuccessPopup(source: HTMLElement, jqXhr: JQueryXHR) {
-        this.generatePopup(source, this.getHtmlTemplate("popover-header-success"), jqXhr);
+        this.generatePopup(source, this.getHtmlTemplate(PopoverGenerator.headerSuccessClass), jqXhr);
     }
 
     generateErrorPopup(source: HTMLElement, jqXhr: JQueryXHR) {
-        this.generatePopup(source, this.getHtmlTemplate("popover-header-error"), jqXhr);
+        this.generatePopup(source, this.getHtmlTemplate(PopoverGenerator.headerErrorClass), jqXhr);
     }
 
     private generatePopup(source: HTMLElement, template: string, jqXhr: JQueryXHR) {

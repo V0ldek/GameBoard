@@ -7,8 +7,8 @@
             @await Component.InvokeAsync("UserCard", new {user, miniature = true})
             <form asp-controller="Friends" asp-action="CreateFriendRequest"
                   data-ajax="true" data-ajax-method="POST"
-                  data-ajax-success="friendRequestPopupGenerator.generateSuccessPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)"
-                  data-ajax-failure="friendRequestPopupGenerator.generateErrorPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)">
+                  data-ajax-success="friendRequestPopoverGenerator.generateSuccessPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)"
+                  data-ajax-failure="friendRequestPopoverGenerator.generateErrorPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)">
                 <input readonly hidden name="userNameFrom" value="@User.Identity.Name"/>
                 <input readonly hidden name="userNameTo" value="@user.UserName"/>
                 <button id="friend-request-button-@user.Id" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
