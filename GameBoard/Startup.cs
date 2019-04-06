@@ -31,18 +31,11 @@ namespace GameBoard
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
-            if (Environment.IsDevelopment())
-            {
                 LogicLayer.Configuration.ConfigureDbContext(
                     services,
-                    Configuration.GetConnectionString("Gameboard_Develop"));
-            }
-            else if (Environment.IsProduction())
-            {
-                LogicLayer.Configuration.ConfigureDbContext(
-                    services,
-                    Configuration.GetConnectionString("Gameboard_Release"));
-            }
+                    Configuration.GetConnectionString(
+                        (Environment.IsStaging() ? "GameboardStaging" : 
+                        ((Environment.IsProduction()) ? "GameboardRelease" : "DefaultConnection" ))));
 
             LogicLayer.Configuration.ConfigureServices(services);
             
