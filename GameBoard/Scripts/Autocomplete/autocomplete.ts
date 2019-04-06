@@ -18,8 +18,6 @@
         this.resultSource = resultSource;
         this.getUrl = getUrl;
 
-        console.log(this.source);
-
         if (!this.source) {
             throw new Error("Cannot setup autocomplete on a null source.");
         }
