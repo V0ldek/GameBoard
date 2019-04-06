@@ -9,7 +9,7 @@ namespace GameBoard.DataLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "role",
+                name: "Role",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -19,11 +19,11 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_role", x => x.Id);
+                    table.PrimaryKey("PKRole", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -44,11 +44,11 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user", x => x.Id);
+                    table.PrimaryKey("PKUser", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "role_claim",
+                name: "RoleClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -59,17 +59,17 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_role_claim", x => x.Id);
+                    table.PrimaryKey("PKRoleClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_role_claim_role_RoleId",
+                        name: "FKRoleClaimRoleRoleId",
                         column: x => x.RoleId,
-                        principalTable: "role",
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_claim",
+                name: "UserClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -80,17 +80,17 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_claim", x => x.Id);
+                    table.PrimaryKey("PKUserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_user_claim_user_UserId",
+                        name: "FKUserClaimUserUserId",
                         column: x => x.UserId,
-                        principalTable: "user",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_login",
+                name: "UserLogin",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
@@ -100,17 +100,17 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_login", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PKUserLogin", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_user_login_user_UserId",
+                        name: "FKUserLoginUserUserId",
                         column: x => x.UserId,
-                        principalTable: "user",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_role",
+                name: "UserRole",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -118,23 +118,23 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_role", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PKUserRole", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_user_role_role_RoleId",
+                        name: "FKUserRoleRoleRoleId",
                         column: x => x.RoleId,
-                        principalTable: "role",
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_user_role_user_UserId",
+                        name: "FKUserRoleUserUserId",
                         column: x => x.UserId,
-                        principalTable: "user",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_token",
+                name: "UserToken",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -144,75 +144,75 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_token", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PKUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_user_token_user_UserId",
+                        name: "FKUserTokenUserUserId",
                         column: x => x.UserId,
-                        principalTable: "user",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                table: "role",
+                table: "Role",
                 column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_role_claim_RoleId",
-                table: "role_claim",
+                name: "IxRoleClaimRoleId",
+                table: "RoleClaim",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "user",
+                table: "User",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "user",
+                table: "User",
                 column: "NormalizedUserName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_claim_UserId",
-                table: "user_claim",
+                name: "IxUserClaimUserId",
+                table: "UserClaim",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_login_UserId",
-                table: "user_login",
+                name: "IxUserLoginUserId",
+                table: "UserLogin",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_role_RoleId",
-                table: "user_role",
+                name: "IxUserRoleRoleId",
+                table: "UserRole",
                 column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "role_claim");
+                name: "RoleClaim");
 
             migrationBuilder.DropTable(
-                name: "user_claim");
+                name: "UserClaim");
 
             migrationBuilder.DropTable(
-                name: "user_login");
+                name: "UserLogin");
 
             migrationBuilder.DropTable(
-                name: "user_role");
+                name: "UserRole");
 
             migrationBuilder.DropTable(
-                name: "user_token");
+                name: "UserToken");
 
             migrationBuilder.DropTable(
-                name: "role");
+                name: "Role");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "User");
         }
     }
 }

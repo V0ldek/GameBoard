@@ -59,7 +59,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("role_claim");
+                    b.ToTable("RoleClaim");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -109,7 +109,7 @@ namespace GameBoard.DataLayer.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("user");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -128,7 +128,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_claim");
+                    b.ToTable("UserClaim");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -148,7 +148,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_login");
+                    b.ToTable("UserLogin");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -161,7 +161,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("user_role");
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -178,7 +178,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("user_token");
+                    b.ToTable("UserToken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
