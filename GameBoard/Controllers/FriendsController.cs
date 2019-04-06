@@ -63,6 +63,7 @@ namespace GameBoard.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AcceptFriendRequest(string id)
         {
             await _friendsService.AcceptFriendRequestAsync(id);
@@ -71,6 +72,7 @@ namespace GameBoard.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RejectFriendRequest(string id)
         {
             await _friendsService.RejectFriendRequestAsync(id);
@@ -79,6 +81,7 @@ namespace GameBoard.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> CreateFriendRequest(string userNameFrom, string userNameTo)
         {
             var createFriendRequestDto = new CreateFriendRequestDto(

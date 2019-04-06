@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GameBoard.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserSearchService _userSearchService;
@@ -16,7 +17,6 @@ namespace GameBoard.Controllers
             _userSearchService = userSearchService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Search(string input) =>
             ViewComponent("UserSearchResults", (await _userSearchService.GetSearchCandidatesAsync(input)).Select(u => u.ToViewModel()));
