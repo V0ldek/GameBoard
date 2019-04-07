@@ -23,7 +23,8 @@ namespace GameBoard.DataLayer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(512);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -53,7 +54,8 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<string>("ClaimValue");
 
                     b.Property<string>("RoleId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(512);
 
                     b.HasKey("Id");
 
@@ -65,7 +67,8 @@ namespace GameBoard.DataLayer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(512);
 
                     b.Property<int>("AccessFailedCount");
 
@@ -122,7 +125,8 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<string>("ClaimValue");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(512);
 
                     b.HasKey("Id");
 
@@ -142,7 +146,8 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<string>("ProviderDisplayName");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(512);
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -153,9 +158,11 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasMaxLength(512);
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .HasMaxLength(512);
 
                     b.HasKey("UserId", "RoleId");
 
@@ -166,7 +173,8 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasMaxLength(512);
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128);
