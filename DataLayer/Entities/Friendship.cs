@@ -8,10 +8,10 @@ namespace GameBoard.DataLayer.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string UserSmallerId { get; set; }
-        public string UserGreaterId { get; set; }
-        public ApplicationUser UserSmaller { get; set; }
-        public ApplicationUser UserGreater { get; set; }
+        public string RequestedById { get; set; }
+        public string RequestedToId { get; set; }
+        public ApplicationUser RequestedBy { get; set; }
+        public ApplicationUser RequestedTo { get; set; }
 
         public WhoSentLatestRequest WhoSent;
         public FriendshipStatus FriendshipStatus { get; set; }
