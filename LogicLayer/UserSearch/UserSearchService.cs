@@ -26,16 +26,33 @@ namespace GameBoard.LogicLayer.UserSearch
             return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).FirstAsync(); // Single? HashIndex on UserName?
         }
 
-        public Task<IEnumerable<UserDto>> GetSearchCandidatesAsync(string userNameInput)
+        public async Task<IEnumerable<UserDto>> GetSearchCandidatesAsync(string userNameInput)
         {
-            string inputUpper = userNameInput.ToUpper();
-            var matchingPrefix =
-                _repository.ApplicationUsers.Where(u => u.UserName.StartsWith(inputUpper)).Take(MAX_USERS_TO_SHOW);
-            
-            var matchingInfix = _repository.ApplicationUsers
-                .Where(u => EF.Functions.Like(u.UserName.ToLower(), $"_%{inputUpper}%"));
+            var inputUpper = userNameInput.ToUpper();
+            var matchingPrefixesList = await _repository.ApplicationUsers
+                    .Where(u => u.UserName.StartsWith(inputUpper))
+                    .Take(MAX_USERS_TO_SHOW)
+                    .Select(u => new UserDto(u.Id, u.UserName, u.Email))
+                    .ToListAsync();
 
+            var usersToShowLeft = MAX_USERS_TO_SHOW - matchingPrefixesList.Count; 
 
+            if (usersToShowLeft == 0)
+            {
+                return matchingPrefixesList;
+            }
+
+            var matchingInfixesList = await _repository.ApplicationUsers // can I avoid using await here?
+                .Where(
+                    u => EF.Functions
+                        .Like(u.UserName, $"_%{inputUpper}%"))
+                .Take(usersToShowLeft)
+                .Select(u => new UserDto(u.Id, u.UserName, u.Email))
+                .ToListAsync();
+
+            matchingPrefixesList.AddRange(matchingInfixesList);
+
+            return matchingPrefixesList;
         }
     }
 }
