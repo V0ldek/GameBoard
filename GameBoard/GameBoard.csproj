@@ -5,6 +5,7 @@
     <UserSecretsId>aspnet-GameBoard-52791027-7589-4D76-A64B-F1FA0633D640</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -18,8 +19,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\manifest.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\autocomplete.ts" />
+    <None Remove="Scripts\popupGenerator.ts" />
+    <None Remove="Scripts\productionConsoleSwitch.ts" />
+    <None Remove="Scripts\Site\friendsSidebar.ts" />
+    <None Remove="Scripts\Site\userSearchBox.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scripts\Collapsible\collapsible.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
@@ -27,4 +45,29 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LogicLayer\LogicLayer.csproj" />
-  </ItemGroup></Project>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Autocomplete\autocomplete.ts" />
+    <TypeScriptCompile Include="Scripts\Popovers\popoverGenerator.ts" />
+    <TypeScriptCompile Include="Scripts\productionConsoleSwitch.ts" />
+    <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
+    <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
+    <TypeScriptCompile Include="wwwroot\manifest.json" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile></TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup></Project>

@@ -1,0 +1,173 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/* Main elements 
+-------------------------------------------------- */
+
+html { font-size: 14px; }
+
+@media (min-width: 768px) {
+    html { font-size: 16px; }
+}
+
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    background-color: #05080b;
+    color: #e0e8ef;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+main {
+    padding: 3%;
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    width: 100%;
+}
+
+.footer {
+    bottom: 0;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    white-space: nowrap;
+    width: 100%;
+}
+
+/* Gravatars 
+-------------------------------------------------- */
+
+.gravatar {
+    max-height: 48px;
+    max-width: 48px;
+    min-height: 24px;
+    min-width: 24px;
+}
+
+.gravatar-sm {
+    max-height: 32px;
+    max-width: 32px;
+    min-height: 16px;
+    min-width: 16px;
+}
+
+.gravatar-lg {
+    max-height: 128px;
+    max-width: 128px;
+    min-height: 64px;
+    min-width: 64px;
+}
+
+/*
+-------------------------------------------------- */
+
+.logo { max-width: 20%; }
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+.bg {
+    background: #101316 !important;
+    color: #e5e8ea !important;
+}
+
+.border-top { border-top: 2px solid #202326 !important; }
+
+.border-bottom { border-bottom: 2px solid #202326 !important; }
+
+.border-left { border-left: 2px solid #202326 !important; }
+
+.border-right { border-right: 2px solid #202326 !important; }
+
+.border-full { border: 2px solid #202326 !important; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.form-control {
+    background-color: #26292c !important;
+    border-color: #36393c !important;
+}
+
+.form-control::-webkit-input-placeholder { color: #b0b1b2; }
+
+.form-control:focus {
+    background-color: #303336 !important;
+    border-color: #404346 !important;
+    box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important;
+    color: #f3f6f9 !important;
+}
+
+.validation-summary-errors ul { list-style-type: none !important; }
+
+.nav-pills .nav-link { border-radius: 0.25rem; }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: #414447;
+    color: #fff;
+}
+
+.btn-dark {
+    background-color: #283134 !important;
+    color: inherit !important;
+}
+
+.btn-dark:hover { background-color: #15181a !important; }
+
+.btn-dark:focus, .btn-dark.focus { box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important; }
+
+.btn-dark.disabled, .btn-dark:disabled {
+    background-color: #303336 !important;
+    border-color: #404346 !important;
+}
+
+.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
+.show > .btn-dark.dropdown-toggle {
+    background-color: #35383a !important;
+    border-color: #1f2225 !important;
+}
+
+.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
+.show > .btn-dark.dropdown-toggle:focus { box-shadow: 0 0 0 0.1rem rgba(56, 59, 62, 0.5) !important; }
+
+a { color: #c0c4ef; }
+
+a:hover { color: #a0a4cf; }
+
+a.navbar-brand {
+    color: #f0f4ff;
+    text-align: center;
+    white-space: normal;
+    word-break: break-all;
+}
+
+a.nav-link { color: #f0f4ff; }
+
+button.nav-link { color: #f0f4ff; background-color: transparent; }
+
+button.nav-link:hover { color: #f0f4ff; background-color: transparent; }
+
+button.nav-link:active, button.nav-link:focus { box-shadow: none !important; background-color: transparent; }
+
+.alert-dark {
+    background-color: #a5a8aa;
+    border-color: #b5b8ba;
+    color: black;
+}
+
+.alert-dark a { color: #30347f }
+
+.alert-dark a:hover {
+    color: #10145f;
+    text-decoration: underline
+}

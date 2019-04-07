@@ -1,0 +1,38 @@
+﻿#friends-sidebar-container {
+    margin-left: -250px;
+    margin-right: 5%;
+    position: relative;
+    transition: all 0.3s;
+}
+
+#friends-sidebar-container.toggled { margin-left: 0; }
+
+#friends-sidebar {
+    height: 77vh;
+    left: 0;
+    min-width: 250px;
+    padding: 20px;
+    position: relative;
+    top: 0;
+    transition: all 0.3s;
+    width: 250px;
+    z-index: 999;
+}
+
+#friends-sidebar-collapse {
+    left: 250px;
+    position: absolute;
+    top: 50px;
+    z-index: 999;
+}
+
+#friends-sidebar ul.components { padding: 20px 0; }
+
+#friends-sidebar ul.components li { padding: 0 10px; }
+
+#friends-sidebar ul p { padding: 10px; }
+
+.friend-card {
+    margin-bottom: 3px;
+    padding: 5%;
+}
