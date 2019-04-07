@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameBoard.LogicLayer.Friends;
+using GameBoard.LogicLayer.UserSearch;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameBoard.LogicLayer
@@ -8,9 +10,12 @@ namespace GameBoard.LogicLayer
         public static void ConfigureDbContext(IServiceCollection services, string connectionString) =>
             DataLayer.Configuration.ConfigureDbContext(services, connectionString);
 
-        public static void ConfigureServices(IServiceCollection services) =>  
-            // TODO: Register implementations for IUserSearchService and IFriendsService
+        public static void ConfigureServices(IServiceCollection services)
+        {
             DataLayer.Configuration.ConfigureServices(services);
+            services.AddScoped<IUserSearchService, UserSearchService>(); // repository will be injected into ctor of UserSearchService, won't be?
+            services.AddScoped<IFriendsService, FriendService>(); // repository will be injected into ctor of UserSearchService, won't be?
+        }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>
             DataLayer.Configuration.AddDbContextStores(builder);
