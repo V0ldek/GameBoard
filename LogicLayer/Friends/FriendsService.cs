@@ -42,7 +42,10 @@ namespace GameBoard.LogicLayer.Friends
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
             string normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // is it possible that this user doesn't exist somehow.
+            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // is it possible that this user doesn't exist somehow?
+
+
+            // How does Cascade work? Does it delete user and all its friendship in a single transaction or something like that?
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
@@ -68,8 +71,8 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
         {
-            var normalizedUserNameFrom = friendRequest.UserNameFrom;
-            var normalizedUserNameTo = friendRequest.UserNameTo;
+            var normalizedUserNameFrom = friendRequest.UserNameFrom.ToUpper();
+            var normalizedUserNameTo = friendRequest.UserNameTo.ToUpper();
 
             //using (var transaction = new GameBoardDbContext())
             {
@@ -115,7 +118,7 @@ namespace GameBoard.LogicLayer.Friends
                     switch (friendship.FriendshipStatus)
                     {
                         case FriendshipStatus.PendingFriendRequest:
-                            throw new FriendRequestAlreadyPendingException("You have already been invited by this user. Go to ...here should be a link..., to confirm or reject the friend request.");
+                            throw new FriendRequestAlreadyPendingException($"You have already been invited by this user. Go to {friendRequest.GenerateRequestLink(friendship.Id.ToString())}, to confirm or reject the friend request.");
                         case FriendshipStatus.Lasts:
                             throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                         case FriendshipStatus.Rejected:
@@ -164,12 +167,11 @@ namespace GameBoard.LogicLayer.Friends
         private async Task ChangeFriendRequestStatus(string friendRequestId, FriendshipStatus friendshipStatus)
         {
             int id = Int32.Parse(friendRequestId);
-            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id); // can I update in single step?
+            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id);
 
             friendship.FriendshipStatus = friendshipStatus;
 
-            //_repository.Friendships.Update(friendship);
-            await _repository.SaveChangesAsync(); // can I avoid using await here?
+            await _repository.SaveChangesAsync();
         }
 
         public async Task AcceptFriendRequestAsync(string friendRequestId) =>

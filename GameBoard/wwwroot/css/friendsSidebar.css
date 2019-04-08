@@ -1,5 +1,5 @@
 ﻿#friends-sidebar-container {
-    margin-left: -250px;
+    margin-left: -350px;
     margin-right: 5%;
     position: relative;
     transition: all 0.3s;
@@ -10,17 +10,17 @@
 #friends-sidebar {
     height: 77vh;
     left: 0;
-    min-width: 250px;
+    min-width: 350px;
     padding: 20px;
     position: relative;
     top: 0;
     transition: all 0.3s;
-    width: 250px;
+    width: 350px;
     z-index: 999;
 }
 
 #friends-sidebar-collapse {
-    left: 250px;
+    left: 350px;
     position: absolute;
     top: 50px;
     z-index: 999;
