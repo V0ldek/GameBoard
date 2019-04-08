@@ -35,11 +35,6 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_UserName",
-                table: "user",
-                column: "UserName");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Friendships_RequestedToId",
                 table: "Friendships",
                 column: "RequestedToId");
@@ -55,10 +50,6 @@ namespace GameBoard.DataLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Friendships");
-
-            migrationBuilder.DropIndex(
-                name: "IX_user_UserName",
-                table: "user");
         }
     }
 }

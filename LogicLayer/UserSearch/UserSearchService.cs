@@ -31,7 +31,8 @@ namespace GameBoard.LogicLayer.UserSearch
 
         public Task<UserDto> GetUserByUsernameAsync(string userName)
         {
-            var user = _repository.ApplicationUsers.Where(u => u.UserName == userName); // This user might have been just deleted.
+            var normalizedUserName = userName.ToUpper();
+            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // This user might have been just deleted.
 
             return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).FirstAsync(); // Single? HashIndex on UserName?
         }
@@ -70,20 +71,22 @@ namespace GameBoard.LogicLayer.UserSearch
             //    _logger.LogInformation("Already registered 80808080");
             //}
 
-            //_logger.LogInformation("Before adding mocks");
+            //_logger.LogInformation("Before adding 2mockingbirds");
             //int NUM_OF_MOCKS = 10000;
             //var mocks = new List<ApplicationUser>(NUM_OF_MOCKS);
             //for (int i = 0; i < NUM_OF_MOCKS; i++)
             //{
-            //    mocks.Append(new ApplicationUser { UserName = $"Mock{i}", Email = $"mock{i}@mock.pl" });
+            //    mocks.Add(new ApplicationUser { UserName = $"2MoCkInGbIrD{i}", NormalizedUserName = $"2MOCKINGBIRD{i}", Email = $"2mocking{i}@bird.pl" });
             //}
+
             //await _repository.ApplicationUsers.AddRangeAsync(mocks);
             //await _repository.SaveChangesAsync();
-            //_logger.LogInformation("Added mocks");
+            //_logger.LogInformation("Added 2mockingbirds");
 
-            //var inputUpper = userNameInput.ToUpper();
+            var normalizedUserNameInput = userNameInput.ToUpper();
+
             var matchingPrefixesList = await _repository.ApplicationUsers
-                    .Where(u => u.UserName.StartsWith(userNameInput))
+                    .Where(u => u.NormalizedUserName.StartsWith(normalizedUserNameInput))
                     .Take(MAX_USERS_TO_SHOW)
                     .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                     .ToListAsync();
@@ -95,11 +98,10 @@ namespace GameBoard.LogicLayer.UserSearch
                 return matchingPrefixesList;
             }
 
-            // If I search for "8080", then 80808080 will appear twice.
-            var matchingInfixesList = await _repository.ApplicationUsers // can I avoid using await here?
+            var matchingInfixesList = await _repository.ApplicationUsers
                 .Where(
-                    u => EF.Functions
-                        .Like(u.UserName, $"_%{userNameInput}%"))
+                    u => EF.Functions.Like(u.NormalizedUserName, $"_%{normalizedUserNameInput}%")
+                        && !u.NormalizedUserName.StartsWith(normalizedUserNameInput))
                 .Take(usersToShowLeft)
                 .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                 .ToListAsync();

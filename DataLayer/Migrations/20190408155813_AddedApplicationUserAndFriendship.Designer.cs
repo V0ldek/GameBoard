@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190408102440_AddedApplicationUserAndFriendship")]
+    [Migration("20190408155813_AddedApplicationUserAndFriendship")]
     partial class AddedApplicationUserAndFriendship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,8 +67,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
-
-                    b.HasIndex("UserName");
 
                     b.ToTable("user");
                 });

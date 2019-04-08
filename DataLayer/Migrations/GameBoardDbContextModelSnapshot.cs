@@ -66,8 +66,6 @@ namespace GameBoard.DataLayer.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.HasIndex("UserName");
-
                     b.ToTable("user");
                 });
 

@@ -41,7 +41,8 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
-            var user = _repository.ApplicationUsers.Where(u => u.UserName == userName); // is it possible that this user doesn't exist somehow.
+            string normalizedUserName = userName.ToUpper();
+            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // is it possible that this user doesn't exist somehow.
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
@@ -59,7 +60,7 @@ namespace GameBoard.LogicLayer.Friends
 
             var allFriends = await friendsInvitedByMe
                 .Union(friendsThatInvitedMe)
-                .OrderBy(u => u.UserName)
+                .OrderBy(u => u.UserName) // maybe order by NormalizedUserName? However, I cannot do that with UserDto.
                 .ToListAsync(); // can I avoid using await here?
 
             return allFriends;
@@ -67,15 +68,18 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
         {
+            var normalizedUserNameFrom = friendRequest.UserNameFrom;
+            var normalizedUserNameTo = friendRequest.UserNameTo;
+
             //using (var transaction = new GameBoardDbContext())
             {
                 var requestedById = await _repository.ApplicationUsers
-                    .Where(u => u.UserName == friendRequest.UserNameFrom)
+                    .Where(u => u.NormalizedUserName == normalizedUserNameFrom)
                     .Select(u => u.Id)
                     .SingleAsync(); // OrDefault? Deleted user?
 
                 var requestedToId = await _repository.ApplicationUsers
-                    .Where(u => u.UserName == friendRequest.UserNameTo)
+                    .Where(u => u.NormalizedUserName == normalizedUserNameTo)
                     .Select(u => u.Id)
                     .SingleAsync(); // OrDefault? Deleted user? This should be a separate function.
 
@@ -164,7 +168,7 @@ namespace GameBoard.LogicLayer.Friends
 
             friendship.FriendshipStatus = friendshipStatus;
 
-            _repository.Friendships.Update(friendship);
+            //_repository.Friendships.Update(friendship);
             await _repository.SaveChangesAsync(); // can I avoid using await here?
         }
 

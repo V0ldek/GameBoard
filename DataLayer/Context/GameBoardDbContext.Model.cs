@@ -12,11 +12,7 @@ namespace GameBoard.DataLayer.Context
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUser>(
-                entity =>
-                {
-                    entity.HasIndex(e => e.UserName);
-                    entity.ToTable("user");
-                });
+                entity => entity.ToTable("user"));
 
             builder.Entity<Friendship>(
                 entity =>
