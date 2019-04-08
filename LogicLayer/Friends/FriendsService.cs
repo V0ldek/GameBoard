@@ -41,48 +41,48 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
-            var user = _repository.ApplicationUsers.Where(u => u.UserName == userName);
+            var user = _repository.ApplicationUsers.Where(u => u.UserName == userName); // is it possible that this user doesn't exist somehow.
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
                 .SelectMany(u => u.SentRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
                 .Include(f => f.RequestedTo)
-                .Select(f => new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email))
-                .DefaultIfEmpty();
+                .Select(f => new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email));
 
             var friendsThatInvitedMe = user
                 .Include(u => u.ReceivedRequests)
-                .DefaultIfEmpty()
                 .SelectMany(u => u.ReceivedRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
                 .Include(f => f.RequestedBy)
                 .Select(f => new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email));
 
-            _logger.LogInformation("before execution");
+            var allFriends = await friendsInvitedByMe
+                .Union(friendsThatInvitedMe)
+                .OrderBy(u => u.UserName)
+                .ToListAsync(); // can I avoid using await here?
 
-            //var allFriends = await friendsInvitedByMe
-            //    .Union(friendsThatInvitedMe)
-            //    .OrderBy(u => u.UserName)
-            //    .ToListAsync(); // can I avoid using await here?
-
-            var friends = await friendsInvitedByMe.ToListAsync();
-
-            _logger.LogInformation("after execution");
-
-            return friends;
-
-            //return allFriends;
+            return allFriends;
         }
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
         {
             //using (var transaction = new GameBoardDbContext())
             {
+                var requestedById = await _repository.ApplicationUsers
+                    .Where(u => u.UserName == friendRequest.UserNameFrom)
+                    .Select(u => u.Id)
+                    .SingleAsync(); // OrDefault? Deleted user?
+
+                var requestedToId = await _repository.ApplicationUsers
+                    .Where(u => u.UserName == friendRequest.UserNameTo)
+                    .Select(u => u.Id)
+                    .SingleAsync(); // OrDefault? Deleted user? This should be a separate function.
+
                 var friendship = await _repository.Friendships
                     .SingleOrDefaultAsync(
-                        f => f.RequestedById == friendRequest.UserNameFrom &&
-                            f.RequestedToId == friendRequest.UserNameTo); // wrong id mixed up with userName
+                        f => f.RequestedById == requestedById &&
+                            f.RequestedToId == requestedToId);
 
 
                 if (friendship != null)
@@ -90,7 +90,7 @@ namespace GameBoard.LogicLayer.Friends
                     switch (friendship.FriendshipStatus)
                     {
                         case FriendshipStatus.PendingFriendRequest:
-                            throw new FriendRequestAlreadyPendingException("You have already sent him a friend request.");
+                            throw new FriendRequestAlreadyPendingException("You have already sent this user a friend request.");
                         case FriendshipStatus.Lasts:
                             throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                         case FriendshipStatus.Rejected:
@@ -100,17 +100,18 @@ namespace GameBoard.LogicLayer.Friends
                     }
                 }
 
+                // checking if RequestedTo has already sent a friend request to RequestedBy and they have ongoing friendship.  
                 friendship = await _repository.Friendships
                     .SingleOrDefaultAsync(
-                        f => f.RequestedById == friendRequest.UserNameTo &&
-                            f.RequestedToId == friendRequest.UserNameFrom); // wrong id mixed up with userName
+                        f => f.RequestedById == requestedToId &&
+                            f.RequestedToId == requestedById); // wrong id mixed up with userName
 
                 if (friendship != null)
                 {
                     switch (friendship.FriendshipStatus)
                     {
                         case FriendshipStatus.PendingFriendRequest:
-                            throw new FriendRequestAlreadyPendingException("You have already been invited. Go to ...here should be link..., to confirm or reject friend request.");
+                            throw new FriendRequestAlreadyPendingException("You have already been invited by this user. Go to ...here should be a link..., to confirm or reject the friend request.");
                         case FriendshipStatus.Lasts:
                             throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                         case FriendshipStatus.Rejected:
@@ -124,8 +125,8 @@ namespace GameBoard.LogicLayer.Friends
                     new Friendship()
                     {
                         //auto increment
-                        RequestedById = friendRequest.UserNameFrom,
-                        RequestedToId = friendRequest.UserNameTo,
+                        RequestedById = requestedById,
+                        RequestedToId = requestedToId,
                         FriendshipStatus = FriendshipStatus.PendingFriendRequest
                     });
 
@@ -150,7 +151,7 @@ namespace GameBoard.LogicLayer.Friends
                 .Select(
                     f => new FriendRequestDto(
                         friendRequestId,
-                        new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email),//wrong, greater can send request too.
+                        new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email),
                         new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email),
                         f.FriendshipStatus.ToFriendRequest()))
                 .SingleAsync();
