@@ -12,7 +12,11 @@ namespace GameBoard.DataLayer.Context
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUser>(
-                entity => entity.ToTable("user"));
+                entity =>
+                {
+                    entity.HasIndex(e => e.UserName);
+                    entity.ToTable("user");
+                });
 
             builder.Entity<Friendship>(
                 entity =>
@@ -25,8 +29,7 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
 
-                    entity.HasIndex(e => new {UserSmallerId = e.RequestedById, UserGreaterId = e.RequestedToId})
-                        // CKECH(UserLessId <= UserGreaterId)
+                    entity.HasIndex(e => new {RequestedById = e.RequestedById, RequestedToId = e.RequestedToId})
                         .IsUnique(true); //is it directed uniqueness?
 
                     entity.HasOne(e => e.RequestedBy)

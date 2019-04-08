@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.UserSearch.Dtos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GameBoard.LogicLayer.UserSearch
 {
@@ -14,23 +17,73 @@ namespace GameBoard.LogicLayer.UserSearch
         private readonly int MAX_USERS_TO_SHOW = 100; // correct specifiers
         private readonly IGameBoardRepository _repository;
 
-        public UserSearchService(IGameBoardRepository repository)
+        private readonly ILogger _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private bool _alreadyAdded;
+
+        public UserSearchService(IGameBoardRepository repository, ILogger<UserSearchService> logger, UserManager<ApplicationUser> userManager)
         {
             _repository = repository;
+            _userManager = userManager;
+            _logger = logger;
+            _alreadyAdded = false;
         }
 
         public Task<UserDto> GetUserByUsernameAsync(string userName)
         {
-            var user = _repository.ApplicationUsers.Where(u => u.UserName == userName);
+            var user = _repository.ApplicationUsers.Where(u => u.UserName == userName); // This user might have been just deleted.
 
             return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).FirstAsync(); // Single? HashIndex on UserName?
         }
 
         public async Task<IEnumerable<UserDto>> GetSearchCandidatesAsync(string userNameInput)
         {
-            var inputUpper = userNameInput.ToUpper();
+            //var newUsers = new List<ApplicationUser>
+            //    {
+            //        new ApplicationUser { UserName = "V0ldek", Email = "registermen@gmail.com" },
+            //        new ApplicationUser { UserName = "ZiOmEk", Email = "jj@jj" },
+            //        new ApplicationUser { UserName = "Nadol", Email = "nadol@gmail.com" },
+            //        new ApplicationUser { UserName = "Żochu", Email = "mzochowski@gmail.com" },
+            //        new ApplicationUser { UserName = "johny", Email = "johny@gmail.com" },
+            //        new ApplicationUser { UserName = "Charlie", Email = "example@example.com" }
+            //    };
+            //// //.Concat(Enumerable.Repeat(new ApplicationUser { UserName = "mockingbird", Email = "invalidEmail"}, 10000));
+            //await _repository.ApplicationUsers.AddRangeAsync(newUsers);
+            //await _repository.SaveChangesAsync();
+
+            //if (!_alreadyAdded)
+            //{
+            //    _alreadyAdded = true;
+            //    var user = new ApplicationUser { UserName = "80808080", Email = "8080@8080" };
+            //    var result = await _userManager.CreateAsync(user, "password");
+            //    if (result.Succeeded)
+            //    {
+            //        _logger.LogInformation("Successfully Registered 80808080");
+            //    }
+            //    else
+            //    {
+            //        _logger.LogError("Something went wrong in registering 80808080");
+            //    }
+            //}
+            //else
+            //{
+            //    _logger.LogInformation("Already registered 80808080");
+            //}
+
+            //_logger.LogInformation("Before adding mocks");
+            //int NUM_OF_MOCKS = 10000;
+            //var mocks = new List<ApplicationUser>(NUM_OF_MOCKS);
+            //for (int i = 0; i < NUM_OF_MOCKS; i++)
+            //{
+            //    mocks.Append(new ApplicationUser { UserName = $"Mock{i}", Email = $"mock{i}@mock.pl" });
+            //}
+            //await _repository.ApplicationUsers.AddRangeAsync(mocks);
+            //await _repository.SaveChangesAsync();
+            //_logger.LogInformation("Added mocks");
+
+            //var inputUpper = userNameInput.ToUpper();
             var matchingPrefixesList = await _repository.ApplicationUsers
-                    .Where(u => u.UserName.StartsWith(inputUpper))
+                    .Where(u => u.UserName.StartsWith(userNameInput))
                     .Take(MAX_USERS_TO_SHOW)
                     .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                     .ToListAsync();
@@ -42,10 +95,11 @@ namespace GameBoard.LogicLayer.UserSearch
                 return matchingPrefixesList;
             }
 
+            // If I search for "8080", then 80808080 will appear twice.
             var matchingInfixesList = await _repository.ApplicationUsers // can I avoid using await here?
                 .Where(
                     u => EF.Functions
-                        .Like(u.UserName, $"_%{inputUpper}%"))
+                        .Like(u.UserName, $"_%{userNameInput}%"))
                 .Take(usersToShowLeft)
                 .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                 .ToListAsync();

@@ -11,44 +11,68 @@ using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Friends.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GameBoard.LogicLayer.Friends
 {
-    internal /*sealed?*/ class FriendService : IFriendsService
+    internal /*sealed?*/ class FriendsService : IFriendsService
     {
         private readonly IGameBoardRepository _repository;
+        private readonly ILogger _logger;
 
-        public FriendService(IGameBoardRepository repository)
+        public FriendsService(IGameBoardRepository repository, ILogger<FriendsService> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
+
+        //public Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
+        //{
+        //    _logger.LogInformation("tralalalalalalalsdlasdladslasdlasddddsssssssssssssssssssssssssssssssssssssss0ds;fd;d");
+        //    return Task.FromResult(
+        //        new List<UserDto>
+        //        {
+        //            new UserDto("1", "Alice", "alice@gmail.com"),
+        //            new UserDto("2", "V0ldek", "registermen@gmail.com"),
+        //            new UserDto("3", "Bob", "bob@gmail.com"),
+        //        } as IEnumerable<UserDto>);
+        //    //: Task.FromResult((IEnumerable<UserDto>)null);
+        //}
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
-            // I should change naming if I decide to stick to Friendship with requestedBy and requestedTo.
-            
             var user = _repository.ApplicationUsers.Where(u => u.UserName == userName);
 
-            var smallerIdThanFriends = user
+            var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
                 .SelectMany(u => u.SentRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
                 .Include(f => f.RequestedTo)
-                .Select(f => new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email));
+                .Select(f => new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email))
+                .DefaultIfEmpty();
 
-            var greaterIdThanFriends = user
+            var friendsThatInvitedMe = user
                 .Include(u => u.ReceivedRequests)
+                .DefaultIfEmpty()
                 .SelectMany(u => u.ReceivedRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
                 .Include(f => f.RequestedBy)
                 .Select(f => new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email));
 
-            var allFriends = await smallerIdThanFriends
-                .Union(greaterIdThanFriends)
-                .OrderBy(u => u.UserName)
-                .ToListAsync(); // can I avoid using await here?
+            _logger.LogInformation("before execution");
 
-            return allFriends;
+            //var allFriends = await friendsInvitedByMe
+            //    .Union(friendsThatInvitedMe)
+            //    .OrderBy(u => u.UserName)
+            //    .ToListAsync(); // can I avoid using await here?
+
+            var friends = await friendsInvitedByMe.ToListAsync();
+
+            _logger.LogInformation("after execution");
+
+            return friends;
+
+            //return allFriends;
         }
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
@@ -118,7 +142,7 @@ namespace GameBoard.LogicLayer.Friends
         public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId)
         {
             int id = Int32.Parse(friendRequestId);
-            var friendship = _repository.Friendships.Where(f => f.Id == id);
+            var friendship = _repository.Friendships.Where(f => f.Id == id); //friendship might not exist, because user can delete his account.
 
             return friendship
                 .Include(f => f.RequestedBy)

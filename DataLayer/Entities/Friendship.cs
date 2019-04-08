@@ -13,7 +13,6 @@ namespace GameBoard.DataLayer.Entities
         public ApplicationUser RequestedBy { get; set; }
         public ApplicationUser RequestedTo { get; set; }
 
-        public WhoSentLatestRequest WhoSent;
         public FriendshipStatus FriendshipStatus { get; set; }
     }
 }

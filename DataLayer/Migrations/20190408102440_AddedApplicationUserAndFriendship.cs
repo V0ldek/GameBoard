@@ -13,36 +13,41 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     Id = table.Column<int>(maxLength: 32, nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserSmallerId = table.Column<string>(nullable: true),
-                    UserGreaterId = table.Column<string>(nullable: true),
+                    RequestedById = table.Column<string>(nullable: true),
+                    RequestedToId = table.Column<string>(nullable: true),
                     FriendshipStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friendships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Friendships_user_UserGreaterId",
-                        column: x => x.UserGreaterId,
+                        name: "FK_Friendships_user_RequestedById",
+                        column: x => x.RequestedById,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendships_user_UserSmallerId",
-                        column: x => x.UserSmallerId,
+                        name: "FK_Friendships_user_RequestedToId",
+                        column: x => x.RequestedToId,
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_UserGreaterId",
-                table: "Friendships",
-                column: "UserGreaterId");
+                name: "IX_user_UserName",
+                table: "user",
+                column: "UserName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_UserSmallerId_UserGreaterId",
+                name: "IX_Friendships_RequestedToId",
                 table: "Friendships",
-                columns: new[] { "UserSmallerId", "UserGreaterId" },
+                column: "RequestedToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friendships_RequestedById_RequestedToId",
+                table: "Friendships",
+                columns: new[] { "RequestedById", "RequestedToId" },
                 unique: true);
         }
 
@@ -50,6 +55,10 @@ namespace GameBoard.DataLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Friendships");
+
+            migrationBuilder.DropIndex(
+                name: "IX_user_UserName",
+                table: "user");
         }
     }
 }
