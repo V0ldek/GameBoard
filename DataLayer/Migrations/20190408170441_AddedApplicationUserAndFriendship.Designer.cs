@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190408155813_AddedApplicationUserAndFriendship")]
+    [Migration("20190408170441_AddedApplicationUserAndFriendship")]
     partial class AddedApplicationUserAndFriendship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -208,11 +208,13 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedBy")
                         .WithMany("SentRequests")
-                        .HasForeignKey("RequestedById");
+                        .HasForeignKey("RequestedById")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedTo")
                         .WithMany("ReceivedRequests")
-                        .HasForeignKey("RequestedToId");
+                        .HasForeignKey("RequestedToId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -25,13 +25,13 @@ namespace GameBoard.DataLayer.Migrations
                         column: x => x.RequestedById,
                         principalTable: "user",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Friendships_user_RequestedToId",
                         column: x => x.RequestedToId,
                         principalTable: "user",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

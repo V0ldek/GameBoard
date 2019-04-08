@@ -206,11 +206,13 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedBy")
                         .WithMany("SentRequests")
-                        .HasForeignKey("RequestedById");
+                        .HasForeignKey("RequestedById")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedTo")
                         .WithMany("ReceivedRequests")
-                        .HasForeignKey("RequestedToId");
+                        .HasForeignKey("RequestedToId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

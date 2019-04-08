@@ -30,11 +30,13 @@ namespace GameBoard.DataLayer.Context
 
                     entity.HasOne(e => e.RequestedBy)
                         .WithMany(u => u.SentRequests)
-                        .HasForeignKey(e => e.RequestedById);
+                        .HasForeignKey(e => e.RequestedById)
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.HasOne(e => e.RequestedTo)
                         .WithMany(u => u.ReceivedRequests)
-                        .HasForeignKey(e => e.RequestedToId);
+                        .HasForeignKey(e => e.RequestedToId)
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             builder.Entity<IdentityRole>(
