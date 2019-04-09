@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GameBoard.LogicLayer.UserSearch
 {
-    internal /*sealed?*/ class UserSearchService : IUserSearchService
+    internal sealed class UserSearchService : IUserSearchService
     {
         private readonly int MAX_USERS_TO_SHOW = 100; // correct specifiers
         private readonly IGameBoardRepository _repository;

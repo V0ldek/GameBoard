@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GameBoard.LogicLayer.Friends
 {
-    internal /*sealed?*/ class FriendsService : IFriendsService
+    internal sealed class FriendsService : IFriendsService
     {
         private readonly IGameBoardRepository _repository;
         private readonly ILogger _logger;
@@ -135,7 +135,7 @@ namespace GameBoard.LogicLayer.Friends
 
         public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId)
         {
-            int id = Int32.Parse(friendRequestId);
+            var id = int.Parse(friendRequestId);
             var friendship = _repository.Friendships.Where(f => f.Id == id); //friendship might not exist, because user can delete his account.
 
             return friendship
@@ -152,7 +152,7 @@ namespace GameBoard.LogicLayer.Friends
 
         private async Task ChangeFriendRequestStatus(string friendRequestId, FriendshipStatus friendshipStatus)
         {
-            int id = Int32.Parse(friendRequestId);
+            var id = int.Parse(friendRequestId);
             var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id); //friendship might not exist, because user can delete his account.
 
             friendship.FriendshipStatus = friendshipStatus;
