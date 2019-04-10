@@ -5,8 +5,8 @@ namespace GameBoard.LogicLayer.Notifications
 
     public struct Notification
     {
-        public string HtmlPath { get;}
         public string Subject { get; }
+        public string HtmlPath { get;}
 
         public Notification(string htmlPath, string subject)
         {

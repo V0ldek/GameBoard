@@ -17,39 +17,46 @@ namespace GameBoard.LogicLayer.Notifications
 
     public class MailSender
     {
-        private static string Domain = "sandboxab3eb41cb07d4d88b609637cf7d3bd9a.mailgun.org";
-        private static string ApiKey = "53fb9863bf954463a14bd144dd943b4e-985b58f4-05d2d853";
+        private static string Domain = "";
+        private static string ApiKey = "";
 
         public void Test() // temporary test function
         {
             string directory = Environment.CurrentDirectory;
             directory = Directory.GetParent(directory).Parent.Parent.FullName; //temporary
             directory = Path.Combine(directory, "LogicLayer","Notifications", "inlined", "email-confirmation.html");
-            SendSimpleMessageHttp(new string[] {
-                "miszalek1998@wp.pl", "zirrock2@gmail.com"
-            }, new Notification(directory, "Please confirm your email address")).Wait();
+            SendSimpleMessageHttp(new Recipient("zirrock2@gmail.com", "https://wp.pl"), 
+                new Notification(directory, "Please confirm your email address")).Wait();
         }
 
-        public async Task SendSimpleMessageHttp(string[] recipients, Notification notification)
+        public async Task SendSimpleMessageHttp(Recipient recipient, Notification notification)
         {
             var text = File.ReadAllText(notification.HtmlPath);
+
+            try
+            {
+                text = text.Replace("#@redirectLink@#", recipient.NotificationLink);
+            }
+            catch
+            {
+                Debug.Write("Link is null");
+            }
+
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Basic",
                 Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes("api" + ":" + ApiKey)));
 
-            var recipientsJoined = String.Join(", ", recipients);
-
             Dictionary<string, string> form = new Dictionary<string, string>()
             {
                 ["from"] = "GameBoard <mailgun@sandboxab3eb41cb07d4d88b609637cf7d3bd9a.mailgun.org>",
-                ["to"] = recipientsJoined,
+                ["to"] = recipient.EmailAddress,
                 ["subject"] = notification.Subject,
                 ["html"] = text
             };
 
             var response = await client.PostAsync(
-                "https://api.mailgun.net/v2/" + Domain + "/messages",
+                "https://api.mailgun.net/v3/" + Domain + "/messages",
                 new FormUrlEncodedContent(form));
 
             if (response.StatusCode == HttpStatusCode.OK)
