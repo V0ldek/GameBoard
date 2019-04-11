@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-GameBoard-52791027-7589-4D76-A64B-F1FA0633D640</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <ApplicationInsightsResourceId>/subscriptions/66b9438b-d5a4-428a-a394-883ea94b3f5e/resourcegroups/Gameboard_Site/providers/microsoft.insights/components/GameBoardDevelopFree</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/66b9438b-d5a4-428a-a394-883ea94b3f5e/resourcegroups/Gameboard_Site/providers/microsoft.insights/components/GameBoardDevelopFree</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
