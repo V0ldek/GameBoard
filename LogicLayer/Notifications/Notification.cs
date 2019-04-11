@@ -1,16 +1,17 @@
 ﻿using System;
+using System.IO;
 
 namespace GameBoard.LogicLayer.Notifications
 {
 
     public struct Notification
     {
-        public string HtmlPath { get;}
+        public string Html { get;}
         public string Subject { get; }
 
-        public Notification(string htmlPath, string subject)
+        public Notification(string htmlPath, string link, string subject)
         {
-            HtmlPath = htmlPath;
+            Html = File.ReadAllText(htmlPath).Replace("#@redirectLink@#", link);
             Subject = subject;
         }
 

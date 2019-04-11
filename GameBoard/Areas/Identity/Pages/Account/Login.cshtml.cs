@@ -108,6 +108,14 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 return RedirectToPage("./Lockout");
             }
 
+            // We can use this flag, because we are sure that if user is not allowed to sign in then
+            // email confirmation is needed. Not sure if such approach is OK.
+            if (result.IsNotAllowed)
+            {
+                ModelState.AddModelError(string.Empty, "Email confirmation needed.");
+                return Page();
+            }
+
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return Page();
         }

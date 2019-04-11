@@ -20,17 +20,24 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _userManager = userManager;
         }
 
-        public IActionResult OnGet(string code = null)
+        public IActionResult OnGet(string code = null, string email = null)
         {
             if (code == null)
             {
                 return BadRequest("A code must be supplied for password reset.");
             }
 
+            if (email == null)
+            {
+                return BadRequest("A email must be supplied for password reset.");
+            }
+
             Input = new InputModel
             {
-                Code = code
+                Code = code,
+                Email = email
             };
+
             return Page();
         }
 
@@ -64,7 +71,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            //[Required]
             [EmailAddress]
             public string Email { get; set; }
 

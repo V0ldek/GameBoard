@@ -21,7 +21,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         {
             if (userId == null || code == null)
             {
-                return RedirectToPage("/Index");
+                return RedirectToAction("Error", "Home");
             }
 
             var user = await _userManager.FindByIdAsync(userId);

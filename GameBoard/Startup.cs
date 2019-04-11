@@ -1,8 +1,10 @@
 ﻿using GameBoard.LogicLayer;
+using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,10 +46,14 @@ namespace GameBoard
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
                         options.User.RequireUniqueEmail = true;
+                        options.SignIn.RequireConfirmedEmail = true;
                     })
                 //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDbContextStores();
-            
+
+            services.AddTransient<IMailSender, MailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

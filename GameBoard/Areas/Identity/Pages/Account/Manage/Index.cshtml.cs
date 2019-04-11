@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +13,7 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly IEmailSender _emailSender;
+        private readonly IMailSender _mailSender;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -28,11 +30,11 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IEmailSender emailSender)
+            IMailSender mailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
+            _mailSender = mailSender;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -124,10 +126,17 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
                 null,
                 new {userId, code},
                 Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            //await _emailSender.SendEmailAsync(
+            //    email,
+            //    "Confirm your email",
+            //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+
+            List<string> emails = new List<string>
+            {
+                email
+            };
+            await _mailSender.SendEmailConfirmationAsync(emails, HtmlEncoder.Default.Encode(callbackUrl));
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

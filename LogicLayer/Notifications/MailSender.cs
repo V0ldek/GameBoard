@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,62 +8,94 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace GameBoard.LogicLayer.Notifications
 {
-
-    //TODO change class to static probably
-    //TODO remove test function after testing
-    //TODO checkout blue note regarding UTF8
-
-    public class MailSender
+    public class MailSender : IMailSender
     {
-        private static string Domain = "sandboxab3eb41cb07d4d88b609637cf7d3bd9a.mailgun.org";
-        private static string ApiKey = "53fb9863bf954463a14bd144dd943b4e-985b58f4-05d2d853";
-
-        public void Test() // temporary test function
+        public MailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
-            string directory = Environment.CurrentDirectory;
-            directory = Directory.GetParent(directory).Parent.Parent.FullName; //temporary
-            directory = Path.Combine(directory, "LogicLayer","Notifications", "inlined", "email-confirmation.html");
-            SendSimpleMessageHttp(new string[] {
-                "miszalek1998@wp.pl", "zirrock2@gmail.com"
-            }, new Notification(directory, "Please confirm your email address")).Wait();
+            Options = optionsAccessor.Value;
         }
 
-        public async Task SendSimpleMessageHttp(string[] recipients, Notification notification)
+        private AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+
+        private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
+            => Execute(Options.MailgunDomain, Options.MailgunApiKey, emails, notification);
+
+        private Task Execute(string domain, string apiKey, IEnumerable<string> emails, Notification notification)
         {
-            var text = File.ReadAllText(notification.HtmlPath);
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Basic",
-                Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes("api" + ":" + ApiKey)));
+                Convert.ToBase64String(Encoding.UTF8.GetBytes("api" + ":" + apiKey)));
 
-            var recipientsJoined = String.Join(", ", recipients);
+            var emailsJoined = String.Join(", ", emails);
 
             Dictionary<string, string> form = new Dictionary<string, string>()
             {
-                ["from"] = "GameBoard <mailgun@sandboxab3eb41cb07d4d88b609637cf7d3bd9a.mailgun.org>",
-                ["to"] = recipientsJoined,
+                ["from"] = "GameBoard <mailgun@sandboxb1586a7208744c12afa71d3d21e35535.mailgun.org>",
+                ["to"] = emailsJoined,
                 ["subject"] = notification.Subject,
-                ["html"] = text
+                ["html"] = notification.Html
             };
 
-            var response = await client.PostAsync(
-                "https://api.mailgun.net/v2/" + Domain + "/messages",
+            return client.PostAsync(
+                "https://api.mailgun.net/v2/" + domain + "/messages",
                 new FormUrlEncodedContent(form));
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                Debug.WriteLine("Success");
-            }
-            else
-            {
-                Debug.WriteLine("StatusCode: " + response.StatusCode);
-                Debug.WriteLine("ReasonPhrase: " + response.ReasonPhrase);
-            }
         }
 
+        private static string GetHtmlPath(string htmlTemplateName)
+        {
+            // Fix this temporary Michszo pls
+            string htmlPath = Environment.CurrentDirectory;
+            htmlPath = Directory.GetParent(htmlPath).FullName; //temporary
+            htmlPath = Path.Combine(htmlPath, "LogicLayer", "Notifications", "inlined", htmlTemplateName);
+
+            return htmlPath;
+        }
+
+        public Task SendEmailConfirmationAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("email-confirmation.html"), link, "Email Confirmation");
+            return SendEmailAsync(emails, notification);
+        }
+
+        public Task SendEventCancellationAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("event-cancellation.html"), link, "Event Cancellation");
+            return SendEmailAsync(emails, notification);
+        }
+
+        public Task SendEventConfirmationAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("event-confirmation.html"), link, "Event Confirmation");
+            return SendEmailAsync(emails, notification);
+        }
+
+        public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("event-invitation.html"), link, "Event Invitation");
+            return SendEmailAsync(emails, notification);
+        }
+
+        public Task SendFriendAcceptAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("friend-accept.html"), link, "Friend Invitation Accepted");
+            return SendEmailAsync(emails, notification);
+        }
+
+        public Task SendFriendInvitationAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("friend-invitation.html"), link, "Friend Invitation");
+            return SendEmailAsync(emails, notification);
+        }
+
+        public Task SendPasswordResetAsync(IEnumerable<string> emails, string link)
+        {
+            Notification notification = new Notification(GetHtmlPath("password-reset.html"), link, "Password Reset");
+            return SendEmailAsync(emails, notification);
+        }
     }
 }

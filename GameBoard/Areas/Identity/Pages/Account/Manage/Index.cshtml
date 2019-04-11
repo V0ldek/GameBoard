@@ -20,7 +20,7 @@
                 @if (Model.IsEmailConfirmed)
                 {
                     <div class="input-group">
-                        <input asp-for="Input.Email" class="form-control" disabled/>
+                        <input asp-for="Input.Email" class="form-control" disabled />
                         <span class="input-group-addon" aria-hidden="true">
                             <span class="glyphicon glyphicon-ok text-success"></span>
                         </span>
@@ -28,13 +28,13 @@
                 }
                 else
                 {
-                    <input asp-for="Input.Email" class="form-control" disabled/>
+                    <input asp-for="Input.Email" class="form-control" disabled />
                     <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link" hidden>Send verification email</button>
                 }
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary" hidden>Save</button>
-        </form>
+       </form>
     </div>
 </div>
 
