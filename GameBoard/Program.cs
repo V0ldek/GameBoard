@@ -17,6 +17,7 @@ namespace GameBoard
                         logging.AddConsole();
                         logging.AddDebug();
                     })
+                .UseApplicationInsights()
                 .UseStartup<Startup>();
     }
 }

@@ -12,7 +12,7 @@ namespace GameBoard.DataLayer.Context
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUser>(
-                entity => entity.ToTable("user"));
+                entity => entity.ToTable("User"));
 
             builder.Entity<Friendship>(
                 entity =>
@@ -40,22 +40,22 @@ namespace GameBoard.DataLayer.Context
                 });
 
             builder.Entity<IdentityRole>(
-                entity => entity.ToTable("role"));
+                entity => entity.ToTable("Role"));
 
             builder.Entity<IdentityUserRole<string>>(
-                entity => entity.ToTable("user_role"));
+                entity => entity.ToTable("UserRole"));
 
             builder.Entity<IdentityUserClaim<string>>(
-                entity => entity.ToTable("user_claim"));
+                entity => entity.ToTable("UserClaim"));
 
             builder.Entity<IdentityUserLogin<string>>(
-                entity => entity.ToTable("user_login"));
+                entity => entity.ToTable("UserLogin"));
 
             builder.Entity<IdentityUserToken<string>>(
-                entity => entity.ToTable("user_token"));
+                entity => entity.ToTable("UserToken"));
 
             builder.Entity<IdentityRoleClaim<string>>(
-                entity => entity.ToTable("role_claim"));
+                entity => entity.ToTable("RoleClaim"));
         }
 
         public Task SaveChangesAsync() => base.SaveChangesAsync();

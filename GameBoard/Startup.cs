@@ -15,10 +15,12 @@ namespace GameBoard
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        private IHostingEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -50,7 +52,9 @@ namespace GameBoard
 
             LogicLayer.Configuration.ConfigureDbContext(
                 services,
-                Configuration.GetConnectionString("DefaultConnection"));
+                Configuration.GetConnectionString(
+                    (Environment.IsStaging() ? "GameboardStaging" :
+                        ((Environment.IsProduction()) ? "GameboardRelease" : "DefaultConnection"))));
 
             LogicLayer.Configuration.ConfigureServices(services);
 
