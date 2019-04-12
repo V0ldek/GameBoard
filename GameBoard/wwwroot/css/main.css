@@ -4,10 +4,10 @@ for details on configuring this project to bundle and minify static web assets. 
 /* Main elements 
 -------------------------------------------------- */
 
-html { font-size: 14px; }
+html { font-size: 2.8vw; }
 
 @media (min-width: 768px) {
-    html { font-size: 16px; }
+    html { font-size: 1.58vh; }
 }
 
 html {
@@ -46,8 +46,6 @@ main {
 -------------------------------------------------- */
 
 .gravatar {
-    max-height: 48px;
-    max-width: 48px;
     min-height: 24px;
     min-width: 24px;
 }

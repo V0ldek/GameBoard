@@ -25,7 +25,7 @@ namespace GameBoard.LogicLayer.UserSearch
                     new UserDto("3", "Nadol", "nadol@gmail.com"),
                     new UserDto("4", "Żochu", "mzochowski@gmail.com"),
                     new UserDto("5", "johny", "johny@gmail.com"),
-                    new UserDto("2", "Charlie", "example@example.com")
+                    new UserDto("2", "wwwwwwwwwwwwwwww", "example@example.com")
                 }.Concat(Enumerable.Repeat(new UserDto("11", "mock", "invalidEmail"), 100)));
         }
     }

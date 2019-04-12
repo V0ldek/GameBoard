@@ -1,26 +1,33 @@
-﻿#friends-sidebar-container {
-    margin-left: -250px;
+﻿:root { --sidebar-width: 250px; }
+
+@media (min-width: 768px) {
+    :root { --sidebar-width: 400px; }
+}
+
+#friends-sidebar-container {
+    margin-left: calc(var(--sidebar-width) * -1);
     margin-right: 5%;
     position: relative;
     transition: all 0.3s;
 }
+
 
 #friends-sidebar-container.toggled { margin-left: 0; }
 
 #friends-sidebar {
     height: 77vh;
     left: 0;
-    min-width: 250px;
+    min-width: var(--sidebar-width);
     padding: 20px;
     position: relative;
     top: 0;
     transition: all 0.3s;
-    width: 250px;
+    width: var(--sidebar-width);
     z-index: 999;
 }
 
 #friends-sidebar-collapse {
-    left: 250px;
+    left: var(--sidebar-width);
     position: absolute;
     top: 50px;
     z-index: 999;
@@ -32,7 +39,25 @@
 
 #friends-sidebar ul p { padding: 10px; }
 
-.friend-card {
+.user-card {
     margin-bottom: 3px;
-    padding: 5%;
+    padding: 5% 7%;
+    justify-items: center;
+    align-items: center;
+    display: grid;
+    width: 100%;
+    grid-template-rows: auto;
+    grid-template-columns: 20% 80%;
+    grid-template-areas: "gravatar username";
 }
+
+.user-card .gravatar { grid-area: gravatar; }
+
+.user-card .username {
+    grid-area: username;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.user-card .username-container { width: 100%; }

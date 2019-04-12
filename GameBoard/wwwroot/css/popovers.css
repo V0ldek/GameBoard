@@ -1,4 +1,6 @@
-﻿.popover { background-color: transparent }
+﻿.popover { background-color: transparent;
+    max-width: 250px;
+}
 
 .popover-header-error {
     background-color: #751a1a;

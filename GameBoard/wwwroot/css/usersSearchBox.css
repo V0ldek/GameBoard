@@ -1,11 +1,12 @@
-﻿.user-card-mini { padding: 2% }
-
-#user-search-form {
+﻿#user-search-form {
     padding: 10px;
-    width: 250px;
+    width: 250px; /* Fallback value. */
+    width: var(--sidebar-width);
 }
 
 .user-search-autocomplete { position: relative; }
+
+#user-search-box { width: 100%; }
 
 .autocomplete-items {
     border: 2px solid #1d1c1b;
@@ -26,6 +27,43 @@
     margin: 1px;
     padding: 5px;
 }
+
+.autocomplete-items .user-result {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: auto;
+    grid-template-areas: "user-card invite";
+}
+
+.user-result .user-card-mini { grid-area: user-card }
+
+.user-result .invite-form { grid-area: invite; }
+
+.user-result .username {
+    grid-area: username;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.user-card-mini {
+    padding: 2%;
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: auto;
+    grid-template-areas: "gravatar username"
+}
+
+.user-card-mini .gravatar-sm { grid-area: gravatar; }
+
+.user-card-mini .username {
+    grid-area: username;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.user-card-mini .username-container { width: 100%; }
 
 .autocomplete-items .autocomplete-item:hover { background-color: #3a3d40; }
 

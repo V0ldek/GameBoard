@@ -3,9 +3,10 @@
 <div class="autocomplete-items">
     @foreach (var user in Model)
     {
-        <div class="autocomplete-item">
+        <div class="autocomplete-item user-result">
             @await Component.InvokeAsync("UserCard", new {user, miniature = true})
             <form asp-controller="Friends" asp-action="CreateFriendRequest"
+                  class="invite-form"
                   data-ajax="true" data-ajax-method="POST"
                   data-ajax-success="friendRequestPopoverGenerator.generateSuccessPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)"
                   data-ajax-failure="friendRequestPopoverGenerator.generateErrorPopup(document.querySelector('#friend-request-button-@user.Id'), xhr)">

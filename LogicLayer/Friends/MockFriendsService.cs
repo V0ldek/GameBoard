@@ -16,6 +16,7 @@ namespace GameBoard.LogicLayer.Friends
                     new UserDto("1", "Alice", "alice@gmail.com"),
                     new UserDto("2", "V0ldek", "registermen@gmail.com"),
                     new UserDto("3", "Bob", "bob@gmail.com"),
+                    new UserDto("4", "wwwwwwwwwwwwwwww", "wwww@gmail.com")
                 } as IEnumerable<UserDto>)
             : Task.FromResult((IEnumerable<UserDto>) null);
 
