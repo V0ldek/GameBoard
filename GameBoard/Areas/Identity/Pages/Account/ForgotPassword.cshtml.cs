@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -47,11 +46,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                     new {code, email},
                     Request.Scheme);
 
-                //await _emailSender.SendEmailAsync(
-                //    Input.Email,
-                //    "Reset Password",
-                //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                List<string> emails = new List<string>
+                var emails = new List<string>
                 {
                     Input.Email
                 };

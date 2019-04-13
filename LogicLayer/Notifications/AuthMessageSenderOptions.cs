@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameBoard.LogicLayer.Notifications
+﻿namespace GameBoard.LogicLayer.Notifications
 {
     public class AuthMessageSenderOptions
     {
