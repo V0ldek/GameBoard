@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190413094559_AddedApplicationUserAndFriendship")]
+    [Migration("20190413182111_AddedApplicationUserAndFriendship")]
     partial class AddedApplicationUserAndFriendship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,17 +81,18 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<int>("FriendshipStatus");
 
-                    b.Property<string>("RequestedById");
+                    b.Property<string>("RequestedById")
+                        .IsRequired();
 
-                    b.Property<string>("RequestedToId");
+                    b.Property<string>("RequestedToId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
                     b.HasIndex("RequestedToId");
 
                     b.HasIndex("RequestedById", "RequestedToId")
-                        .IsUnique()
-                        .HasFilter("[RequestedById] IS NOT NULL AND [RequestedToId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Friendships");
                 });
