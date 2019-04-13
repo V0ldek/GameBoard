@@ -10,43 +10,25 @@ namespace GameBoard.DataLayer.Context
             base.OnModelCreating(builder);
 
             builder.Entity<IdentityUser>(
-                entity => {
-                    entity.ToTable("User");
-                    //entity.Property(e => e.Id).HasMaxLength(512);
-                    });
+                entity => entity.ToTable("User"));
 
             builder.Entity<IdentityRole>( 
-                entity => {
-                    entity.ToTable("Role");
-                    //entity.Property(e => e.Id).HasMaxLength(512);
-                    });
+                entity => entity.ToTable("Role"));
 
             builder.Entity<IdentityUserRole<string>>(
                 entity => entity.ToTable("UserRole"));
 
             builder.Entity<IdentityUserClaim<string>>(
-                entity =>
-                {
-                    entity.ToTable("UserClaim");
-                    //entity.Property(e => e.Id).HasMaxLength(512);
-                });
+                entity => entity.ToTable("UserClaim"));
 
             builder.Entity<IdentityUserLogin<string>>(
-                entity => {
-                    entity.ToTable("UserLogin");
-                });
+                entity => entity.ToTable("UserLogin"));
 
             builder.Entity<IdentityUserToken<string>>(
-                entity =>
-                {
-                    entity.ToTable("UserToken");
-                });
+                entity =>entity.ToTable("UserToken"));
 
             builder.Entity<IdentityRoleClaim<string>>(
-                entity => {
-                    entity.ToTable("RoleClaim");
-                    //entity.Property(e => e.Id).HasMaxLength(512);
-                    });
+                entity => entity.ToTable("RoleClaim"));
         }
     }
 }
