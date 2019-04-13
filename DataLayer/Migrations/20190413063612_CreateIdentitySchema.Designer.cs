@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190412201700_Gameboard")]
-    partial class Gameboard
+    [Migration("20190413063612_CreateIdentitySchema")]
+    partial class CreateIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
