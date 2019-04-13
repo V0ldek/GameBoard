@@ -46,12 +46,11 @@ namespace GameBoard.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.Sql(
-                "CREATE TRIGGER UniqueLastingOrPendingFriendship " +
+               "CREATE TRIGGER UniqueLastingOrPendingFriendship " +
                 "ON Friendships " +
                 "INSTEAD OF INSERT " +
                 "AS " +
                 "BEGIN " +
-                "   SET NOCOUNT ON; " +
                 "   DECLARE @friendshipStatus INT; " +
                 "   SET @friendshipStatus = " +
                 "       (SELECT Friendships.FriendshipStatus " +
@@ -79,6 +78,7 @@ namespace GameBoard.DataLayer.Migrations
                 "           WHERE INSERTED.RequestedById = Friendships.RequestedById " +
                 "               AND INSERTED.RequestedToId = Friendships.RequestedToId; " + // code repetition, better way to do this?
                 "   ELSE THROW 50004, 'NotSupportedValue', 1; " +
+                "   SELECT Id FROM Friendships f WHERE @@ROWCOUNT > 0 AND f.Id = scope_identity(); " +
                 "END ");
         }
 
