@@ -19,6 +19,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190413132825_AddedApplicationUserAndFriendship.cs" />
     <Compile Remove="Migrations\20190413133053_AddedApplicationUserAndFriendship.cs" />
+    <Compile Remove="Migrations\20190413192507_AddedApplicationUserAndFriendship.cs" />
+    <Compile Remove="Migrations\20190413194210_AddedApplicationUserAndFriendship.cs" />
   </ItemGroup>
 
   <ItemGroup>

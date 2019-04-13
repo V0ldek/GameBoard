@@ -69,8 +69,8 @@ namespace GameBoard.DataLayer.Migrations
                 "            AND INSERTED.RequestedToId = Friendships.RequestedToId); " +
                 " " +
                 "   IF @friendshipStatus IS NULL " +
-                "       INSERT INTO Friendships (Id, RequestedById, RequestedToId, FriendshipStatus) " + // auto increment will be called before this trigger?
-                "           (SELECT * FROM INSERTED); " + // better way to do this? the trigger isn't called recursively.
+                "       INSERT INTO Friendships (RequestedById, RequestedToId, FriendshipStatus) " + // auto increment will be called before this trigger?
+                "           (SELECT RequestedById, RequestedToId, FriendshipStatus FROM INSERTED); " + // better way to do this? the trigger isn't called recursively.
                 "   ELSE IF @friendshipStatus = 0 THROW 50001, 'PendingFromRequestedBy', 1; " +
                 "   ELSE IF @friendshipStatus = 2 THROW 50002, 'Lasts', 1; " +
                 "   ELSE IF @friendshipStatus = 1 " +
