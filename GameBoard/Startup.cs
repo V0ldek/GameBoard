@@ -80,7 +80,7 @@ namespace GameBoard
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
