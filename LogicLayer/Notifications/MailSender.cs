@@ -5,18 +5,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GameBoard.LogicLayer.Notifications
 {
     public class MailSender : IMailSender
     {
-        public MailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
+        public MailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, IOptions<MailNotificationsConfiguration> mailOptionsAccessor)
         {
             Options = optionsAccessor.Value;
+            MailOptions = mailOptionsAccessor.Value;
         }
 
         private AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        private MailNotificationsConfiguration MailOptions { get; }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
             => Execute(Options.MailgunDomain, Options.MailgunApiKey, emails, notification);
@@ -43,13 +46,10 @@ namespace GameBoard.LogicLayer.Notifications
                 new FormUrlEncodedContent(form));
         }
 
-        private static string GetHtmlPath(string htmlTemplateName)
+        private string GetHtmlPath(string htmlTemplateName)
         {
-            // Fix this temporary Michszo pls
-            string htmlPath = Environment.CurrentDirectory;
-            htmlPath = Directory.GetParent(htmlPath).FullName; //temporary
-            htmlPath = Path.Combine(htmlPath, "LogicLayer", "Notifications", "inlined", htmlTemplateName);
-
+            string htmlPath = MailOptions.DefaultHtmlPath;
+            htmlPath = Path.Combine(htmlPath, htmlTemplateName);
             return htmlPath;
         }
 
