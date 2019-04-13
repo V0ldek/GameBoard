@@ -11,12 +11,15 @@ namespace GameBoard.DataLayer.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        [ForeignKey("User")]
-        public string UserID { get; set; }
+        public ApplicationUser Creator { get; set; }
 
         [Required]
         public DateTime MeetingTime { get; set; }
 
         public string Place { get; set; }
+
+        public ICollection<Game> Games { get; set; }
+
+        public ICollection<GameEventInvitation> Invitations { get; set; }
     }
 }

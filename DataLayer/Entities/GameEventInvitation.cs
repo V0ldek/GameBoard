@@ -5,17 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameBoard.DataLayer.Entities
 {
-    class Invited_Players
+    class GameEventInvitation
     {
         [Key]
-        [ForeignKey("User")]
-        public string UserId { get; set; }
+        public ApplicationUser SendTo { get; set; }
 
         [Key]
-        [ForeignKey("GameEvent")]
-        public string GameEventId { get; set; }
+        public GameEvent IvitedTo{ get; set; }
 
-        //Można spróbować dokonać zmian, aby Invitation Status miało wartość dowolną.
+        //Można spróbować dokonać zmian, aby InvitationStatus miało wartość dowolną.
         //Jeśli będzie czas w ten sposób: https://stackoverflow.com/a/38102266
         public InvitationStatus InvitationStatus { get; set; }
     }
