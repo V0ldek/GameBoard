@@ -1,6 +1,6 @@
 ﻿using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Notifications;
-using GameBoard.Configuration;
+//using GameBoard.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
