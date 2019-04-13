@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.GameEvent.Dtos
+namespace GameBoard.LogicLayer.GameEventLogic.Dtos
 {
     public sealed class CreateGameEventDto
     {

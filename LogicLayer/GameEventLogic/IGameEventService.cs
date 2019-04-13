@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using System.Collections.Generic;
-using GameBoard.LogicLayer.GameEvent.Dtos;
+using GameBoard.LogicLayer.GameEventLogic.Dtos;
 
-namespace GameBoard.LogicLayer.GameEvent
+namespace GameBoard.LogicLayer.GameEventLogic
 {
     public interface IGameEventService
     {
@@ -13,5 +13,6 @@ namespace GameBoard.LogicLayer.GameEvent
 
         [NotNull]
         Task<bool> CreateGameEvent([NotNull] CreateGameEventDto requestedGameEvent); 
+
     }
 }
