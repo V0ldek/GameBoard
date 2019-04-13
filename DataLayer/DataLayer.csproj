@@ -17,6 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190413074949_AddedApplicationUserAndFriendship.cs" />
+    <Compile Remove="Migrations\20190413081208_AddedApplicationUserAndFriendship.cs" />
+    <Compile Remove="Migrations\20190413092203_AddedApplicationUserAndFriendship.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
