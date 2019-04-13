@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
@@ -11,7 +13,9 @@ using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Friends.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Expressions;
 using Microsoft.Extensions.Logging;
+using Remotion.Linq.Parsing;
 
 namespace GameBoard.LogicLayer.Friends
 {
@@ -60,74 +64,89 @@ namespace GameBoard.LogicLayer.Friends
             var normalizedUserNameFrom = friendRequest.UserNameFrom.ToUpper();
             var normalizedUserNameTo = friendRequest.UserNameTo.ToUpper();
 
-            //using (var transaction = new GameBoardDbContext())
+            var requestedById = await _repository.ApplicationUsers
+                .Where(u => u.NormalizedUserName == normalizedUserNameFrom)
+                .Select(u => u.Id)
+                .SingleAsync(); // OrDefault? Deleted user?
+
+            var requestedToId = await _repository.ApplicationUsers
+                .Where(u => u.NormalizedUserName == normalizedUserNameTo)
+                .Select(u => u.Id)
+                .SingleAsync(); // OrDefault? Deleted user? This should be a separate function.
+
+            // what if user deletes its account in this moment? What happens with inserting new Friendship into database? Abort?
+
+            //var friendship = await _repository.Friendships
+            //    .SingleOrDefaultAsync(
+            //        f => f.RequestedById == requestedById &&
+            //            f.RequestedToId == requestedToId);
+
+
+            //if (friendship != null)
+            //{
+            //    switch (friendship.FriendshipStatus)
+            //    {
+            //        case FriendshipStatus.PendingFriendRequest:
+            //            throw new FriendRequestAlreadyPendingException(
+            //                "You have already sent this user a friend request.");
+            //        case FriendshipStatus.Lasts:
+            //            throw new FriendRequestAlreadyFinalizedException("You are already friends.");
+            //        case FriendshipStatus.Rejected:
+            //            break;
+            //        default:
+            //            throw new ArgumentOutOfRangeException();
+            //    }
+            //}
+
+            //// I have to check if RequestedTo have sent a friend request to RequestedBy already. 
+            //friendship = await _repository.Friendships
+            //    .SingleOrDefaultAsync(
+            //        f => f.RequestedById == requestedToId &&
+            //            f.RequestedToId == requestedById);
+
+            //if (friendship != null)
+            //{
+            //    switch (friendship.FriendshipStatus)
+            //    {
+            //        case FriendshipStatus.PendingFriendRequest:
+            //            throw new FriendRequestAlreadyPendingException(
+            //                $"You have already been invited by this user. Go to {friendRequest.GenerateRequestLink(friendship.Id.ToString())}, to confirm or reject the friend request.");
+            //        case FriendshipStatus.Lasts:
+            //            throw new FriendRequestAlreadyFinalizedException("You are already friends.");
+            //        case FriendshipStatus.Rejected:
+            //            break;
+            //        default:
+            //            throw new ArgumentOutOfRangeException();
+            //    }
+            //}
+
+            _repository.Friendships.Add(
+                new Friendship()
+                {
+                    RequestedById = requestedById,
+                    RequestedToId = requestedToId,
+                    FriendshipStatus = FriendshipStatus.PendingFriendRequest
+                });
+
+            try
             {
-                var requestedById = await _repository.ApplicationUsers
-                    .Where(u => u.NormalizedUserName == normalizedUserNameFrom)
-                    .Select(u => u.Id)
-                    .SingleAsync(); // OrDefault? Deleted user?
-
-                var requestedToId = await _repository.ApplicationUsers
-                    .Where(u => u.NormalizedUserName == normalizedUserNameTo)
-                    .Select(u => u.Id)
-                    .SingleAsync(); // OrDefault? Deleted user? This should be a separate function.
-
-                var friendship = await _repository.Friendships
-                    .SingleOrDefaultAsync(
-                        f => f.RequestedById == requestedById &&
-                            f.RequestedToId == requestedToId);
-
-
-                if (friendship != null)
-                {
-                    switch (friendship.FriendshipStatus)
-                    {
-                        case FriendshipStatus.PendingFriendRequest:
-                            throw new FriendRequestAlreadyPendingException("You have already sent this user a friend request.");
-                        case FriendshipStatus.Lasts:
-                            throw new FriendRequestAlreadyFinalizedException("You are already friends.");
-                        case FriendshipStatus.Rejected:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                // I have to check if RequestedTo have sent a friend request to RequestedBy already. 
-                friendship = await _repository.Friendships
-                    .SingleOrDefaultAsync(
-                        f => f.RequestedById == requestedToId &&
-                            f.RequestedToId == requestedById);
-
-                if (friendship != null)
-                {
-                    switch (friendship.FriendshipStatus)
-                    {
-                        case FriendshipStatus.PendingFriendRequest:
-                            throw new FriendRequestAlreadyPendingException($"You have already been invited by this user. Go to {friendRequest.GenerateRequestLink(friendship.Id.ToString())}, to confirm or reject the friend request.");
-                        case FriendshipStatus.Lasts:
-                            throw new FriendRequestAlreadyFinalizedException("You are already friends.");
-                        case FriendshipStatus.Rejected:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                _repository.Friendships.Add(
-                    new Friendship()
-                    {
-                        //auto increment
-                        RequestedById = requestedById,
-                        RequestedToId = requestedToId,
-                        FriendshipStatus = FriendshipStatus.PendingFriendRequest
-                    });
-
                 await _repository.SaveChangesAsync();
-
-                // commit transaction
-                // what happens if an exception is thrown within the transaction?
-
+            }
+            catch (DbUpdateException e) when (e.InnerException is SqlException sqlException)
+            {
+                switch (sqlException.Number)
+                {
+                    case 50000:
+                        throw new FriendRequestAlreadyPendingException(
+                            $"You have already been invited by this user. Go to ..., to confirm or reject the friend request.");
+                    case 50001:
+                        throw new FriendRequestAlreadyPendingException(
+                            "You have already sent this user a friend request.");
+                    case 50002:
+                        throw new FriendRequestAlreadyFinalizedException("You are already friends.");
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
             //send email with link
