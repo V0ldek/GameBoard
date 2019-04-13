@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameBoard.DataLayer.Entities
 {
-    class Game
+    public class Game
     {
         [Key]
         [Required]

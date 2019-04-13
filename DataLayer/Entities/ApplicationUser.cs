@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameBoard.DataLayer.Entities
 {
-    class ApplicationUser
+    public class ApplicationUser
     {
     }
 }

@@ -6,13 +6,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameBoard.DataLayer.Entities
 {
-    class GameEvent
+    public class GameEvent
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public ApplicationUser Creator { get; set; }
+        [Required]
+        public string CreatorId { get; set; }
 
+        //Not sure if this is the format we want to choose.
         [Required]
         public DateTime MeetingTime { get; set; }
 
