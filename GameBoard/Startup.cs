@@ -1,5 +1,6 @@
 ﻿using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -53,6 +54,7 @@ namespace GameBoard
 
             services.AddTransient<IMailSender, MailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.Configure<MailNotificationsConfiguration>(Configuration.GetSection("MailNotifications"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

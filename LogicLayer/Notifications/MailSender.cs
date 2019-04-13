@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using Microsoft.AspNetCore.Identity.UI.Services;
+
 
 namespace GameBoard.LogicLayer.Notifications
 {
@@ -49,11 +49,9 @@ namespace GameBoard.LogicLayer.Notifications
         private static string GetHtmlPath(string htmlTemplateName)
         {
             // Fix this temporary Michszo pls
-           // string htmlPath = Environment.CurrentDirectory;
-          //  htmlPath = Directory.GetParent(htmlPath).FullName; //temporary
-          //  htmlPath = Path.Combine(htmlPath, "LogicLayer", "Notifications", "inlined", htmlTemplateName);
-          string htmlPath = Configuration.GetConnectionStrings("DefaultConnection");
-            htmlPath = Path.Combine(htmlPath, htmlTemplateName);
+            string htmlPath = Environment.CurrentDirectory;
+            htmlPath = Directory.GetParent(htmlPath).FullName; //temporary
+            htmlPath = Path.Combine(htmlPath, "LogicLayer", "Notifications", "inlined", htmlTemplateName);
             return htmlPath;
         }
 
