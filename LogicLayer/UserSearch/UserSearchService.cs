@@ -14,7 +14,7 @@ namespace GameBoard.LogicLayer.UserSearch
 {
     internal sealed class UserSearchService : IUserSearchService
     {
-        private readonly int MAX_USERS_TO_SHOW = 100; // correct specifiers
+        private const int MaxUsersToShow = 100;
         private readonly IGameBoardRepository _repository;
 
         private readonly ILogger _logger;
@@ -41,11 +41,11 @@ namespace GameBoard.LogicLayer.UserSearch
 
             var matchingPrefixesList = await _repository.ApplicationUsers
                     .Where(u => u.NormalizedUserName.StartsWith(normalizedUserNameInput))
-                    .Take(MAX_USERS_TO_SHOW)
+                    .Take(MaxUsersToShow)
                     .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                     .ToListAsync();
 
-            var usersToShowLeft = MAX_USERS_TO_SHOW - matchingPrefixesList.Count; 
+            var usersToShowLeft = MaxUsersToShow - matchingPrefixesList.Count; 
 
             if (usersToShowLeft == 0)
             {

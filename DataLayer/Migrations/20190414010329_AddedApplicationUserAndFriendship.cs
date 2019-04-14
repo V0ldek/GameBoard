@@ -46,7 +46,7 @@ namespace GameBoard.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.Sql(
-               "CREATE TRIGGER UniqueLastingOrPendingFriendship " +
+                "CREATE TRIGGER UniqueLastingOrPendingFriendship " +
                 "ON Friendships " +
                 "INSTEAD OF INSERT " +
                 "AS " +
@@ -68,7 +68,7 @@ namespace GameBoard.DataLayer.Migrations
                 "            AND INSERTED.RequestedToId = Friendships.RequestedToId); " +
                 " " +
                 "   IF @friendshipStatus IS NULL " +
-                "       INSERT INTO Friendships (RequestedById, RequestedToId, FriendshipStatus) " + // auto increment will be called before this trigger?
+                "       INSERT INTO Friendships (RequestedById, RequestedToId, FriendshipStatus) " +
                 "           (SELECT RequestedById, RequestedToId, FriendshipStatus FROM INSERTED); " + // better way to do this? the trigger isn't called recursively.
                 "   ELSE IF @friendshipStatus = 0 THROW 50001, 'PendingFromRequestedBy', 1; " +
                 "   ELSE IF @friendshipStatus = 2 THROW 50002, 'Lasts', 1; " +
@@ -80,12 +80,29 @@ namespace GameBoard.DataLayer.Migrations
                 "   ELSE THROW 50004, 'NotSupportedValue', 1; " +
                 "   SELECT Id FROM Friendships f WHERE @@ROWCOUNT > 0 AND f.Id = scope_identity(); " +
                 "END ");
+
+            migrationBuilder.Sql(
+                "DROP TRIGGER IF EXISTS CascadeDeleteFriendships; ");
+
+            migrationBuilder.Sql(
+                "CREATE TRIGGER CascadeDeleteFriendships " +
+                "ON [User] " +
+                "AFTER DELETE " +
+                "AS " +
+                "BEGIN " +
+                "   DELETE FROM Friendships " +
+                "   FROM DELETED " +
+                "   WHERE RequestedById = DELETED.Id OR RequestedToId = DELETED.Id; " +
+                "END ");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Friendships");
+
+            migrationBuilder.Sql(
+                "DROP TRIGGER IF EXISTS CascadeDeleteFriendships; ");
         }
     }
 }
