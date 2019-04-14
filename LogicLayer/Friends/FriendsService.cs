@@ -79,7 +79,7 @@ namespace GameBoard.LogicLayer.Friends
                 {
                     case 50000:
                         throw new FriendRequestAlreadyPendingException(
-                            $"You have already been invited by this user. Go to ..., to accept or reject the friend request.");
+                            "You have already been invited by this user. Check your inbox for the friend request.");
                     case 50001:
                         throw new FriendRequestAlreadyPendingException(
                             "You have already sent this user a friend request.");
