@@ -12,9 +12,9 @@ namespace GameBoard.LogicLayer
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IFriendsService, MockFriendsService>();
-            services.AddScoped<IUserSearchService, MockUserSearchService>();
             DataLayer.Configuration.ConfigureServices(services);
+            services.AddScoped<IUserSearchService, UserSearchService>();
+            services.AddScoped<IFriendsService, FriendsService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>
