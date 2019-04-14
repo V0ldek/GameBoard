@@ -1,10 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using System.IO;
+using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameBoard.DataLayer.Migrations
 {
     public partial class AddedApplicationUserAndFriendship : Migration
     {
+        private static readonly string MigrationUpScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/20190414094415_AddedApplicationUserAndFriendship_Up.sql");
+
+        private static readonly string MigrationDownScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190414094415_AddedApplicationUserAndFriendship_Down.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -12,7 +24,9 @@ namespace GameBoard.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(maxLength: 32, nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation(
+                            "SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     RequestedById = table.Column<string>(nullable: false),
                     RequestedToId = table.Column<string>(nullable: false),
                     FriendshipStatus = table.Column<int>(nullable: false)
@@ -42,61 +56,10 @@ namespace GameBoard.DataLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Friendships_RequestedById_RequestedToId",
                 table: "Friendships",
-                columns: new[] { "RequestedById", "RequestedToId" },
+                columns: new[] {"RequestedById", "RequestedToId"},
                 unique: true);
 
-            migrationBuilder.Sql(
-                "CREATE TRIGGER UniqueLastingOrPendingFriendship " +
-                "ON Friendships " +
-                "INSTEAD OF INSERT " +
-                "AS " +
-                "BEGIN " +
-                "   DECLARE @friendshipStatus INT; " +
-                "   SET @friendshipStatus = " +
-                "       (SELECT Friendships.FriendshipStatus " +
-                "        FROM Friendships, INSERTED " +
-                "        WHERE INSERTED.RequestedToId = Friendships.RequestedById " +
-                "            AND INSERTED.RequestedById = Friendships.RequestedToId); " +
-                // Checking if RequestedTo have already sent an friend request to RequestedBy.
-                "   IF @friendshipStatus = 0 THROW 50000, 'PendingFromRequestedTo', 1; " +
-                "   IF @friendshipStatus = 2 THROW 50002, 'Lasts', 1; " +
-                // @friendshipStatus IS NULL or @friendshipStatus = 1, so we can proceed.
-                "   SET @friendshipStatus = " +
-                "       (SELECT Friendships.FriendshipStatus " +
-                "        FROM Friendships, INSERTED " +
-                "        WHERE INSERTED.RequestedById = Friendships.RequestedById " +
-                "            AND INSERTED.RequestedToId = Friendships.RequestedToId); " +
-                " " +
-                "   IF @friendshipStatus IS NULL " +
-                "       INSERT INTO Friendships (RequestedById, RequestedToId, FriendshipStatus) " +
-                "           (SELECT RequestedById, RequestedToId, FriendshipStatus FROM INSERTED); " + // better way to do this? the trigger isn't called recursively.
-                "   ELSE IF @friendshipStatus = 0 THROW 50001, 'PendingFromRequestedBy', 1; " +
-                "   ELSE IF @friendshipStatus = 2 THROW 50002, 'Lasts', 1; " +
-                "   ELSE IF @friendshipStatus = 1 " +
-                "       UPDATE Friendships SET Friendships.FriendshipStatus = INSERTED.FriendshipStatus " +
-                "           FROM INSERTED " +
-                "           WHERE INSERTED.RequestedById = Friendships.RequestedById " +
-                "               AND INSERTED.RequestedToId = Friendships.RequestedToId; " + // code repetition, better way to do this?
-                "   ELSE THROW 50004, 'NotSupportedValue', 1; " +
-                "   SELECT Id FROM Friendships f WHERE @@ROWCOUNT > 0 AND f.Id = scope_identity(); " +
-                "END ");
-
-            migrationBuilder.Sql(
-                "DROP TRIGGER IF EXISTS CascadeDeleteFriendships; ");
-
-            migrationBuilder.Sql(
-                "CREATE TRIGGER CascadeDeleteFriendships " +
-                "ON [User] " +
-                "INSTEAD OF DELETE " +
-                "AS " +
-                "BEGIN " +
-                "   DELETE FROM Friendships " +
-                "   FROM DELETED " +
-                "   WHERE RequestedById = DELETED.Id OR RequestedToId = DELETED.Id; " +
-                "   DELETE FROM [User] " +
-                "   FROM DELETED" +
-                "   WHERE [User].Id = DELETED.Id " + // I know that it is not in the best style, but I don't know how to do it better. AFTER DELETE does not work, cause the deletion violates the onDelete restrict constraint and I cannot set NO ACTION.
-                "END ");
+            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -104,8 +67,7 @@ namespace GameBoard.DataLayer.Migrations
             migrationBuilder.DropTable(
                 name: "Friendships");
 
-            migrationBuilder.Sql(
-                "DROP TRIGGER IF EXISTS CascadeDeleteFriendships; ");
+            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }

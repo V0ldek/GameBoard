@@ -11,9 +11,13 @@ namespace GameBoard.DataLayer.Context
         {
             base.OnModelCreating(builder);
 
-
             builder.Entity<ApplicationUser>(
-                entity => entity.ToTable("User"));
+                entity =>
+                {
+                    entity.Property(e => e.UserName).HasMaxLength(16);
+
+                    entity.ToTable("User");
+                });
 
             builder.Entity<Friendship>(
                 entity =>
@@ -32,7 +36,7 @@ namespace GameBoard.DataLayer.Context
                         .IsRequired();
 
                     entity.HasIndex(e => new { e.RequestedById, e.RequestedToId })
-                        .IsUnique(true);
+                        .IsUnique();
 
                     entity.HasOne(e => e.RequestedBy)
                         .WithMany(u => u.SentRequests)

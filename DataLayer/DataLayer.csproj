@@ -24,4 +24,13 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Migrations\Scripts\20190414094415_AddedApplicationUserAndFriendship_Down.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Migrations\Scripts\20190414094415_AddedApplicationUserAndFriendship_Up.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

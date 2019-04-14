@@ -55,7 +55,7 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256);
+                        .HasMaxLength(16);
 
                     b.HasKey("Id");
 
