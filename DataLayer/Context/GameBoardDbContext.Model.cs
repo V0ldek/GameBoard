@@ -12,7 +12,7 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<IdentityUser>(
                 entity => entity.ToTable("User"));
 
-            builder.Entity<IdentityRole>( 
+            builder.Entity<IdentityRole>(
                 entity => entity.ToTable("Role"));
 
             builder.Entity<IdentityUserRole<string>>(
@@ -25,7 +25,7 @@ namespace GameBoard.DataLayer.Context
                 entity => entity.ToTable("UserLogin"));
 
             builder.Entity<IdentityUserToken<string>>(
-                entity =>entity.ToTable("UserToken"));
+                entity => entity.ToTable("UserToken"));
 
             builder.Entity<IdentityRoleClaim<string>>(
                 entity => entity.ToTable("RoleClaim"));
