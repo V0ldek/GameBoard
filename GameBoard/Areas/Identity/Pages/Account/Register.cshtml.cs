@@ -84,7 +84,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(
-                256,
+                16,
                 ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
                 MinimumLength = 3)]
             [RegularExpression(@"^\w+$", ErrorMessage = "The {0} may contain only letters, numbers and underscores.")]
