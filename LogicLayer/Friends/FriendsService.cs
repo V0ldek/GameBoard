@@ -58,6 +58,11 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
         {
+            if (friendRequest.UserNameTo == friendRequest.UserNameFrom)
+            {
+                throw new ApplicationException("You cannot invite yourself.");
+            }
+
             var requestedById = await _repository.GetUserIdByUsername(friendRequest.UserNameFrom);
             var requestedToId = await _repository.GetUserIdByUsername(friendRequest.UserNameTo);
 
