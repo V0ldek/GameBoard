@@ -17,17 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190413132825_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190413133053_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190413192507_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190413194210_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190413231209_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190414002701_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190414010329_AddedApplicationUserAndFriendship.cs" />
-    <Compile Remove="Migrations\20190414090525_AddedApplicationUserAndFriendship.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
