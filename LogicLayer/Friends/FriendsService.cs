@@ -22,20 +22,16 @@ namespace GameBoard.LogicLayer.Friends
     internal sealed class FriendsService : IFriendsService
     {
         private readonly IGameBoardRepository _repository;
-        private readonly ILogger _logger;
 
         public FriendsService(IGameBoardRepository repository, ILogger<FriendsService> logger)
         {
             _repository = repository;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
             string normalizedUserName = userName.ToUpper();
             var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // is it possible that this user doesn't exist somehow?
-
-            // How does Cascade work? Does it delete user and all of its friendship in a single transaction or something like that?
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
@@ -67,58 +63,14 @@ namespace GameBoard.LogicLayer.Friends
             var requestedById = await _repository.ApplicationUsers
                 .Where(u => u.NormalizedUserName == normalizedUserNameFrom)
                 .Select(u => u.Id)
-                .SingleAsync(); // OrDefault? Deleted user?
+                .SingleAsync(); // OrDefault? Deleted user? It may throw unhandled exception.
 
             var requestedToId = await _repository.ApplicationUsers
                 .Where(u => u.NormalizedUserName == normalizedUserNameTo)
                 .Select(u => u.Id)
-                .SingleAsync(); // OrDefault? Deleted user? This should be a separate function.
+                .SingleAsync(); // OrDefault? Deleted user? It may throw unhandled exception. This should be a separate function.
 
             // what if user deletes its account in this moment? What happens with inserting new Friendship into database? Abort?
-
-            //var friendship = await _repository.Friendships
-            //    .SingleOrDefaultAsync(
-            //        f => f.RequestedById == requestedById &&
-            //            f.RequestedToId == requestedToId);
-
-
-            //if (friendship != null)
-            //{
-            //    switch (friendship.FriendshipStatus)
-            //    {
-            //        case FriendshipStatus.PendingFriendRequest:
-            //            throw new FriendRequestAlreadyPendingException(
-            //                "You have already sent this user a friend request.");
-            //        case FriendshipStatus.Lasts:
-            //            throw new FriendRequestAlreadyFinalizedException("You are already friends.");
-            //        case FriendshipStatus.Rejected:
-            //            break;
-            //        default:
-            //            throw new ArgumentOutOfRangeException();
-            //    }
-            //}
-
-            //// I have to check if RequestedTo have sent a friend request to RequestedBy already. 
-            //friendship = await _repository.Friendships
-            //    .SingleOrDefaultAsync(
-            //        f => f.RequestedById == requestedToId &&
-            //            f.RequestedToId == requestedById);
-
-            //if (friendship != null)
-            //{
-            //    switch (friendship.FriendshipStatus)
-            //    {
-            //        case FriendshipStatus.PendingFriendRequest:
-            //            throw new FriendRequestAlreadyPendingException(
-            //                $"You have already been invited by this user. Go to {friendRequest.GenerateRequestLink(friendship.Id.ToString())}, to confirm or reject the friend request.");
-            //        case FriendshipStatus.Lasts:
-            //            throw new FriendRequestAlreadyFinalizedException("You are already friends.");
-            //        case FriendshipStatus.Rejected:
-            //            break;
-            //        default:
-            //            throw new ArgumentOutOfRangeException();
-            //    }
-            //}
 
             _repository.Friendships.Add(
                 new Friendship()
@@ -155,7 +107,7 @@ namespace GameBoard.LogicLayer.Friends
         public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId)
         {
             var id = int.Parse(friendRequestId);
-            var friendship = _repository.Friendships.Where(f => f.Id == id); //friendship might not exist, because user can delete his account.
+            var friendship = _repository.Friendships.Where(f => f.Id == id); //friendship might not exist, because user can delete his account, or friendRequestId might just be incorrect.
 
             return friendship
                 .Include(f => f.RequestedBy)
@@ -166,13 +118,13 @@ namespace GameBoard.LogicLayer.Friends
                         new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email),
                         new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email),
                         f.FriendshipStatus.ToFriendRequest()))
-                .SingleAsync();
+                .SingleAsync(); // It may throw unhandled exception.
         }
 
         private async Task ChangeFriendRequestStatus(string friendRequestId, FriendshipStatus friendshipStatus)
         {
             var id = int.Parse(friendRequestId);
-            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id); //friendship might not exist, because user can delete his account.
+            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id); //friendship might not exist, because user can delete his account, or friendRequestId might just be incorrect. It may throw unhandled exception.
 
             friendship.FriendshipStatus = friendshipStatus;
 

@@ -17,14 +17,9 @@ namespace GameBoard.LogicLayer.UserSearch
         private const int MaxUsersToShow = 100;
         private readonly IGameBoardRepository _repository;
 
-        private readonly ILogger _logger;
-        private readonly UserManager<ApplicationUser> _userManager;
-
         public UserSearchService(IGameBoardRepository repository, ILogger<UserSearchService> logger, UserManager<ApplicationUser> userManager)
         {
             _repository = repository;
-            _userManager = userManager;
-            _logger = logger;
         }
 
         public Task<UserDto> GetUserByUsernameAsync(string userName)
@@ -32,7 +27,7 @@ namespace GameBoard.LogicLayer.UserSearch
             var normalizedUserName = userName.ToUpper();
             var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // This user might have just been deleted. Possible?
 
-            return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).FirstAsync(); // SingleAsync?
+            return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).SingleAsync(); // it may throw unhandled exception
         }
 
         public async Task<IEnumerable<UserDto>> GetSearchCandidatesAsync(string userNameInput)
