@@ -10,10 +10,14 @@ namespace GameBoard.DataLayer.Context
             base.OnModelCreating(builder);
 
             builder.Entity<IdentityUser>(
-                entity => entity.ToTable("user"));
+                entity =>
+                {
+                    entity.ToTable("user");
+                });
 
             builder.Entity<IdentityRole>(
                 entity => entity.ToTable("role"));
+
 
             builder.Entity<IdentityUserRole<string>>(
                 entity => entity.ToTable("user_role"));
