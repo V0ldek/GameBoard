@@ -6,8 +6,8 @@ namespace GameBoard.DataLayer.Repositories
 {
     public interface IGameBoardRepository
     {
-        DbSet<ApplicationUser> ApplicationUsers { get; set; } //only get?
-        DbSet<Friendship> Friendships { get; set; } //only get?
+        DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        DbSet<Friendship> Friendships { get; set; }
 
         Task SaveChangesAsync();
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using GameBoard.DataLayer.Enums;
 
+// I know that it is not the best namespace to put this in, but it did not work in other ones.
+
 namespace GameBoard.LogicLayer.Friends.Dtos
 {
     public static class FriendshipsStatusExtensions
@@ -18,7 +20,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
                 case FriendshipStatus.Rejected:
                     return FriendRequestDto.FriendRequestStatus.Rejected;
                 default:
-                    throw new InvalidOperationException("FriendshipStatus includes more status");
+                    throw new InvalidOperationException("This status is not included in FriendshipStatus");
             }
         }
     }

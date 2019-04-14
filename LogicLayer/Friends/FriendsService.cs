@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
+using GameBoard.DataLayer.ExtensionMethods;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using GameBoard.DataLayer.Repositories;
@@ -23,7 +24,7 @@ namespace GameBoard.LogicLayer.Friends
     {
         private readonly IGameBoardRepository _repository;
 
-        public FriendsService(IGameBoardRepository repository, ILogger<FriendsService> logger)
+        public FriendsService(IGameBoardRepository repository)
         {
             _repository = repository;
         }
@@ -31,7 +32,7 @@ namespace GameBoard.LogicLayer.Friends
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
             string normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName); // is it possible that this user doesn't exist somehow?
+            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
@@ -57,20 +58,8 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
         {
-            var normalizedUserNameFrom = friendRequest.UserNameFrom.ToUpper();
-            var normalizedUserNameTo = friendRequest.UserNameTo.ToUpper();
-
-            var requestedById = await _repository.ApplicationUsers
-                .Where(u => u.NormalizedUserName == normalizedUserNameFrom)
-                .Select(u => u.Id)
-                .SingleAsync(); // OrDefault? Deleted user? It may throw unhandled exception.
-
-            var requestedToId = await _repository.ApplicationUsers
-                .Where(u => u.NormalizedUserName == normalizedUserNameTo)
-                .Select(u => u.Id)
-                .SingleAsync(); // OrDefault? Deleted user? It may throw unhandled exception. This should be a separate function.
-
-            // what if user deletes its account in this moment? What happens with inserting new Friendship into database? Abort?
+            var requestedById = await _repository.GetUserIdByUsername(friendRequest.UserNameFrom);
+            var requestedToId = await _repository.GetUserIdByUsername(friendRequest.UserNameTo);
 
             _repository.Friendships.Add(
                 new Friendship()
@@ -90,7 +79,7 @@ namespace GameBoard.LogicLayer.Friends
                 {
                     case 50000:
                         throw new FriendRequestAlreadyPendingException(
-                            $"You have already been invited by this user. Go to ..., to confirm or reject the friend request.");
+                            $"You have already been invited by this user. Go to ..., to accept or reject the friend request.");
                     case 50001:
                         throw new FriendRequestAlreadyPendingException(
                             "You have already sent this user a friend request.");
@@ -107,7 +96,7 @@ namespace GameBoard.LogicLayer.Friends
         public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId)
         {
             var id = int.Parse(friendRequestId);
-            var friendship = _repository.Friendships.Where(f => f.Id == id); //friendship might not exist, because user can delete his account, or friendRequestId might just be incorrect.
+            var friendship = _repository.Friendships.Where(f => f.Id == id);
 
             return friendship
                 .Include(f => f.RequestedBy)
@@ -118,13 +107,13 @@ namespace GameBoard.LogicLayer.Friends
                         new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email),
                         new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email),
                         f.FriendshipStatus.ToFriendRequest()))
-                .SingleAsync(); // It may throw unhandled exception.
+                .SingleOrDefaultAsync();
         }
 
         private async Task ChangeFriendRequestStatus(string friendRequestId, FriendshipStatus friendshipStatus)
         {
             var id = int.Parse(friendRequestId);
-            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id); //friendship might not exist, because user can delete his account, or friendRequestId might just be incorrect. It may throw unhandled exception.
+            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id);
 
             friendship.FriendshipStatus = friendshipStatus;
 
