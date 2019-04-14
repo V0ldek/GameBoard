@@ -87,12 +87,15 @@ namespace GameBoard.DataLayer.Migrations
             migrationBuilder.Sql(
                 "CREATE TRIGGER CascadeDeleteFriendships " +
                 "ON [User] " +
-                "AFTER DELETE " +
+                "INSTEAD OF DELETE " +
                 "AS " +
                 "BEGIN " +
                 "   DELETE FROM Friendships " +
                 "   FROM DELETED " +
                 "   WHERE RequestedById = DELETED.Id OR RequestedToId = DELETED.Id; " +
+                "   DELETE FROM [User] " +
+                "   FROM DELETED" +
+                "   WHERE [User].Id = DELETED.Id " + // I know that it is not in the best style, but I don't know how to do it better. AFTER DELETE does not work, cause the deletion violates the onDelete restrict constraint and I cannot set NO ACTION.
                 "END ");
         }
 

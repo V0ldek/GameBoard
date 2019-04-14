@@ -11,6 +11,7 @@ namespace GameBoard.DataLayer.Context
         {
             base.OnModelCreating(builder);
 
+
             builder.Entity<ApplicationUser>(
                 entity => entity.ToTable("User"));
 
@@ -18,32 +19,32 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.HasKey(e => e.Id);
-
                     entity.Property(e => e.Id)
                         .HasMaxLength(32)
-                        .IsRequired();
+                        .IsRequired()
+                        .ValueGeneratedOnAdd();
+
                     entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
-
                     entity.Property(e => e.RequestedById)
                         .IsRequired();
                     entity.Property(e => e.RequestedToId)
                         .IsRequired();
 
-                    entity.HasIndex(e => new {RequestedById = e.RequestedById, RequestedToId = e.RequestedToId})
-                        .IsUnique(true); //is it directed uniqueness?
+                    entity.HasIndex(e => new { e.RequestedById, e.RequestedToId })
+                        .IsUnique(true);
 
                     entity.HasOne(e => e.RequestedBy)
                         .WithMany(u => u.SentRequests)
                         .HasForeignKey(e => e.RequestedById)
                         .OnDelete(DeleteBehavior.Restrict);
-                        //.OnDelete(DeleteBehavior.Cascade);
+                        //Can I set DeleteBehavior to NO ACTION?
 
                     entity.HasOne(e => e.RequestedTo)
                         .WithMany(u => u.ReceivedRequests)
                         .HasForeignKey(e => e.RequestedToId)
                         .OnDelete(DeleteBehavior.Restrict);
-                        //.OnDelete(DeleteBehavior.Cascade);
+                        //Can I set DeleteBehavior to NO ACTION?
                 });
 
             builder.Entity<IdentityRole>(

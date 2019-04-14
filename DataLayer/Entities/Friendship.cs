@@ -5,7 +5,6 @@ namespace GameBoard.DataLayer.Entities
 {
     public class Friendship
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string RequestedById { get; set; }
