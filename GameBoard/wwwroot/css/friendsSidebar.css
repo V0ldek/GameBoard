@@ -1,7 +1,17 @@
 ﻿:root { --sidebar-width: 250px; }
 
 @media (min-width: 768px) {
-    :root { --sidebar-width: 400px; }
+    :root { --sidebar-width: 300px }
+}
+
+@media (min-width: 1440px) {
+    :root { --sidebar-width: 350px; }
+}
+
+@media (min-width: 2048px) {
+    :root {
+        --sidebar-width: 400px
+    }
 }
 
 #friends-sidebar-container {
@@ -58,6 +68,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    font-size: 1.75vh;
 }
 
 .user-card .username-container { width: 100%; }
