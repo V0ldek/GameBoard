@@ -13,8 +13,8 @@ namespace GameBoard.LogicLayer
         public static void ConfigureServices(IServiceCollection services)
         {
             DataLayer.Configuration.ConfigureServices(services);
-            services.AddScoped<IUserSearchService, UserSearchService>(); // repository will be injected into ctor of UserSearchService, won't it be?
-            services.AddScoped<IFriendsService, FriendsService>(); // repository will be injected into ctor of UserSearchService, won't it be?
+            services.AddScoped<IUserSearchService, UserSearchService>();
+            services.AddScoped<IFriendsService, FriendsService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>
