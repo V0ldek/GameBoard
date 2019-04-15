@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = $"{Model.UserNameFrom} friend request";
 }
-
+@section FriendsSidebar
+{
+    @await Component.InvokeAsync("FriendsSidebar")
+}
 <div>
     <h2>Friend request from @Model.UserNameFrom.</h2>
     <p>User <strong>@Model.UserNameFrom</strong> wants to add you to his friends list!</p>

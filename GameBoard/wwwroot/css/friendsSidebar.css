@@ -14,7 +14,7 @@
 
 #friends-sidebar-container {
     margin-left: calc(var(--sidebar-width) * -1);
-    margin-right: 5%;
+    margin-right: 3%;
     position: relative;
     transition: all 0.3s;
 }
