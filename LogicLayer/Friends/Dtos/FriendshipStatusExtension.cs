@@ -9,9 +9,9 @@ namespace GameBoard.LogicLayer.Friends.Dtos
 {
     public static class FriendshipsStatusExtensions
     {
-        public static FriendRequestDto.FriendRequestStatus ToFriendRequest(this FriendshipStatus f)
+        public static FriendRequestDto.FriendRequestStatus ToFriendRequest(this FriendshipStatus friendshipStatus)
         {
-            switch (f)
+            switch (friendshipStatus)
             {
                 case FriendshipStatus.Lasts:
                     return FriendRequestDto.FriendRequestStatus.Accepted;
@@ -20,7 +20,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
                 case FriendshipStatus.Rejected:
                     return FriendRequestDto.FriendRequestStatus.Rejected;
                 default:
-                    throw new InvalidOperationException("This status is not included in FriendshipStatus");
+                    throw new ArgumentOutOfRangeException($"{friendshipStatus.ToString()} is not included in FriendshipStatus");
             }
         }
     }

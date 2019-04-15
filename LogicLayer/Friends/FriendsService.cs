@@ -30,36 +30,34 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
-            string normalizedUserName = userName.ToUpper();
+            var normalizedUserName = userName.ToUpper();
             var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
                 .SelectMany(u => u.SentRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
-                .Include(f => f.RequestedTo)
-                .Select(f => new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email));
+                .Select(f => f.RequestedTo);
 
             var friendsThatInvitedMe = user
                 .Include(u => u.ReceivedRequests)
                 .SelectMany(u => u.ReceivedRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
-                .Include(f => f.RequestedBy)
-                .Select(f => new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email));
+                .Select(f => f.RequestedBy);
 
-            var allFriends = await friendsInvitedByMe // can I avoid using await here?
+            var allFriends = await friendsInvitedByMe
                 .Union(friendsThatInvitedMe)
-                .OrderBy(u => u.UserName) // maybe order by NormalizedUserName? However, I cannot do that with UserDto.
-                .ToListAsync();
+                .OrderBy(u => u.NormalizedUserName)
+                .ToListAsync();        
 
-            return allFriends;
+            return allFriends.ConvertAll(u => u.ToUserDto());
         }
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
         {
             if (friendRequest.UserNameTo == friendRequest.UserNameFrom)
             {
-                throw new ApplicationException("You cannot invite yourself.");
+                throw new InvitingYourselfException("You cannot invite yourself.");
             }
 
             var requestedById = await _repository.GetUserIdByUsername(friendRequest.UserNameFrom);
@@ -90,44 +88,33 @@ namespace GameBoard.LogicLayer.Friends
                     case 50002:
                         throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException($"Not caught SQL Exception with error number {sqlException.Number.ToString()} occured.");
                 }
             }
 
-            //send email with link
+            // TODO: send email with link
         }
 
-        public Task<FriendRequestDto> GetFriendRequestAsync(string friendRequestId)
+        public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
         {
-            var id = int.Parse(friendRequestId);
-            var friendship = _repository.Friendships.Where(f => f.Id == id);
+            var friendship = await _repository.Friendships.SingleOrDefaultAsync(f => f.Id == friendRequestId);
 
-            return friendship
-                .Include(f => f.RequestedBy)
-                .Include(f => f.RequestedTo)
-                .Select(
-                    f => new FriendRequestDto(
-                        friendRequestId,
-                        new UserDto(f.RequestedBy.Id, f.RequestedBy.UserName, f.RequestedBy.Email),
-                        new UserDto(f.RequestedTo.Id, f.RequestedTo.UserName, f.RequestedTo.Email),
-                        f.FriendshipStatus.ToFriendRequest()))
-                .SingleOrDefaultAsync();
+            return friendship?.ToFriendRequestDto();
         }
 
-        private async Task ChangeFriendRequestStatus(string friendRequestId, FriendshipStatus friendshipStatus)
+        private async Task ChangeFriendRequestStatus(int friendRequestId, FriendshipStatus friendshipStatus)
         {
-            var id = int.Parse(friendRequestId);
-            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == id);
+            var friendship = await _repository.Friendships.SingleAsync(f => f.Id == friendRequestId);
 
             friendship.FriendshipStatus = friendshipStatus;
 
             await _repository.SaveChangesAsync();
         }
 
-        public async Task AcceptFriendRequestAsync(string friendRequestId) =>
-            await ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts); // can I avoid using await here? 
+        public Task AcceptFriendRequestAsync(int friendRequestId) =>
+            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
 
-        public async Task RejectFriendRequestAsync(string friendRequestId) =>
-            await ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected); // can I avoid using await here?
+        public Task RejectFriendRequestAsync(int friendRequestId) =>
+            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);
     }
 }

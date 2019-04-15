@@ -15,6 +15,7 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.Property(e => e.UserName).HasMaxLength(16);
+                    entity.Property(e => e.NormalizedUserName).HasMaxLength(16);
 
                     entity.ToTable("User");
                 });
@@ -24,15 +25,9 @@ namespace GameBoard.DataLayer.Context
                 {
                     entity.HasKey(e => e.Id);
                     entity.Property(e => e.Id)
-                        .HasMaxLength(32)
-                        .IsRequired()
                         .ValueGeneratedOnAdd();
 
                     entity.Property(e => e.FriendshipStatus)
-                        .IsRequired();
-                    entity.Property(e => e.RequestedById)
-                        .IsRequired();
-                    entity.Property(e => e.RequestedToId)
                         .IsRequired();
 
                     entity.HasIndex(e => new { e.RequestedById, e.RequestedToId })
@@ -41,14 +36,16 @@ namespace GameBoard.DataLayer.Context
                     entity.HasOne(e => e.RequestedBy)
                         .WithMany(u => u.SentRequests)
                         .HasForeignKey(e => e.RequestedById)
+                        .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
-                        //Can I set DeleteBehavior to NO ACTION?
 
                     entity.HasOne(e => e.RequestedTo)
                         .WithMany(u => u.ReceivedRequests)
                         .HasForeignKey(e => e.RequestedToId)
+                        .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
-                        //Can I set DeleteBehavior to NO ACTION?
+
+                    entity.ToTable("Friendship");
                 });
 
             builder.Entity<IdentityRole>(

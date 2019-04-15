@@ -18,12 +18,12 @@ namespace GameBoard.LogicLayer.Friends
 
         // Returns null if friend request does not exist.
         [ItemCanBeNull]
-        Task<FriendRequestDto> GetFriendRequestAsync([NotNull] string friendRequestId);
+        Task<FriendRequestDto> GetFriendRequestAsync([NotNull] int friendRequestId);
 
         // Throws FriendRequestAlreadyFinalized if the request was already accepted or rejected.
-        Task AcceptFriendRequestAsync([NotNull] string friendRequestId);
+        Task AcceptFriendRequestAsync([NotNull] int friendRequestId);
 
         // Throws FriendRequestAlreadyFinalized if the request was already accepted or rejected.
-        Task RejectFriendRequestAsync([NotNull] string friendRequestId);
+        Task RejectFriendRequestAsync([NotNull] int friendRequestId);
     }
 }

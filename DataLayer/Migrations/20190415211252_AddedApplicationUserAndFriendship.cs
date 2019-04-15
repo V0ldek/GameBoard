@@ -20,28 +20,26 @@ namespace GameBoard.DataLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Friendships",
+                name: "Friendship",
                 columns: table => new
                 {
-                    Id = table.Column<int>(maxLength: 32, nullable: false)
-                        .Annotation(
-                            "SqlServer:ValueGenerationStrategy",
-                            SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RequestedById = table.Column<string>(nullable: false),
                     RequestedToId = table.Column<string>(nullable: false),
                     FriendshipStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friendships", x => x.Id);
+                    table.PrimaryKey("PK_Friendship", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Friendships_User_RequestedById",
+                        name: "FK_Friendship_User_RequestedById",
                         column: x => x.RequestedById,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendships_User_RequestedToId",
+                        name: "FK_Friendship_User_RequestedToId",
                         column: x => x.RequestedToId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -49,14 +47,14 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_RequestedToId",
-                table: "Friendships",
+                name: "IX_Friendship_RequestedToId",
+                table: "Friendship",
                 column: "RequestedToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_RequestedById_RequestedToId",
-                table: "Friendships",
-                columns: new[] {"RequestedById", "RequestedToId"},
+                name: "IX_Friendship_RequestedById_RequestedToId",
+                table: "Friendship",
+                columns: new[] { "RequestedById", "RequestedToId" },
                 unique: true);
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
@@ -65,7 +63,7 @@ namespace GameBoard.DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Friendships");
+                name: "Friendship");
 
             migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }

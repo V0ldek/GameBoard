@@ -42,7 +42,7 @@ namespace GameBoard.DataLayer.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
+                        .HasMaxLength(16);
 
                     b.Property<string>("PasswordHash");
 
@@ -74,7 +74,6 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(32)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("FriendshipStatus");
@@ -92,7 +91,7 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasIndex("RequestedById", "RequestedToId")
                         .IsUnique();
 
-                    b.ToTable("Friendships");
+                    b.ToTable("Friendship");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

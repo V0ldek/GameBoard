@@ -12,9 +12,9 @@ namespace GameBoard.DataLayer.Context
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
 
-        public Task<string> GetUserIdByUsername(string username)
+        public Task<string> GetUserIdByUsername(string userName)
         {
-            var normalizedUserName = username.ToUpper();
+            var normalizedUserName = userName.ToUpper();
 
             return ApplicationUsers
                 .Where(u => u.NormalizedUserName == normalizedUserName)
