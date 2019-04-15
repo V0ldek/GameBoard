@@ -53,11 +53,11 @@ END;
 
 GO
 
-DROP TRIGGER IF EXISTS TR_Friendship_InsteadOfDelete;
+DROP TRIGGER IF EXISTS TR_User_InsteadOfDelete;
 
 GO
 
-CREATE TRIGGER TR_Friendship_InsteadOfDelete
+CREATE TRIGGER TR_User_InsteadOfDelete
   ON [User]
   INSTEAD OF DELETE
 AS

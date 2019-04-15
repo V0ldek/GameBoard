@@ -2,6 +2,6 @@
 
 GO
 
-DROP TRIGGER IF EXISTS TR_Friendship_InsteadOfDelete;
+DROP TRIGGER IF EXISTS TR_User_InsteadOfDelete;
 
 GO
