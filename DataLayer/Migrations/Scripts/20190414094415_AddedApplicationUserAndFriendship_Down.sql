@@ -1,7 +1,7 @@
-﻿DROP TRIGGER IF EXISTS uniquelastingorpendingfriendship;
+﻿DROP TRIGGER IF EXISTS TR_Friendship_InsteadOfInsert;
 
 GO
 
-DROP TRIGGER IF EXISTS cascadedeletefriendships;
+DROP TRIGGER IF EXISTS TR_Friendship_InsteadOfDelete;
 
 GO

@@ -1,48 +1,48 @@
-﻿DROP TRIGGER IF EXISTS uniquelastingorpendingfriendship;
+﻿DROP TRIGGER IF EXISTS TR_Friendship_InsteadOfInsert;
 
 GO
 
-CREATE TRIGGER uniquelastingorpendingfriendship
+CREATE TRIGGER TR_Friendship_InsteadOfInsert
   ON friendships
   INSTEAD OF INSERT
 AS
   BEGIN
     SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
     BEGIN TRANSACTION
-      DECLARE @friendshipstatus INT;
-      SET @friendshipstatus =
-      (SELECT friendships.friendshipstatus
+      DECLARE @friendshipStatus INT;
+      SET @friendshipStatus =
+      (SELECT friendships.friendshipStatus
        FROM friendships,
             inserted
-       WHERE inserted.requestedtoid = friendships.requestedbyid
-         AND inserted.requestedbyid = friendships.requestedtoid);
+       WHERE inserted.requestedToId = friendships.requestedById
+         AND inserted.requestedById = friendships.requestedToId);
       -- Checking if RequestedTo have already sent an friend request to RequestedBy.
-      IF @friendshipstatus = 0
+      IF @friendshipStatus = 0
         THROW 50000, 'PendingFromRequestedTo', 1;
-      IF @friendshipstatus = 2
+      IF @friendshipStatus = 2
         THROW 50002, 'Lasts', 1;
       -- @friendshipStatus IS NULL or @friendshipStatus = 1, so we can proceed.
-      SET @friendshipstatus =
-      (SELECT friendships.friendshipstatus
+      SET @friendshipStatus =
+      (SELECT friendships.friendshipStatus
        FROM friendships,
             inserted
-       WHERE inserted.requestedbyid = friendships.requestedbyid
-         AND inserted.requestedtoid = friendships.requestedtoid);
+       WHERE inserted.requestedById = friendships.requestedById
+         AND inserted.requestedToId = friendships.requestedToId);
 
-      IF @friendshipstatus IS NULL
-        INSERT INTO friendships (requestedbyid, requestedtoid, friendshipstatus)
-         (SELECT requestedbyid, requestedtoid, friendshipstatus
+      IF @friendshipStatus IS NULL
+        INSERT INTO friendships (requestedById, requestedToId, friendshipStatus)
+         (SELECT requestedById, requestedToId, friendshipStatus
           FROM inserted); -- better way to do this? the trigger isn't called recursively.
-      ELSE IF @friendshipstatus = 0
+      ELSE IF @friendshipStatus = 0
         THROW 50001, 'PendingFromRequestedBy', 1;
-      ELSE IF @friendshipstatus = 2
+      ELSE IF @friendshipStatus = 2
         THROW 50002, 'Lasts', 1;
-      ELSE IF @friendshipstatus = 1
+      ELSE IF @friendshipStatus = 1
         UPDATE friendships
-        SET friendships.friendshipstatus = inserted.friendshipstatus
+        SET friendships.friendshipStatus = inserted.friendshipStatus
         FROM inserted
-        WHERE inserted.requestedbyid = friendships.requestedbyid
-          AND inserted.requestedtoid = friendships.requestedtoid; -- code repetition, better way TO do this?
+        WHERE inserted.requestedById = friendships.requestedById
+          AND inserted.requestedToId = friendships.requestedToId; -- code repetition, better way TO do this?
       ELSE THROW 50004, 'NotSupportedValue', 1;
       SELECT id
       FROM friendships f
@@ -53,19 +53,19 @@ END;
 
 GO
 
-DROP TRIGGER IF EXISTS cascadedeletefriendships;
+DROP TRIGGER IF EXISTS TR_Friendship_InsteadOfDelete;
 
 GO
 
-CREATE TRIGGER cascadedeletefriendships
+CREATE TRIGGER TR_Friendship_InsteadOfDelete
   ON [User]
   INSTEAD OF DELETE
 AS
   BEGIN
     DELETE FROM friendships
     FROM deleted
-    WHERE requestedbyid = deleted.id
-       OR requestedtoid = deleted.id;
+    WHERE requestedById = deleted.id
+       OR requestedToId = deleted.id;
     DELETE FROM [User]
     FROM deleted
     WHERE [User].id = deleted.id   -- I know that it is not in the best style, but I don't know how to do it better. AFTER DELETE does not work, cause the deletion violates the onDelete restrict constraint and I cannot set NO ACTION.
