@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using GameBoard.DataLayer.Enums;
+﻿using GameBoard.DataLayer.Enums;
 
 namespace GameBoard.DataLayer.Entities
 {

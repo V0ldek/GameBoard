@@ -1,12 +1,14 @@
-﻿using GameBoard.DataLayer.Entities;
+﻿using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace GameBoard.DataLayer.Context
 {
     internal sealed partial class GameBoardDbContext
     {
+        public Task SaveChangesAsync() => base.SaveChangesAsync();
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -30,7 +32,7 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
 
-                    entity.HasIndex(e => new { e.RequestedById, e.RequestedToId })
+                    entity.HasIndex(e => new {e.RequestedById, e.RequestedToId})
                         .IsUnique();
 
                     entity.HasOne(e => e.RequestedBy)
@@ -66,7 +68,5 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<IdentityRoleClaim<string>>(
                 entity => entity.ToTable("RoleClaim"));
         }
-
-        public Task SaveChangesAsync() => base.SaveChangesAsync();
     }
 }

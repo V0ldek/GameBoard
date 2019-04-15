@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GameBoard.DataLayer.Enums;
 
 // I know that it is not the best namespace to put this in, but it did not work in other ones.
@@ -20,7 +18,8 @@ namespace GameBoard.LogicLayer.Friends.Dtos
                 case FriendshipStatus.Rejected:
                     return FriendRequestDto.FriendRequestStatus.Rejected;
                 default:
-                    throw new ArgumentOutOfRangeException($"{friendshipStatus.ToString()} is not included in FriendshipStatus");
+                    throw new ArgumentOutOfRangeException(
+                        $"{friendshipStatus.ToString()} is not included in FriendshipStatus");
             }
         }
     }

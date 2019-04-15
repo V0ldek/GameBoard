@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.UserSearch.Dtos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace GameBoard.LogicLayer.UserSearch
 {
@@ -35,12 +30,12 @@ namespace GameBoard.LogicLayer.UserSearch
             var normalizedUserNameInput = userNameInput.ToUpper();
 
             var matchingPrefixesList = await _repository.ApplicationUsers
-                    .Where(u => u.NormalizedUserName.StartsWith(normalizedUserNameInput))
-                    .Take(MaxUsersToShow)
-                    .Select(u => new UserDto(u.Id, u.UserName, u.Email))
-                    .ToListAsync();
+                .Where(u => u.NormalizedUserName.StartsWith(normalizedUserNameInput))
+                .Take(MaxUsersToShow)
+                .Select(u => new UserDto(u.Id, u.UserName, u.Email))
+                .ToListAsync();
 
-            var usersToShowLeft = MaxUsersToShow - matchingPrefixesList.Count; 
+            var usersToShowLeft = MaxUsersToShow - matchingPrefixesList.Count;
 
             if (usersToShowLeft == 0)
             {

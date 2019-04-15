@@ -7,6 +7,7 @@ namespace GameBoard.DataLayer.Migrations.MigrationBuilderExtensions
 {
     internal static class MigrationBuilderExtensions
     {
-        public static OperationBuilder<SqlOperation> RunSqlScript(this MigrationBuilder builder, string scriptPath) => builder.Sql(File.ReadAllText(scriptPath));
+        public static OperationBuilder<SqlOperation> RunSqlScript(this MigrationBuilder builder, string scriptPath) =>
+            builder.Sql(File.ReadAllText(scriptPath));
     }
 }

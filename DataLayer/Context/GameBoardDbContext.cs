@@ -9,6 +9,11 @@ namespace GameBoard.DataLayer.Context
 {
     internal sealed partial class GameBoardDbContext : IdentityDbContext<ApplicationUser>, IGameBoardRepository
     {
+        public GameBoardDbContext(DbContextOptions<GameBoardDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
 
@@ -20,11 +25,6 @@ namespace GameBoard.DataLayer.Context
                 .Where(u => u.NormalizedUserName == normalizedUserName)
                 .Select(u => u.Id)
                 .SingleAsync();
-        }
-
-        public GameBoardDbContext(DbContextOptions<GameBoardDbContext> options)
-            : base(options)
-        {
         }
     }
 }

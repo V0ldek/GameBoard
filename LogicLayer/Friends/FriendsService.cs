@@ -2,20 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
-using GameBoard.LogicLayer.Friends.Dtos;
-using GameBoard.LogicLayer.UserSearch.Dtos;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
-using Microsoft.AspNetCore.Identity;
+using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Expressions;
-using Microsoft.Extensions.Logging;
-using Remotion.Linq.Parsing;
 
 namespace GameBoard.LogicLayer.Friends
 {
@@ -48,7 +42,7 @@ namespace GameBoard.LogicLayer.Friends
             var allFriends = await friendsInvitedByMe
                 .Union(friendsThatInvitedMe)
                 .OrderBy(u => u.NormalizedUserName)
-                .ToListAsync();        
+                .ToListAsync();
 
             return allFriends.ConvertAll(u => u.ToUserDto());
         }
@@ -64,7 +58,7 @@ namespace GameBoard.LogicLayer.Friends
             var requestedToId = await _repository.GetUserIdByUsername(friendRequest.UserNameTo);
 
             _repository.Friendships.Add(
-                new Friendship()
+                new Friendship
                 {
                     RequestedById = requestedById,
                     RequestedToId = requestedToId,
@@ -88,7 +82,8 @@ namespace GameBoard.LogicLayer.Friends
                     case 50002:
                         throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                     default:
-                        throw new ArgumentOutOfRangeException($"Not caught SQL Exception with error number {sqlException.Number.ToString()} occured.");
+                        throw new ArgumentOutOfRangeException(
+                            $"Not caught SQL Exception with error number {sqlException.Number.ToString()} occured.");
                 }
             }
 
@@ -102,6 +97,12 @@ namespace GameBoard.LogicLayer.Friends
             return friendship?.ToFriendRequestDto();
         }
 
+        public Task AcceptFriendRequestAsync(int friendRequestId) =>
+            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
+
+        public Task RejectFriendRequestAsync(int friendRequestId) =>
+            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);
+
         private async Task ChangeFriendRequestStatus(int friendRequestId, FriendshipStatus friendshipStatus)
         {
             var friendship = await _repository.Friendships.SingleAsync(f => f.Id == friendRequestId);
@@ -110,11 +111,5 @@ namespace GameBoard.LogicLayer.Friends
 
             await _repository.SaveChangesAsync();
         }
-
-        public Task AcceptFriendRequestAsync(int friendRequestId) =>
-            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
-
-        public Task RejectFriendRequestAsync(int friendRequestId) =>
-            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);
     }
 }

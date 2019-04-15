@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameBoard.DataLayer.Entities;
+﻿using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.Friends.Dtos
