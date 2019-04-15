@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CssInliner": {
+      "commandName": "Project",
+      "commandLineArgs": "\"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\raw\" \"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\raw\\styles.css\" \"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\test-inline\""
+    }
+  }
+}
