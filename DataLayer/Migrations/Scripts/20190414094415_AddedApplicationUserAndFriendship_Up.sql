@@ -34,7 +34,7 @@ AS
       IF @friendshipStatus IS NULL
         INSERT INTO Friendship (RequestedById, RequestedToId, FriendshipStatus)
          (SELECT RequestedById, RequestedToId, FriendshipStatus
-          FROM INSERTED); -- better way to do this? the trigger isn't called recursively.
+          FROM INSERTED); -- the trigger isn't called recursively.
       ELSE IF @friendshipStatus = 0
         THROW 50001, 'PendingFromRequestedBy', 1;
       ELSE IF @friendshipStatus = 2
