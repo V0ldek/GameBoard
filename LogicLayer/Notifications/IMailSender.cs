@@ -5,12 +5,12 @@ namespace GameBoard.LogicLayer.Notifications
 {
     public interface IMailSender
     {
-        Task SendEmailConfirmationAsync(IEnumerable<string> emails, string link);
+        Task SendEmailConfirmationAsync(string email, string link);
         Task SendEventCancellationAsync(IEnumerable<string> emails, string link);
         Task SendEventConfirmationAsync(IEnumerable<string> emails, string link);
         Task SendEventInvitationAsync(IEnumerable<string> emails, string link);
-        Task SendFriendAcceptAsync(IEnumerable<string> emails, string link);
-        Task SendFriendInvitationAsync(IEnumerable<string> emails, string link);
-        Task SendPasswordResetAsync(IEnumerable<string> emails, string link);
+        Task SendFriendAcceptAsync(string email, string link);
+        Task SendFriendInvitationAsync(string email, string link);
+        Task SendPasswordResetAsync(string email, string link);
     }
 }

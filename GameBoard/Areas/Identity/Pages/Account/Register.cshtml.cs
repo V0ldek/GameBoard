@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Notifications;
@@ -16,7 +15,6 @@ namespace GameBoard.Areas.Identity.Pages.Account
     {
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailSender _mailSender;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty]
@@ -24,12 +22,10 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IMailSender mailSender)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
             _mailSender = mailSender;
         }
@@ -51,11 +47,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                         new {userId = user.Id, code},
                         Request.Scheme);
 
-                    var emails = new List<string>
-                    {
-                        Input.Email
-                    };
-                    await _mailSender.SendEmailConfirmationAsync(emails, HtmlEncoder.Default.Encode(callbackUrl));
+                    await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
                     return RedirectToPage("/Account/ConfirmEmailInfo");
                 }

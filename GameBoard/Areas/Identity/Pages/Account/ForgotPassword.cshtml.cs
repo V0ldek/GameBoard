@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Notifications;
@@ -46,11 +45,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                     new {code, email},
                     Request.Scheme);
 
-                var emails = new List<string>
-                {
-                    Input.Email
-                };
-                await _mailSender.SendPasswordResetAsync(emails, HtmlEncoder.Default.Encode(callbackUrl));
+                await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

@@ -51,7 +51,6 @@ namespace GameBoard
                 .AddDbContextStores();
 
             services.AddTransient<IMailSender, MailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
             services.Configure<MailNotificationsConfiguration>(Configuration.GetSection("MailNotifications"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -5,24 +5,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GameBoard.LogicLayer.Notifications
 {
     public class MailSender : IMailSender
     {
-        public MailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, IOptions<MailNotificationsConfiguration> mailOptionsAccessor)
+        public MailSender(IOptions<MailNotificationsConfiguration> mailOptionsAccessor)
         {
-            Options = optionsAccessor.Value;
             MailOptions = mailOptionsAccessor.Value;
         }
 
-        private AuthMessageSenderOptions Options { get; } //set only via Secret Manager
         private MailNotificationsConfiguration MailOptions { get; }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => Execute(Options.MailgunDomain, Options.MailgunApiKey, emails, notification);
+            => Execute(MailOptions.MailgunDomain, MailOptions.MailgunApiKey, emails, notification);
+
+        private Task SendEmailAsync(string email, Notification notification)
+        {
+            var emails = new List<string>
+            {
+                email
+            };
+            return SendEmailAsync(emails, notification);
+        }
 
         private Task Execute(string domain, string apiKey, IEnumerable<string> emails, Notification notification)
         {
@@ -53,46 +59,46 @@ namespace GameBoard.LogicLayer.Notifications
             return htmlPath;
         }
 
-        public Task SendEmailConfirmationAsync(IEnumerable<string> emails, string link)
+        public Task SendEmailConfirmationAsync(string email, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("email-confirmation.html"), link, "Email Confirmation");
-            return SendEmailAsync(emails, notification);
+            Notification notification = new Notification(GetHtmlPath(MailOptions.EmailConfirmationHtml), link, "Email Confirmation");
+            return SendEmailAsync(email, notification);
         }
 
         public Task SendEventCancellationAsync(IEnumerable<string> emails, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("event-cancellation.html"), link, "Event Cancellation");
+            Notification notification = new Notification(GetHtmlPath(MailOptions.EventCancellationHtml), link, "Event Cancellation");
             return SendEmailAsync(emails, notification);
         }
 
         public Task SendEventConfirmationAsync(IEnumerable<string> emails, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("event-confirmation.html"), link, "Event Confirmation");
+            Notification notification = new Notification(GetHtmlPath(MailOptions.EventConfirmationHtml), link, "Event Confirmation");
             return SendEmailAsync(emails, notification);
         }
 
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("event-invitation.html"), link, "Event Invitation");
+            Notification notification = new Notification(GetHtmlPath(MailOptions.EventInvitationHtml), link, "Event Invitation");
             return SendEmailAsync(emails, notification);
         }
 
-        public Task SendFriendAcceptAsync(IEnumerable<string> emails, string link)
+        public Task SendFriendAcceptAsync(string email, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("friend-accept.html"), link, "Friend Invitation Accepted");
-            return SendEmailAsync(emails, notification);
+            Notification notification = new Notification(GetHtmlPath(MailOptions.FriendAcceptHtml), link, "Friend Invitation Accepted");
+            return SendEmailAsync(email, notification);
         }
 
-        public Task SendFriendInvitationAsync(IEnumerable<string> emails, string link)
+        public Task SendFriendInvitationAsync(string email, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("friend-invitation.html"), link, "Friend Invitation");
-            return SendEmailAsync(emails, notification);
+            Notification notification = new Notification(GetHtmlPath(MailOptions.FriendInvitationHtml), link, "Friend Invitation");
+            return SendEmailAsync(email, notification);
         }
 
-        public Task SendPasswordResetAsync(IEnumerable<string> emails, string link)
+        public Task SendPasswordResetAsync(string email, string link)
         {
-            Notification notification = new Notification(GetHtmlPath("password-reset.html"), link, "Password Reset");
-            return SendEmailAsync(emails, notification);
+            Notification notification = new Notification(GetHtmlPath(MailOptions.PasswordResetHtml), link, "Password Reset");
+            return SendEmailAsync(email, notification);
         }
     }
 }
