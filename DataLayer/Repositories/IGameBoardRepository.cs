@@ -9,7 +9,7 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<ApplicationUser> ApplicationUsers { get; }
         DbSet<Friendship> Friendships { get; }
 
-        Task<string> GetUserIdByUsername(string userName);
+        Task<string> GetUserIdByUserName(string userName);
 
         Task SaveChangesAsync();
     }

@@ -54,8 +54,8 @@ namespace GameBoard.LogicLayer.Friends
                 throw new InvitingYourselfException("You cannot invite yourself.");
             }
 
-            var requestedById = await _repository.GetUserIdByUsername(friendRequest.UserNameFrom);
-            var requestedToId = await _repository.GetUserIdByUsername(friendRequest.UserNameTo);
+            var requestedById = await _repository.GetUserIdByUserName(friendRequest.UserNameFrom);
+            var requestedToId = await _repository.GetUserIdByUserName(friendRequest.UserNameTo);
 
             _repository.Friendships.Add(
                 new Friendship
