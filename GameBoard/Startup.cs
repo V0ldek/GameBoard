@@ -53,8 +53,10 @@ namespace GameBoard
             LogicLayer.Configuration.ConfigureDbContext(
                 services,
                 Configuration.GetConnectionString(
-                    (Environment.IsStaging() ? "GameboardStaging" :
-                        ((Environment.IsProduction()) ? "GameboardRelease" : "DefaultConnection"))));
+                    Environment.IsStaging() ? "GameboardStaging" :
+                    Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
+
+
 
             LogicLayer.Configuration.ConfigureServices(services);
 
