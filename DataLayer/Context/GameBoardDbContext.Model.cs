@@ -33,6 +33,7 @@ namespace GameBoard.DataLayer.Context
                         .IsRequired();
 
                     entity.HasIndex(e => new {e.RequestedById, e.RequestedToId})
+                        .HasFilter("FriendshipStatus <> 1") // <> rejected
                         .IsUnique();
 
                     entity.HasOne(e => e.RequestedBy)

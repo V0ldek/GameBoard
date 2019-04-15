@@ -89,7 +89,8 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasIndex("RequestedToId");
 
                     b.HasIndex("RequestedById", "RequestedToId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("FriendshipStatus <> 1");
 
                     b.ToTable("Friendship");
                 });

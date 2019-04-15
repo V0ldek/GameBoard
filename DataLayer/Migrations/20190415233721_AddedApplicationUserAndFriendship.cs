@@ -55,7 +55,8 @@ namespace GameBoard.DataLayer.Migrations
                 name: "IX_Friendship_RequestedById_RequestedToId",
                 table: "Friendship",
                 columns: new[] { "RequestedById", "RequestedToId" },
-                unique: true);
+                unique: true,
+                filter: "FriendshipStatus <> 1");
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }

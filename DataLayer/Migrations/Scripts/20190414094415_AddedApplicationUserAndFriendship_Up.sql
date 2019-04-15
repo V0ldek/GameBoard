@@ -15,19 +15,21 @@ AS
        FROM Friendship,
             INSERTED
        WHERE INSERTED.RequestedToId = Friendship.RequestedById
-         AND INSERTED.RequestedById = Friendship.RequestedToId);
+         AND INSERTED.RequestedById = Friendship.RequestedToId
+		 AND INSERTED.FriendshipStatus <> 1); -- <> rejected
       -- Checking if RequestedTo have already sent an friend request to RequestedBy.
       IF @friendshipStatus = 0
         THROW 50000, 'PendingFromRequestedTo', 1;
       IF @friendshipStatus = 2
         THROW 50002, 'Lasts', 1;
-      -- @friendshipStatus IS NULL or @friendshipStatus = 1, so we can proceed.
+      -- @friendshipStatus IS NULL, so we can proceed.
       SET @friendshipStatus =
       (SELECT Friendship.FriendshipStatus
        FROM Friendship,
             INSERTED
        WHERE INSERTED.RequestedById = Friendship.RequestedById
-         AND INSERTED.RequestedToId = Friendship.RequestedToId);
+         AND INSERTED.RequestedToId = Friendship.RequestedToId
+		 AND INSERTED.FriendshipStatus <> 1);
 
       IF @friendshipStatus IS NULL
         INSERT INTO Friendship (RequestedById, RequestedToId, FriendshipStatus)
@@ -37,12 +39,6 @@ AS
         THROW 50001, 'PendingFromRequestedBy', 1;
       ELSE IF @friendshipStatus = 2
         THROW 50002, 'Lasts', 1;
-      ELSE IF @friendshipStatus = 1
-        UPDATE Friendship
-        SET Friendship.friendshipStatus = INSERTED.FriendshipStatus
-        FROM INSERTED
-        WHERE INSERTED.RequestedById = Friendship.RequestedById
-          AND INSERTED.RequestedToId = Friendship.RequestedToId; -- code repetition, better way to do this?
       ELSE THROW 50004, 'NotSupportedValue', 1;
       SELECT Id
       FROM Friendship f
