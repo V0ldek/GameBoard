@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
-using GameBoard.DataLayer.ExtensionMethods;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using GameBoard.DataLayer.Repositories;
