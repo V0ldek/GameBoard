@@ -11,7 +11,7 @@ namespace GameBoard.DataLayer
         public static void ConfigureDbContext(IServiceCollection services, string connectionString) =>
             services.AddDbContext<GameBoardDbContext>(
                 options =>
-                    options.UseNpgsql(connectionString));
+                    options.UseSqlServer(connectionString));
 
         public static void ConfigureServices(IServiceCollection services) =>
             services.AddScoped<IGameBoardRepository, GameBoardDbContext>();
