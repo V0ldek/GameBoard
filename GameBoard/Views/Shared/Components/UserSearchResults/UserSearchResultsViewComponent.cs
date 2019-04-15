@@ -9,7 +9,11 @@ namespace GameBoard.Views.Shared.Components.UserSearchResults
     {
         private const int ResultsCap = 20;
 
-        public IViewComponentResult Invoke(IEnumerable<UserViewModel> searchResults) =>
-            View("UserSearchResults", searchResults.Take(ResultsCap));
+        public IViewComponentResult Invoke(IEnumerable<UserViewModel> searchResults)
+        {
+            var cappedResults = searchResults.Take(ResultsCap).ToList();
+
+            return cappedResults.Any() ? View("UserSearchResults", cappedResults) : View("UserSearchResultsEmpty");
+        }
     }
 }

@@ -82,7 +82,10 @@
 
                 this.setAutocompleteResultsPosition(resultDiv);
 
-                $(resultDiv).mCustomScrollbar();
+                $(resultDiv)
+                    .mCustomScrollbar({
+                        theme: "minimal"
+                    });
             })
             .catch(reason => this.createErrorResult(reason));
     }
