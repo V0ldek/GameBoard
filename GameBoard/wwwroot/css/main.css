@@ -4,18 +4,18 @@ for details on configuring this project to bundle and minify static web assets. 
 /* Main elements 
 -------------------------------------------------- */
 
-html { font-size: 14px; }
+html { font-size: 13px; }
 
 @media (min-width: 768px) {
-    html { font-size: 16px }
+    html { font-size: 14px }
 }
 
 @media (min-width: 1440px) {
-    html { font-size: 18px }
+    html { font-size: 15px }
 }
 
 @media (min-width: 2048px) {
-    html { font-size: 20px; }
+    html { font-size: 16px; }
 }
 
 html {
@@ -33,6 +33,23 @@ body {
 main {
     padding: 3%;
     width: 100%;
+    padding-bottom: 100px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+@media (min-width: 768px) {
+    main {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+}
+
+@media (min-width: 1440px) {
+    main {
+        margin-left: 4%;
+        margin-right: 4%;
+    }
 }
 
 .flex-container {
@@ -78,7 +95,19 @@ main {
 /*
 -------------------------------------------------- */
 
-.logo { max-width: 20%; }
+.logo { max-width: 50%; }
+
+@media (min-width: 768px) {
+    .logo {
+        max-width: 30%;
+    }
+}
+
+@media (min-width: 1440px) {
+    .logo {
+        max-width: 20%;
+    }
+}
 
 button.accept-policy {
     font-size: 1rem;
