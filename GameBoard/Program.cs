@@ -13,6 +13,7 @@ namespace GameBoard
                 .ConfigureLogging(
                     (hostingContext, logging) =>
                     {
+                        logging.AddApplicationInsights();
                         logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                         logging.AddConsole();
                         logging.AddDebug();

@@ -15,19 +15,20 @@ class PopoverGenerator {
                 </div>`;
     }
 
-    generateSuccessPopup(source: HTMLElement, jqXhr: JQueryXHR) {
-        this.generatePopup(source, this.getHtmlTemplate(PopoverGenerator.headerSuccessClass), jqXhr);
+    generateSuccessPopover(source: HTMLElement, jqXhr: JQueryXHR) {
+        this.generatePopover(source, this.getHtmlTemplate(PopoverGenerator.headerSuccessClass), jqXhr);
     }
 
-    generateErrorPopup(source: HTMLElement, jqXhr: JQueryXHR) {
-        this.generatePopup(source, this.getHtmlTemplate(PopoverGenerator.headerErrorClass), jqXhr);
+    generateErrorPopover(source: HTMLElement, jqXhr: JQueryXHR) {
+        this.generatePopover(source, this.getHtmlTemplate(PopoverGenerator.headerErrorClass), jqXhr);
     }
 
-    private generatePopup(source: HTMLElement, template: string, jqXhr: JQueryXHR) {
+    private generatePopover(source: HTMLElement, template: string, jqXhr: JQueryXHR) {
         const response: IResponse = jqXhr.responseJSON;
 
         source.setAttribute("title", response.title);
         source.setAttribute("data-content", response.message);
+        $(source).popover("dispose");
         $(source)
             .popover({
                 trigger: "focus",

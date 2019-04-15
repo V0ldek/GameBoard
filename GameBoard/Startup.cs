@@ -5,7 +5,6 @@ using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,8 +54,6 @@ namespace GameBoard
                 Configuration.GetConnectionString(
                     Environment.IsStaging() ? "GameboardStaging" :
                     Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
-
-
 
             LogicLayer.Configuration.ConfigureServices(services);
 
