@@ -19,7 +19,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
                     return FriendRequestDto.FriendRequestStatus.Rejected;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        $"{friendshipStatus.ToString()} is not included in FriendshipStatus");
+                        $"{friendshipStatus} is not included in FriendshipStatus");
             }
         }
     }

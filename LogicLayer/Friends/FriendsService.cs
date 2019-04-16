@@ -83,7 +83,7 @@ namespace GameBoard.LogicLayer.Friends
                         throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                     default:
                         throw new ArgumentOutOfRangeException(
-                            $"Not caught SQL Exception with error number {sqlException.Number.ToString()} occured.");
+                            $"Not caught SQL Exception with error number {sqlException.Number} occured.");
                 }
             }
 
