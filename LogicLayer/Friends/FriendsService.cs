@@ -92,7 +92,10 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
         {
-            var friendship = await _repository.Friendships.SingleOrDefaultAsync(f => f.Id == friendRequestId);
+            var friendship = await _repository.Friendships
+                .Include(f => f.RequestedBy)
+                .Include(f => f.RequestedTo)
+                .SingleOrDefaultAsync(f => f.Id == friendRequestId);
 
             return friendship?.ToFriendRequestDto();
         }
