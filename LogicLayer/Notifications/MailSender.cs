@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace GameBoard.LogicLayer.Notifications
 {
@@ -24,28 +26,24 @@ namespace GameBoard.LogicLayer.Notifications
         private MailNotificationsConfiguration MailOptions { get; }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => Execute(Options.MailgunDomain, Options.MailgunApiKey, emails, notification);
+            => Execute(Options.MailgunApiKey, emails, notification);
 
-        private Task Execute(string domain, string apiKey, IEnumerable<string> emails, Notification notification)
+        private Task Execute(string apiKey, IEnumerable<string> emails, Notification notification)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                "Basic",
-                Convert.ToBase64String(Encoding.UTF8.GetBytes("api" + ":" + apiKey)));
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("GameBoard.contact@gmail.com", "The Gameboard Team");
+            var tos = new List<EmailAddress>();
+            var subject = notification.Subject;
+            var htmlContent = notification.Html;
 
-            var emailsJoined = String.Join(", ", emails);
-
-            Dictionary<string, string> form = new Dictionary<string, string>()
+            foreach (string email in emails)
             {
-                ["from"] = "GameBoard <mailgun@sandboxb1586a7208744c12afa71d3d21e35535.mailgun.org>",
-                ["to"] = emailsJoined,
-                ["subject"] = notification.Subject,
-                ["html"] = notification.Html
-            };
+                tos.Add(new EmailAddress(email));
+            }
 
-            return client.PostAsync(
-                "https://api.mailgun.net/v2/" + domain + "/messages",
-                new FormUrlEncodedContent(form));
+            var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, null, htmlContent);
+
+            return client.SendEmailAsync(msg);
         }
 
         private string GetHtmlPath(string htmlTemplateName)
