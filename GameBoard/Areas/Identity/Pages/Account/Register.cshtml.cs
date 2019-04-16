@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -15,33 +13,25 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly IMailSender _mailSender;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IMailSender _mailSender;
         private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public string ReturnUrl { get; set; }
-
         public RegisterModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IMailSender mailSender)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
             _mailSender = mailSender;
         }
 
-        public void OnGet(string returnUrl = null) => ReturnUrl = returnUrl;
-
-        public async Task<IActionResult> OnPostAsync(/*string returnUrl = null*/)
+        public async Task<IActionResult> OnPostAsync()
         {
-            //returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser {UserName = Input.UserName, Email = Input.Email};
@@ -57,18 +47,8 @@ namespace GameBoard.Areas.Identity.Pages.Account
                         new {userId = user.Id, code},
                         Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(
-                    //    Input.Email,
-                    //    "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                    List<string> emails = new List<string>
-                    {
-                        Input.Email
-                    };
-                    await _mailSender.SendEmailConfirmationAsync(emails, HtmlEncoder.Default.Encode(callbackUrl));
+                    await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-                    //await _signInManager.SignInAsync(user, false);
-                    //return LocalRedirect(returnUrl);
                     return RedirectToPage("/Account/ConfirmEmailInfo");
                 }
 

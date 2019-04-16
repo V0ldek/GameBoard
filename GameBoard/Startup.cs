@@ -1,11 +1,9 @@
 ﻿using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Notifications;
-//using GameBoard.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,11 +51,9 @@ namespace GameBoard
                         options.User.RequireUniqueEmail = true;
                         options.SignIn.RequireConfirmedEmail = true;
                     })
-                //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDbContextStores();
 
             services.AddTransient<IMailSender, MailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
             services.Configure<MailNotificationsConfiguration>(Configuration.GetSection("MailNotifications"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

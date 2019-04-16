@@ -1,39 +1,33 @@
 ﻿using System;
 using System.IO;
-using PreMailer;
 
 namespace CssInliner
 {
-    static class CssInliner
+    internal static class CssInliner
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            string sourcePath = "./";
-            string cssPath = "./styles.css";
-            string destinationPath = "./inlined/";
+            var sourcePath = "./";
+            var cssPath = "./styles.css";
+            var destinationPath = "./inlined/";
 
             Console.WriteLine();
 
             try
             {
                 if (args.Length > 0)
-                    sourcePath = args[0];
-                if (args.Length > 1)
-                    cssPath = args[1];
-                if (args.Length > 2)
-                    destinationPath = args[2];
-
-                if (!Directory.Exists(destinationPath))
                 {
-                    Directory.CreateDirectory(destinationPath);
+                    sourcePath = args[0];
                 }
 
-                string mailCss = File.ReadAllText(cssPath);
-                foreach (string file in Directory.GetFiles(sourcePath, "*.html"))
+                if (args.Length > 1)
                 {
-                    string mailHtml = File.ReadAllText(file);
-                    var results = PreMailer.Net.PreMailer.MoveCssInline(mailHtml, css: mailCss, ignoreElements: "link");
-                    System.IO.File.WriteAllText(Path.Combine(destinationPath, file), results.Html);
+                    cssPath = args[1];
+                }
+
+                if (args.Length > 2)
+                {
+                    destinationPath = args[2];
                 }
             }
             catch
@@ -41,8 +35,19 @@ namespace CssInliner
                 Console.WriteLine("Incorrect arguments");
                 Console.WriteLine("Usage : ./CssInliner.exe <html sourcePath> <cssPath> <destinationPath>");
             }
+
+            if (!Directory.Exists(destinationPath))
+            {
+                Directory.CreateDirectory(destinationPath);
+            }
+
+            var mailCss = File.ReadAllText(cssPath);
+            foreach (var file in Directory.GetFiles(sourcePath, "*.html"))
+            {
+                var mailHtml = File.ReadAllText(file);
+                var results = PreMailer.Net.PreMailer.MoveCssInline(mailHtml, css: mailCss, ignoreElements: "link");
+                File.WriteAllText(Path.Combine(destinationPath, Path.GetFileName(file)), results.Html);
+            }
         }
-
-
     }
 }
