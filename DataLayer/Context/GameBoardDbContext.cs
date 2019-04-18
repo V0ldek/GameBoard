@@ -15,7 +15,8 @@ namespace GameBoard.DataLayer.Context
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }        
+        public DbSet<GameEvent> GameEvents { get; set; }
 
         public Task<string> GetUserIdByUserName(string userName)
         {

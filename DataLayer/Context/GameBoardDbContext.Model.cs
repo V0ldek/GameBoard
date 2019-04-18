@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.DataLayer.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameBoard.DataLayer.Context
 {
@@ -68,6 +70,51 @@ namespace GameBoard.DataLayer.Context
 
             builder.Entity<IdentityRoleClaim<string>>(
                 entity => entity.ToTable("RoleClaim"));
+
+            builder.Entity<GameEvent>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                    entity.Property(e => e.CreatorId).IsRequired();
+
+                    entity.HasOne(e => e.Creator)
+                        .WithMany()
+                        .HasForeignKey(e => e.CreatorId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    entity.Property(e => e.MeetingTime)
+                        .HasConversion(new DateTimeToBinaryConverter());
+
+                    entity.HasMany(e => e.Invitations)
+                        .WithOne();
+
+                    entity.HasMany(e => e.Games)
+                        .WithOne();
+
+                    entity.ToTable("GameEvent");
+                });
+
+            builder.Entity<GameEventInvitation>(
+                entity =>
+                {
+                    entity.HasOne(e => e.SendTo)
+                        .WithMany()
+                        .HasForeignKey(e => e.SendToId)
+                        .IsRequired();
+
+                    entity.HasOne(e => e.InvitedTo)
+                        .WithMany()
+                        .HasForeignKey(e => e.InvitedToId);
+
+                    entity.Property(e => e.InvitationStatus)
+                        .HasConversion(new EnumToStringConverter<InvitationStatus>())
+                        .IsRequired()
+                        .HasDefaultValue(InvitationStatus.Pending);
+
+                });
         }
     }
 }
