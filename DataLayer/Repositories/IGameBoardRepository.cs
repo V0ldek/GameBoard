@@ -6,13 +6,13 @@ namespace GameBoard.DataLayer.Repositories
 {
     public interface IGameBoardRepository
     {
-        DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        DbSet<Game> Games { get; set; }
-
+        DbSet<ApplicationUser> ApplicationUsers { get; }
+        DbSet<Friendship> Friendships { get; }
         DbSet<GameEvent> GameEvents { get; set; }
 
-        Task SaveChangesAsync();
+        Task<string> GetUserIdByUserName(string userName);
 
+        Task SaveChangesAsync();
     }
 }

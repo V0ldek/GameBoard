@@ -26,6 +26,15 @@ bld/
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
+# Exclude files generated with gulp pipeline.
+GameBoard/wwwroot/lib
+GameBoard/wwwroot/scripts
+# Exclude compiled TypeScript files .js and .js.map
+GameBoard/Scripts/**/*.js
+GameBoard/Scripts/**/*.js.map
+# Exclude minified files
+*.min.js
+*.min.css
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -259,3 +268,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/GameBoard/wwwroot/lib/malihu-custom-scrollbar-plugin
+/GameBoard/wwwroot/lib

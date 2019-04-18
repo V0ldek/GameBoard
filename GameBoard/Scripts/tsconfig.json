@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "strictNullChecks": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6"
+  },
+  "files": [
+    "Autocomplete/autocomplete.ts",
+    "Collapsible/Collapsible.ts",
+    "Popovers/popoverGenerator.ts",
+    "Site/friendsSidebar.ts",
+    "Site/userSearchBox.ts",
+    "productionConsoleSwitch.ts"
+  ],
+  "exclude": [
+    "../wwwroot/scripts"
+  ],
+  "compileOnSave": true
+}

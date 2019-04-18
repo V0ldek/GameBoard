@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace GameBoard
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args) => CreateWebHostBuilder(args).Build().Run();
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(
+                    (hostingContext, logging) =>
+                    {
+                        logging.AddApplicationInsights();
+                        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                        logging.AddConsole();
+                        logging.AddDebug();
+                    })
                 .UseApplicationInsights()
                 .UseStartup<Startup>();
     }
