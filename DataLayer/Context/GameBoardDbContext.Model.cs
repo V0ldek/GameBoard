@@ -75,24 +75,19 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.HasKey(e => e.Id);
-                    entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                    
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(512);
 
                     entity.HasOne(e => e.Creator)
-                        .WithMany()
+                        .WithMany(c => c.CreatedEvents)
                         .HasForeignKey(e => e.CreatorId)
                         .IsRequired()
                         .OnDelete(DeleteBehavior.Cascade);
 
                     entity.Property(e => e.MeetingTime)
                         .HasConversion(new DateTimeToBinaryConverter());
-
-                    entity.HasMany(e => e.Invitations)
-                        .WithOne()
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    entity.HasMany(e => e.Games)
-                        .WithOne()
-                        .OnDelete(DeleteBehavior.Cascade);
                     
                     entity.ToTable("GameEvent");
                 });
@@ -101,22 +96,25 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.HasOne(e => e.SendTo)
-                        .WithMany()
+                        .WithMany(u => u.Invitations)
                         .HasForeignKey(e => e.SendToId)
-                        .IsRequired();
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.HasOne(e => e.InvitedTo)
-                        .WithMany()
-                        .HasForeignKey(e => e.InvitedToId);
+                        .WithMany(ge => ge.Invitations)
+                        .HasForeignKey(e => e.InvitedToId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.Property(e => e.InvitationStatus)
                         .HasConversion(new EnumToStringConverter<InvitationStatus>())
                         .IsRequired()
                         .HasDefaultValue(InvitationStatus.Pending);
 
-                    entity.HasKey(e => new {e.SendTo, e.InvitedTo});
+                    entity.HasKey(e => new {e.SendToId, e.InvitedToId});
 
-                    entity.HasIndex(e => new {e.InvitedTo});
+                    entity.HasIndex(e => new {e.InvitedToId});
 
                     entity.ToTable("GameEventInvitation");
                 });
@@ -125,11 +123,13 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.Property(e => e.Name)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(256);
 
-                    entity.HasOne<GameEvent>()
-                        .WithMany()
-                        .HasForeignKey(e => e.GameEventId);
+                    entity.HasOne(e => e.GameEvent)
+                        .WithMany( g => g.Games)
+                        .HasForeignKey(e => e.GameEventId)
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.HasKey(e => new {e.GameEventId, e.Name});
 
