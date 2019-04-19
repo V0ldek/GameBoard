@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using GameBoard.LogicLayer.GameEventLogic.Dtos;
 using GameBoard.DataLayer.Repositories;
 using JetBrains.Annotations;
 using GameBoard.DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.GameEventLogic
 {
@@ -14,31 +16,40 @@ namespace GameBoard.LogicLayer.GameEventLogic
     {
         private readonly IGameBoardRepository _repository;
 
-        public GameEventService(IGameBoardRepository repository)
+        GameEventService(IGameBoardRepository repository)
         {
             _repository = repository;
         }
 
-        public Task<bool> CreateGameEvent([NotNull] CreateGameEventDto requestedGameEvent)
+        public async Task CreateGameEvent(CreateGameEventDto requestedGameEvent)
         {
-            // There is no checking if UserId is valid;
-
-            _repository.GameEvents.Add(new GameEvent()
+            _repository.GameEvents.Add(
+                    new GameEvent
+                    {
+                        CreatorId = requestedGameEvent.UserId,
+                        MeetingTime = DateTime.ParseExact(requestedGameEvent.MeetingTime, "yyyy-MM-dd HH:mm", null),
+                        Place = requestedGameEvent.Place
+                    });
+            try
             {
-                CreatorId = requestedGameEvent.UserId,
-
-                MeetingTime = DateTime.ParseExact(requestedGameEvent.MeetingTime, "d", null),
-
-                Place = requestedGameEvent.Place
+                await _repository.SaveChangesAsync();
+            }
+            catch (DbUpdateException e) when (e.InnerException is SqlException sqlException)
+            {
+                switch (sqlException.Number)
+                {
+                    //case :
+                }
                 
-            });
-
-            throw new NotImplementedException();
+            }
         }
 
-        public Task<IEnumerable<GameEventDto>> FindGameEventsByUserId([NotNull] string userId)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task DeleteGameEvent(string gameEventId, string creatorId) => throw new NotImplementedException();
+
+        public async Task EditGameEvent(CreateGameEventDto changedProperties, IEnumerable<string> newGames, IEnumerable<string> deleteGames) => throw new NotImplementedException();
+
+        public async Task<IEnumerable<GameEventDto>> GetGameEventsByCreatorId(string creatorId) => throw new NotImplementedException();
+
+        public async Task<IEnumerable<GameEventDto>> GetAcceptedGameEvents(string userId) => throw new NotImplementedException();
     }
 }
