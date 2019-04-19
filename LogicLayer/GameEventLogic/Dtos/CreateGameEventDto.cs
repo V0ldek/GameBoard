@@ -11,6 +11,7 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
         public string UserId { get; }
 
         [NotNull]
+        //Forma stringa ma postać "yyyy-MM-dd HH:mm"
         public string MeetingTime { get; }
 
         public string Place { get; }
@@ -21,6 +22,5 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
             MeetingTime = meetingTime;
             Place = place ?? string.Empty ;
         }
-        
     }
 }

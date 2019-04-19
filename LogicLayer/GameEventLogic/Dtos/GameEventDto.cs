@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
-using GameBoard.LogicLayer.GameSearch.Dtos;
 
 namespace GameBoard.LogicLayer.GameEventLogic.Dtos
 {
@@ -17,8 +16,5 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
         [NotNull]
         public DateTime MeetingTime { get; }
 
-        public ICollection<GameDto> Games;
-
-        //public ICollection<GameEventInvitationDto> Invitations; 
     }
 }

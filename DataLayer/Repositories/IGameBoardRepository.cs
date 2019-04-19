@@ -9,8 +9,8 @@ namespace GameBoard.DataLayer.Repositories
 
         DbSet<ApplicationUser> ApplicationUsers { get; }
         DbSet<Friendship> Friendships { get; }
-        DbSet<GameEvent> GameEvents { get; set; }
- 
+        DbSet<GameEvent> GameEvents { get; }
+        DbSet<GameEventInvitation> GameEventInvitations { get; }
         Task<string> GetUserIdByUserName(string userName);
 
         Task SaveChangesAsync();
