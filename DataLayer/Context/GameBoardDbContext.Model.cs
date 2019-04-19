@@ -87,11 +87,13 @@ namespace GameBoard.DataLayer.Context
                         .HasConversion(new DateTimeToBinaryConverter());
 
                     entity.HasMany(e => e.Invitations)
-                        .WithOne();
+                        .WithOne()
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.HasMany(e => e.Games)
-                        .WithOne();
-
+                        .WithOne()
+                        .OnDelete(DeleteBehavior.Cascade);
+                    
                     entity.ToTable("GameEvent");
                 });
 
