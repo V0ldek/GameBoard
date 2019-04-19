@@ -16,7 +16,7 @@ namespace GameBoard.LogicLayer.GameEventLogic
     {
         private readonly IGameBoardRepository _repository;
 
-        GameEventService(IGameBoardRepository repository)
+        public GameEventService(IGameBoardRepository repository)
         {
             _repository = repository;
         }
@@ -40,7 +40,7 @@ namespace GameBoard.LogicLayer.GameEventLogic
                 {
                     //case :
                 }
-                
+
             }
         }
 
