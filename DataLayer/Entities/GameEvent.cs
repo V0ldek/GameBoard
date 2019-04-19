@@ -16,7 +16,7 @@ namespace GameBoard.DataLayer.Entities
         public ApplicationUser Creator { get; set; }
         public string CreatorId { get; set; }
 
-        public ICollection<string> Games { get; set; }
+        public ICollection<Game> Games { get; set; }
 
         public ICollection<GameEventInvitation> Invitations { get; set; }
     }

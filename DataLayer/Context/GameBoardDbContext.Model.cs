@@ -77,8 +77,6 @@ namespace GameBoard.DataLayer.Context
                     entity.HasKey(e => e.Id);
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-                    entity.Property(e => e.CreatorId).IsRequired();
-
                     entity.HasOne(e => e.Creator)
                         .WithMany()
                         .HasForeignKey(e => e.CreatorId)
@@ -114,7 +112,27 @@ namespace GameBoard.DataLayer.Context
                         .IsRequired()
                         .HasDefaultValue(InvitationStatus.Pending);
 
+                    entity.HasKey(e => new {e.SendTo, e.InvitedTo});
+
+                    entity.HasIndex(e => new {e.InvitedTo});
+
+                    entity.ToTable("GameEventInvitation");
                 });
-        }
+
+            builder.Entity<Game>(
+                entity =>
+                {
+                    entity.Property(e => e.Name)
+                        .IsRequired();
+
+                    entity.HasOne<GameEvent>()
+                        .WithMany()
+                        .HasForeignKey(e => e.GameEventId);
+
+                    entity.HasKey(e => new {e.GameEventId, e.Name});
+
+                    entity.ToTable("Game");
+                });
+            }
     }
 }
