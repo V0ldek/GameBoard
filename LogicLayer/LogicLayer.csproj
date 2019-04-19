@@ -16,14 +16,6 @@
     <IntermediateOutputPath>..\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="GameEventLogic\**" />
-    <Compile Remove="GEInvitation\**" />
-    <EmbeddedResource Remove="GameEventLogic\**" />
-    <EmbeddedResource Remove="GEInvitation\**" />
-    <None Remove="GameEventLogic\**" />
-    <None Remove="GEInvitation\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
