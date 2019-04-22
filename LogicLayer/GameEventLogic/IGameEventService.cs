@@ -24,9 +24,9 @@ namespace GameBoard.LogicLayer.GameEventLogic
 
         Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync([NotNull] string userId);
 
-        Task<GameEventPermission> GetGameEventParticipationByUser([NotNull] string gameEventId, [NotNull] string userId);
+        Task<GameEventPermission> GetGameEventParticipationByUserAsync([NotNull] string gameEventId, [NotNull] string userId);
 
-        Task<GameEventDto> GetGameEvent([NotNull] string gameEventId);
+        Task<GameEventDto> GetGameEventAsync([NotNull] string gameEventId);
 
         Task SendGameEventInvitationAsync([NotNull] string gameEventId, [NotNull] string userId);
 
