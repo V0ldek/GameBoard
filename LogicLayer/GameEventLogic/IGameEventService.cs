@@ -14,7 +14,7 @@ namespace GameBoard.LogicLayer.GameEventLogic
         
         //Throws DeleteGameEventException when GameEvent could not be deleted
         Task DeleteGameEvent([NotNull] string gameEventId, [NotNull] string creatorId);
-
+       
         Task EditGameEvent([NotNull] CreateGameEventDto changedProperties, IEnumerable<string> newGames, IEnumerable<string> deleteGames);
 
         Task<IEnumerable<GameEventDto>> GetGameEventsByCreatorId([NotNull] string creatorId);
