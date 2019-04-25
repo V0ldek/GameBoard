@@ -8,19 +8,25 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
     public sealed class CreateGameEventDto
     {
         [NotNull]
-        public string UserId { get; }
+        public string CreatorId { get; }
 
         [NotNull]
-        //Forma stringa ma postać "yyyy-MM-dd HH:mm"
-        public string MeetingTime { get; }
+        public string GameEventName { get; }
+
+        public DateTime MeetingTime { get; } // It is not specified in the user story and I know we have a separate user story concerning this feature, but it won't work out most likely, so maybe we should put this in here for now.
 
         public string Place { get; }
 
-        public CreateGameEventDto ([NotNull] string userId, [NotNull] string meetingTime, string place)
+        public CreateGameEventDto(
+            [NotNull] string creatorId,
+            [NotNull] string gameEventName,
+            DateTime meetingTime,
+            string place)
         {
-            UserId = userId;
+            CreatorId = creatorId;
+            GameEventName = gameEventName;
             MeetingTime = meetingTime;
-            Place = place ?? string.Empty ;
+            Place = place ?? string.Empty;
         }
     }
 }

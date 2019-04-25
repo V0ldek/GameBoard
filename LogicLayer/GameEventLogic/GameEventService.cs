@@ -21,7 +21,7 @@ namespace GameBoard.LogicLayer.GameEventLogic
             _repository = repository;
         }
 
-        public async Task CreateGameEvent(CreateGameEventDto requestedGameEvent)
+        public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent)
         {
             _repository.GameEvents.Add(
                     new GameEvent
@@ -44,12 +44,12 @@ namespace GameBoard.LogicLayer.GameEventLogic
             }
         }
 
-        public async Task DeleteGameEvent(string gameEventId, string creatorId) => throw new NotImplementedException();
+        public async Task DeleteGameEventAsync(string gameEventId, string creatorId) => throw new NotImplementedException();
 
-        public async Task EditGameEvent(CreateGameEventDto changedProperties, IEnumerable<string> newGames, IEnumerable<string> deleteGames) => throw new NotImplementedException();
+        public async Task EditGameEventAsync(CreateGameEventDto changedProperties, IEnumerable<string> newGames, IEnumerable<string> deleteGames) => throw new NotImplementedException();
 
-        public async Task<IEnumerable<GameEventDto>> GetGameEventsByCreatorId(string creatorId) => throw new NotImplementedException();
+        public async Task<IEnumerable<GameEventDto>> GetGameEventsByCreatorIdAsync(string creatorId) => throw new NotImplementedException();
 
-        public async Task<IEnumerable<GameEventDto>> GetAcceptedGameEvents(string userId) => throw new NotImplementedException();
+        public async Task<IEnumerable<GameEventDto>> GetAcceptedGameEventsAsync(string userId) => throw new NotImplementedException();
     }
 }
