@@ -2,7 +2,7 @@
   "profiles": {
     "CssInliner": {
       "commandName": "Project",
-      "commandLineArgs": "\"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\raw\" \"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\raw\\styles.css\" \"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\test-inline\""
+      "commandLineArgs": "\"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\Html\\Raw\" \"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\Html\\Raw\\styles.css\" \"..\\..\\..\\..\\..\\LogicLayer\\Notifications\\Html\\Inlined\""
     }
   }
 }
