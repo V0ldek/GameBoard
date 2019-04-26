@@ -18,7 +18,8 @@ namespace GameBoard.DataLayer.Context
         public DbSet<Friendship> Friendships { get; set; }        
         public DbSet<GameEvent> GameEvents { get; set; }
         public DbSet<GameEventInvitation> GameEventInvitations { get; set; }
-
+        public DbSet<Game> Games { get; set; }
+        
         public Task<string> GetUserIdByUserName(string userName)
         {
             var normalizedUserName = userName.ToUpper();

@@ -11,6 +11,7 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<Friendship> Friendships { get; }
         DbSet<GameEvent> GameEvents { get; }
         DbSet<GameEventInvitation> GameEventInvitations { get; }
+        DbSet<Game> Games { get; }
         Task<string> GetUserIdByUserName(string userName);
 
         Task SaveChangesAsync();
