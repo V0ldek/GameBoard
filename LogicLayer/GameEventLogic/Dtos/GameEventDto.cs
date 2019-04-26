@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
+using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.GameEventLogic.Dtos
 {
@@ -23,13 +24,17 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
         [NotNull]
         public IEnumerable<string> Games;
 
+        [NotNull]
+        public IEnumerable<UserDto> Users;
+
         public GameEventDto(
             [NotNull] string gameEventId,
             [NotNull] string creatorId,
             [NotNull] string gameEventName,
             DateTime meetingTime,
             string place,
-            [NotNull] IEnumerable<string> games)
+            [NotNull] IEnumerable<string> games,
+            [NotNull] IEnumerable<UserDto> users)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
@@ -37,6 +42,8 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
             MeetingTime = meetingTime;
             Place = place ?? string.Empty;
             Games = games;
+            Users = users;
         }
+
     }
 }

@@ -26,7 +26,7 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
             CreatorId = creatorId;
             GameEventName = gameEventName;
             MeetingTime = meetingTime;
-            Place = place ?? string.Empty;
+            Place = place;
         }
     }
 }

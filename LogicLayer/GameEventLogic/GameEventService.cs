@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using GameBoard.DataLayer.Repositories;
 using JetBrains.Annotations;
 using GameBoard.DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using GameBoard.DataLayer.Enums;
 
 namespace GameBoard.LogicLayer.GameEventLogic
 {
@@ -21,35 +21,61 @@ namespace GameBoard.LogicLayer.GameEventLogic
             _repository = repository;
         }
 
-        public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent)
+        public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent, IEnumerable<string> games)
         {
-            _repository.GameEvents.Add(
-                    new GameEvent
-                    {
-                        CreatorId = requestedGameEvent.UserId,
-                        MeetingTime = DateTime.ParseExact(requestedGameEvent.MeetingTime, "yyyy-MM-dd HH:mm", null),
-                        Place = requestedGameEvent.Place
-                    });
-            try
+            var gameEvent = new GameEvent()
             {
-                await _repository.SaveChangesAsync();
-            }
-            catch (DbUpdateException e) when (e.InnerException is SqlException sqlException)
-            {
-                switch (sqlException.Number)
-                {
-                    //case :
-                }
+                CreatorId = requestedGameEvent.CreatorId,
+                MeetingTime = requestedGameEvent.MeetingTime,
+                Place = requestedGameEvent.Place,
+                Games = games.Select(g => new Game { Name = g }).ToList()
+            };
+            _repository.GameEvents.Add(gameEvent);
 
-            }
+            await _repository.SaveChangesAsync();
+
         }
 
-        public async Task DeleteGameEventAsync(string gameEventId, string creatorId) => throw new NotImplementedException();
+        public async Task DeleteGameEventAsync(string gameEventId)
+        {
+                var gameEvent = _repository.GameEvents
+                    .Include(ge => ge.Games)
+                    .Include(ge => ge.Invitations)
+                    .Single(ge => gameEventId == ge.Id);
 
-        public async Task EditGameEventAsync(CreateGameEventDto changedProperties, IEnumerable<string> newGames, IEnumerable<string> deleteGames) => throw new NotImplementedException();
+                foreach (var game in gameEvent.Games)
+                {
+                    _repository.Games.Remove(game);
+                }
 
-        public async Task<IEnumerable<GameEventDto>> GetGameEventsByCreatorIdAsync(string creatorId) => throw new NotImplementedException();
+                foreach (var invite in gameEvent.Invitations)
+                {
+                    _repository.GameEventInvitations.Remove(invite);
+                }
 
-        public async Task<IEnumerable<GameEventDto>> GetAcceptedGameEventsAsync(string userId) => throw new NotImplementedException();
+                _repository.GameEvents.Remove(gameEvent);
+
+                await _repository.SaveChangesAsync();
+        }
+
+        public async Task EditGameEventAsync(EditGameEventDto editedEvent, IEnumerable<string> newGames)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<GameEventPermission> GetGameEventParticipationByUserAsync(string gameEventId, string userId) => throw new NotImplementedException();
+
+        public async Task<GameEventDto> GetGameEventAsync(string gameEventId) => throw new NotImplementedException();
+
+        public async Task SendGameEventInvitationAsync(string gameEventId, string userId) => throw new NotImplementedException();
+
+        public async Task AcceptGameEventInvitationAsync(string gameEventId) => throw new NotImplementedException();
+
+        public async Task RejectGameEventInvitationAsync(string gameEventId) => throw new NotImplementedException();
     }
 }
