@@ -16,11 +16,7 @@ namespace GameBoard.LogicLayer.GameEventLogic
         // Throws DeleteGameEventException when GameEvent could not be deleted (Event with such id doesn't exist, but I don't know if that is actually possible)
         Task DeleteGameEventAsync([NotNull] string gameEventId);
 
-        Task EditGameEventAsync(
-            [NotNull] string gameEventId,
-            [NotNull] CreateGameEventDto changedProperties,
-            [NotNull] IEnumerable<string> deletedGames,
-            [NotNull] IEnumerable<string> newGames);
+        Task EditGameEventAsync( [NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames);
 
         Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync([NotNull] string userId);
 
