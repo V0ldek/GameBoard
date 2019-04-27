@@ -2,24 +2,36 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
+using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class FriendsService : IFriendsService
     {
         private readonly IGameBoardRepository _repository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMailSender _mailSender;
 
-        public FriendsService(IGameBoardRepository repository)
+        public FriendsService(IGameBoardRepository repository,
+            UserManager<ApplicationUser> userManager,
+            IMailSender mailSender)
         {
             _repository = repository;
+            _userManager = userManager;
+            _mailSender = mailSender;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
@@ -87,7 +99,14 @@ namespace GameBoard.LogicLayer.Friends
                 }
             }
 
-            // TODO: send email with link
+            // send email
+
+            var user = await _userManager.FindByIdAsync(requestedToId);
+            var email = await _userManager.GetEmailAsync(user);
+            var friendship = _repository.Friendships.Single(u => u.RequestedById == requestedById && u.RequestedToId == requestedToId);
+            var url = friendRequest.GenerateRequestLink(friendship.Id.ToString());
+
+            await _mailSender.SendFriendInvitationAsync(email, url);
         }
 
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)

@@ -70,8 +70,9 @@ namespace GameBoard
                         options.SignIn.RequireConfirmedEmail = true;
                     })
                 .AddDbContextStores();
+
             services.AddTransient<IMailSender, MailSender>();
-            services.Configure<MailNotificationsConfiguration>(Configuration.GetSection(nameof(MailNotifications)));
+            services.Configure<MailNotificationsConfiguration>(Configuration.GetSection(nameof(MailNotificationsConfiguration)));
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
 
             services.ConfigureApplicationCookie(

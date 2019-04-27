@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using GameBoard.LogicLayer.Notifications;
 using GameBoard.DataLayer.Entities;
+using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -15,16 +14,15 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly IEmailSender _emailSender;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailSender _mailSender;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
             IMailSender mailSender)
         {
