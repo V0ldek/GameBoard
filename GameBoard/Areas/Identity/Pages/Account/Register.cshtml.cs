@@ -42,7 +42,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
+                        "/Account/ConfirmedEmail",
                         null,
                         new {userId = user.Id, code},
                         Request.Scheme);

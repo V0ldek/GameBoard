@@ -2,8 +2,7 @@
 {
     public class MailNotificationsConfiguration
     {
-        public string MailgunDomain { get; set; }
-        public string MailgunApiKey { get; set; }
+        public string SendGridApiKey { get; set; }
         public string DefaultHtmlPath { get; set; }
         public string EmailConfirmationHtml { get; set; }
         public string EventCancellationHtml { get; set; }

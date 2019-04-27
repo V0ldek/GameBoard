@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -19,7 +17,7 @@ namespace GameBoard.LogicLayer.Notifications
         private MailNotificationsConfiguration MailOptions { get; }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => Execute(MailOptions.MailgunApiKey, emails, notification);
+            => Execute(MailOptions.SendGridApiKey, emails, notification);
 
         private Task SendEmailAsync(string email, Notification notification)
         {
@@ -33,7 +31,7 @@ namespace GameBoard.LogicLayer.Notifications
         private Task Execute(string apiKey, IEnumerable<string> emails, Notification notification)
         {
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("GameBoard.contact@gmail.com", "The Gameboard Team");
+            var from = new EmailAddress("GameBoard.contact@gmail.com", "GameBoard");
             var tos = new List<EmailAddress>();
             var subject = notification.Subject;
             var htmlContent = notification.Html;
