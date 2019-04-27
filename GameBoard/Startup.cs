@@ -1,9 +1,11 @@
-﻿using GameBoard.LogicLayer;
+﻿using System;
+using GameBoard.Configuration;
+using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,26 +23,42 @@ namespace GameBoard
             Environment = env;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(
                 options =>
                 {
-                    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                     options.CheckConsentNeeded = context => true;
                     options.MinimumSameSitePolicy = SameSiteMode.None;
+                    options.ConsentCookie = new CookieBuilder
+                    {
+                        Name = "GameBoard.Consent",
+                        Expiration = TimeSpan.FromDays(365),
+                        IsEssential = true
+                    };
                 });
 
-                LogicLayer.Configuration.ConfigureDbContext(
-                    services,
-                    Configuration.GetConnectionString(
-                        (Environment.IsStaging() ? "GameboardStaging" : 
-                        ((Environment.IsProduction()) ? "GameboardRelease" : "DefaultConnection" ))));
+            services.AddAntiforgery(
+                options =>
+                {
+                    options.Cookie = new CookieBuilder
+                    {
+                        Name = "GameBoard.Antiforgery",
+                        SameSite = SameSiteMode.None,
+                        HttpOnly = true,
+                        IsEssential = true
+                    };
+                });
+
+            LogicLayer.Configuration.ConfigureDbContext(
+                services,
+                Configuration.GetConnectionString(
+                    Environment.IsStaging() ? "GameboardStaging" :
+                    Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
 
             LogicLayer.Configuration.ConfigureServices(services);
-            
-            services.AddDefaultIdentity<IdentityUser>(
+
+            services.AddDefaultIdentity<ApplicationUser>(
                     options =>
                     {
                         options.Password.RequiredLength = 8;
@@ -52,14 +70,16 @@ namespace GameBoard
                         options.SignIn.RequireConfirmedEmail = true;
                     })
                 .AddDbContextStores();
-
             services.AddTransient<IMailSender, MailSender>();
-            services.Configure<MailNotificationsConfiguration>(Configuration.GetSection("MailNotifications"));
+            services.Configure<MailNotificationsConfiguration>(Configuration.GetSection(nameof(MailNotifications)));
+            services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
+
+            services.ConfigureApplicationCookie(
+                options => { options.Cookie.Name = "GameBoard.Identity"; });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -75,6 +95,7 @@ namespace GameBoard
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

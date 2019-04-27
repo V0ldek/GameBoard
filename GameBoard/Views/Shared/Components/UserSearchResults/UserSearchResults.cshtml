@@ -1,0 +1,21 @@
+﻿@model IEnumerable<GameBoard.Models.User.UserViewModel>
+
+<div class="autocomplete-items">
+    @foreach (var user in Model)
+    {
+        <div class="autocomplete-item user-result">
+            @await Component.InvokeAsync("UserCard", new {user, miniature = true})
+            <form asp-controller="Friends" asp-action="CreateFriendRequest"
+                  class="invite-form"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="friendRequestPopoverGenerator.generateSuccessPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)"
+                  data-ajax-failure="friendRequestPopoverGenerator.generateErrorPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)">
+                <input readonly hidden name="userNameFrom" value="@User.Identity.Name"/>
+                <input readonly hidden name="userNameTo" value="@user.UserName"/>
+                <button id="friend-request-button-@user.Id" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
+                    <i class="fa fa-user-plus"></i>
+                </button>
+            </form>
+        </div>
+    }
+</div>

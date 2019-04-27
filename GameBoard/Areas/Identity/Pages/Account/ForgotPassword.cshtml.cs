@@ -2,6 +2,7 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

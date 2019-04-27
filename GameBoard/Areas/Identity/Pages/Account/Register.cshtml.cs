@@ -2,8 +2,10 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -13,6 +15,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private readonly IEmailSender _emailSender;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailSender _mailSender;
         private readonly UserManager<IdentityUser> _userManager;
@@ -34,7 +37,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser {UserName = Input.UserName, Email = Input.Email};
+                var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -71,7 +74,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(
-                256,
+                16,
                 ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
                 MinimumLength = 3)]
             [RegularExpression(@"^\w+$", ErrorMessage = "The {0} may contain only letters, numbers and underscores.")]
