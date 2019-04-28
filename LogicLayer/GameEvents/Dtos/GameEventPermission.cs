@@ -8,6 +8,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
     {
         Creator,
         AcceptedInvitation,
+        CreatorOrAcceptedInvitation,
         PendingInvitation,
         Forbidden
     }

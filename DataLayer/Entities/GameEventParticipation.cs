@@ -10,7 +10,7 @@ namespace GameBoard.DataLayer.Entities
 
         public string ParticipantId { get; set; }
         public ApplicationUser Paticipant { get; set; }
-        public string TakesPartInId { get; set; }
+        public int TakesPartInId { get; set; }
         public GameEvent TakesPartIn{ get; set; }
 
         public ParticipationStatus ParticipationStatus { get; set; }

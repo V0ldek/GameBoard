@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190428130534_GameEvent")]
+    [Migration("20190428141845_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,7 +99,7 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
                 {
-                    b.Property<string>("GameEventId");
+                    b.Property<int>("GameEventId");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256);
@@ -111,9 +111,10 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEvent", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(512);
+                        .HasMaxLength(512)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("EventName");
 
@@ -130,7 +131,7 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     b.Property<string>("ParticipantId");
 
-                    b.Property<string>("TakesPartInId");
+                    b.Property<int>("TakesPartInId");
 
                     b.Property<string>("ParticipationStatus")
                         .IsRequired()

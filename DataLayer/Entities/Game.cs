@@ -8,8 +8,8 @@ namespace GameBoard.DataLayer.Entities
     {
         public string Name { get; set; }
 
+        public int GameEventId { get; set; }
         public GameEvent GameEvent { get; set; }
-        public string GameEventId { get; set; }
 
     }
 }

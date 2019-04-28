@@ -18,13 +18,15 @@ namespace GameBoard.LogicLayer.GameEvents
 
         Task EditGameEventAsync( [NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames);
 
-        Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync([NotNull] string userId);
-
-        Task<GameEventPermission> GetGameEventParticipationByUserAsync([NotNull] string gameEventId, [NotNull] string userId);
-
         // Returns Task with null if game event does not exist.
         [ItemCanBeNull]
         Task<GameEventDto> GetGameEventAsync([NotNull] string gameEventId);
+
+        Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync([NotNull] string userId);
+
+        Task<IEnumerable<GameEventDto>> GetPendingGameEventsAsync([NotNull] string userId);
+
+        Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] string gameEventId, [NotNull] string userId);
 
         Task SendGameEventInvitationAsync([NotNull] string gameEventId, [NotNull] string userId);
 

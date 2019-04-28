@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameBoard.DataLayer.Migrations
 {
@@ -10,7 +11,8 @@ namespace GameBoard.DataLayer.Migrations
                 name: "GameEvent",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 512, nullable: false),
+                    Id = table.Column<int>(maxLength: 512, nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     EventName = table.Column<string>(nullable: true),
                     MeetingTime = table.Column<long>(nullable: false),
                     Place = table.Column<string>(nullable: true)
@@ -25,7 +27,7 @@ namespace GameBoard.DataLayer.Migrations
                 columns: table => new
                 {
                     Name = table.Column<string>(maxLength: 256, nullable: false),
-                    GameEventId = table.Column<string>(nullable: false)
+                    GameEventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,7 +45,7 @@ namespace GameBoard.DataLayer.Migrations
                 columns: table => new
                 {
                     ParticipantId = table.Column<string>(nullable: false),
-                    TakesPartInId = table.Column<string>(nullable: false),
+                    TakesPartInId = table.Column<int>(nullable: false),
                     ParticipationStatus = table.Column<string>(nullable: false, defaultValue: "PendingGuest")
                 },
                 constraints: table =>
