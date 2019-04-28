@@ -27,13 +27,11 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent, IEnumerable<string> newGames) => throw new NotImplementedException();
 
-        public async Task<GameEventDto> GetGameEventAsync(string gameEventId) => throw new NotImplementedException();
+        public async Task<GameEventDto> GetGameEventAsync(GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
 
         public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] string gameEventId, [NotNull] string userId) => throw new NotImplementedException();
 
-        public async Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync(string userId) => throw new NotImplementedException();
-
-        public Task<IEnumerable<GameEventDto>> GetPendingGameEventsAsync([NotNull] string userId) => throw new NotImplementedException();
+        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userId) => throw new NotImplementedException();
 
         public async Task SendGameEventInvitationAsync(string gameEventId, string userId) => throw new NotImplementedException();
 
