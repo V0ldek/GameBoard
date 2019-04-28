@@ -1,4 +1,4 @@
-﻿namespace GameBoard.LogicLayer.Notifications
+﻿namespace GameBoard.LogicLayer.Configurations
 {
     public class MailNotificationsConfiguration
     {

@@ -2,6 +2,7 @@
 using GameBoard.Configuration;
 using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

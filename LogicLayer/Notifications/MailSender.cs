@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using GameBoard.LogicLayer.Configurations;
 
 namespace GameBoard.LogicLayer.Notifications
 {
