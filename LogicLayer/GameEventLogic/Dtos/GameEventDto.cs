@@ -14,9 +14,6 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
         [NotNull]
         public string GameEventName { get; }
 
-        [NotNull]
-        public string CreatorId { get; } // it might be unnecessary
-
         public DateTime MeetingTime { get; }
 
         public string Place { get; }
@@ -29,7 +26,6 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
 
         public GameEventDto(
             [NotNull] string gameEventId,
-            [NotNull] string creatorId,
             [NotNull] string gameEventName,
             DateTime meetingTime,
             string place,
@@ -38,7 +34,6 @@ namespace GameBoard.LogicLayer.GameEventLogic.Dtos
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
-            CreatorId = creatorId;
             MeetingTime = meetingTime;
             Place = place ?? string.Empty;
             Games = games;

@@ -23,15 +23,15 @@ namespace GameBoard.LogicLayer.GameEventLogic
 
         public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent, IEnumerable<string> games)
         {
+
             var gameEvent = new GameEvent()
             {
-                CreatorId = requestedGameEvent.CreatorId,
                 MeetingTime = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
-                Games = games.Select(g => new Game { Name = g }).ToList()
+                Games = games.Select(g => new Game { Name = g }).ToList(),
             };
             _repository.GameEvents.Add(gameEvent);
-
+            
             await _repository.SaveChangesAsync();
 
         }
@@ -40,7 +40,7 @@ namespace GameBoard.LogicLayer.GameEventLogic
         {
                 var gameEvent = _repository.GameEvents
                     .Include(ge => ge.Games)
-                    .Include(ge => ge.Invitations)
+                    .Include(ge => ge.Participations)
                     .Single(ge => gameEventId == ge.Id);
 
                 foreach (var game in gameEvent.Games)
@@ -48,9 +48,9 @@ namespace GameBoard.LogicLayer.GameEventLogic
                     _repository.Games.Remove(game);
                 }
 
-                foreach (var invite in gameEvent.Invitations)
+                foreach (var invite in gameEvent.Participations)
                 {
-                    _repository.GameEventInvitations.Remove(invite);
+                    _repository.GameEventParticipations.Remove(invite);
                 }
 
                 _repository.GameEvents.Remove(gameEvent);
@@ -60,13 +60,21 @@ namespace GameBoard.LogicLayer.GameEventLogic
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent, IEnumerable<string> newGames)
         {
-            throw new NotImplementedException();
+            var gameEventToEdit = _repository.GameEvents
+                .Include(ge => ge.Games)
+                .Single(ge => ge.Id == editedEvent.GameEventId); //Should this be in a try statement? 
+  
+            foreach(var game in gameEventToEdit.Games)
+            {
+                _repository.Games.Remove(game);
+            }
+
+            gameEventToEdit.Games = newGames.Select(g => new Game { Name = g }).ToList();
+
+            await _repository.SaveChangesAsync(); //Should this be in a try statement? 
         }
 
-        public async Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<GameEventDto>> GetAccessibleGameEventsAsync(string userId) => throw new NotImplementedException();
 
         public async Task<GameEventPermission> GetGameEventParticipationByUserAsync(string gameEventId, string userId) => throw new NotImplementedException();
 

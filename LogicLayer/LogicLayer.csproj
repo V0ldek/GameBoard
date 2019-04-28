@@ -16,6 +16,11 @@
     <IntermediateOutputPath>..\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="GameEventLogic\Dtos\GameEventExtension.cs" />
+    <Compile Remove="GameEventLogic\Dtos\GameEventInvitationExtenstion.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
