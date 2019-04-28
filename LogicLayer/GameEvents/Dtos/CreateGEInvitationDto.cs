@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.GameEventLogic.Dtos
+namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class CreateGEInvitationDto
     {

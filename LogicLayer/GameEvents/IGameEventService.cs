@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using System.Collections.Generic;
-using GameBoard.LogicLayer.GameEventLogic.Dtos;
+using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.DataLayer.Entities;
 
-namespace GameBoard.LogicLayer.GameEventLogic
+namespace GameBoard.LogicLayer.GameEvents
 {
     // Perhaps this interface should be split into three separate interfaces.
     public interface IGameEventService

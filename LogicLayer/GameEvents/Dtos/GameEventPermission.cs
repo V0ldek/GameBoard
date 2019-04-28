@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameBoard.LogicLayer.GameEventLogic.Dtos
+namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public enum GameEventPermission
     {

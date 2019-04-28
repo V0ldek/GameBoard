@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 
-namespace GameBoard.LogicLayer.GameEventLogic.Dtos
+namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public sealed class GameEventDto
     {

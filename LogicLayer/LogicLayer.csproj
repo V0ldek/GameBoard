@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="GameEventLogic\Dtos\GameEventExtension.cs" />
-    <Compile Remove="GameEventLogic\Dtos\GameEventInvitationExtenstion.cs" />
+    <Compile Remove="GameEvents\Dtos\GameEventExtension.cs" />
+    <Compile Remove="GameEvents\Dtos\GameEventInvitationExtenstion.cs" />
   </ItemGroup>
 
 
