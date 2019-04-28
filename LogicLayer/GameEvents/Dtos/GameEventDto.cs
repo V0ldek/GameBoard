@@ -24,7 +24,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public IEnumerable<UserDto> Users;
 
         public GameEventDto(
-            [NotNull] string gameEventId,
+            [NotNull] int gameEventId,
             [NotNull] string gameEventName,
             DateTime meetingTime,
             string place,
