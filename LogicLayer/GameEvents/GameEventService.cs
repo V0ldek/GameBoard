@@ -22,7 +22,7 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent, IEnumerable<string> games)
+        public async Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games)
         {
             var creatorParticipation = new GameEventParticipation() { ParticipantId = requestedGameEvent.CreatorId };
             var gameEvent = new GameEvent()
@@ -59,7 +59,24 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditGameEventAsync(EditGameEventDto editedEvent, IEnumerable<string> newGames) => throw new NotImplementedException();
+        public async Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames)
+        {
+            var gameEvent = await _repository.GameEvents
+                .Include(ge => ge.Games)
+                .SingleAsync(ge => ge.Id == editedEvent.GameEventId);
+
+            if (editedEvent.GameEventName != null && editedEvent.GameEventName != "") gameEvent.EventName = editedEvent.GameEventName;
+            if (editedEvent.IsMeetingTimeSet()) gameEvent.MeetingTime = editedEvent.MeetingTime; 
+            if (editedEvent.Place != null) gameEvent.Place = editedEvent.Place;
+
+            foreach (var game in gameEvent.Games)
+            {
+                _repository.Games.Remove(game);
+            }
+            gameEvent.Games = newGames.Select(g => new Game { Name = g }).ToList();
+
+            await _repository.SaveChangesAsync();
+        }
 
         public async Task<GameEventDto> GetGameEventAsync(GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
 
