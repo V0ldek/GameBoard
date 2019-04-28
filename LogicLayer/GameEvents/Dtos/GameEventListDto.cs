@@ -4,7 +4,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class GameEventListDto
     {
-        List<GameEventDto> AcceptedGameEvents { get; set; }
-        List<GameEventDto> PendingGameEvents { get; set; }
+        List<GameEventListItemDto> AcceptedGameEvents { get; set; }
+        List<GameEventListItemDto> PendingGameEvents { get; set; }
     }
 }
