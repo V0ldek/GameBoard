@@ -16,7 +16,7 @@ AS
             INSERTED
        WHERE INSERTED.RequestedToId = Friendship.RequestedById
          AND INSERTED.RequestedById = Friendship.RequestedToId
-		 AND INSERTED.FriendshipStatus <> 1); -- <> rejected
+		 AND Friendship.FriendshipStatus <> 1); -- <> rejected
       -- Checking if RequestedTo have already sent an friend request to RequestedBy.
       IF @friendshipStatus = 0
         THROW 50000, 'PendingFromRequestedTo', 1;
@@ -29,7 +29,7 @@ AS
             INSERTED
        WHERE INSERTED.RequestedById = Friendship.RequestedById
          AND INSERTED.RequestedToId = Friendship.RequestedToId
-		 AND INSERTED.FriendshipStatus <> 1);
+		 AND Friendship.FriendshipStatus <> 1);
 
       IF @friendshipStatus IS NULL
         INSERT INTO Friendship (RequestedById, RequestedToId, FriendshipStatus)
