@@ -32,7 +32,7 @@ class PopoverGenerator {
         $(source).popover("dispose");
         $(source)
             .popover({
-                trigger: "click focus",
+                trigger: "focus",
                 template
             });
 

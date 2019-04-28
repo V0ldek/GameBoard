@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,16 +23,11 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _userManager = userManager;
         }
 
-        public IActionResult OnGet(string code = null, string email = null)
+        public IActionResult OnGet(string code, string email)
         {
-            if (code == null)
+            if (code == null || email == null)
             {
-                return BadRequest("A code must be supplied for password reset.");
-            }
-
-            if (email == null)
-            {
-                return BadRequest("A email must be supplied for password reset.");
+                return Error.FromPage(this).Error("Error!", "Invalid URL.", HttpStatusCode.BadRequest);
             }
 
             Input = new InputModel

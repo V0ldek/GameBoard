@@ -47,7 +47,10 @@ namespace GameBoard.LogicLayer.Notifications
 
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
         {
-            var notification = new Notification(GetHtmlPath(MailOptions.EventInvitationHtml), link, "Event Invitation");
+            var notification = new Notification(
+                GetHtmlPath(MailOptions.EventInvitationHtml),
+                link,
+                "Event Invitation");
             return SendEmailAsync(emails, notification);
         }
 
@@ -71,7 +74,10 @@ namespace GameBoard.LogicLayer.Notifications
 
         public Task SendPasswordResetAsync(string email, string link)
         {
-            var notification = new Notification(GetHtmlPath(MailOptions.PasswordResetHtml), link, "Password Reset");
+            var notification = new Notification(
+                GetHtmlPath(MailOptions.PasswordResetHtml),
+                link,
+                "Password Reset");
             return SendEmailAsync(email, notification);
         }
 

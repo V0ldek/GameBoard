@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.Errors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,14 +12,12 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public IndexModel(
-            UserManager<ApplicationUser> userManager
-        )
+        public IndexModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -28,13 +27,13 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return Error.FromPage(this).AccessDenied();
             }
 
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
 
-            Username = userName;
+            UserName = userName;
 
             Input = new InputModel
             {

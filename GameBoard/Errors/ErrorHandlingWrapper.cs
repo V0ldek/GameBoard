@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using GameBoard.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +10,11 @@ namespace GameBoard.Errors
 {
     internal sealed class ErrorHandlingWrapper : IErrorHandlingWrapper
     {
-        private delegate LocalRedirectResult LocalRedirectHelper(string localUri);
+        private readonly LocalRedirectHelper _localRedirect;
 
         private readonly HttpResponse _response;
-        private readonly ViewDataDictionary _viewData;
         private readonly ITempDataDictionary _tempData;
-        private readonly LocalRedirectHelper _localRedirect;
+        private readonly ViewDataDictionary _viewData;
 
         internal ErrorHandlingWrapper(Controller controller)
         {
@@ -39,7 +34,7 @@ namespace GameBoard.Errors
 
         public LocalRedirectResult AccessDenied(string handlerLocalUri = "/Identity/Account/AccessDenied")
         {
-            _response.StatusCode = (int)HttpStatusCode.Forbidden;
+            _response.StatusCode = (int) HttpStatusCode.Forbidden;
             return _localRedirect(handlerLocalUri);
         }
 
@@ -51,7 +46,7 @@ namespace GameBoard.Errors
                 Message = message
             };
 
-            _response.StatusCode = (int)statusCode;
+            _response.StatusCode = (int) statusCode;
 
             logger?.LogInformation(
                 "The error view was called internally. " +
@@ -59,18 +54,6 @@ namespace GameBoard.Errors
                 errorViewModel);
 
             return View("Error", errorViewModel);
-        }
-
-        private ViewResult View(string viewName, object model)
-        {
-            _viewData.Model = model;
-
-            return new ViewResult()
-            {
-                ViewName = viewName,
-                ViewData = _viewData,
-                TempData = _tempData
-            };
         }
 
         public JsonResult ErrorJson(string title, string message, HttpStatusCode statusCode, ILogger logger = null)
@@ -81,7 +64,7 @@ namespace GameBoard.Errors
                 message
             };
 
-            _response.StatusCode = (int)statusCode;
+            _response.StatusCode = (int) statusCode;
 
             logger?.LogInformation(
                 $"Returning error JSON with status code {statusCode}.",
@@ -89,5 +72,19 @@ namespace GameBoard.Errors
 
             return new JsonResult(errorData);
         }
+
+        private ViewResult View(string viewName, object model)
+        {
+            _viewData.Model = model;
+
+            return new ViewResult
+            {
+                ViewName = viewName,
+                ViewData = _viewData,
+                TempData = _tempData
+            };
+        }
+
+        private delegate LocalRedirectResult LocalRedirectHelper(string localUri);
     }
 }

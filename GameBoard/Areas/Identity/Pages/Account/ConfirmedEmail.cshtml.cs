@@ -24,7 +24,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         {
             if (userId == null || code == null)
             {
-                return Error.FromPage(this).Error("Error!", "Invalid URL.", HttpStatusCode.NotFound);
+                return Error.FromPage(this).Error("Error!", "Invalid URL.", HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(userId);

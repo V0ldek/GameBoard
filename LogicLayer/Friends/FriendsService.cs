@@ -19,9 +19,7 @@ namespace GameBoard.LogicLayer.Friends
         private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
 
-        public FriendsService(
-            IGameBoardRepository repository,
-            IMailSender mailSender)
+        public FriendsService(IGameBoardRepository repository, IMailSender mailSender)
         {
             _repository = repository;
             _mailSender = mailSender;
