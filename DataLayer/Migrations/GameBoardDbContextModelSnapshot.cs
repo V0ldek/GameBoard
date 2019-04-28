@@ -95,56 +95,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.ToTable("Friendship");
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
-                {
-                    b.Property<string>("GameEventId");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256);
-
-                    b.HasKey("GameEventId", "Name");
-
-                    b.ToTable("Game");
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEvent", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(512);
-
-                    b.Property<string>("CreatorId")
-                        .IsRequired();
-
-                    b.Property<long>("MeetingTime");
-
-                    b.Property<string>("Place");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("GameEvent");
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventInvitation", b =>
-                {
-                    b.Property<string>("SendToId");
-
-                    b.Property<string>("InvitedToId");
-
-                    b.Property<string>("InvitationStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue("Pending");
-
-                    b.HasKey("SendToId", "InvitedToId");
-
-                    b.HasIndex("InvitedToId");
-
-                    b.ToTable("GameEventInvitation");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -269,35 +219,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedTo")
                         .WithMany("ReceivedRequests")
                         .HasForeignKey("RequestedToId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "GameEvent")
-                        .WithMany("Games")
-                        .HasForeignKey("GameEventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEvent", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Creator")
-                        .WithMany("CreatedEvents")
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventInvitation", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "InvitedTo")
-                        .WithMany("Invitations")
-                        .HasForeignKey("InvitedToId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "SendTo")
-                        .WithMany("Invitations")
-                        .HasForeignKey("SendToId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

@@ -4,10 +4,11 @@ using System.Text;
 
 namespace GameBoard.DataLayer.Enums
 {
-    public enum InvitationStatus
+    public enum ParticipationStatus
     {
-        Pending,
-        Accepted,
-        Rejected
+        Creator,
+        AcceptedGuest,
+        PendingGuest,
+        RejectedGuest
     }
 }

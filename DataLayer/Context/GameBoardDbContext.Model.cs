@@ -80,41 +80,35 @@ namespace GameBoard.DataLayer.Context
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(512);
 
-                    entity.HasOne(e => e.Creator)
-                        .WithMany(c => c.CreatedEvents)
-                        .HasForeignKey(e => e.CreatorId)
-                        .IsRequired()
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     entity.Property(e => e.MeetingTime)
                         .HasConversion(new DateTimeToBinaryConverter());
                     
                     entity.ToTable("GameEvent");
                 });
 
-            builder.Entity<GameEventInvitation>(
+            builder.Entity<GameEventParticipation>(
                 entity =>
                 {
-                    entity.HasOne(e => e.SendTo)
-                        .WithMany(u => u.Invitations)
-                        .HasForeignKey(e => e.SendToId)
+                    entity.HasOne(e => e.Paticipant)
+                        .WithMany(u => u.Participations)
+                        .HasForeignKey(e => e.ParticipantId)
                         .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    entity.HasOne(e => e.InvitedTo)
-                        .WithMany(ge => ge.Invitations)
-                        .HasForeignKey(e => e.InvitedToId)
+                    entity.HasOne(e => e.TakesPartIn)
+                        .WithMany(ge => ge.Participations)
+                        .HasForeignKey(e => e.TakesPartInId)
                         .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    entity.Property(e => e.InvitationStatus)
-                        .HasConversion(new EnumToStringConverter<InvitationStatus>())
+                    entity.Property(e => e.ParticipationStatus)
+                        .HasConversion(new EnumToStringConverter<ParticipationStatus>())
                         .IsRequired()
-                        .HasDefaultValue(InvitationStatus.Pending);
+                        .HasDefaultValue(ParticipationStatus.PendingGuest);
 
-                    entity.HasKey(e => new {e.SendToId, e.InvitedToId});
+                    entity.HasKey(e => new {e.ParticipantId, e.TakesPartInId});
 
-                    entity.HasIndex(e => new {e.InvitedToId});
+                    entity.HasIndex(e => new {e.TakesPartInId});
 
                     entity.ToTable("GameEventInvitation");
                 });

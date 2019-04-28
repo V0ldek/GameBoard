@@ -13,11 +13,8 @@ namespace GameBoard.DataLayer.Entities
         public DateTime MeetingTime { get; set; }
         public string Place { get; set; }
 
-        public ApplicationUser Creator { get; set; }
-        public string CreatorId { get; set; }
-
         public ICollection<Game> Games { get; set; }
 
-        public ICollection<GameEventInvitation> Invitations { get; set; }
+        public ICollection<GameEventParticipation> Participations { get; set; }
     }
 }
