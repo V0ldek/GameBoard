@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
@@ -11,26 +10,20 @@ using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class FriendsService : IFriendsService
     {
-        private readonly IGameBoardRepository _repository;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMailSender _mailSender;
+        private readonly IGameBoardRepository _repository;
 
-        public FriendsService(IGameBoardRepository repository,
-            UserManager<ApplicationUser> userManager,
+        public FriendsService(
+            IGameBoardRepository repository,
             IMailSender mailSender)
         {
             _repository = repository;
-            _userManager = userManager;
             _mailSender = mailSender;
         }
 
@@ -66,16 +59,17 @@ namespace GameBoard.LogicLayer.Friends
                 throw new InvitingYourselfException("You cannot invite yourself.");
             }
 
-            var requestedById = await _repository.GetUserIdByUserName(friendRequest.UserNameFrom);
-            var requestedToId = await _repository.GetUserIdByUserName(friendRequest.UserNameTo);
+            var userRequestedBy = _repository.ApplicationUsers.Single(u => u.UserName == friendRequest.UserNameFrom);
+            var userRequestedTo = _repository.ApplicationUsers.Single(u => u.UserName == friendRequest.UserNameTo);
 
-            _repository.Friendships.Add(
-                new Friendship
-                {
-                    RequestedById = requestedById,
-                    RequestedToId = requestedToId,
-                    FriendshipStatus = FriendshipStatus.PendingFriendRequest
-                });
+            var friendship = new Friendship
+            {
+                RequestedById = userRequestedBy.Id,
+                RequestedToId = userRequestedTo.Id,
+                FriendshipStatus = FriendshipStatus.PendingFriendRequest
+            };
+
+            _repository.Friendships.Add(friendship);
 
             try
             {
@@ -100,13 +94,9 @@ namespace GameBoard.LogicLayer.Friends
             }
 
             // send email
-
-            var user = await _userManager.FindByIdAsync(requestedToId);
-            var email = await _userManager.GetEmailAsync(user);
-            var friendship = _repository.Friendships.Single(u => u.RequestedById == requestedById && u.RequestedToId == requestedToId);
-            var url = friendRequest.GenerateRequestLink(friendship.Id.ToString());
-
-            await _mailSender.SendFriendInvitationAsync(email, url);
+            await _mailSender.SendFriendInvitationAsync(
+                userRequestedTo.Email,
+                friendRequest.GenerateRequestLink(friendship.Id.ToString()));
         }
 
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)

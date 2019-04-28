@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -48,8 +49,8 @@ namespace GameBoard.LogicLayer.Notifications
 
         private string GetHtmlPath(string htmlTemplateName)
         {
-            string htmlPath = MailOptions.DefaultHtmlPath;
-            htmlPath = Path.Combine(htmlPath, htmlTemplateName);
+            string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string htmlPath = Path.Combine(assemblyPath, MailOptions.DefaultHtmlPath, htmlTemplateName);
             return htmlPath;
         }
 

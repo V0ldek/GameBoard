@@ -16,15 +16,5 @@ namespace GameBoard.DataLayer.Context
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
-
-        public Task<string> GetUserIdByUserName(string userName)
-        {
-            var normalizedUserName = userName.ToUpper();
-
-            return ApplicationUsers
-                .Where(u => u.NormalizedUserName == normalizedUserName)
-                .Select(u => u.Id)
-                .SingleAsync();
-        }
     }
 }
