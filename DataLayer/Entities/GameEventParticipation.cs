@@ -1,7 +1,4 @@
-﻿using System;
-using GameBoard.DataLayer.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using GameBoard.DataLayer.Enums;
 
 namespace GameBoard.DataLayer.Entities
 {
@@ -11,7 +8,7 @@ namespace GameBoard.DataLayer.Entities
         public string ParticipantId { get; set; }
         public ApplicationUser Paticipant { get; set; }
         public int TakesPartInId { get; set; }
-        public GameEvent TakesPartIn{ get; set; }
+        public GameEvent TakesPartIn { get; set; }
 
         public ParticipationStatus ParticipationStatus { get; set; }
     }

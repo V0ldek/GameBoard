@@ -1,9 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
-using System.Collections.Generic;
 using GameBoard.LogicLayer.GameEvents.Dtos;
-using GameBoard.DataLayer.Entities;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
@@ -12,11 +10,11 @@ namespace GameBoard.LogicLayer.GameEvents
     {
         // Throws CreateGameEventException when new GameEvent could not be created (what can go wrong?)
         Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games);
-        
+
         // Throws DeleteGameEventException when GameEvent could not be deleted (Event with such id doesn't exist, but I don't know if that is actually possible)
         Task DeleteGameEventAsync([NotNull] string gameEventId);
 
-        Task EditGameEventAsync( [NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames);
+        Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames);
 
         // Returns Task with null if game event does not exist.
         [ItemCanBeNull]

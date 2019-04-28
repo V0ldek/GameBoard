@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using JetBrains.Annotations;
 using GameBoard.LogicLayer.UserSearch.Dtos;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
 {

@@ -34,7 +34,7 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
 
-                    entity.HasIndex(e => new {e.RequestedById, e.RequestedToId})
+                    entity.HasIndex(e => new { e.RequestedById, e.RequestedToId })
                         .HasFilter("FriendshipStatus <> 1") // <> rejected
                         .IsUnique();
 
@@ -75,14 +75,14 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.HasKey(e => e.Id);
-                    
+
                     entity.Property(e => e.Id)
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(512);
 
                     entity.Property(e => e.MeetingTime)
                         .HasConversion(new DateTimeToBinaryConverter());
-                    
+
                     entity.ToTable("GameEvent");
                 });
 
@@ -106,9 +106,9 @@ namespace GameBoard.DataLayer.Context
                         .IsRequired()
                         .HasDefaultValue(ParticipationStatus.PendingGuest);
 
-                    entity.HasKey(e => new {e.ParticipantId, e.TakesPartInId});
+                    entity.HasKey(e => new { e.ParticipantId, e.TakesPartInId });
 
-                    entity.HasIndex(e => new {e.TakesPartInId});
+                    entity.HasIndex(e => new { e.TakesPartInId });
 
                     entity.ToTable("GameEventInvitation");
                 });
@@ -121,14 +121,14 @@ namespace GameBoard.DataLayer.Context
                         .HasMaxLength(256);
 
                     entity.HasOne(e => e.GameEvent)
-                        .WithMany( g => g.Games)
+                        .WithMany(g => g.Games)
                         .HasForeignKey(e => e.GameEventId)
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    entity.HasKey(e => new {e.GameEventId, e.Name});
+                    entity.HasKey(e => new { e.GameEventId, e.Name });
 
                     entity.ToTable("Game");
                 });
-            }
+        }
     }
 }

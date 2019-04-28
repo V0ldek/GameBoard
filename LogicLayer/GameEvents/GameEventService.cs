@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
-using GameBoard.DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using GameBoard.DataLayer.Enums;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
@@ -29,9 +24,9 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task<GameEventDto> GetGameEventAsync(GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
 
-        public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] string gameEventId, [NotNull] string userId) => throw new NotImplementedException();
+        public Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId) => throw new NotImplementedException();
 
-        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userId) => throw new NotImplementedException();
+        public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] string gameEventId, [NotNull] string userId) => throw new NotImplementedException();
 
         public async Task SendGameEventInvitationAsync(string gameEventId, string userId) => throw new NotImplementedException();
 

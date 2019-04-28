@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameBoard.LogicLayer.GameEvents.Dtos
+﻿namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class GameEventListItemDto
     {
