@@ -1,7 +1,7 @@
 {
-  "profiles": {
-    "LogicLayer": {
-      "commandName": "Project"
+    "profiles": {
+        "LogicLayer": {
+            "commandName": "Project"
+        }
     }
-  }
 }
