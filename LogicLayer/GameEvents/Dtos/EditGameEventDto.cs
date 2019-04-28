@@ -6,12 +6,12 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
     public class EditGameEventDto
     {
         [NotNull]
-        public string GameEventId { get; }
+        public int GameEventId { get; }
         public string GameEventName { get; }
         public DateTime MeetingTime { get; }
         public string Place { get; }
 
-        public EditGameEventDto([NotNull] string gameEventId, string gameEventName, DateTime meetingTime, string place)
+        public EditGameEventDto([NotNull] int gameEventId, string gameEventName, DateTime meetingTime, string place)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;

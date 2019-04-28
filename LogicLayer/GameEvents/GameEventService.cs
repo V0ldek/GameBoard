@@ -16,23 +16,49 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent, IEnumerable<string> games) => throw new NotImplementedException();
+        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task DeleteGameEventAsync(string gameEventId) => throw new NotImplementedException();
+        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task EditGameEventAsync(EditGameEventDto editedEvent, IEnumerable<string> newGames) => throw new NotImplementedException();
+        public Task DeleteGameEventAsync([NotNull] int gameEventId)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task<GameEventDto> GetGameEventAsync(GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
+        public Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames)
+        {
+            throw new NotImplementedException();
+        }
 
-        public Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId) => throw new NotImplementedException();
+        public Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId)
+        {
+            throw new NotImplementedException();
+        }
 
-        public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] string gameEventId, [NotNull] string userId) => throw new NotImplementedException();
+        public Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task SendGameEventInvitationAsync(string gameEventId, string userId) => throw new NotImplementedException();
+        public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] int gameEventId, [NotNull] string userId)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task AcceptGameEventInvitationAsync(string gameEventId) => throw new NotImplementedException();
+        public Task RejectGameEventInvitationAsync([NotNull] int gameEventId)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task RejectGameEventInvitationAsync(string gameEventId) => throw new NotImplementedException();
-
+        public Task SendGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

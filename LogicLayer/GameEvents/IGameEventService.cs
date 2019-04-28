@@ -12,7 +12,7 @@ namespace GameBoard.LogicLayer.GameEvents
         Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games);
 
         // Throws DeleteGameEventException when GameEvent could not be deleted (Event with such id doesn't exist, but I don't know if that is actually possible)
-        Task DeleteGameEventAsync([NotNull] string gameEventId);
+        Task DeleteGameEventAsync([NotNull] int gameEventId);
 
         Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames);
 
@@ -22,12 +22,12 @@ namespace GameBoard.LogicLayer.GameEvents
 
         Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId);
 
-        Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] string gameEventId, [NotNull] string userId);
+        Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] int gameEventId, [NotNull] string userId);
 
-        Task SendGameEventInvitationAsync([NotNull] string gameEventId, [NotNull] string userId);
+        Task SendGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string userId);
 
-        Task AcceptGameEventInvitationAsync([NotNull] string gameEventId);
+        Task AcceptGameEventInvitationAsync([NotNull] int gameEventId);
 
-        Task RejectGameEventInvitationAsync([NotNull] string gameEventId);
+        Task RejectGameEventInvitationAsync([NotNull] int gameEventId);
     }
 }

@@ -8,7 +8,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
     public sealed class GameEventDto
     {
         [NotNull]
-        public string GameEventId { get; }
+        public int GameEventId { get; }
 
         [NotNull]
         public string GameEventName { get; }
