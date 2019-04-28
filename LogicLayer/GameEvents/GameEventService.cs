@@ -38,7 +38,7 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task DeleteGameEventAsync(int gameEventId)
+        public async Task DeleteGameEventAsync([NotNull] int gameEventId)
         {
             var gameEvent = await _repository.GameEvents
                 .Where(ge => ge.Id == gameEventId)
@@ -78,17 +78,17 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<GameEventDto> GetGameEventAsync(GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
+        public async Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
 
         public Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId) => throw new NotImplementedException();
 
         public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] int gameEventId, [NotNull] string userId) => throw new NotImplementedException();
 
-        public async Task SendGameEventInvitationAsync(int gameEventId, string userId) => throw new NotImplementedException();
+        public async Task SendGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string userId) => throw new NotImplementedException();
 
-        public async Task AcceptGameEventInvitationAsync(int gameEventId) => throw new NotImplementedException();
+        public async Task AcceptGameEventInvitationAsync([NotNull] int gameEventId) => throw new NotImplementedException();
 
-        public async Task RejectGameEventInvitationAsync(int gameEventId) => throw new NotImplementedException();
+        public async Task RejectGameEventInvitationAsync([NotNull] int gameEventId) => throw new NotImplementedException();
 
     }
 }
