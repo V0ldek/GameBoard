@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,12 +14,12 @@ namespace GameBoard.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly IMailSender _mailSender;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IMailSender mailSender)
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IMailSender mailSender)
         {
             _userManager = userManager;
             _mailSender = mailSender;
