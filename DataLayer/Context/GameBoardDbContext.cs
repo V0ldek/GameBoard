@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using GameBoard.DataLayer.Entities;
+﻿using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
