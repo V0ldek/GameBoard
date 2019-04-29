@@ -23,7 +23,6 @@
         <script src="~/lib/popper.js/dist/umd/popper.js"></script>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css"/>
-        <link rel="stylesheet" href="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css"/>
         <link rel="stylesheet" href="~/lib/simplebar/dist/simplebar.css"/>
 
         <link rel="stylesheet" href="~/css/friendsSidebar.css"/>
@@ -54,11 +53,11 @@
               asp-fallback-test-class="fa" asp-fallback-test-property="font-family" asp-fallback-test-value="FontAwesome"
               crossorigin="anonymous"
               integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"
-              asp-fallback-href="~/ib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-              asp-fallback-test-class="mCustomScrollBox" asp-fallback-test-property="position" asp-fallback-test-value="relative"
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/3.1.5/simplebar.min.css"
+              asp-fallback-href="~/lib/simplebar/dist/simplebar.min.css"
+              asp-fallback-test-class="simplebar-wrapper" asp-fallback-test-property="overflow" asp-fallback-test-value="hidden"
               crossorigin="anonymous"
-              integrity="sha384-2Eef5h4vdx01fD0i6qvkDNrCPXRXiKc1D1fF12tgo1LvtNdDCWOOSJo2cgc0zivP"/>
+              integrity="sha384-yspsVGnNumO1kH9eV6zgrZfwLduaWSkKqw9zuv93h4Xi+dYeszoRH8C0MZtpEvIK"/>
 
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
@@ -105,14 +104,12 @@
 <environment include="Development">
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js"></script>
     <script src="~/lib/simplebar/dist/simplebar.js"></script>
 
     <script src="~/scripts/Autocomplete/autocomplete.js"></script>
     <script src="~/scripts/Collapsible/collapsible.js"></script>
     <script src="~/scripts/Popovers/popoverGenerator.js"></script>
     <script src="~/scripts/Site/friendsSidebar.js"></script>
-    <script src="~/scripts/Site/gameEventsList.js"></script>
     <script src="~/scripts/Site/userSearchBox.js"></script>
 </environment>
 <environment exclude="Development">
@@ -122,13 +119,12 @@
             crossorigin="anonymous"
             integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl">
     </script>
-    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"
-            asp-fallback-src="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js"
-            asp-fallback-test="window.jQuery && window.jQuery.mCustomScrollbar"
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/3.1.5/simplebar.min.js"
             crossorigin="anonymous"
-            integrity="sha384-c8PYTi+wTlI/Gtx4H1LrGsuSV4JwEh6XwXiIX/qdSzQd4VknmE1kZrpwGAqmtevt"></script>
-
+            integrity="sha384-KwPUYtE9XwmvlXCR9+ESvbyXgWIpFsA/ULRl1fca7cT38KTuYtte8EDz1LX6xA8f">
+    </script>
     <script src="~/scripts/site.min.js" asp-append-version="true"></script>
 </environment>
 @RenderSection("Scripts", false)

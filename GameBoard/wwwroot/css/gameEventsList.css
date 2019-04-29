@@ -1,11 +1,6 @@
 ﻿#game-events-container {
     height: 60vh;
-    width: 100%;
-}
-
-#game-events-table {
-    margin-top: 3%;
-    width: 100%;
+    position: relative;
 }
 
 #game-events-table td {
@@ -13,7 +8,6 @@
     vertical-align: middle;
     min-height: 5vh;
     max-height: 5vh;
-    width: 30vw;
 }
 
 #game-events-table .user-card {

@@ -16,11 +16,13 @@
     right: 0;
     top: -6vh;
     z-index: 999;
+    background-color: #0a0d10; /* Fallback color. */
+    background-color: rgba(10, 13, 16, 0.8)
 }
 
 .autocomplete-items .autocomplete-item {
     background-color: #1a1d20; /* Fallback color. */
-    background-color: rgba(26, 29, 32, 0.5);
+    background-color: rgba(26, 29, 32, 0.9);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -69,7 +71,7 @@
 
 .autocomplete-items.user-search-error {
     background-color: #1a1d20; /* Fallback  color. */
-    background-color: rgba(26, 29, 32, 0.5);
+    background-color: rgba(26, 29, 32, 0.9);
     margin: 1px;
     padding: 5px;
 }

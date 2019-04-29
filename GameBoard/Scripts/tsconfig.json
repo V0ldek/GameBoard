@@ -12,7 +12,6 @@
     "Collapsible/Collapsible.ts",
     "Popovers/popoverGenerator.ts",
     "Site/friendsSidebar.ts",
-    "Site/gameEventsList.ts",
     "Site/userSearchBox.ts",
     "productionConsoleSwitch.ts"
   ],
