@@ -7,15 +7,15 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
     {
         [NotNull]
         [ItemNotNull]
-        List<GameEventListItemDto> AcceptedGameEvents { get; }
+        public List<GameEventListItemDto> AcceptedGameEvents { get; }
 
         [NotNull]
         [ItemNotNull]
-        List<GameEventListItemDto> PendingGameEvents { get; }
+        public List<GameEventListItemDto> PendingGameEvents { get; }
 
         [NotNull]
         [ItemNotNull]
-        List<GameEventListItemDto> CreatorGameEvents { get; }
+        public List<GameEventListItemDto> CreatorGameEvents { get; }
 
         public GameEventListDto(
             [NotNull] [ItemNotNull] List<GameEventListItemDto> acceptedGameEvents,

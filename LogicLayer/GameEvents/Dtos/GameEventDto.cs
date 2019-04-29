@@ -40,11 +40,11 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             {
                 return GameEventPermission.Creator;
             }
-            if (Participants.FirstOrDefault(participant => participant.UserName == userName) != null)
+            if (Participants.Any(participant => participant.UserName == userName))
             {
                 return GameEventPermission.AcceptedInvitation;
             }
-            if (Invitees.FirstOrDefault(invitee => invitee.UserName == userName) != null)
+            if (Invitees.Any(invitee => invitee.UserName == userName))
             {
                 return GameEventPermission.PendingInvitation;
             }
