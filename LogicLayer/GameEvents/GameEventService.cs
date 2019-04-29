@@ -36,7 +36,7 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
-        public Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto)
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId)
         {
             throw new NotImplementedException();
         }
