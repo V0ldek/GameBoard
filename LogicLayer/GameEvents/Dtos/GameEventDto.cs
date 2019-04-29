@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using JetBrains.Annotations;
 
@@ -23,8 +24,33 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public IEnumerable<string> Games;
 
         [NotNull]
+        public UserDto Creator { get; }
+
+        [NotNull]
         [ItemNotNull]
-        public IEnumerable<UserDto> Users;
+        public IEnumerable<UserDto> Invitees;
+
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<UserDto> Participants;
+
+        public GameEventPermission GetUserPermission([NotNull] string userName)
+        {
+            if (Creator.UserName == userName)
+            {
+                return GameEventPermission.Creator;
+            }
+            if (Participants.FirstOrDefault(participant => participant.UserName == userName) != null)
+            {
+                return GameEventPermission.AcceptedInvitation;
+            }
+            if (Invitees.FirstOrDefault(invitee => invitee.UserName == userName) != null)
+            {
+                return GameEventPermission.PendingInvitation;
+            }
+
+            return GameEventPermission.Forbidden;
+        }
 
         public GameEventDto(
             int gameEventId,
@@ -32,14 +58,18 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             [CanBeNull] DateTime? meetingTime,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games,
-            [NotNull] [ItemNotNull] IEnumerable<UserDto> users)
+            [NotNull] UserDto creator,
+            [NotNull] [ItemNotNull] IEnumerable<UserDto> invitees,
+            [NotNull] [ItemNotNull] IEnumerable<UserDto> participants)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
             MeetingTime = meetingTime;
             Place = place ?? string.Empty;
             Games = games;
-            Users = users;
+            Creator = creator;
+            Invitees = invitees;
+            Participants = participants;
         }
 
     }

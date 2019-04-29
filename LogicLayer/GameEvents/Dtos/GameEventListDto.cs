@@ -13,12 +13,18 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         [ItemNotNull]
         List<GameEventListItemDto> PendingGameEvents { get; }
 
+        [NotNull]
+        [ItemNotNull]
+        List<GameEventListItemDto> CreatorGameEvents { get; }
+
         public GameEventListDto(
             [NotNull] [ItemNotNull] List<GameEventListItemDto> acceptedGameEvents,
-            [NotNull] [ItemNotNull] List<GameEventListItemDto> pendingGameEvents)
+            [NotNull] [ItemNotNull] List<GameEventListItemDto> pendingGameEvents,
+            [NotNull] [ItemNotNull] List<GameEventListItemDto> creatorGameEvents)
         {
             AcceptedGameEvents = acceptedGameEvents;
             PendingGameEvents = pendingGameEvents;
+            CreatorGameEvents = creatorGameEvents;
         }
     }
 }

@@ -10,16 +10,16 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public string GameEventName { get; }
 
         [NotNull]
-        public string CreatorName { get; }
+        public string CreatorUserName { get; }
 
         public GameEventListItemDto(
             int gameEventId,
             [NotNull] string gameEventName,
-            [NotNull] string creatorName)
+            [NotNull] string creatorUserName)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
-            CreatorName = creatorName;
+            CreatorUserName = creatorUserName;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
-        public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userId)
+        public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
         {
             throw new NotImplementedException();
         }
@@ -41,22 +41,22 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
-        public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userId)
+        public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userName)
         {
             throw new NotImplementedException();
         }
 
-        public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserId)
+        public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
             throw new NotImplementedException();
         }
 
-        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string invitedUserId)
+        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string invitedUserName)
         {
             throw new NotImplementedException();
         }
 
-        public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userId)
+        public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
         {
             throw new NotImplementedException();
         }

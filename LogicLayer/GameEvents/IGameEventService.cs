@@ -20,14 +20,14 @@ namespace GameBoard.LogicLayer.GameEvents
         [ItemCanBeNull]
         Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto);
 
-        Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userId);
+        Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName);
 
-        Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userId);
+        Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userName);
 
-        Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userId);
+        Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName);
 
-        Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserId);
+        Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
 
-        Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserId);
+        Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
     }
 }
