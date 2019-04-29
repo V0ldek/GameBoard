@@ -18,7 +18,7 @@ namespace GameBoard.LogicLayer.GameEvents
 
         // Returns Task with null if game event does not exist.
         [ItemCanBeNull]
-        Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto);
+        Task<GameEventDto> GetGameEventAsync(int gameEventId);
 
         Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName);
 

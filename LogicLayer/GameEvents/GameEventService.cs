@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEvents.Dtos;
+using GameBoard.LogicLayer.UserSearch.Dtos;
 using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents
@@ -33,12 +34,116 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
         {
+            if (userName == "V0ldek")
+            {
+                var gameEvents = new GameEventListDto(
+                    new List<GameEventListItemDto>
+                    {
+                        new GameEventListItemDto(1, "Gra w gry", "NacMad"),
+                        new GameEventListItemDto(2, "Gra w grę", "MacNad")
+                    },
+                    new List<GameEventListItemDto>
+                    {
+                        new GameEventListItemDto(3, "Będziemy grali w grę", "johny")
+                    },
+                    new List<GameEventListItemDto>
+                    {
+                        new GameEventListItemDto(4, "Moja gra", "V0ldek")
+                    });
+
+                return Task.FromResult(gameEvents);
+            }
+
             throw new NotImplementedException();
         }
 
-        public Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto)
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId)
         {
-            throw new NotImplementedException();
+            switch (gameEventId)
+            {
+                case 1:
+                    return Task.FromResult(
+                        new GameEventDto(
+                            1,
+                            "Gra w gry",
+                            new DateTime(2017, 05, 22),
+                            "u Nadola",
+                            new List<string>
+                            {
+                                "Gra o Tron",
+                                "Iąę"
+                            },
+                            new UserDto("maciek", "NacMad", "macnad@gmail.com"),
+                            new List<UserDto>(),
+                            new List<UserDto>
+                            {
+                                new UserDto("v0ldie", "V0ldek", "registermen@gmail.com")
+                            }));
+                case 2:
+                    return Task.FromResult(
+                        new GameEventDto(
+                            2,
+                            "Gra w grę",
+                            new DateTime(2016, 10, 14),
+                            "u Nadola",
+                            new List<string>
+                            {
+                                "Terraformacja Marka"
+                            },
+                            new UserDto("maciek", "NacMad", "macnad@gmail.com"),
+                            new List<UserDto>
+                            {
+                                new UserDto("zochu", "Żochużochużochużochu", "żochu@żochu.żochu")
+                            },
+                            new List<UserDto>
+                            {
+                                new UserDto("v0ldie", "V0ldek", "registermen@gmail.com"),
+                                new UserDto("johny", "Johny", "johny@gmail.com")
+                            }));
+                case 3:
+                    return Task.FromResult(
+                        new GameEventDto(
+                            3,
+                            "Będziemy grali w grę",
+                            new DateTime(2017, 05, 22),
+                            "Szobera 6/114",
+                            new List<string>
+                            {
+                                "Twilight Imperium"
+                            },
+                            new UserDto("johny", "Johny", "johny@gmail.com"),
+                            new List<UserDto>
+                            {
+                                new UserDto("v0ldie", "V0ldek", "registermen@gmail.com")
+                            },
+                            new List<UserDto>
+                            {
+                                new UserDto("zochu", "Żochużochużochużochu", "żochu@żochu.żochu"),
+                                new UserDto("maciek", "NacMad", "macnad@gmail.com")
+                            }));
+                case 4:
+                    return Task.FromResult(
+                        new GameEventDto(
+                            4,
+                            "Będziemy grali w grę",
+                            new DateTime(2017, 05, 22),
+                            "Moja gra",
+                            new List<string>
+                            {
+                                "Trójkowy Konflikt"
+                            },
+                            new UserDto("v0ldie", "V0ldek", "registermen@gmail.com"),
+                            new List<UserDto>
+                            {
+                                new UserDto("maciek", "NacMad", "macnad@gmail.com")
+                            },
+                            new List<UserDto>
+                            {
+                                new UserDto("johny", "Johny", "johny@gmail.com")
+                            }));
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userName)
