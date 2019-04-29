@@ -22,7 +22,7 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public async Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games)
+        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
         {
             var creatorParticipation = new GameEventParticipation() { ParticipantId = requestedGameEvent.CreatorId };
             var gameEvent = new GameEvent()
@@ -38,7 +38,7 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task DeleteGameEventAsync([NotNull] int gameEventId)
+        public Task DeleteGameEventAsync(int gameEventId)
         {
             var gameEvent = await _repository.GameEvents
                 .Where(ge => ge.Id == gameEventId)
@@ -59,14 +59,14 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames)
+        public Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
         {
             var gameEvent = await _repository.GameEvents
                 .Include(ge => ge.Games)
                 .SingleAsync(ge => ge.Id == editedEvent.GameEventId);
 
             if (editedEvent.GameEventName != null && editedEvent.GameEventName != "") gameEvent.EventName = editedEvent.GameEventName;
-            if (editedEvent.IsMeetingTimeSet()) gameEvent.MeetingTime = editedEvent.MeetingTime; 
+            if (editedEvent.IsMeetingTimeSet()) gameEvent.MeetingTime = editedEvent.MeetingTime;
             if (editedEvent.Place != null) gameEvent.Place = editedEvent.Place;
 
             foreach (var game in gameEvent.Games)
@@ -78,17 +78,35 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto) => throw new NotImplementedException();
 
-        public Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId) => throw new NotImplementedException();
+        public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
+        {
+            throw new NotImplementedException();
+        }
 
-        public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] int gameEventId, [NotNull] string userId) => throw new NotImplementedException();
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task SendGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string userId) => throw new NotImplementedException();
+        public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userName)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task AcceptGameEventInvitationAsync([NotNull] int gameEventId) => throw new NotImplementedException();
+        public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task RejectGameEventInvitationAsync([NotNull] int gameEventId) => throw new NotImplementedException();
+        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string invitedUserName)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

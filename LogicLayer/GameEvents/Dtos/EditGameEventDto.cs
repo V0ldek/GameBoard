@@ -1,23 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class EditGameEventDto
     {
-        private static DateTime _unsetMeetingTime = new DateTime(1, 2, 19);
-        [NotNull]
         public int GameEventId { get; }
+
+        [CanBeNull]
         public string GameEventName { get; }
-        public DateTime MeetingTime { get; }
+
+        [CanBeNull]
+        public DateTime? MeetingTime { get; }
+
+        [CanBeNull]
         public string Place { get; }
 
-        public EditGameEventDto(int gameEventId, string gameEventName = null, DateTime? meetingTime = null, string place = null)
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<string> Games;
+
+        public EditGameEventDto(
+            int gameEventId,
+            [CanBeNull] string gameEventName,
+            [CanBeNull] DateTime? meetingTime,
+            [CanBeNull] string place,
+            [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
             MeetingTime = meetingTime ?? _unsetMeetingTime;
             Place = gameEventName;
+            Games = games;
         }
 
         public bool IsMeetingTimeSet()

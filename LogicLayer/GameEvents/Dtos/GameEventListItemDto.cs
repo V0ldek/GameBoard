@@ -1,9 +1,26 @@
-﻿namespace GameBoard.LogicLayer.GameEvents.Dtos
+﻿using GameBoard.LogicLayer.UserSearch.Dtos;
+using JetBrains.Annotations;
+
+namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class GameEventListItemDto
     {
-        public int GameEventId { get; set; }
-        public string GameEventName { get; set; }
-        public string CreatorName { get; set; }
+        public int GameEventId { get; }
+
+        [NotNull]
+        public string GameEventName { get; }
+
+        [NotNull]
+        public UserDto Creator { get; }
+
+        internal GameEventListItemDto(
+            int gameEventId,
+            [NotNull] string gameEventName,
+            [NotNull] UserDto creator)
+        {
+            GameEventId = gameEventId;
+            GameEventName = gameEventName;
+            Creator = creator;
+        }
     }
 }

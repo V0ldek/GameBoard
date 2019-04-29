@@ -7,7 +7,6 @@ namespace GameBoard.DataLayer.Entities
     {
         public ICollection<Friendship> SentRequests { get; set; }
         public ICollection<Friendship> ReceivedRequests { get; set; }
-
         public ICollection<GameEventParticipation> Participations { get; set; }
     }
 }

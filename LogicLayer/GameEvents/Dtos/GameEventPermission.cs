@@ -4,7 +4,6 @@
     {
         Creator,
         AcceptedInvitation,
-        CreatorOrAcceptedInvitation,
         PendingInvitation,
         Forbidden
     }

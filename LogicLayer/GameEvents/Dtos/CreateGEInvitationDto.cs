@@ -4,15 +4,19 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class CreateGEInvitationDto
     {
-        public string SendBy;
-        public string SendTo;
-        public int InvitedTo;
+        [NotNull]
+        public string SendByUserName { get; }
 
-        public CreateGEInvitationDto([NotNull] string _sendBy, [NotNull] string _sendTo, [NotNull] int _invitedTo)
+        [NotNull]
+        public string SendToUserName { get; }
+
+        public int InvitedTo { get; }
+
+        public CreateGEInvitationDto([NotNull] string sendByUserName, [NotNull] string sendToUserName, int invitedTo)
         {
-            SendBy = _sendBy;
-            SendTo = _sendTo;
-            InvitedTo = _invitedTo;
+            SendByUserName = sendByUserName;
+            SendToUserName = sendToUserName;
+            InvitedTo = invitedTo;
         }
     }
 }
