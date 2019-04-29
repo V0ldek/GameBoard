@@ -16,27 +16,22 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId)
+        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games)
+        public Task DeleteGameEventAsync(int gameEventId)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteGameEventAsync([NotNull] int gameEventId)
+        public Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
         {
             throw new NotImplementedException();
         }
 
-        public Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId)
+        public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userId)
         {
             throw new NotImplementedException();
         }
@@ -46,17 +41,22 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
-        public Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] int gameEventId, [NotNull] string userId)
+        public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task RejectGameEventInvitationAsync([NotNull] int gameEventId)
+        public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserId)
         {
             throw new NotImplementedException();
         }
 
-        public Task SendGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string userId)
+        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string invitedUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userId)
         {
             throw new NotImplementedException();
         }

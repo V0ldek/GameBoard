@@ -1,22 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class EditGameEventDto
     {
-        [NotNull]
         public int GameEventId { get; }
+
+        [CanBeNull]
         public string GameEventName { get; }
-        public DateTime MeetingTime { get; }
+
+        [CanBeNull]
+        public DateTime? MeetingTime { get; }
+
+        [CanBeNull]
         public string Place { get; }
 
-        public EditGameEventDto([NotNull] int gameEventId, string gameEventName, DateTime meetingTime, string place)
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<string> Games;
+
+        public EditGameEventDto(
+            int gameEventId, 
+            [CanBeNull] string gameEventName, 
+            [CanBeNull] DateTime? meetingTime, 
+            [CanBeNull] string place, 
+            [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
             MeetingTime = meetingTime;
             Place = gameEventName;
+            Games = games;
         }
 
     }

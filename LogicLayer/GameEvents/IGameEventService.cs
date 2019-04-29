@@ -9,25 +9,25 @@ namespace GameBoard.LogicLayer.GameEvents
     public interface IGameEventService
     {
         // Throws CreateGameEventException when new GameEvent could not be created (what can go wrong?)
-        Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent, [NotNull] IEnumerable<string> games);
+        Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent);
 
         // Throws DeleteGameEventException when GameEvent could not be deleted (Event with such id doesn't exist, but I don't know if that is actually possible)
-        Task DeleteGameEventAsync([NotNull] int gameEventId);
+        Task DeleteGameEventAsync(int gameEventId);
 
-        Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent, [NotNull] IEnumerable<string> newGames);
+        Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent);
 
         // Returns Task with null if game event does not exist.
         [ItemCanBeNull]
         Task<GameEventDto> GetGameEventAsync([NotNull] GameEventListItemDto gameEventListItemDto);
 
-        Task<IEnumerable<GameEventListDto>> GetAccessibleGameEventsAsync([NotNull] string userId);
+        Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userId);
 
-        Task<GameEventPermission> GetGameEventPermissionByUserAsync([NotNull] int gameEventId, [NotNull] string userId);
+        Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userId);
 
-        Task SendGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string userId);
+        Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userId);
 
-        Task AcceptGameEventInvitationAsync([NotNull] int gameEventId);
+        Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserId);
 
-        Task RejectGameEventInvitationAsync([NotNull] int gameEventId);
+        Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserId);
     }
 }

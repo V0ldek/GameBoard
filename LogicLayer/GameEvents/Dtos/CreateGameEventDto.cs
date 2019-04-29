@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
@@ -11,20 +12,28 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         [NotNull]
         public string GameEventName { get; }
 
-        public DateTime MeetingTime { get; } // It is not specified in the user story and I know we have a separate user story concerning this feature, but it won't work out most likely, so maybe we should put this in here for now.
+        [CanBeNull]
+        public DateTime? MeetingTime { get; } // It is not specified in the user story and I know we have a separate user story concerning this feature, but it won't work out most likely, so maybe we should put this in here for now.
 
+        [CanBeNull]
         public string Place { get; }
+
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<string> Games;
 
         public CreateGameEventDto(
             [NotNull] string creatorId,
             [NotNull] string gameEventName,
-            DateTime meetingTime,
-            string place)
+            [CanBeNull] DateTime meetingTime,
+            [CanBeNull] string place,
+            [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
             CreatorId = creatorId;
             GameEventName = gameEventName;
             MeetingTime = meetingTime;
             Place = place;
+            Games = games;
         }
     }
 }

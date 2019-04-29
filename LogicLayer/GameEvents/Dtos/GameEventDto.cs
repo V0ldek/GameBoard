@@ -7,29 +7,32 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public sealed class GameEventDto
     {
-        [NotNull]
         public int GameEventId { get; }
 
         [NotNull]
         public string GameEventName { get; }
 
-        public DateTime MeetingTime { get; }
+        [CanBeNull]
+        public DateTime? MeetingTime { get; }
 
+        [CanBeNull]
         public string Place { get; }
 
         [NotNull]
+        [ItemNotNull]
         public IEnumerable<string> Games;
 
         [NotNull]
+        [ItemNotNull]
         public IEnumerable<UserDto> Users;
 
         public GameEventDto(
-            [NotNull] string gameEventId,
+            int gameEventId,
             [NotNull] string gameEventName,
-            DateTime meetingTime,
-            string place,
-            [NotNull] IEnumerable<string> games,
-            [NotNull] IEnumerable<UserDto> users)
+            [CanBeNull] DateTime? meetingTime,
+            [CanBeNull] string place,
+            [NotNull] [ItemNotNull] IEnumerable<string> games,
+            [NotNull] [ItemNotNull] IEnumerable<UserDto> users)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
