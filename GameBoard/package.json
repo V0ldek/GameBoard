@@ -13,7 +13,8 @@
     "font-awesome": "4.7.0",
     "malihu-custom-scrollbar-plugin": "3.1.5",
     "@types/mcustomscrollbar": "2.8.32",
-    "popper.js": "1.14.7"
+    "popper.js": "1.14.7",
+    "simplebar": "3.1.5" 
   },
   "devDependencies": {
     "del": "4.1.0",

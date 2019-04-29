@@ -1,7 +1,7 @@
 ﻿:root { --sidebar-width: 200px; }
 
 @media (min-width: 768px) {
-    :root { --sidebar-width: 240px }
+    :root { --sidebar-width: 240px  }
 }
 
 @media (min-width: 1440px) {
@@ -9,7 +9,7 @@
 }
 
 @media (min-width: 2048px) {
-    :root { --sidebar-width: 320px }
+    :root { --sidebar-width: 320px  }
 }
 
 #friends-sidebar-container {
@@ -51,10 +51,9 @@
 
 #friends-sidebar ul p { padding: 10px; }
 
-.user-card {
+#friends-sidebar .user-card {
     margin-bottom: 3px;
     padding: 5% 7%;
-    justify-items: center;
     align-items: center;
     display: grid;
     width: 100%;
@@ -63,9 +62,9 @@
     grid-template-areas: "gravatar username";
 }
 
-.user-card .gravatar { grid-area: gravatar; }
+#friends-sidebar .user-card .gravatar { grid-area: gravatar; }
 
-.user-card .username {
+#friends-sidebar .user-card .username {
     grid-area: username;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -73,8 +72,8 @@
     font-size: 14px;
 }
 
-@media(min-width: 768px) {
-    .user-card .username { font-size: 16px; }
+@media (min-width: 768px) {
+    #friends-sidebar .user-card .username { font-size: 16px; }
 }
 
-.user-card .username-container { width: 100%; }
+#friends-sidebar .user-card .username-container { width: 100%; }

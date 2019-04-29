@@ -34,21 +34,39 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
         {
+            var maciek = new UserDto("maciek", "NacMad", "macnad@gmail.com");
+            var zochu = new UserDto("zochu", "Żochużochużochużochu", "żochu@żochu.żochu");
+            var voldek = new UserDto("v0ldie", "V0ldek", "registermen@gmail.com");
+            var johny = new UserDto("johny", "Johny", "johny@gmail.com");
+
             if (userName == "V0ldek")
             {
                 var gameEvents = new GameEventListDto(
                     new List<GameEventListItemDto>
                     {
-                        new GameEventListItemDto(1, "Gra w gry", "NacMad"),
-                        new GameEventListItemDto(2, "Gra w grę", "MacNad")
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(1, "Gra w gry", maciek),
+                        new GameEventListItemDto(2, "Gra w grę", maciek)
                     },
                     new List<GameEventListItemDto>
                     {
-                        new GameEventListItemDto(3, "Będziemy grali w grę", "johny")
+                        new GameEventListItemDto(3, "Będziemy grali w grę", johny)
                     },
                     new List<GameEventListItemDto>
                     {
-                        new GameEventListItemDto(4, "Moja gra", "V0ldek")
+                        new GameEventListItemDto(4, "Moja gra", voldek)
                     });
 
                 return Task.FromResult(gameEvents);
@@ -59,6 +77,11 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public Task<GameEventDto> GetGameEventAsync(int gameEventId)
         {
+            var maciek = new UserDto("maciek", "NacMad", "macnad@gmail.com");
+            var zochu = new UserDto("zochu", "Żochużochużochużochu", "żochu@żochu.żochu");
+            var voldek = new UserDto("v0ldie", "V0ldek", "registermen@gmail.com");
+            var johny = new UserDto("johny", "Johny", "johny@gmail.com");
+
             switch (gameEventId)
             {
                 case 1:
@@ -73,11 +96,11 @@ namespace GameBoard.LogicLayer.GameEvents
                                 "Gra o Tron",
                                 "Iąę"
                             },
-                            new UserDto("maciek", "NacMad", "macnad@gmail.com"),
+                            maciek,
                             new List<UserDto>(),
                             new List<UserDto>
                             {
-                                new UserDto("v0ldie", "V0ldek", "registermen@gmail.com")
+                                voldek
                             }));
                 case 2:
                     return Task.FromResult(
@@ -90,15 +113,15 @@ namespace GameBoard.LogicLayer.GameEvents
                             {
                                 "Terraformacja Marka"
                             },
-                            new UserDto("maciek", "NacMad", "macnad@gmail.com"),
+                            maciek,
                             new List<UserDto>
                             {
-                                new UserDto("zochu", "Żochużochużochużochu", "żochu@żochu.żochu")
+                                zochu
                             },
                             new List<UserDto>
                             {
-                                new UserDto("v0ldie", "V0ldek", "registermen@gmail.com"),
-                                new UserDto("johny", "Johny", "johny@gmail.com")
+                                voldek,
+                                johny
                             }));
                 case 3:
                     return Task.FromResult(
@@ -111,15 +134,15 @@ namespace GameBoard.LogicLayer.GameEvents
                             {
                                 "Twilight Imperium"
                             },
-                            new UserDto("johny", "Johny", "johny@gmail.com"),
+                            johny,
                             new List<UserDto>
                             {
-                                new UserDto("v0ldie", "V0ldek", "registermen@gmail.com")
+                                voldek
                             },
                             new List<UserDto>
                             {
-                                new UserDto("zochu", "Żochużochużochużochu", "żochu@żochu.żochu"),
-                                new UserDto("maciek", "NacMad", "macnad@gmail.com")
+                                zochu,
+                                maciek
                             }));
                 case 4:
                     return Task.FromResult(
@@ -132,14 +155,14 @@ namespace GameBoard.LogicLayer.GameEvents
                             {
                                 "Trójkowy Konflikt"
                             },
-                            new UserDto("v0ldie", "V0ldek", "registermen@gmail.com"),
+                            voldek,
                             new List<UserDto>
                             {
-                                new UserDto("maciek", "NacMad", "macnad@gmail.com")
+                                maciek
                             },
                             new List<UserDto>
                             {
-                                new UserDto("johny", "Johny", "johny@gmail.com")
+                                johny
                             }));
                 default:
                     throw new NotImplementedException();

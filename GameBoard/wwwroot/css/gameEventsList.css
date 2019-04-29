@@ -1,0 +1,48 @@
+﻿#game-events-container {
+    height: 60vh;
+    width: 100%;
+}
+
+#game-events-table {
+    margin-top: 3%;
+    width: 100%;
+}
+
+#game-events-table td {
+    font-size: 125%;
+    vertical-align: middle;
+    min-height: 5vh;
+    max-height: 5vh;
+    width: 30vw;
+}
+
+#game-events-table .user-card {
+    margin-bottom: 3px;
+    padding: 2% 4%;
+    align-items: center;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 20% 80%;
+    grid-template-areas: "gravatar username";
+}
+
+#game-events-table .user-card .gravatar {
+    grid-area: gravatar;
+    max-height: 64px
+}
+
+#game-events-table .user-card .username {
+    grid-area: username;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    #game-events-table .user-card { width: 75%; }
+
+    #game-events-table .user-card .username { font-size: 16px; }
+}
+
+#game-events-table .user-card .username-container { width: 100%; }

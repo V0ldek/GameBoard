@@ -15,16 +15,16 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         [NotNull]
         [ItemNotNull]
-        public List<GameEventListItemDto> CreatorGameEvents { get; }
+        public List<GameEventListItemDto> CreatedGameEvents { get; }
 
         public GameEventListDto(
             [NotNull] [ItemNotNull] List<GameEventListItemDto> acceptedGameEvents,
             [NotNull] [ItemNotNull] List<GameEventListItemDto> pendingGameEvents,
-            [NotNull] [ItemNotNull] List<GameEventListItemDto> creatorGameEvents)
+            [NotNull] [ItemNotNull] List<GameEventListItemDto> createdGameEvents)
         {
             AcceptedGameEvents = acceptedGameEvents;
             PendingGameEvents = pendingGameEvents;
-            CreatorGameEvents = creatorGameEvents;
+            CreatedGameEvents = createdGameEvents;
         }
     }
 }

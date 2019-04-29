@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using GameBoard.LogicLayer.UserSearch.Dtos;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
@@ -10,16 +11,16 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public string GameEventName { get; }
 
         [NotNull]
-        public string CreatorUserName { get; }
+        public UserDto Creator { get; }
 
         public GameEventListItemDto(
             int gameEventId,
             [NotNull] string gameEventName,
-            [NotNull] string creatorUserName)
+            [NotNull] UserDto creator)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
-            CreatorUserName = creatorUserName;
+            Creator = creator;
         }
     }
 }

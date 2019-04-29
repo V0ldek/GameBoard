@@ -98,15 +98,11 @@ main {
 .logo { max-width: 50%; }
 
 @media (min-width: 768px) {
-    .logo {
-        max-width: 30%;
-    }
+    .logo { max-width: 30%; }
 }
 
 @media (min-width: 1440px) {
-    .logo {
-        max-width: 20%;
-    }
+    .logo { max-width: 20%; }
 }
 
 button.accept-policy {
@@ -218,3 +214,12 @@ button.nav-link:active, button.nav-link:focus {
     color: #10145f;
     text-decoration: underline
 }
+
+/* Tables
+-------------------------------------------------- */
+
+.table-dark { background-color: #202326; }
+
+.table-dark thead th { border-color: #36393c; }
+
+.table-dark td { border-color: #36393c; }
