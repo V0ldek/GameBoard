@@ -30,15 +30,9 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
-            MeetingTime = meetingTime ?? _unsetMeetingTime;
+            MeetingTime = meetingTime;
             Place = gameEventName;
             Games = games;
         }
-
-        public bool IsMeetingTimeSet()
-        {
-            return MeetingTime != _unsetMeetingTime;
-        }
-
     }
 }

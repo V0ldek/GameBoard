@@ -116,7 +116,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<string>("EventName");
 
-                    b.Property<long>("MeetingTime");
+                    b.Property<long?>("MeetingTime");
 
                     b.Property<string>("Place");
 

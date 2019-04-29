@@ -22,15 +22,15 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
+        public async Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
         {
-            var creatorParticipation = new GameEventParticipation() { ParticipantId = requestedGameEvent.CreatorId };
+            var creatorParticipation = new GameEventParticipation() { ParticipantId = requestedGameEvent.CreatorUserName };
             var gameEvent = new GameEvent()
             {
                 EventName = requestedGameEvent.GameEventName,
                 MeetingTime = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
-                Games = games.Select(g => new Game { Name = g }).ToList(),
+                Games = requestedGameEvent.Games.Select(g => new Game { Name = g }).ToList(),
                 Participations = new List<GameEventParticipation>()
             };
             gameEvent.Participations.Add(creatorParticipation);
@@ -38,7 +38,7 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public Task DeleteGameEventAsync(int gameEventId)
+        public async Task DeleteGameEventAsync(int gameEventId)
         {
             var gameEvent = await _repository.GameEvents
                 .Where(ge => ge.Id == gameEventId)
@@ -59,21 +59,21 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
+        public async Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
         {
             var gameEvent = await _repository.GameEvents
                 .Include(ge => ge.Games)
                 .SingleAsync(ge => ge.Id == editedEvent.GameEventId);
 
-            if (editedEvent.GameEventName != null && editedEvent.GameEventName != "") gameEvent.EventName = editedEvent.GameEventName;
-            if (editedEvent.IsMeetingTimeSet()) gameEvent.MeetingTime = editedEvent.MeetingTime;
-            if (editedEvent.Place != null) gameEvent.Place = editedEvent.Place;
+            gameEvent.EventName = editedEvent.GameEventName ?? gameEvent.EventName;
+            gameEvent.MeetingTime = editedEvent.MeetingTime ?? gameEvent.MeetingTime;
+            gameEvent.Place = editedEvent.Place ?? gameEvent.Place;
 
             foreach (var game in gameEvent.Games)
             {
                 _repository.Games.Remove(game);
             }
-            gameEvent.Games = newGames.Select(g => new Game { Name = g }).ToList();
+            gameEvent.Games = editedEvent.Games.Select(g => new Game { Name = g }).ToList();
 
             await _repository.SaveChangesAsync();
         }
@@ -89,6 +89,7 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
+        //This function is lacking in IGameEventService
         public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userName)
         {
             throw new NotImplementedException();

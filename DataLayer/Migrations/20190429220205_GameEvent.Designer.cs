@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190428141845_GameEvent")]
+    [Migration("20190429220205_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,7 +118,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<string>("EventName");
 
-                    b.Property<long>("MeetingTime");
+                    b.Property<long?>("MeetingTime");
 
                     b.Property<string>("Place");
 
