@@ -17,12 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="GameEvents\Dtos\GameEventExtension.cs" />
-    <Compile Remove="GameEvents\Dtos\GameEventInvitationExtenstion.cs" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
   </ItemGroup>
