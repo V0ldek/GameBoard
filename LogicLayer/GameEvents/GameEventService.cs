@@ -22,7 +22,7 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public async Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
+        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
         {
             var creatorParticipation = new GameEventParticipation() { ParticipantId = requestedGameEvent.CreatorUserName };
             var gameEvent = new GameEvent()
@@ -35,7 +35,7 @@ namespace GameBoard.LogicLayer.GameEvents
             };
             gameEvent.Participations.Add(creatorParticipation);
 
-            await _repository.SaveChangesAsync();
+            return _repository.SaveChangesAsync();
         }
 
         public async Task DeleteGameEventAsync(int gameEventId)
