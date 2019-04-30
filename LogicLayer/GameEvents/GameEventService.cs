@@ -89,12 +89,6 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
-        //This function is lacking in IGameEventService
-        public Task<GameEventPermission> GetGameEventPermissionByUserAsync(int gameEventId, [NotNull] string userName)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
             throw new NotImplementedException();
