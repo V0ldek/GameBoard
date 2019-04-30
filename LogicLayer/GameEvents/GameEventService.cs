@@ -71,22 +71,27 @@ namespace GameBoard.LogicLayer.GameEvents
 
             foreach (var game in gameEvent.Games)
             {
-                _repository.Games.Remove(game);
+                _repository.Games.Remove(game); //not sure if it is correct to remove data.
             }
             gameEvent.Games = editedEvent.Games.Select(g => new Game { Name = g }).ToList();
 
             await _repository.SaveChangesAsync();
         }
 
-
         public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GameEventDto> GetGameEventAsync(int gameEventId)
+        public async Task<GameEventDto> GetGameEventAsync(int gameEventId)
         {
-            throw new NotImplementedException();
+            var gameEvent = await _repository.GameEvents
+                .Where(ge => ge.Id == gameEventId)
+                .Include(ge => ge.Participations)
+                .ThenInclude(p => p.Paticipant)
+                .SingleAsync();
+
+            return gameEvent.ToGameEventDto();
         }
 
         public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
