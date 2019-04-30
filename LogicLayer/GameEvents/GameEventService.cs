@@ -94,7 +94,7 @@ namespace GameBoard.LogicLayer.GameEvents
             throw new NotImplementedException();
         }
 
-        public Task AcceptGameEventInvitationAsync([NotNull] int gameEventId, [NotNull] string invitedUserName)
+        public Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
             throw new NotImplementedException();
         }
