@@ -78,9 +78,40 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
+        private Task<List<GameEventListItemDto>> GetGameEventsWithSamePartitipationStatus([NotNull] string userName, ParticipationStatus participationStatus)
         {
-            throw new NotImplementedException();
+            var normalizedUserName = userName.ToUpper();
+            var user = _repository.ApplicationUsers
+                .Where(u => u.NormalizedUserName == normalizedUserName);
+
+            var gameEvents = user
+                .Include(u => u.Participations)
+                .SelectMany(u => u.Participations)
+                .Where(p => p.ParticipationStatus == participationStatus)
+                .Include(p => p.TakesPartIn)
+                .Select(p => p.TakesPartIn);
+
+            return gameEvents
+                .Include(ge => ge.Participations)
+                .ThenInclude(p => p.Paticipant)
+                .Select(ge => ge.ToGameEventListItemDto()) // the conversion should be outside the query, but then the query won't be optimized. Well... I don't know if it will be optimized with what we have right now. We need also a filtered index on Creator.
+                .ToListAsync();
+        }
+
+        public async Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
+        {
+            var creatorGameEvents =
+                GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.Creator);
+            var invitees =
+                GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.PendingGuest);
+            var participants =
+                GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.AcceptedGuest);
+            // Perhaps it should be only one query with the succeding conversion.
+
+            return new GameEventListDto(
+                await creatorGameEvents,
+                await invitees,
+                await participants);
         }
 
         public async Task<GameEventDto> GetGameEventAsync(int gameEventId)
