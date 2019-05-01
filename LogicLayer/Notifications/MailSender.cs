@@ -11,17 +11,17 @@ namespace GameBoard.LogicLayer.Notifications
 {
     public class MailSender : IMailSender
     {
-        private MailNotificationsConfiguration MailOptions { get; }
+        private MailNotificationsConfiguration MailNotificationsOptions { get; }
 
-        public MailSender(IOptions<MailNotificationsConfiguration> mailOptionsAccessor)
+        public MailSender(IOptions<MailNotificationsConfiguration> mailNotificationsOptions)
         {
-            MailOptions = mailOptionsAccessor.Value;
+            MailNotificationsOptions = mailNotificationsOptions.Value;
         }
 
         public Task SendEmailConfirmationAsync(string email, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.EmailConfirmationHtml),
+                GetHtmlPath(MailNotificationsOptions.EmailConfirmationHtml),
                 link,
                 "Email Confirmation");
             return SendEmailAsync(email, notification);
@@ -30,7 +30,7 @@ namespace GameBoard.LogicLayer.Notifications
         public Task SendEventCancellationAsync(IEnumerable<string> emails, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.EventCancellationHtml),
+                GetHtmlPath(MailNotificationsOptions.EventCancellationHtml),
                 link,
                 "Event Cancellation");
             return SendEmailAsync(emails, notification);
@@ -39,7 +39,7 @@ namespace GameBoard.LogicLayer.Notifications
         public Task SendEventConfirmationAsync(IEnumerable<string> emails, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.EventConfirmationHtml),
+                GetHtmlPath(MailNotificationsOptions.EventConfirmationHtml),
                 link,
                 "Event Confirmation");
             return SendEmailAsync(emails, notification);
@@ -48,7 +48,7 @@ namespace GameBoard.LogicLayer.Notifications
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.EventInvitationHtml),
+                GetHtmlPath(MailNotificationsOptions.EventInvitationHtml),
                 link,
                 "Event Invitation");
             return SendEmailAsync(emails, notification);
@@ -57,7 +57,7 @@ namespace GameBoard.LogicLayer.Notifications
         public Task SendFriendAcceptAsync(string email, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.FriendAcceptHtml),
+                GetHtmlPath(MailNotificationsOptions.FriendAcceptHtml),
                 link,
                 "Friend Invitation Accepted");
             return SendEmailAsync(email, notification);
@@ -66,7 +66,7 @@ namespace GameBoard.LogicLayer.Notifications
         public Task SendFriendInvitationAsync(string email, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.FriendInvitationHtml),
+                GetHtmlPath(MailNotificationsOptions.FriendInvitationHtml),
                 link,
                 "Friend Invitation");
             return SendEmailAsync(email, notification);
@@ -75,14 +75,14 @@ namespace GameBoard.LogicLayer.Notifications
         public Task SendPasswordResetAsync(string email, string link)
         {
             var notification = new Notification(
-                GetHtmlPath(MailOptions.PasswordResetHtml),
+                GetHtmlPath(MailNotificationsOptions.PasswordResetHtml),
                 link,
                 "Password Reset");
             return SendEmailAsync(email, notification);
         }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => Execute(MailOptions.SendGridApiKey, emails, notification);
+            => Execute(MailNotificationsOptions.SendGridApiKey, emails, notification);
 
         private Task SendEmailAsync(string email, Notification notification)
         {
@@ -114,7 +114,7 @@ namespace GameBoard.LogicLayer.Notifications
         private string GetHtmlPath(string htmlTemplateName)
         {
             var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var htmlPath = Path.Combine(assemblyPath, MailOptions.DefaultHtmlPath, htmlTemplateName);
+            var htmlPath = Path.Combine(assemblyPath, MailNotificationsOptions.DefaultHtmlPath, htmlTemplateName);
             return htmlPath;
         }
     }
