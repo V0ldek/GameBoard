@@ -8,8 +8,9 @@
         public string EventCancellationHtml { get; set; }
         public string EventConfirmationHtml { get; set; }
         public string EventInvitationHtml { get; set; }
-        public string FriendAcceptHtml { get; set; }
         public string FriendInvitationHtml { get; set; }
         public string PasswordResetHtml { get; set; }
+        public string FromEmailAddress { get; set; }
+        public string FromEmailName { get; set; }
     }
 }

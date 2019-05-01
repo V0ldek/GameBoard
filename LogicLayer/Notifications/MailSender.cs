@@ -74,7 +74,7 @@ namespace GameBoard.LogicLayer.Notifications
         }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => SendNotification(MailNotificationsOptions.SendGridApiKey, emails, notification);
+            => SendNotificationAsync(MailNotificationsOptions.SendGridApiKey, emails, notification);
 
         private Task SendEmailAsync(string email, Notification notification)
         {
@@ -85,10 +85,10 @@ namespace GameBoard.LogicLayer.Notifications
             return SendEmailAsync(emails, notification);
         }
 
-        private static Task SendNotification(string apiKey, IEnumerable<string> emails, Notification notification)
+        private Task SendNotificationAsync(string apiKey, IEnumerable<string> emails, Notification notification)
         {
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("GameBoard.contact@gmail.com", "GameBoard");
+            var from = new EmailAddress(MailNotificationsOptions.FromEmailAddress, MailNotificationsOptions.FromEmailName);
             var tos = new List<EmailAddress>();
             var subject = notification.Subject;
             var htmlContent = notification.Html;
