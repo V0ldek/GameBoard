@@ -15,13 +15,11 @@
     }
     <section class="date">
         <h3>@dateString</h3>
-    </section>
-    <section class="place">
         <h3>@Model.Place</h3>
     </section>
     <section class="games">
         <h3>Planned games:</h3>
-        <ul class="list-unstyled">
+        <ul class="games-list list-unstyled border-full p-1" data-simplebar>
             @foreach (var game in Model.Games)
             {
                 <li>@game</li>
@@ -34,27 +32,27 @@
     </section>
     <section class="participants">
         <h3>Participants:</h3>
-        <ul class="list-unstyled">
+        <ul class="participants-list list-unstyled border-full p-1" data-simplebar>
             @if (!Model.Participants.Any())
             {
                 <li>None</li>
             }
             @foreach (var participant in Model.Participants)
             {
-        <li>@await Component.InvokeAsync("UserCard", new { user = participant })</li>
+                <li>@await Component.InvokeAsync("UserCard", new {user = participant})</li>
             }
         </ul>
     </section>
     <section class="invitees">
         <h3>Pending invitations:</h3>
-        <ul class="list-unstyled">
+        <ul class="invitees-list list-unstyled border-full p-1" data-simplebar>
             @if (!Model.Invitees.Any())
             {
                 <li>None</li>
             }
             @foreach (var invitee in Model.Invitees)
             {
-                <li>@await Component.InvokeAsync("UserCard", new { user = invitee })</li>
+                <li>@await Component.InvokeAsync("UserCard", new {user = invitee})</li>
             }
         </ul>
     </section>
