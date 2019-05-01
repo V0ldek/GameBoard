@@ -25,33 +25,38 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _mailSender = mailSender;
         }
 
+        private async void SendForgotPasswordEmail(ApplicationUser user)
+        {
+            // For more information on how to enable account confirmation and password reset please 
+            // visit https://go.microsoft.com/fwlink/?LinkID=532713
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var email = Input.Email;
+            var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                null,
+                new { code, email },
+                Request.Scheme);
+
+            await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+    }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
-                }
+                return Page();
+            }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var email = Input.Email;
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    null,
-                    new {code, email},
-                    Request.Scheme);
-
-                await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
+            var user = await _userManager.FindByEmailAsync(Input.Email);
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
-            return Page();
+            SendForgotPasswordEmail(user);
+
+            return RedirectToPage("./ForgotPasswordConfirmation");
         }
 
         public class InputModel
