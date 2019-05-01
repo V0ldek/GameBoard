@@ -54,15 +54,6 @@ namespace GameBoard.LogicLayer.Notifications
             return SendEmailAsync(emails, notification);
         }
 
-        public Task SendFriendAcceptAsync(string email, string link)
-        {
-            var notification = new Notification(
-                GetHtmlPath(MailNotificationsOptions.FriendAcceptHtml),
-                link,
-                "Friend Invitation Accepted");
-            return SendEmailAsync(email, notification);
-        }
-
         public Task SendFriendInvitationAsync(string email, string link)
         {
             var notification = new Notification(
