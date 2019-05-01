@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.Errors;
 using Microsoft.AspNetCore.Identity;
@@ -13,9 +12,7 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
 
         public string UserName { get; set; }
-
-        [BindProperty]
-        public InputModel Input { get; set; }
+        public string Email { get; set; }
 
         public IndexModel(UserManager<ApplicationUser> userManager)
         {
@@ -34,20 +31,9 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             var email = await _userManager.GetEmailAsync(user);
 
             UserName = userName;
-
-            Input = new InputModel
-            {
-                Email = email
-            };
+            Email = email;
 
             return Page();
-        }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
         }
     }
 }
