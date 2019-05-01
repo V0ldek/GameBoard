@@ -52,7 +52,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             return GameEventPermission.Forbidden;
         }
 
-        public GameEventDto(
+        internal GameEventDto(
             int gameEventId,
             [NotNull] string gameEventName,
             [CanBeNull] DateTime? meetingTime,
