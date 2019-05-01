@@ -91,7 +91,6 @@ namespace GameBoard.LogicLayer.Friends
                 }
             }
 
-            // send email
             await _mailSender.SendFriendInvitationAsync(
                 userRequestedTo.Email,
                 friendRequest.GenerateRequestLink(friendship.Id.ToString()));
