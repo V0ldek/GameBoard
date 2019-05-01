@@ -28,12 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Identity.UI">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.identity.ui\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Notifications\Html\Inlined\email-confirmation.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
