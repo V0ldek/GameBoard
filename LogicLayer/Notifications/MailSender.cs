@@ -74,7 +74,7 @@ namespace GameBoard.LogicLayer.Notifications
         }
 
         private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => Execute(MailNotificationsOptions.SendGridApiKey, emails, notification);
+            => SendNotification(MailNotificationsOptions.SendGridApiKey, emails, notification);
 
         private Task SendEmailAsync(string email, Notification notification)
         {
@@ -85,7 +85,7 @@ namespace GameBoard.LogicLayer.Notifications
             return SendEmailAsync(emails, notification);
         }
 
-        private Task Execute(string apiKey, IEnumerable<string> emails, Notification notification)
+        private static Task SendNotification(string apiKey, IEnumerable<string> emails, Notification notification)
         {
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("GameBoard.contact@gmail.com", "GameBoard");
@@ -94,6 +94,7 @@ namespace GameBoard.LogicLayer.Notifications
             var htmlContent = notification.Html;
 
             emails.ToList().ForEach(email => tos.Add(new EmailAddress(email)));
+
 
             var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, null, htmlContent);
 
