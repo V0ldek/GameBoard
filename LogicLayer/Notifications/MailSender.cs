@@ -37,15 +37,6 @@ namespace GameBoard.LogicLayer.Notifications
             return SendEmailAsync(emails, notification);
         }
 
-        public Task SendEventConfirmationAsync(IEnumerable<string> emails, string link)
-        {
-            var notification = new Notification(
-                GetHtmlPath(MailNotificationsOptions.EventConfirmationHtml),
-                link,
-                "Event Confirmation");
-            return SendEmailAsync(emails, notification);
-        }
-
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
         {
             var notification = new Notification(
