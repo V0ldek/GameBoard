@@ -57,8 +57,8 @@ namespace GameBoard.LogicLayer.Friends
                 throw new InvitingYourselfException("You cannot invite yourself.");
             }
 
-            var userRequestedBy = _repository.ApplicationUsers.Single(u => u.UserName == friendRequest.UserNameFrom);
-            var userRequestedTo = _repository.ApplicationUsers.Single(u => u.UserName == friendRequest.UserNameTo);
+            var userRequestedBy = _repository.ApplicationUsers.Single(u => u.NormalizedUserName == friendRequest.UserNameFrom);
+            var userRequestedTo = _repository.ApplicationUsers.Single(u => u.NormalizedUserName == friendRequest.UserNameTo);
 
             var friendship = new Friendship
             {
