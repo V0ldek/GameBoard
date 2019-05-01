@@ -78,7 +78,7 @@ namespace GameBoard.LogicLayer.Notifications
             var client = new SendGridClient(MailNotificationsOptions.SendGridApiKey);
             var from = new EmailAddress(
                 MailNotificationsOptions.FromEmailAddress,
-                MailNotificationsOptions.FromEmailName);
+                MailNotificationsOptions.FromName);
             var tos = emails.Select(e => new EmailAddress(e)).ToList();
             var subject = notification.Subject;
             var htmlContent = notification.Html;

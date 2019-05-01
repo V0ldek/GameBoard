@@ -10,6 +10,6 @@
         public string FriendInvitationHtml { get; set; }
         public string PasswordResetHtml { get; set; }
         public string FromEmailAddress { get; set; }
-        public string FromEmailName { get; set; }
+        public string FromName { get; set; }
     }
 }
