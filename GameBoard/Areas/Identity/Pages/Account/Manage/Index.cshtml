@@ -1,5 +1,5 @@
 ﻿@page
-@using Utilities
+@using GameBoard.Utilities
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -13,7 +13,7 @@
         <div>
             <label>Avatar</label>
             <div class="media row">
-                <img src="https://www.gravatar.com/avatar/@GravatarEmailHasher.CalculateGravatarEmailHash(Model.Input.Email)"
+                <img src="https://www.gravatar.com/avatar/@GravatarEmailHasher.CalculateGravatarEmailHash(Model.Email)"
                      class="gravatar-lg rounded align-self-center col-auto"
                      alt="gravatar"/>
                 <div class="media-body col-auto">
@@ -27,12 +27,8 @@
             <input asp-for="UserName" class="form-control" disabled/>
         </div>
         <div class="form-group">
-            <label asp-for="Input.Email"></label>
-            <input asp-for="Input.Email" class="form-control" disabled/>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" disabled/>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
-}
