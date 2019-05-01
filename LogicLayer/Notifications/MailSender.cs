@@ -25,7 +25,7 @@ namespace GameBoard.LogicLayer.Notifications
                 GetHtmlPath(MailNotificationsOptions.EmailConfirmationHtml),
                 link,
                 "Email Confirmation");
-            return SendEmailAsync(email, notification);
+            return SendNotificationAsync(email, notification);
         }
 
         public Task SendEventCancellationAsync(IEnumerable<string> emails, string link)
@@ -34,7 +34,7 @@ namespace GameBoard.LogicLayer.Notifications
                 GetHtmlPath(MailNotificationsOptions.EventCancellationHtml),
                 link,
                 "Event Cancellation");
-            return SendEmailAsync(emails, notification);
+            return SendNotificationAsync(emails, notification);
         }
 
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
@@ -43,7 +43,7 @@ namespace GameBoard.LogicLayer.Notifications
                 GetHtmlPath(MailNotificationsOptions.EventInvitationHtml),
                 link,
                 "Event Invitation");
-            return SendEmailAsync(emails, notification);
+            return SendNotificationAsync(emails, notification);
         }
 
         public Task SendFriendInvitationAsync(string email, string link)
@@ -52,7 +52,7 @@ namespace GameBoard.LogicLayer.Notifications
                 GetHtmlPath(MailNotificationsOptions.FriendInvitationHtml),
                 link,
                 "Friend Invitation");
-            return SendEmailAsync(email, notification);
+            return SendNotificationAsync(email, notification);
         }
 
         public Task SendPasswordResetAsync(string email, string link)
@@ -61,33 +61,27 @@ namespace GameBoard.LogicLayer.Notifications
                 GetHtmlPath(MailNotificationsOptions.PasswordResetHtml),
                 link,
                 "Password Reset");
-            return SendEmailAsync(email, notification);
+            return SendNotificationAsync(email, notification);
         }
 
-        private Task SendEmailAsync(IEnumerable<string> emails, Notification notification)
-            => SendNotificationAsync(MailNotificationsOptions.SendGridApiKey, emails, notification);
-
-        private Task SendEmailAsync(string email, Notification notification)
+        private Task SendNotificationAsync(string email, Notification notification)
         {
             var emails = new List<string>
             {
                 email
             };
-            return SendEmailAsync(emails, notification);
+            return SendNotificationAsync(emails, notification);
         }
 
-        private Task SendNotificationAsync(string apiKey, IEnumerable<string> emails, Notification notification)
+        private Task SendNotificationAsync(IEnumerable<string> emails, Notification notification)
         {
-            var client = new SendGridClient(apiKey);
+            var client = new SendGridClient(MailNotificationsOptions.SendGridApiKey);
             var from = new EmailAddress(
                 MailNotificationsOptions.FromEmailAddress,
                 MailNotificationsOptions.FromEmailName);
-            var tos = new List<EmailAddress>();
+            var tos = emails.Select(e => new EmailAddress(e)).ToList();
             var subject = notification.Subject;
             var htmlContent = notification.Html;
-
-            emails.ToList().ForEach(email => tos.Add(new EmailAddress(email)));
-
 
             var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, null, htmlContent);
 
