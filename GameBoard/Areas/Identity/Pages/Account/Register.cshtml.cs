@@ -31,35 +31,40 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _mailSender = mailSender;
         }
 
+        private async void SendRegistrationEmail(ApplicationUser user)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmedEmail",
+                null,
+                new { userId = user.Id, code },
+                Request.Scheme);
+
+            await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmedEmail",
-                        null,
-                        new {userId = user.Id, code},
-                        Request.Scheme);
-
-                    await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-                    return RedirectToPage("/Account/ConfirmEmailInfo");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                return Page();
             }
 
-            // If we got this far, something failed, redisplay form
+            var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
+            var result = await _userManager.CreateAsync(user, Input.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User created a new account with password.");
+                SendRegistrationEmail(user);
+
+                return RedirectToPage("/Account/ConfirmEmailInfo");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
             return Page();
         }
 
