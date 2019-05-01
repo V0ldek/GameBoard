@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Configurations;
@@ -92,10 +93,7 @@ namespace GameBoard.LogicLayer.Notifications
             var subject = notification.Subject;
             var htmlContent = notification.Html;
 
-            foreach (var email in emails)
-            {
-                tos.Add(new EmailAddress(email));
-            }
+            emails.ToList().ForEach(email => tos.Add(new EmailAddress(email)));
 
             var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, null, htmlContent);
 
