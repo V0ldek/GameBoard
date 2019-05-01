@@ -79,7 +79,9 @@ namespace GameBoard.LogicLayer.Notifications
         private Task SendNotificationAsync(string apiKey, IEnumerable<string> emails, Notification notification)
         {
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress(MailNotificationsOptions.FromEmailAddress, MailNotificationsOptions.FromEmailName);
+            var from = new EmailAddress(
+                MailNotificationsOptions.FromEmailAddress,
+                MailNotificationsOptions.FromEmailName);
             var tos = new List<EmailAddress>();
             var subject = notification.Subject;
             var htmlContent = notification.Html;
