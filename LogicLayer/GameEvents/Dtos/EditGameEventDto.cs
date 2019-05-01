@@ -6,10 +6,10 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class EditGameEventDto
     {
-        public int GameEventId { get; }
+        public int Id { get; }
 
         [CanBeNull]
-        public string GameEventName { get; }
+        public string Name { get; }
 
         [CanBeNull]
         public DateTime? MeetingTime { get; }
@@ -28,8 +28,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             [CanBeNull] string place, 
             [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
-            GameEventId = gameEventId;
-            GameEventName = gameEventName;
+            Id = gameEventId;
+            Name = gameEventName;
             MeetingTime = meetingTime;
             Place = gameEventName;
             Games = games;
