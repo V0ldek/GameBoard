@@ -7,25 +7,25 @@
 <div id="game-events-container" data-simplebar>
     <table id="game-events-table" class="table table-striped table-dark">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Creator</th>
-                <th>Status</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Creator</th>
+            <th>Status</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var gameEvent in Model.Created.Concat(Model.Accepted))
+        @foreach (var gameEvent in Model.Created.Concat(Model.Accepted))
         {
-            <tr>
-                <td>@gameEvent.GameEventName</td>
+            <tr onclick="window.location.href = '/GameEvent/GameEvent/@gameEvent.Id'">
+                <td>@gameEvent.Name</td>
                 <td>@await Component.InvokeAsync("UserCard", new {user = gameEvent.Creator})</td>
                 <td class="text-success">Active</td>
             </tr>
         }
-            @foreach (var gameEvent in Model.Pending)
+        @foreach (var gameEvent in Model.Pending)
         {
-            <tr>
-                <td>@gameEvent.GameEventName</td>
+            <tr onclick="window.location.href = '/GameEvent/GameEvent/@gameEvent.Id'">
+                <td> @gameEvent.Name</td>
                 <td>@await Component.InvokeAsync("UserCard", new {user = gameEvent.Creator})</td>
                 <td class="text-warning">Invitation pending</td>
             </tr>

@@ -50,30 +50,3 @@
 #friends-sidebar ul.components li { padding: 0 10px; }
 
 #friends-sidebar ul p { padding: 10px; }
-
-#friends-sidebar .user-card {
-    margin-bottom: 3px;
-    padding: 5% 7%;
-    align-items: center;
-    display: grid;
-    width: 100%;
-    grid-template-rows: auto;
-    grid-template-columns: 20% 80%;
-    grid-template-areas: "gravatar username";
-}
-
-#friends-sidebar .user-card .gravatar { grid-area: gravatar; }
-
-#friends-sidebar .user-card .username {
-    grid-area: username;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 14px;
-}
-
-@media (min-width: 768px) {
-    #friends-sidebar .user-card .username { font-size: 16px; }
-}
-
-#friends-sidebar .user-card .username-container { width: 100%; }

@@ -1,0 +1,61 @@
+﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+@section FriendsSidebar
+{
+    @await Component.InvokeAsync("FriendsSidebar")
+}
+
+<article class="game-event">
+    <h1 class="name">@Model.Name</h1>
+    @{
+        var dateString = Model.Date.ToString() ?? "TBD";
+    }
+    <section class="date">
+        <h3>@dateString</h3>
+    </section>
+    <section class="place">
+        <h3>@Model.Place</h3>
+    </section>
+    <section class="games">
+        <h3>Planned games:</h3>
+        <ul class="list-unstyled">
+            @foreach (var game in Model.Games)
+            {
+                <li>@game</li>
+            }
+        </ul>
+    </section>
+    <section class="creator">
+        <h3>Event creator:</h3>
+        @await Component.InvokeAsync("UserCard", new {user = Model.Creator})
+    </section>
+    <section class="participants">
+        <h3>Participants:</h3>
+        <ul class="list-unstyled">
+            @if (!Model.Participants.Any())
+            {
+                <li>None</li>
+            }
+            @foreach (var participant in Model.Participants)
+            {
+        <li>@await Component.InvokeAsync("UserCard", new { user = participant })</li>
+            }
+        </ul>
+    </section>
+    <section class="invitees">
+        <h3>Pending invitations:</h3>
+        <ul class="list-unstyled">
+            @if (!Model.Invitees.Any())
+            {
+                <li>None</li>
+            }
+            @foreach (var invitee in Model.Invitees)
+            {
+                <li>@await Component.InvokeAsync("UserCard", new { user = invitee })</li>
+            }
+        </ul>
+    </section>
+</article>

@@ -8,16 +8,16 @@ namespace GameBoard.Models.GameEventList
 {
     public sealed class GameEventListItemViewModel
     {
-        public int GameEventId { get; }
+        public int Id { get; }
 
-        public string GameEventName { get; }
+        public string Name { get; }
 
         public UserViewModel Creator { get; }
 
-        public GameEventListItemViewModel(int gameEventId, string gameEventName, UserViewModel creator)
+        public GameEventListItemViewModel(int id, string name, UserViewModel creator)
         {
-            GameEventId = gameEventId;
-            GameEventName = gameEventName;
+            Id = id;
+            Name = name;
             Creator = creator;
         }
     }

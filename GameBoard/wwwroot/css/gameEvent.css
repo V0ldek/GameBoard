@@ -1,0 +1,54 @@
+﻿/* Grid
+-------------------------------------------------- */
+
+.game-event {
+    display: grid;
+    grid-template-areas: "name name name name"
+                         "date place games creator"
+                         "participants participants invitees invitees";
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 20% 30% 25%;
+    grid-row-gap: 30px;
+    box-sizing: border-box;
+}
+
+    .game-event .name {
+        grid-area: name;
+        justify-self: center;
+    }
+
+.game-event .date {
+    grid-area: date;
+}
+
+.game-event .place {
+    grid-area: place;
+}
+
+.game-event .games { grid-area: games; }
+
+.game-event .creator { grid-area: creator; }
+
+.game-event .participants { grid-area: participants; }
+
+.game-event .invitees { grid-area: invitees; }
+
+/* User cards
+-------------------------------------------------- */
+
+.game-event .creator .user-card {
+    width: 80%;
+}
+
+.game-event .participants .user-card,
+.game-event .invitees .user-card {
+    width: 40%;
+    padding: 2% 4%
+}
+
+.game-event .creator .user-card .gravatar,
+.game-event .participants .user-card .gravatar,
+.game-event .invitees .user-card .gravatar {
+    max-width: 48px;
+    max-height: 48px;
+}
