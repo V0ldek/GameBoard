@@ -31,18 +31,6 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _mailSender = mailSender;
         }
 
-        private async void SendRegistrationEmail(ApplicationUser user)
-        {
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmedEmail",
-                null,
-                new { userId = user.Id, code },
-                Request.Scheme);
-
-            await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -66,6 +54,18 @@ namespace GameBoard.Areas.Identity.Pages.Account
             }
 
             return Page();
+        }
+
+        private async void SendRegistrationEmail(ApplicationUser user)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmedEmail",
+                null,
+                new { userId = user.Id, code },
+                Request.Scheme);
+
+            await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
         }
 
         public class InputModel

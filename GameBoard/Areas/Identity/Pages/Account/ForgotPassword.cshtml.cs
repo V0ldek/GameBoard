@@ -25,19 +25,6 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _mailSender = mailSender;
         }
 
-        private async void SendForgotPasswordEmail(ApplicationUser user)
-        {
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var email = Input.Email;
-            var callbackUrl = Url.Page(
-                "/Account/ResetPassword",
-                null,
-                new { code, email },
-                Request.Scheme);
-
-            await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-    }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -55,6 +42,19 @@ namespace GameBoard.Areas.Identity.Pages.Account
             SendForgotPasswordEmail(user);
 
             return RedirectToPage("./ForgotPasswordConfirmation");
+        }
+
+        private async void SendForgotPasswordEmail(ApplicationUser user)
+        {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var email = Input.Email;
+            var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                null,
+                new { code, email },
+                Request.Scheme);
+
+            await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
         }
 
         public class InputModel
