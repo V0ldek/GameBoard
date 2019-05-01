@@ -110,7 +110,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             }
 
             // We can use this flag, because we are sure that if user is not allowed to sign in then
-            // email confirmation is needed. Not sure if such approach is OK.
+            // email confirmation is needed.
             if (result.IsNotAllowed)
             {
                 ModelState.AddModelError(string.Empty, "Email confirmation needed.");
