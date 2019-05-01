@@ -24,13 +24,13 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         public CreateGameEventDto(
             [NotNull] string creatorUserName,
-            [NotNull] string gameEventName,
+            [NotNull] string name,
             [CanBeNull] DateTime meetingTime,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
             CreatorUserName = creatorUserName;
-            Name = gameEventName;
+            Name = name;
             MeetingTime = meetingTime;
             Place = place;
             Games = games;

@@ -53,8 +53,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         }
 
         internal GameEventDto(
-            int gameEventId,
-            [NotNull] string gameEventName,
+            int id,
+            [NotNull] string name,
             [CanBeNull] DateTime? meetingTime,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games,
@@ -62,8 +62,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             [NotNull] [ItemNotNull] IEnumerable<UserDto> invitees,
             [NotNull] [ItemNotNull] IEnumerable<UserDto> participants)
         {
-            Id = gameEventId;
-            Name = gameEventName;
+            Id = id;
+            Name = name;
             MeetingTime = meetingTime;
             Place = place ?? string.Empty;
             Games = games;

@@ -14,12 +14,12 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public UserDto Creator { get; }
 
         internal GameEventListItemDto(
-            int gameEventId,
-            [NotNull] string gameEventName,
+            int id,
+            [NotNull] string name,
             [NotNull] UserDto creator)
         {
-            Id = gameEventId;
-            Name = gameEventName;
+            Id = id;
+            Name = name;
             Creator = creator;
         }
     }

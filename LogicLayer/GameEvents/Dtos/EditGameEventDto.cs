@@ -22,16 +22,16 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public IEnumerable<string> Games;
 
         public EditGameEventDto(
-            int gameEventId, 
-            [CanBeNull] string gameEventName, 
+            int id, 
+            [CanBeNull] string name, 
             [CanBeNull] DateTime? meetingTime, 
             [CanBeNull] string place, 
             [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
-            Id = gameEventId;
-            Name = gameEventName;
+            Id = id;
+            Name = name;
             MeetingTime = meetingTime;
-            Place = gameEventName;
+            Place = place;
             Games = games;
         }
 
