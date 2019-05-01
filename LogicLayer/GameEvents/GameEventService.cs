@@ -22,9 +22,14 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
+        public async Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
         {
-            var creatorParticipation = new GameEventParticipation() { ParticipantId = requestedGameEvent.CreatorUserName };
+            var creatorId = await _repository.GetUserIdByUserName(requestedGameEvent.CreatorUserName);
+            var creatorParticipation = new GameEventParticipation()
+            {
+                ParticipantId = creatorId,
+                ParticipationStatus = ParticipationStatus.Creator
+            };
             var gameEvent = new GameEvent()
             {
                 EventName = requestedGameEvent.GameEventName,
@@ -35,7 +40,7 @@ namespace GameBoard.LogicLayer.GameEvents
             };
             gameEvent.Participations.Add(creatorParticipation);
 
-            return _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
         public async Task DeleteGameEventAsync(int gameEventId)
@@ -127,9 +132,10 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
+            var userId = await _repository.GetUserIdByUserName(invitedUserName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == invitedUserName);
-            
+                .SingleAsync(ge => ge.ParticipantId == userId);
+
             if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
             {
                 throw new Exception(); //Here must come new Exception
@@ -142,8 +148,9 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
+            var userId = await _repository.GetUserIdByUserName(invitedUserName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == invitedUserName);
+                .SingleAsync(ge => ge.ParticipantId == userId);
 
             if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
             {
@@ -155,9 +162,18 @@ namespace GameBoard.LogicLayer.GameEvents
 
         }
 
-        public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
+        public async Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
         {
-            throw new NotImplementedException();
+            var participantId = await _repository.GetUserIdByUserName(userName);
+            var gameEventParticipation = new GameEventParticipation()
+            {
+                TakesPartInId = gameEventId,
+                ParticipantId = participantId,
+                ParticipationStatus = ParticipationStatus.PendingGuest
+            };
+            _repository.GameEventParticipations.Add(gameEventParticipation);
+
+            await _repository.SaveChangesAsync();
         }
     }
 }
