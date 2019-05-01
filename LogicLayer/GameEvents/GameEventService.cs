@@ -125,14 +125,34 @@ namespace GameBoard.LogicLayer.GameEvents
             return gameEvent.ToGameEventDto();
         }
 
-        public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
+        public async Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
-            throw new NotImplementedException();
+            var participation = await _repository.GameEventParticipations
+                .SingleAsync(ge => ge.ParticipantId == invitedUserName);
+            
+            if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
+            {
+                throw new Exception(); //Here must come new Exception
+            }
+            participation.ParticipationStatus = ParticipationStatus.RejectedGuest;
+
+            await _repository.SaveChangesAsync();
+            
         }
 
-        public Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
+        public async Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
-            throw new NotImplementedException();
+            var participation = await _repository.GameEventParticipations
+                .SingleAsync(ge => ge.ParticipantId == invitedUserName);
+
+            if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
+            {
+                throw new Exception(); //Here i must invent a name for new exception            
+            }
+            participation.ParticipationStatus = ParticipationStatus.AcceptedGuest;
+
+            await _repository.SaveChangesAsync();
+
         }
 
         public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
