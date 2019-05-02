@@ -36,7 +36,8 @@ AS
 	BEGIN
       DELETE FROM GameEvent
       FROM DELETED
-	  WHERE GameEvent.Id = DELETED.TakesPartInId;
+	  WHERE GameEvent.Id = DELETED.TakesPartInId
+		AND DELETED.ParticipationStatus = 'Creator';
 
 	  DELETE FROM GameEventParticipation
 	  FROM DELETED
@@ -59,7 +60,6 @@ AS
     DELETE FROM GameEventParticipation
 	FROM DELETED
 	WHERE GameEventParticipation.TakesPartInId = DELETED.Id
-	  AND GameEventParticipation.ParticipationStatus <> 'Creator';
 
 	DELETE FROM Game -- This DELETE could be replaced with CascadeDelete on Games, but it seems more consistent to put everything in one place.
 	FROM DELETED
