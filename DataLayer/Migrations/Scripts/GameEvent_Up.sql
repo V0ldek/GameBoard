@@ -32,15 +32,17 @@ CREATE TRIGGER TR_GameEventParticipation_InsteadOfDelete
   INSTEAD OF DELETE
 AS
   BEGIN
-    DELETE FROM GameEvent
-    FROM DELETED
-	WHERE GameEvent.Id = DELETED.TakesPartInId
-	  AND DELETED.ParticipationStatus = 'Creator';
+	IF TRIGGER_NESTLEVEL(OBJECT_ID('TR_GameEventParticipation_InsteadOfDelete')) <= 1
+	BEGIN
+      DELETE FROM GameEvent
+      FROM DELETED
+	  WHERE GameEvent.Id = DELETED.TakesPartInId;
 
-	DELETE FROM GameEventParticipation
-	FROM DELETED
-	WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
-	  AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
+	  DELETE FROM GameEventParticipation
+	  FROM DELETED
+	  WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
+	    AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
+	END;
   END;
 
 GO
