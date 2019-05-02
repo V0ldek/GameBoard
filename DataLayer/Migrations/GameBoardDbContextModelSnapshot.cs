@@ -100,7 +100,7 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<int>("GameEventId");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256);
+                        .HasMaxLength(128);
 
                     b.HasKey("GameEventId", "Name");
 
@@ -111,14 +111,15 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(512)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("EventName");
+                    b.Property<string>("EventName")
+                        .HasMaxLength(48);
 
                     b.Property<long?>("MeetingTime");
 
-                    b.Property<string>("Place");
+                    b.Property<string>("Place")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
@@ -140,7 +141,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId");
 
-                    b.ToTable("GameEventInvitation");
+                    b.ToTable("GameEventParticipation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

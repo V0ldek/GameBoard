@@ -75,10 +75,14 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.HasKey(e => e.Id);
-
                     entity.Property(e => e.Id)
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(512);
+                        .ValueGeneratedOnAdd();
+
+                    entity.Property(e => e.EventName)
+                        .HasMaxLength(48);
+
+                    entity.Property(e => e.Place)
+                        .HasMaxLength(128);
 
                     entity.Property(e => e.MeetingTime)
                         .HasConversion(new DateTimeToBinaryConverter());
@@ -110,7 +114,7 @@ namespace GameBoard.DataLayer.Context
 
                     entity.HasIndex(e => new { e.TakesPartInId });
 
-                    entity.ToTable("GameEventInvitation");
+                    entity.ToTable("GameEventParticipation");
                 });
 
             builder.Entity<Game>(
@@ -118,7 +122,7 @@ namespace GameBoard.DataLayer.Context
                 {
                     entity.Property(e => e.Name)
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(128);
 
                     entity.HasOne(e => e.GameEvent)
                         .WithMany(g => g.Games)

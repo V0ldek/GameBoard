@@ -11,11 +11,11 @@ namespace GameBoard.DataLayer.Migrations
                 name: "GameEvent",
                 columns: table => new
                 {
-                    Id = table.Column<int>(maxLength: 512, nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EventName = table.Column<string>(nullable: true),
+                    EventName = table.Column<string>(maxLength: 48, nullable: true),
                     MeetingTime = table.Column<long>(nullable: true),
-                    Place = table.Column<string>(nullable: true)
+                    Place = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace GameBoard.DataLayer.Migrations
                 name: "Game",
                 columns: table => new
                 {
-                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     GameEventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -41,7 +41,7 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GameEventInvitation",
+                name: "GameEventParticipation",
                 columns: table => new
                 {
                     ParticipantId = table.Column<string>(nullable: false),
@@ -50,15 +50,15 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameEventInvitation", x => new { x.ParticipantId, x.TakesPartInId });
+                    table.PrimaryKey("PK_GameEventParticipation", x => new { x.ParticipantId, x.TakesPartInId });
                     table.ForeignKey(
-                        name: "FK_GameEventInvitation_User_ParticipantId",
+                        name: "FK_GameEventParticipation_User_ParticipantId",
                         column: x => x.ParticipantId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_GameEventInvitation_GameEvent_TakesPartInId",
+                        name: "FK_GameEventParticipation_GameEvent_TakesPartInId",
                         column: x => x.TakesPartInId,
                         principalTable: "GameEvent",
                         principalColumn: "Id",
@@ -66,8 +66,8 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameEventInvitation_TakesPartInId",
-                table: "GameEventInvitation",
+                name: "IX_GameEventParticipation_TakesPartInId",
+                table: "GameEventParticipation",
                 column: "TakesPartInId");
         }
 
@@ -77,7 +77,7 @@ namespace GameBoard.DataLayer.Migrations
                 name: "Game");
 
             migrationBuilder.DropTable(
-                name: "GameEventInvitation");
+                name: "GameEventParticipation");
 
             migrationBuilder.DropTable(
                 name: "GameEvent");
