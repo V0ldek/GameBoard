@@ -32,7 +32,7 @@ namespace GameBoard.LogicLayer.GameEvents
             };
             var gameEvent = new GameEvent()
             {
-                EventName = requestedGameEvent.GameEventName,
+                Name = requestedGameEvent.Name,
                 MeetingTime = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games.Select(g => new Game { Name = g }).ToList(),
@@ -68,9 +68,9 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var gameEvent = await _repository.GameEvents
                 .Include(ge => ge.Games)
-                .SingleAsync(ge => ge.Id == editedEvent.GameEventId);
+                .SingleAsync(ge => ge.Id == editedEvent.Id);
 
-            gameEvent.EventName = editedEvent.GameEventName ?? gameEvent.EventName;
+            gameEvent.Name = editedEvent.Name ?? gameEvent.Name;
             gameEvent.MeetingTime = editedEvent.MeetingTime ?? gameEvent.MeetingTime;
             gameEvent.Place = editedEvent.Place ?? gameEvent.Place;
 

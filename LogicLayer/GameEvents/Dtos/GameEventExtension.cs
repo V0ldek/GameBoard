@@ -22,7 +22,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         {
             return new GameEventDto(
                 gameEvent.Id,
-                gameEvent.EventName, // strings are immutable so we don't have to create a new instance of the same object by ourselves
+                gameEvent.Name, // strings are immutable so we don't have to create a new instance of the same object by ourselves
                 gameEvent.MeetingTime,
                 gameEvent.Place, // strings are immutable so we don't have to create a new instance of the same object by ourselves
                 gameEvent.Games.Select(g => g.Name), // strings are immutable so we don't have to create a new instance of the same object by ourselves
@@ -36,7 +36,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         {
             return new GameEventListItemDto(
                 gameEvent.Id, 
-                gameEvent.EventName, 
+                gameEvent.Name, 
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.Creator).Single()
             );
         }

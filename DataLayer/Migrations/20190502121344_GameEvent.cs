@@ -24,7 +24,7 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EventName = table.Column<string>(maxLength: 48, nullable: true),
+                    Name = table.Column<string>(maxLength: 48, nullable: true),
                     MeetingTime = table.Column<long>(nullable: true),
                     Place = table.Column<string>(maxLength: 128, nullable: true)
                 },

@@ -78,7 +78,7 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.Id)
                         .ValueGeneratedOnAdd();
 
-                    entity.Property(e => e.EventName)
+                    entity.Property(e => e.Name)
                         .HasMaxLength(48);
 
                     entity.Property(e => e.Place)
