@@ -2,6 +2,7 @@
 using GameBoard.DataLayer.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace GameBoard.DataLayer.Context
 {
@@ -11,6 +12,10 @@ namespace GameBoard.DataLayer.Context
             : base(options)
         {
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+            optionsBuilder.ConfigureWarnings(
+                warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
