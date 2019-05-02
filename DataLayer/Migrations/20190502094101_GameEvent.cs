@@ -1,10 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.IO;
 
 namespace GameBoard.DataLayer.Migrations
 {
     public partial class GameEvent : Migration
     {
+        private static readonly string MigrationUpScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/GameEvent_Up.sql");
+
+        private static readonly string MigrationDownScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/GameEvent_Down.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -69,6 +80,8 @@ namespace GameBoard.DataLayer.Migrations
                 name: "IX_GameEventParticipation_TakesPartInId",
                 table: "GameEventParticipation",
                 column: "TakesPartInId");
+
+            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -81,6 +94,8 @@ namespace GameBoard.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "GameEvent");
+
+            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }
