@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Extensions;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
 using GameBoard.LogicLayer.Notifications;
@@ -27,8 +28,7 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
-            var normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
+            var user = _repository.ApplicationUsers.Where(u => u.UserNameEquals(userName));
 
             var friendsInvitedByMe = user
                 .Include(u => u.SentRequests)
@@ -58,9 +58,9 @@ namespace GameBoard.LogicLayer.Friends
             }
 
             var userRequestedBy =
-                _repository.ApplicationUsers.Single(u => u.NormalizedUserName == friendRequest.UserNameFrom);
+                _repository.ApplicationUsers.Single(u => u.UserNameEquals(friendRequest.UserNameFrom));
             var userRequestedTo =
-                _repository.ApplicationUsers.Single(u => u.NormalizedUserName == friendRequest.UserNameTo);
+                _repository.ApplicationUsers.Single(u => u.UserNameEquals(friendRequest.UserNameTo));
 
             var friendship = new Friendship
             {

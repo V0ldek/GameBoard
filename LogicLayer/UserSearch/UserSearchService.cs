@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Extensions;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +20,7 @@ namespace GameBoard.LogicLayer.UserSearch
 
         public Task<UserDto> GetUserByUsernameAsync(string userName)
         {
-            var normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
+            var user = _repository.ApplicationUsers.Where(u => u.UserNameEquals(userName));
 
             return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).SingleOrDefaultAsync();
         }
