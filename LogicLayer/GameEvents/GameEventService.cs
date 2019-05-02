@@ -123,6 +123,7 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var gameEvent = await _repository.GameEvents
                 .Where(ge => ge.Id == gameEventId)
+                .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Paticipant)
                 .SingleAsync();
