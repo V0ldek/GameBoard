@@ -10,7 +10,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public string CreatorUserName { get; }
 
         [NotNull]
-        public string GameEventName { get; }
+        public string Name { get; }
 
         [CanBeNull]
         public DateTime? MeetingTime { get; } // It is not specified in the user story and I know we have a separate user story concerning this feature, but it won't work out most likely, so maybe we should put this in here for now.
@@ -24,13 +24,13 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         public CreateGameEventDto(
             [NotNull] string creatorUserName,
-            [NotNull] string gameEventName,
-            [CanBeNull] DateTime meetingTime,
+            [NotNull] string name,
+            [CanBeNull] DateTime? meetingTime,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
             CreatorUserName = creatorUserName;
-            GameEventName = gameEventName;
+            Name = name;
             MeetingTime = meetingTime;
             Place = place;
             Games = games;

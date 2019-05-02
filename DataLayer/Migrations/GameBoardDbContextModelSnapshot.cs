@@ -113,7 +113,7 @@ namespace GameBoard.DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("EventName")
+                    b.Property<string>("Name")
                         .HasMaxLength(48);
 
                     b.Property<long?>("MeetingTime");
