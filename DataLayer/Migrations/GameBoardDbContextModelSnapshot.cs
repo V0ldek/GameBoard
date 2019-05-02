@@ -139,7 +139,9 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasKey("ParticipantId", "TakesPartInId");
 
-                    b.HasIndex("TakesPartInId");
+                    b.HasIndex("TakesPartInId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus = 'Creator'");
 
                     b.ToTable("GameEventParticipation");
                 });

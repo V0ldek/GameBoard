@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190502094101_GameEvent")]
+    [Migration("20190502102834_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,7 +141,9 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasKey("ParticipantId", "TakesPartInId");
 
-                    b.HasIndex("TakesPartInId");
+                    b.HasIndex("TakesPartInId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus = 'Creator'");
 
                     b.ToTable("GameEventParticipation");
                 });

@@ -112,7 +112,11 @@ namespace GameBoard.DataLayer.Context
 
                     entity.HasKey(e => new { e.ParticipantId, e.TakesPartInId });
 
-                    entity.HasIndex(e => e.TakesPartInId);
+                    entity.HasIndex(e => e.TakesPartInId); // this index is overriden by the following one.
+
+                    entity.HasIndex(e => e.TakesPartInId)
+                        .HasFilter("ParticipationStatus = 'Creator'")
+                        .IsUnique();
 
                     entity.ToTable("GameEventParticipation");
                 });

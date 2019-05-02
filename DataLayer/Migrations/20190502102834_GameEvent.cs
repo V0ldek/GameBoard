@@ -79,7 +79,9 @@ namespace GameBoard.DataLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_GameEventParticipation_TakesPartInId",
                 table: "GameEventParticipation",
-                column: "TakesPartInId");
+                column: "TakesPartInId",
+                unique: true,
+                filter: "ParticipationStatus = 'Creator'");
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
