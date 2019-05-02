@@ -112,7 +112,7 @@ namespace GameBoard.DataLayer.Context
 
                     entity.HasKey(e => new { e.ParticipantId, e.TakesPartInId });
 
-                    entity.HasIndex(e => new { e.TakesPartInId });
+                    entity.HasIndex(e => e.TakesPartInId);
 
                     entity.ToTable("GameEventParticipation");
                 });
