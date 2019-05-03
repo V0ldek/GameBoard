@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.Models.User;
 
@@ -10,17 +11,21 @@ namespace GameBoard.Models.GameEvent
         public int Id { get; }
 
         public string Name { get; }
-
+        
         public string Place { get; }
 
         public DateTime? Date { get; }
 
+        [Display(Name = "Planned games")]
         public IEnumerable<string> Games { get; }
 
+        [Display(Name = "Event creator")]
         public UserViewModel Creator { get; }
 
+        [Display(Name = "Pending invitations")]
         public IEnumerable<UserViewModel> Invitees { get; }
 
+        [Display(Name = "Participants")]
         public IEnumerable<UserViewModel> Participants { get; }
 
         public bool IsCreator => _permission == GameEventPermission.Creator;

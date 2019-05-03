@@ -39,40 +39,35 @@ namespace GameBoard.LogicLayer.GameEvents
             var voldek = new UserDto("v0ldie", "V0ldek", "registermen@gmail.com");
             var johny = new UserDto("johny", "Johny", "johny@gmail.com");
 
-            if (userName == "V0ldek")
-            {
-                var gameEvents = new GameEventListDto(
-                    new List<GameEventListItemDto>
-                    {
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(1, "Gra w gry", maciek),
-                        new GameEventListItemDto(2, "Gra w grę", maciek)
-                    },
-                    new List<GameEventListItemDto>
-                    {
-                        new GameEventListItemDto(3, "Będziemy grali w grę", johny)
-                    },
-                    new List<GameEventListItemDto>
-                    {
-                        new GameEventListItemDto(4, "Moja gra", voldek)
-                    });
+            var gameEvents = new GameEventListDto(
+                new List<GameEventListItemDto>
+                {
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(1, "Gra w gry", maciek),
+                    new GameEventListItemDto(2, "Gra w grę", maciek)
+                },
+                new List<GameEventListItemDto>
+                {
+                    new GameEventListItemDto(3, "Będziemy grali w grę", johny)
+                },
+                new List<GameEventListItemDto>
+                {
+                    new GameEventListItemDto(4, "Moja gra", voldek)
+                });
 
-                return Task.FromResult(gameEvents);
-            }
-
-            throw new NotImplementedException();
+            return Task.FromResult(gameEvents);
         }
 
         public Task<GameEventDto> GetGameEventAsync(int gameEventId)
@@ -112,19 +107,6 @@ namespace GameBoard.LogicLayer.GameEvents
                             new List<string>
                             {
                                 "Terraformacja Marka",
-                                "erraformacja Marka T",
-                                "rraformacja Marka Te",
-                                "raformacja Marka Ter",
-                                "aformacja Marka Terr",
-                                "formacja Marka Terra",
-                                "ormacja Marka Terraf",
-                                "rmacja Marka Terrafo",
-                                "macja Marka Terrafor",
-                                "acja Marka Terraform",
-                                "cja Marka Terraforma",
-                                "ja Marka Terraformac",
-                                "a Marka Terraformacj",
-                                "Marka Terraformacja",
                             },
                             maciek,
                             new List<UserDto>

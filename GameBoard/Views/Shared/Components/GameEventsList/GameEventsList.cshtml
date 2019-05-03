@@ -1,6 +1,6 @@
 ﻿@model GameBoard.Models.GameEventList.GameEventListViewModel
 
-<form class="float-right">
+<form asp-action="CreateGameEvent" asp-controller="GameEvent" method="get" class="float-right">
     <button type="submit" class="btn btn-success">Create new game event</button>
 </form>
 <h1 class="mb-4 mr-xl-5 pr-xl-5">Your game events</h1>

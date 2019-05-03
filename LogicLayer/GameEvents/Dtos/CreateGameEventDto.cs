@@ -25,7 +25,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public CreateGameEventDto(
             [NotNull] string creatorUserName,
             [NotNull] string gameEventName,
-            [CanBeNull] DateTime meetingTime,
+            [CanBeNull] DateTime? meetingTime,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games)
         {

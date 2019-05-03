@@ -12,11 +12,6 @@
     }
 }
 
-.game-event * {
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 .game-event .name {
     grid-area: name;
     justify-self: center;
@@ -34,9 +29,18 @@
 
 .game-event .invitees { grid-area: invitees; }
 
+.game-event .name,
+.game-event .date,
+.game-event .place {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .game-event .creator,
 .game-event .participants,
 .game-event .invitees { white-space: nowrap; }
+
+.game-event .games .games-list { padding: 1%; }
 
 .game-event .games .games-list,
 .game-event .participants .participants-list,
