@@ -4,16 +4,19 @@
 @media (min-width: 768px) {
     .game-event {
         display: grid;
-        grid-template-areas: "name name name" 
-                             "date games none" 
-                             "creator participants invitees" 
+        grid-template-areas: "invite invite invite"
+                             "name name name"
+                             "date games none"
+                             "creator participants invitees"
                              "control control control";
         grid-template-columns: 27vw 27vw 27vw;
-        grid-template-rows: 10vh 15vh 30vh auto;
+        grid-template-rows: auto 10vh 15vh 30vh auto;
         grid-row-gap: 30px;
         box-sizing: border-box;
     }
 }
+
+.game-event .pending-invite { grid-area: invite; }
 
 .game-event .name {
     grid-area: name;

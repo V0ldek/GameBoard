@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <None Remove="Scripts\ListInput\listInput.ts" />
-    <None Remove="Scripts\Site\createGameEvent.ts" />
+    <None Remove="Scripts\Site\gameEventForm.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,7 +46,7 @@
     <TypeScriptCompile Include="Scripts\ListInput\listInput.ts" />
     <TypeScriptCompile Include="Scripts\Popovers\popoverGenerator.ts" />
     <TypeScriptCompile Include="Scripts\productionConsoleSwitch.ts" />
-    <TypeScriptCompile Include="Scripts\Site\createGameEvent.ts" />
+    <TypeScriptCompile Include="Scripts\Site\gameEventForm.ts" />
     <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
     <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
   </ItemGroup>

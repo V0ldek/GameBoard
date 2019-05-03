@@ -12,7 +12,7 @@
     "Collapsible/Collapsible.ts",
     "ListInput/listInput.ts",
     "Popovers/popoverGenerator.ts",
-    "Site/createGameEvent.ts",
+    "Site/gameEventForm.ts",
     "Site/friendsSidebar.ts",
     "Site/userSearchBox.ts",
     "productionConsoleSwitch.ts"

@@ -10,6 +10,17 @@
 
 <article class="game-event">
     <h1 class="name" title="@Model.Name">@Model.Name</h1>
+    @if (Model.IsInvitePending)
+    {
+        <section class="pending-invite border-full p-3">
+            <p>You have an invitation pending for this event.</p>
+            <form class="form-inline" method="post">
+                <input value="@Model.Id" name="id" hidden readonly/>
+                <button class="btn btn-dark mr-3" type="submit" asp-action="AcceptGameEventInvite" asp-controller="GameEventInvite">Accept</button>
+                <button class="btn btn-danger" type="submit" asp-action="RejectGameEventInvite" asp-controller="GameEventInvite">Reject</button>
+            </form>
+        </section>
+    }
     @{
         var dateString = Model.Date.ToString() ?? "TBD";
     }

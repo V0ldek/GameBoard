@@ -8,15 +8,15 @@
         this.previewList = previewList;
         this.simplebarOnPreview = simplebarOnPreview;
 
-        this.setupInputEvents();
+        this.textareaInput.addEventListener("input", () => {
+            this.update();
+        });
+        this.update();
     }
 
-    private setupInputEvents() {
-        this.textareaInput.addEventListener("input",
-            () => {
-                const list = this.parseListFromTextInput(this.textareaInput.value);
-                this.renderPreview(list);
-            });
+    private update() {
+        const list = this.parseListFromTextInput(this.textareaInput.value);
+        this.renderPreview(list);
     }
 
     private parseListFromTextInput(input: string): string[] {
