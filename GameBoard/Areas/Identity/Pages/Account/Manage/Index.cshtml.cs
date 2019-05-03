@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.Errors;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +12,9 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
+        [Display(Name = "Username")]
         public string UserName { get; set; }
+
         public string Email { get; set; }
 
         public IndexModel(UserManager<ApplicationUser> userManager)
