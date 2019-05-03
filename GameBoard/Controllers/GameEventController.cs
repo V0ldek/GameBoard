@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -68,6 +67,33 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> EditGameEvent(int id)
+        {
+            var gameEvent = await _gameEventService.GetGameEventAsync(id);
+
+            if (gameEvent == null)
+            {
+                return this.Error("Error!", "Game event you're trying to edit doesn't exist.", HttpStatusCode.NotFound);
+            }
+
+            if (gameEvent.Creator.UserName != User.Identity.Name)
+            {
+                return this.AccessDenied();
+            }
+
+            return View("EditGameEvent", gameEvent.ToEditViewModel());
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> EditGameEvent(EditGameEventViewModel editGameEventViewModel)
+        {
+            await _gameEventService.EditGameEventAsync(editGameEventViewModel.ToDto());
+
+            return RedirectToAction("GameEvent", "GameEvent", new {id = editGameEventViewModel.Id});
+        }
+
+        [HttpGet]
         public IActionResult IsGameListValid(string games)
         {
             var normalizedGames = CreateGameEventViewModel.NormalizeGameList(games).ToList();
@@ -75,6 +101,11 @@ namespace GameBoard.Controllers
             if (normalizedGames.Count == 0)
             {
                 return Json("You need to specify at least one game.");
+            }
+
+            if (normalizedGames.Count > CreateGameEventViewModel.MaxGames)
+            {
+                return Json($"You may not specify more than {CreateGameEventViewModel.MaxGames} games.");
             }
 
             if (normalizedGames.Any(g => g.Length > CreateGameEventViewModel.MaxGameStringLength))

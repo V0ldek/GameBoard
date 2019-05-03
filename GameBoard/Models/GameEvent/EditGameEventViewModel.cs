@@ -7,10 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameBoard.Models.GameEvent
 {
-    public class CreateGameEventViewModel
+    public class EditGameEventViewModel
     {
-        [HiddenInput]
-        public string CreatorUserName { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Name")]
         [MaxLength(48)]
@@ -22,6 +21,7 @@ namespace GameBoard.Models.GameEvent
 
         [Display(Name = "Place")]
         [MaxLength(64)]
+        [Required]
         public string Place { get; set; }
 
         [Display(Name = "Planned games")]
@@ -32,11 +32,7 @@ namespace GameBoard.Models.GameEvent
         internal static IEnumerable<string> NormalizeGameList(string gameList) =>
             gameList.Split('\n').Select(g => g.Trim()).Where(g => !string.IsNullOrEmpty(g));
 
-        internal const int MaxGameStringLength = 128;
-
-        internal const int MaxGames = 10;
-
-        internal CreateGameEventDto ToDto() => 
-            new CreateGameEventDto(CreatorUserName, Name, Date, Place, NormalizeGameList(Games));
+        internal EditGameEventDto ToDto() => 
+            new EditGameEventDto(Id, Name, Date, Place, NormalizeGameList(Games));
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.Models.User;
 
@@ -9,8 +6,8 @@ namespace GameBoard.Models.GameEvent
 {
     internal static class GameEventDtoExtensions
     {
-        public static GameEventViewModel ToViewModel(this GameEventDto gameEventDto, GameEventPermission permission)
-            => new GameEventViewModel(
+        public static GameEventViewModel ToViewModel(this GameEventDto gameEventDto, GameEventPermission permission) =>
+            new GameEventViewModel(
                 gameEventDto.GameEventId,
                 gameEventDto.GameEventName,
                 gameEventDto.Place,
@@ -20,5 +17,15 @@ namespace GameBoard.Models.GameEvent
                 gameEventDto.Creator.ToViewModel(),
                 gameEventDto.Invitees.Select(u => u.ToViewModel()),
                 gameEventDto.Participants.Select(u => u.ToViewModel()));
+
+        public static EditGameEventViewModel ToEditViewModel(this GameEventDto gameEventDto) =>
+            new EditGameEventViewModel
+            {
+                Id = gameEventDto.GameEventId,
+                Name = gameEventDto.GameEventName,
+                Date = gameEventDto.MeetingTime,
+                Place = gameEventDto.Place,
+                Games = string.Join('\n', gameEventDto.Games)
+            };
     }
 }

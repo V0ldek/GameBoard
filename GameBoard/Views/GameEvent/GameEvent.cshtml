@@ -56,4 +56,13 @@
             }
         </ul>
     </section>
+    @if (Model.IsCreator)
+    {
+        <section class="creator-control-panel">
+            <form asp-controller="GameEvent" asp-action="EditGameEvent" method="get">
+                <input type="hidden" asp-for="Id"/>
+                <button class="btn btn-dark" type="submit">Edit</button>
+            </form>
+        </section>
+    }
 </article>

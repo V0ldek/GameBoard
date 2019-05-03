@@ -130,9 +130,10 @@ button.accept-policy {
 .form-control {
     background-color: #26292c !important;
     border-color: #36393c !important;
+    color: #b0b1b2;
 }
 
-.form-control::-webkit-input-placeholder { color: #b0b1b2; }
+.form-control::-webkit-input-placeholder { color: #707172; }
 
 .form-control:focus {
     background-color: #303336 !important;
