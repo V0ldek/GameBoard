@@ -4,6 +4,7 @@ namespace GameBoard.DataLayer.Entities
 {
     public class GameEventParticipation
     {
+        public int Id { get; set; }
 
         public string ParticipantId { get; set; }
         public ApplicationUser Paticipant { get; set; }

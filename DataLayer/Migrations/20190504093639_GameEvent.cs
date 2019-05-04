@@ -55,13 +55,15 @@ namespace GameBoard.DataLayer.Migrations
                 name: "GameEventParticipation",
                 columns: table => new
                 {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ParticipantId = table.Column<string>(nullable: false),
                     TakesPartInId = table.Column<int>(nullable: false),
                     ParticipationStatus = table.Column<string>(nullable: false, defaultValue: "PendingGuest")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameEventParticipation", x => new { x.ParticipantId, x.TakesPartInId });
+                    table.PrimaryKey("PK_GameEventParticipation", x => x.Id);
                     table.ForeignKey(
                         name: "FK_GameEventParticipation_User_ParticipantId",
                         column: x => x.ParticipantId,
@@ -77,11 +79,23 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_GameEventParticipation_ParticipantId",
+                table: "GameEventParticipation",
+                column: "ParticipantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GameEventParticipation_TakesPartInId",
                 table: "GameEventParticipation",
                 column: "TakesPartInId",
                 unique: true,
                 filter: "ParticipationStatus = 'Creator'");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameEventParticipation_TakesPartInId_ParticipantId",
+                table: "GameEventParticipation",
+                columns: new[] { "TakesPartInId", "ParticipantId" },
+                unique: true,
+                filter: "ParticipationStatus <> 'RejectedGuest'");
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }

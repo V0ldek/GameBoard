@@ -93,6 +93,10 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<GameEventParticipation>(
                 entity =>
                 {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
                     entity.HasOne(e => e.Paticipant)
                         .WithMany(u => u.Participations)
                         .HasForeignKey(e => e.ParticipantId)
@@ -110,9 +114,11 @@ namespace GameBoard.DataLayer.Context
                         .IsRequired()
                         .HasDefaultValue(ParticipationStatus.PendingGuest);
 
-                    entity.HasKey(e => new { e.ParticipantId, e.TakesPartInId });
+                    entity.HasIndex(e => new { e.TakesPartInId, e.ParticipantId })
+                        .HasFilter("ParticipationStatus <> 'RejectedGuest'")
+                        .IsUnique();
 
-                    entity.HasIndex(e => e.TakesPartInId); // this index is overriden by the following one.
+                    entity.HasIndex(e => e.ParticipantId);
 
                     entity.HasIndex(e => e.TakesPartInId)
                         .HasFilter("ParticipationStatus = 'Creator'")
@@ -124,6 +130,7 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<Game>(
                 entity =>
                 {
+                    //Perhaps we could have an auto generated key and an enum which tells us whether the game is on the current list or it was deleted from it.
                     entity.Property(e => e.Name)
                         .IsRequired()
                         .HasMaxLength(128);

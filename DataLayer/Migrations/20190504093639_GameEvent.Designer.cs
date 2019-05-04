@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190502121344_GameEvent")]
+    [Migration("20190504093639_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,20 +130,31 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
                 {
-                    b.Property<string>("ParticipantId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("TakesPartInId");
+                    b.Property<string>("ParticipantId")
+                        .IsRequired();
 
                     b.Property<string>("ParticipationStatus")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue("PendingGuest");
 
-                    b.HasKey("ParticipantId", "TakesPartInId");
+                    b.Property<int>("TakesPartInId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
 
                     b.HasIndex("TakesPartInId")
                         .IsUnique()
                         .HasFilter("ParticipationStatus = 'Creator'");
+
+                    b.HasIndex("TakesPartInId", "ParticipantId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus <> 'RejectedGuest'");
 
                     b.ToTable("GameEventParticipation");
                 });
