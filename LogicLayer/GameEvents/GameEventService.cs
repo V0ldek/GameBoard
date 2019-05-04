@@ -72,13 +72,13 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Include(ge => ge.Games)
                 .SingleAsync(ge => ge.Id == editedEvent.Id);
 
-            gameEvent.Name = editedEvent.Name ?? gameEvent.Name; // I think we should always overwrite the previous data.
-            gameEvent.MeetingTime = editedEvent.MeetingTime ?? gameEvent.MeetingTime; // Here too.
-            gameEvent.Place = editedEvent.Place ?? gameEvent.Place; // Here too.
+            gameEvent.Name = editedEvent.Name; // I think we should always overwrite the previous data.
+            gameEvent.MeetingTime = editedEvent.MeetingTime; // Here too.
+            gameEvent.Place = editedEvent.Place; // Here too.
 
             foreach (var game in gameEvent.Games)
             {
-                _repository.Games.Remove(game); //not sure if it is correct to remove data.
+                _repository.Games.Remove(game); //not sure if it is correct to remove data. What is the other option then?
             }
             gameEvent.Games = editedEvent.Games.Select(g => new Game { Name = g }).ToList();
 
@@ -175,7 +175,7 @@ namespace GameBoard.LogicLayer.GameEvents
             var participation = await _repository.GameEventParticipations
                 .SingleAsync(ge => ge.ParticipantId == userId
                     && ge.Id == gameEventId
-                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition.
+                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition. Why there is a ParticipationStatus != Rejected ?
 
             if (participation != null)
             {
@@ -195,7 +195,7 @@ namespace GameBoard.LogicLayer.GameEvents
             {
                 TakesPartInId = gameEventId,
                 ParticipantId = userId,
-                ParticipationStatus = ParticipationStatus.PendingGuest // I think it is redundant, because we have PendingGuest as a default value in this enum.
+                ParticipationStatus = ParticipationStatus.PendingGuest // Now it is not reundant
             };
             _repository.GameEventParticipations.Add(gameEventParticipation);
 
