@@ -14,8 +14,6 @@
     "malihu-custom-scrollbar-plugin": "3.1.5",
     "@types/mcustomscrollbar": "2.8.32",
     "popper.js": "1.14.7",
-    "simplebar": "3.1.5",
-    "@types/simplebar": "2.4.2",
     "moment": "2.24.0",
     "tempusdominus-bootstrap-4": "5.1.2" 
   },

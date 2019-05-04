@@ -6,7 +6,7 @@
       data-ajax-failure="gameEventInviteFormPopoverGenerator.generateErrorPopover(document.querySelector('#game-event-invite-@Model.UserName'), xhr)">
     <input type="hidden" asp-for="@Model.GameEventId"/>
     <input type="hidden" asp-for="@Model.UserName"/>
-    <button id="game-event-invite-@Model.UserName" type="submit" class="btn btn-dark" data-toggle="popover">
+    <button id="game-event-invite-@Model.UserName" type="submit" class="btn btn-dark" data-toggle="popover" data-placement="right">
         <i class="fa fa-send"></i>
     </button>
 </form>

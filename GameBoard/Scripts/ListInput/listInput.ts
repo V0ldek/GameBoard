@@ -1,12 +1,12 @@
 ﻿class ListInput {
     private textareaInput: HTMLTextAreaElement;
     private previewList: HTMLUListElement;
-    private simplebarOnPreview: boolean;
+    private mCustomScrollbarOnPreview: boolean;
 
-    constructor(textareaInput: HTMLTextAreaElement, previewList: HTMLUListElement, simplebarOnPreview: boolean) {
+    constructor(textareaInput: HTMLTextAreaElement, previewList: HTMLUListElement, mCustomScrollbarOnPreview: boolean) {
         this.textareaInput = textareaInput;
         this.previewList = previewList;
-        this.simplebarOnPreview = simplebarOnPreview;
+        this.mCustomScrollbarOnPreview = mCustomScrollbarOnPreview;
 
         this.textareaInput.addEventListener("input", () => {
             this.update();
@@ -26,10 +26,10 @@
     private renderPreview(list: string[]) {
         let liSource: HTMLElement;
 
-        if (!this.simplebarOnPreview) {
+        if (!this.mCustomScrollbarOnPreview) {
             liSource = this.previewList;
         } else {
-            liSource = this.previewList.querySelector(".simplebar-content") as HTMLElement;
+            liSource = this.previewList.querySelector(".mCSB_container") as HTMLElement;
         }
 
         this.removeAllLis(liSource);

@@ -35,7 +35,7 @@
     </section>
     <section class="games">
         <h3>@Html.DisplayNameFor(m => m.Games)</h3>
-        <ul class="games-list list-unstyled border-full p-1" data-simplebar>
+        <ul class="game-list list-unstyled border-full p-1">
             @foreach (var game in Model.Games)
             {
                 <li title="@game">@game</li>
@@ -48,7 +48,7 @@
     </section>
     <section class="participants">
         <h3>@Html.DisplayNameFor(m => m.Participants)</h3>
-        <ul class="participants-list list-unstyled border-full p-1" data-simplebar>
+        <ul class="participant-list list-unstyled border-full p-1">
             @if (!Model.Participants.Any())
             {
                 <li>None</li>
@@ -61,7 +61,7 @@
     </section>
     <section class="invitees">
         <h3>@Html.DisplayNameFor(m => m.Invitees)</h3>
-        <ul class="invitees-list list-unstyled border-full p-1" data-simplebar>
+        <ul class="invitee-list list-unstyled border-full p-1">
             @if (!Model.Invitees.Any())
             {
                 <li>None</li>

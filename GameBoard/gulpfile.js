@@ -23,8 +23,8 @@ const paths = {
         "node_modules/malihu-custom-scrollbar-plugin/**/*",
         "node_modules/jquery-validation/**/*",
         "node_modules/jquery-validation-unobtrusive/**/*",
+        "node_modules/overlayscrollbars/**/*",
         "node_modules/popper.js/**/*",
-        "node_modules/simplebar/**/*",
         "node_modules/moment/**/*",
         "node_modules/tempusdominus-bootstrap-4/**/*"
     ]

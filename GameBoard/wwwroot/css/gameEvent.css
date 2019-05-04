@@ -48,20 +48,20 @@
 .game-event .participants,
 .game-event .invitees { white-space: nowrap; }
 
-.game-event .games .games-list { padding: 1%; }
+.game-event .games .game-list { padding: 1%; }
 
-.game-event .games .games-list,
-.game-event .participants .participants-list,
-.game-event .invitees .invitees-list { max-height: 20vh; }
+.game-event .games .game-list,
+.game-event .participants .participant-list,
+.game-event .invitees .invitee-list { max-height: 20vh; }
 
 @media (min-width: 768px) {
     .game-event .creator,
     .game-event .participants,
     .game-event .invitees { width: 20vw; }
 
-    .game-event .games .games-list,
-    .game-event .participants .participants-list,
-    .game-event .invitees .invitees-list { height: 80%; }
+    .game-event .games .game-list,
+    .game-event .participants .participant-list,
+    .game-event .invitees .invitee-list { height: 80%; }
 }
 
 /* User cards
