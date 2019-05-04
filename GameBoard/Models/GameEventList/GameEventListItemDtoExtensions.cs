@@ -7,8 +7,8 @@ namespace GameBoard.Models.GameEventList
     {
         public static GameEventListItemViewModel ToViewModel(this GameEventListItemDto gameEventListItemDto) =>
             new GameEventListItemViewModel(
-                gameEventListItemDto.GameEventId,
-                gameEventListItemDto.GameEventName,
+                gameEventListItemDto.Id,
+                gameEventListItemDto.Name,
                 gameEventListItemDto.Creator.ToViewModel());
     }
 }

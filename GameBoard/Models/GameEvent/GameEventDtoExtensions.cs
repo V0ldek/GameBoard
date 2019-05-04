@@ -8,8 +8,8 @@ namespace GameBoard.Models.GameEvent
     {
         public static GameEventViewModel ToViewModel(this GameEventDto gameEventDto, GameEventPermission permission) =>
             new GameEventViewModel(
-                gameEventDto.GameEventId,
-                gameEventDto.GameEventName,
+                gameEventDto.Id,
+                gameEventDto.Name,
                 gameEventDto.Place,
                 gameEventDto.MeetingTime,
                 permission,
@@ -21,8 +21,8 @@ namespace GameBoard.Models.GameEvent
         public static EditGameEventViewModel ToEditViewModel(this GameEventDto gameEventDto) =>
             new EditGameEventViewModel
             {
-                Id = gameEventDto.GameEventId,
-                Name = gameEventDto.GameEventName,
+                Id = gameEventDto.Id,
+                Name = gameEventDto.Name,
                 Date = gameEventDto.MeetingTime,
                 Place = gameEventDto.Place,
                 Games = string.Join('\n', gameEventDto.Games)
