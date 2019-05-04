@@ -83,7 +83,12 @@ namespace GameBoard.LogicLayer.Notifications
             var subject = notification.Subject;
             var htmlContent = notification.Html;
 
-            var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, null, htmlContent);
+            var msg = MailHelper.CreateSingleEmailToMultipleRecipients(
+                from,
+                tos,
+                subject,
+                "Unfortunately, we doesn't provide our emails in plain text.",
+                htmlContent);
 
             return client.SendEmailAsync(msg);
         }
