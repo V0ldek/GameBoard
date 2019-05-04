@@ -7,17 +7,22 @@ document.addEventListener("DOMContentLoaded",
         const friendsSidebarCollapseElement = document.querySelector("#friends-sidebar-collapse") as HTMLButtonElement;
 
         if (!friendsSidebarContainerElement) {
-            console.error("Cannot create the sidebar - container is null.");
+            console.warn("Cannot create the sidebar - container is null.");
             return;
         }
         if (!friendsSidebarElement) {
-            console.error("Cannot create the sidebar - sidebar is null.");
+            console.warn("Cannot create the sidebar - sidebar is null.");
             return;
         }
         if (!friendsSidebarCollapseElement) {
-            console.error("Cannot create the sidebar - collapse is null.");
+            console.warn("Cannot create the sidebar - collapse is null.");
             return;
         }
+
+        $(friendsSidebarElement)
+            .mCustomScrollbar({
+                theme: "minimal"
+            });
 
         friendsSidebar =
             new Collapsible(friendsSidebarContainerElement, friendsSidebarElement, friendsSidebarCollapseElement);

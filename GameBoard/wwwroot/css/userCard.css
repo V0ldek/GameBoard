@@ -1,0 +1,26 @@
+﻿.user-card {
+    align-items: center;
+    display: grid;
+    grid-template-areas: "gravatar username";
+    grid-template-columns: 20% 80%;
+    grid-template-rows: auto;
+    margin-bottom: 3px;
+    padding: 5% 7%;
+    width: 100%;
+}
+
+.user-card .gravatar { grid-area: gravatar; }
+
+.user-card .username {
+    font-size: 14px;
+    grid-area: username;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    .user-card .username { font-size: 16px; }
+}
+
+.user-card .username-container { width: 100%; }

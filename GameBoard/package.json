@@ -13,7 +13,9 @@
     "font-awesome": "4.7.0",
     "malihu-custom-scrollbar-plugin": "3.1.5",
     "@types/mcustomscrollbar": "2.8.32",
-    "popper.js": "1.14.7"
+    "popper.js": "1.14.7",
+    "moment": "2.24.0",
+    "tempusdominus-bootstrap-4": "5.1.2" 
   },
   "devDependencies": {
     "del": "4.1.0",

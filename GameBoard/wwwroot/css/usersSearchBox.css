@@ -9,6 +9,8 @@
 #user-search-box { width: 100%; }
 
 .autocomplete-items {
+    background-color: #0a0d10; /* Fallback color. */
+    background-color: rgba(10, 13, 16, 0.8);
     border: 2px solid #1d1c1b;
     left: 0;
     max-height: 25vh;
@@ -20,7 +22,7 @@
 
 .autocomplete-items .autocomplete-item {
     background-color: #1a1d20; /* Fallback color. */
-    background-color: rgba(26, 29, 32, 0.5);
+    background-color: rgba(26, 29, 32, 0.9);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -30,9 +32,9 @@
 
 .autocomplete-items .user-result {
     display: grid;
+    grid-template-areas: "user-card invite";
     grid-template-columns: 80% 20%;
     grid-template-rows: auto;
-    grid-template-areas: "user-card invite";
 }
 
 .user-result .user-card-mini { grid-area: user-card }
@@ -41,26 +43,26 @@
 
 .user-result .username {
     grid-area: username;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .user-card-mini {
-    padding: 2%;
     display: grid;
+    grid-template-areas: "gravatar username";
     grid-template-columns: 25% 75%;
     grid-template-rows: auto;
-    grid-template-areas: "gravatar username"
+    padding: 2%;
 }
 
 .user-card-mini .gravatar-sm { grid-area: gravatar; }
 
 .user-card-mini .username {
     grid-area: username;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .user-card-mini .username-container { width: 100%; }
@@ -69,7 +71,7 @@
 
 .autocomplete-items.user-search-error {
     background-color: #1a1d20; /* Fallback  color. */
-    background-color: rgba(26, 29, 32, 0.5);
+    background-color: rgba(26, 29, 32, 0.9);
     margin: 1px;
     padding: 5px;
 }

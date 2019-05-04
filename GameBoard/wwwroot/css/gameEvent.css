@@ -1,0 +1,76 @@
+﻿/* Grid
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+    .game-event {
+        box-sizing: border-box;
+        display: grid;
+        grid-row-gap: 30px;
+        grid-template-areas: "invite invite invite"
+                             "name name name"
+                             "date games none"
+                             "creator participants invitees"
+                             "control control control";
+        grid-template-columns: 25vw 25vw 25vw;
+        grid-template-rows: auto 10vh 15vh 30vh auto;
+    }
+}
+
+.game-event .pending-invite { grid-area: invite; }
+
+.game-event .name {
+    grid-area: name;
+    justify-self: center;
+}
+
+.game-event .date { grid-area: date; }
+
+.game-event .place { grid-area: place; }
+
+.game-event .games { grid-area: games; }
+
+.game-event .creator { grid-area: creator; }
+
+.game-event .participants { grid-area: participants; }
+
+.game-event .invitees { grid-area: invitees; }
+
+.game-event .creator-control-panel { grid-area: control }
+
+.game-event .name,
+.game-event .date,
+.game-event .place {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-event .creator,
+.game-event .participants,
+.game-event .invitees { white-space: nowrap; }
+
+.game-event .games .game-list { padding: 1%; }
+
+.game-event .games .game-list,
+.game-event .participants .participant-list,
+.game-event .invitees .invitee-list { max-height: 20vh; }
+
+@media (min-width: 768px) {
+    .game-event .creator,
+    .game-event .participants,
+    .game-event .invitees { width: 20vw; }
+
+    .game-event .games .game-list,
+    .game-event .participants .participant-list,
+    .game-event .invitees .invitee-list { height: 80%; }
+}
+
+/* User cards
+-------------------------------------------------- */
+
+.game-event .participants .user-card,
+.game-event .creator .user-card,
+.game-event .invitees .user-card { padding: 2% 4% }
+
+.game-event .creator .user-card .gravatar,
+.game-event .participants .user-card .gravatar,
+.game-event .invitees .user-card .gravatar { max-height: 48px; }
