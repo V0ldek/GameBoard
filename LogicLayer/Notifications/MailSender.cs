@@ -87,7 +87,7 @@ namespace GameBoard.LogicLayer.Notifications
                 from,
                 tos,
                 subject,
-                "Unfortunately, we doesn't provide our emails in plain text.",
+                "Unfortunately, we don't provide our emails in plain text.",
                 htmlContent);
 
             return client.SendEmailAsync(msg);
