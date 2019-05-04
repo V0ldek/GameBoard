@@ -139,7 +139,9 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var userId = await _repository.GetUserIdByUserName(invitedUserName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId); //Two queries, code repetition.
+                .SingleAsync(ge => ge.ParticipantId == userId 
+                    && ge.Id == gameEventId 
+                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition.
 
             if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
             {
@@ -155,7 +157,9 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var userId = await _repository.GetUserIdByUserName(invitedUserName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId); //Two queries, code repetition.
+                .SingleAsync(ge => ge.ParticipantId == userId
+                    && ge.Id == gameEventId
+                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition.
 
             if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
             {
@@ -171,13 +175,29 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var userId = await _repository.GetUserIdByUserName(userName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId); //Two queries, code repetition.
+                .SingleAsync(ge => ge.ParticipantId == userId
+                    && ge.Id == gameEventId
+                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition.
+
+            if (participation != null)
+            {
+                switch (participation.ParticipationStatus)
+                {
+                    case ParticipationStatus.PendingGuest:
+                        throw new ApplicationException("You have already invited this user to this event.");
+                    case ParticipationStatus.AcceptedGuest:
+                        throw new ApplicationException("This user already participates in this event.");
+                    default:
+                        throw new ArgumentOutOfRangeException(); //maybe some message?
+
+                }
+            }
 
             var gameEventParticipation = new GameEventParticipation()
             {
                 TakesPartInId = gameEventId,
                 ParticipantId = userId,
-                ParticipationStatus = ParticipationStatus.PendingGuest
+                ParticipationStatus = ParticipationStatus.PendingGuest // I think it is redundant, because we have PendingGuest as a default value in this enum.
             };
             _repository.GameEventParticipations.Add(gameEventParticipation);
 
