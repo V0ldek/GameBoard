@@ -32,7 +32,7 @@ namespace GameBoard.Models.GameEvent
         internal static IEnumerable<string> NormalizeGameList(string gameList) =>
             gameList.Split('\n').Select(g => g.Trim()).Where(g => !string.IsNullOrEmpty(g));
 
-        internal EditGameEventDto ToDto() => 
+        internal EditGameEventDto ToDto() =>
             new EditGameEventDto(Id, Name, Date, Place, NormalizeGameList(Games));
     }
 }

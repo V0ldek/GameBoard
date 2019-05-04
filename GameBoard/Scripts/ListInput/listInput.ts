@@ -8,9 +8,10 @@
         this.previewList = previewList;
         this.mCustomScrollbarOnPreview = mCustomScrollbarOnPreview;
 
-        this.textareaInput.addEventListener("input", () => {
-            this.update();
-        });
+        this.textareaInput.addEventListener("input",
+            () => {
+                this.update();
+            });
         this.update();
     }
 

@@ -8,10 +8,11 @@ namespace GameBoard.Models.GameEvent
 {
     public class GameEventViewModel
     {
+        private readonly GameEventPermission _permission;
         public int Id { get; }
 
         public string Name { get; }
-        
+
         public string Place { get; }
 
         public DateTime? Date { get; }
@@ -31,8 +32,6 @@ namespace GameBoard.Models.GameEvent
         public bool IsCreator => _permission == GameEventPermission.Creator;
 
         public bool IsInvitePending => _permission == GameEventPermission.PendingInvitation;
-
-        private readonly GameEventPermission _permission;
 
         public GameEventViewModel(
             int id,

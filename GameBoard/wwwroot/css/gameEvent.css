@@ -3,7 +3,9 @@
 
 @media (min-width: 768px) {
     .game-event {
+        box-sizing: border-box;
         display: grid;
+        grid-row-gap: 30px;
         grid-template-areas: "invite invite invite"
                              "name name name"
                              "date games none"
@@ -11,8 +13,6 @@
                              "control control control";
         grid-template-columns: 25vw 25vw 25vw;
         grid-template-rows: auto 10vh 15vh 30vh auto;
-        grid-row-gap: 30px;
-        box-sizing: border-box;
     }
 }
 
@@ -40,8 +40,8 @@
 .game-event .name,
 .game-event .date,
 .game-event .place {
-    text-overflow: ellipsis;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .game-event .creator,

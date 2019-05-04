@@ -5,9 +5,9 @@
 
 #game-events-table td {
     font-size: 125%;
-    vertical-align: middle;
-    min-height: 5vh;
     max-height: 5vh;
+    min-height: 5vh;
+    vertical-align: middle;
 }
 
 #game-events-table tbody tr:hover {

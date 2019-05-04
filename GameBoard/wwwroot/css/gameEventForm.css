@@ -5,8 +5,9 @@
 }
 
 /* This is a hack to make the field hidden but still validated. */
+
 #games-list-input {
-    visibility: hidden;
     height: 0;
+    visibility: hidden;
     width: 0;
 }

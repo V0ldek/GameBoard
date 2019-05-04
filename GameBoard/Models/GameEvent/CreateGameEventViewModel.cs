@@ -9,6 +9,10 @@ namespace GameBoard.Models.GameEvent
 {
     public class CreateGameEventViewModel
     {
+        internal const int MaxGameStringLength = 128;
+
+        internal const int MaxGames = 10;
+
         [HiddenInput]
         public string CreatorUserName { get; set; }
 
@@ -32,11 +36,7 @@ namespace GameBoard.Models.GameEvent
         internal static IEnumerable<string> NormalizeGameList(string gameList) =>
             gameList.Split('\n').Select(g => g.Trim()).Where(g => !string.IsNullOrEmpty(g));
 
-        internal const int MaxGameStringLength = 128;
-
-        internal const int MaxGames = 10;
-
-        internal CreateGameEventDto ToDto() => 
+        internal CreateGameEventDto ToDto() =>
             new CreateGameEventDto(CreatorUserName, Name, Date, Place, NormalizeGameList(Games));
     }
 }

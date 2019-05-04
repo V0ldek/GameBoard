@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.Models.GameEventList;
 using Microsoft.AspNetCore.Mvc;

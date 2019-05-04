@@ -31,11 +31,11 @@ body {
 }
 
 main {
-    padding: 3%;
-    width: 90%;
-    padding-bottom: 5vh;
     margin-left: 2%;
     margin-right: 2%;
+    padding: 3%;
+    padding-bottom: 5vh;
+    width: 90%;
 }
 
 @media (min-width: 768px) {
@@ -189,18 +189,18 @@ a.navbar-brand {
 a.nav-link { color: #f0f4ff; }
 
 button.nav-link {
-    color: #f0f4ff;
     background-color: transparent;
+    color: #f0f4ff;
 }
 
 button.nav-link:hover {
-    color: #f0f4ff;
     background-color: transparent;
+    color: #f0f4ff;
 }
 
 button.nav-link:active, button.nav-link:focus {
-    box-shadow: none !important;
     background-color: transparent;
+    box-shadow: none !important;
 }
 
 .alert-dark {

@@ -94,7 +94,8 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Invite sent.",
-                    message = $"An email with your invitation to the {gameEvent.GameEventName} event has been sent to {userName}."
+                    message =
+                        $"An email with your invitation to the {gameEvent.GameEventName} event has been sent to {userName}."
                 });
         }
     }
