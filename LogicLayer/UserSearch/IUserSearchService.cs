@@ -7,10 +7,6 @@ namespace GameBoard.LogicLayer.UserSearch
 {
     public interface IUserSearchService
     {
-        // Returns null if user does not exist.
-        [CanBeNull]
-        Task<UserDto> GetUserByUsernameAsync([NotNull] string userName);
-
         [NotNull]
         [ItemNotNull]
         Task<IEnumerable<UserDto>> GetSearchCandidatesAsync([NotNull] string userNameInput);

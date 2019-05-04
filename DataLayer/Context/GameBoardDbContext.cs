@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using GameBoard.DataLayer.Entities;
+﻿using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace GameBoard.DataLayer.Context
 {
@@ -14,17 +13,11 @@ namespace GameBoard.DataLayer.Context
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+            optionsBuilder.ConfigureWarnings(
+                warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
-
-        public Task<string> GetUserIdByUserName(string userName)
-        {
-            var normalizedUserName = userName.ToUpper();
-
-            return ApplicationUsers
-                .Where(u => u.NormalizedUserName == normalizedUserName)
-                .Select(u => u.Id)
-                .SingleAsync();
-        }
     }
 }

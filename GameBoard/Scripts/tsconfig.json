@@ -1,12 +1,13 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "noEmitOnError": true,
-    "strictNullChecks": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es6"
-  },
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "noEmitOnError": true,
+        "strictNullChecks": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "target": "es6",
+        "moduleResolution": "node"
+    },
   "files": [
     "Autocomplete/autocomplete.ts",
     "Collapsible/Collapsible.ts",

@@ -2,9 +2,9 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,47 +13,48 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly IEmailSender _emailSender;
+        private readonly IMailSender _mailSender;
         private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IMailSender mailSender)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _mailSender = mailSender;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
-                }
+                return Page();
+            }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    null,
-                    new {code},
-                    Request.Scheme);
-
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+            var user = await _userManager.FindByEmailAsync(Input.Email);
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
-            return Page();
+            SendForgotPasswordEmail(user);
+
+            return RedirectToPage("./ForgotPasswordConfirmation");
+        }
+
+        private async void SendForgotPasswordEmail(ApplicationUser user)
+        {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var email = Input.Email;
+            var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                null,
+                new { code, email },
+                Request.Scheme);
+
+            await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
         }
 
         public class InputModel

@@ -8,6 +8,7 @@ using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
+using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,36 +16,37 @@ namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class FriendsService : IFriendsService
     {
+        private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
 
-        public FriendsService(IGameBoardRepository repository)
+        public FriendsService(IGameBoardRepository repository, IMailSender mailSender)
         {
             _repository = repository;
+            _mailSender = mailSender;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
         {
-            var normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
+            var user = _repository.ApplicationUsers.Where(ApplicationUser.UserNameEquals(userName));
 
-            var friendsInvitedByMe = user
+            // EF Core 2.2 cannot translate Unions, so two queries are necessary.
+            var friendsInvitedByMe = await user
                 .Include(u => u.SentRequests)
                 .SelectMany(u => u.SentRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
-                .Select(f => f.RequestedTo);
+                .Select(f => f.RequestedTo)
+                .ToListAsync();
 
-            var friendsThatInvitedMe = user
+            var friendsThatInvitedMe = await user
                 .Include(u => u.ReceivedRequests)
                 .SelectMany(u => u.ReceivedRequests)
                 .Where(f => f.FriendshipStatus == FriendshipStatus.Lasts)
-                .Select(f => f.RequestedBy);
-
-            var allFriends = await friendsInvitedByMe
-                .Union(friendsThatInvitedMe)
-                .OrderBy(u => u.NormalizedUserName)
+                .Select(f => f.RequestedBy)
                 .ToListAsync();
 
-            return allFriends.ConvertAll(u => u.ToUserDto());
+            var allFriends = friendsInvitedByMe.Concat(friendsThatInvitedMe).OrderBy(u => u.NormalizedUserName);
+
+            return allFriends.Select(u => u.ToDto());
         }
 
         public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
@@ -54,16 +56,25 @@ namespace GameBoard.LogicLayer.Friends
                 throw new InvitingYourselfException("You cannot invite yourself.");
             }
 
-            var requestedById = await _repository.GetUserIdByUserName(friendRequest.UserNameFrom);
-            var requestedToId = await _repository.GetUserIdByUserName(friendRequest.UserNameTo);
+            var userRequestedBy =
+                _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(friendRequest.UserNameFrom));
+            var userRequestedTo =
+                _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(friendRequest.UserNameTo));
 
-            _repository.Friendships.Add(
-                new Friendship
-                {
-                    RequestedById = requestedById,
-                    RequestedToId = requestedToId,
-                    FriendshipStatus = FriendshipStatus.PendingFriendRequest
-                });
+            var friendship = new Friendship
+            {
+                RequestedById = userRequestedBy.Id,
+                RequestedToId = userRequestedTo.Id,
+                FriendshipStatus = FriendshipStatus.PendingFriendRequest
+            };
+
+            await SaveFriendshipAsync(friendship);
+            await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
+        }
+
+        private async Task SaveFriendshipAsync(Friendship friendship)
+        {
+            _repository.Friendships.Add(friendship);
 
             try
             {
@@ -83,12 +94,17 @@ namespace GameBoard.LogicLayer.Friends
                         throw new FriendRequestAlreadyFinalizedException("You are already friends.");
                     default:
                         throw new ArgumentOutOfRangeException(
-                            $"Not caught SQL Exception with error number {sqlException.Number} occured.");
+                            $"Uncaught SQL Exception with error number {sqlException.Number} occured.");
                 }
             }
-
-            // TODO: send email with link
         }
+
+        private async Task SendFriendRequestEmailAsync(
+            CreateFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
+            Friendship friendship) =>
+            await _mailSender.SendFriendInvitationAsync(
+                friendship.RequestedTo.Email,
+                requestLinkGenerator(friendship.Id.ToString()));
 
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
         {
@@ -97,7 +113,7 @@ namespace GameBoard.LogicLayer.Friends
                 .Include(f => f.RequestedTo)
                 .SingleOrDefaultAsync(f => f.Id == friendRequestId);
 
-            return friendship?.ToFriendRequestDto();
+            return friendship?.ToDto();
         }
 
         public Task AcceptFriendRequestAsync(int friendRequestId) =>
