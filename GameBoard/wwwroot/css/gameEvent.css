@@ -9,7 +9,7 @@
                              "date games none"
                              "creator participants invitees"
                              "control control control";
-        grid-template-columns: 27vw 27vw 27vw;
+        grid-template-columns: 25vw 25vw 25vw;
         grid-template-rows: auto 10vh 15vh 30vh auto;
         grid-row-gap: 30px;
         box-sizing: border-box;

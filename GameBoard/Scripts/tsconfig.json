@@ -13,6 +13,7 @@
     "ListInput/listInput.ts",
     "Popovers/popoverGenerator.ts",
     "Site/gameEventForm.ts",
+    "Site/gameEventInviteForm.ts",
     "Site/friendsSidebar.ts",
     "Site/userSearchBox.ts",
     "productionConsoleSwitch.ts"

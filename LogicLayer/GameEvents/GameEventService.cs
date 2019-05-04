@@ -19,17 +19,17 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
         {
-            throw new NotImplementedException();
+            return Task.FromResult((object)null);
         }
 
         public Task DeleteGameEventAsync(int gameEventId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult((object)null);
         }
 
         public Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
         {
-            throw new NotImplementedException();
+            return Task.FromResult((object)null);
         }
 
         public Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
@@ -203,17 +203,17 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
-            throw new NotImplementedException();
+            return Task.FromResult((object)null);
         }
 
         public Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
         {
-            throw new NotImplementedException();
+            return Task.FromResult((object)null);
         }
 
         public Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
         {
-            throw new NotImplementedException();
+            return Task.FromResult((object)null);
         }
     }
 }

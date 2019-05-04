@@ -1,18 +1,33 @@
-﻿@model IEnumerable<GameBoard.Models.User.UserViewModel>
+﻿@model GameBoard.Models.FriendsSidebar.FriendsSidebarViewModel
 
-<div id="friends-sidebar-container">
-    <div id="friends-sidebar" class="bg border-top border-right box-shadow" data-simplebar>
+<div id="friends-sidebar-container" @(Model.Toggled ? "class=toggled" : "")>
+    <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")" data-simplebar>
         <h3>Friends</h3>
         <hr/>
         <ul class="list-unstyled components border-bottom">
-            @foreach (var user in Model)
+            @foreach (var user in Model.Friends)
             {
-                <li class="active">@await Component.InvokeAsync("UserCard", new {user})</li>
+                <li class="active">
+                    @await Component.InvokeAsync("UserCard", new {user})
+                    @if (Model.SubComponentName != null)
+                    {
+                        <div class="sub-component">
+                            @if (Model.SubComponentArguments != null)
+                            {
+                                @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName))
+                            }
+                            else
+                            {
+                                @await Component.InvokeAsync(Model.SubComponentName)
+                            }
+                        </div>
+                    }
+                </li>
             }
         </ul>
     </div>
     @await Component.InvokeAsync("UserSearchBox")
     <button id="friends-sidebar-collapse" class="btn btn-dark border-right border-top border-bottom border-left-0" type="button">
-        <i id="friends-sidebar-collapse-icon" class="fa fa-angle-right"></i>
+        <i id="friends-sidebar-collapse-icon" class="fa @(Model.Toggled ? "fa-angle-left" : "fa-angle-right")"></i>
     </button>
 </div>
