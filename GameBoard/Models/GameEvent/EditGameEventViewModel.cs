@@ -21,7 +21,6 @@ namespace GameBoard.Models.GameEvent
 
         [Display(Name = "Place")]
         [MaxLength(64)]
-        [Required]
         public string Place { get; set; }
 
         [Display(Name = "Planned games")]
