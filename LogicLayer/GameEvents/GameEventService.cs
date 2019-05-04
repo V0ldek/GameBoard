@@ -43,8 +43,6 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository.GameEvents.Add(gameEvent);
 
             await _repository.SaveChangesAsync();
-
-            await _repository.SaveChangesAsync();
         }
 
         public async Task DeleteGameEventAsync(int gameEventId)
