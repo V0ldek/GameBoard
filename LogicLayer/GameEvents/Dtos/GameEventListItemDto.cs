@@ -5,21 +5,21 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class GameEventListItemDto
     {
-        public int GameEventId { get; }
+        public int Id { get; }
 
         [NotNull]
-        public string GameEventName { get; }
+        public string Name { get; }
 
         [NotNull]
         public UserDto Creator { get; }
 
         internal GameEventListItemDto(
-            int gameEventId,
-            [NotNull] string gameEventName,
+            int id,
+            [NotNull] string name,
             [NotNull] UserDto creator)
         {
-            GameEventId = gameEventId;
-            GameEventName = gameEventName;
+            Id = id;
+            Name = name;
             Creator = creator;
         }
     }
