@@ -5,12 +5,19 @@
 
 @section FriendsSidebar
 {
-    @await Component.InvokeAsync("FriendsSidebar", new
+    @if (Model.IsCreator)
     {
-        toggled = true,
-        subComponentName = "GameEventInviteForm",
-        subComponentArgumentsProvider = (Func<string, object>) (userName => new {gameEventId = Model.Id, userName})
-    })
+        @await Component.InvokeAsync("FriendsSidebar", new
+        {
+            toggled = true,
+            subComponentName = "GameEventInviteForm",
+            subComponentArgumentsProvider = (Func<string, object>) (userName => new {gameEventId = Model.Id, userName})
+        })
+    }
+    else
+    {
+        @await Component.InvokeAsync("FriendsSidebar")
+    }
 }
 
 <article class="game-event">
