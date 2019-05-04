@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190504093639_GameEvent")]
+    [Migration("20190504111041_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,9 +138,7 @@ namespace GameBoard.DataLayer.Migrations
                         .IsRequired();
 
                     b.Property<string>("ParticipationStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue("PendingGuest");
+                        .IsRequired();
 
                     b.Property<int>("TakesPartInId");
 

@@ -111,8 +111,7 @@ namespace GameBoard.DataLayer.Context
 
                     entity.Property(e => e.ParticipationStatus)
                         .HasConversion(new EnumToStringConverter<ParticipationStatus>())
-                        .IsRequired()
-                        .HasDefaultValue(ParticipationStatus.PendingGuest);
+                        .IsRequired();
 
                     entity.HasIndex(e => new { e.TakesPartInId, e.ParticipantId })
                         .HasFilter("ParticipationStatus <> 'RejectedGuest'")

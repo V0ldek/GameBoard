@@ -19,6 +19,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190428141845_GameEvent.cs" />
     <Compile Remove="Migrations\20190502102834_GameEvent.cs" />
+    <Compile Remove="Migrations\20190504093639_GameEvent.cs" />
   </ItemGroup>
 
   <ItemGroup>

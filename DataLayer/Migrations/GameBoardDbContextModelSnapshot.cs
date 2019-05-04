@@ -136,9 +136,7 @@ namespace GameBoard.DataLayer.Migrations
                         .IsRequired();
 
                     b.Property<string>("ParticipationStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue("PendingGuest");
+                        .IsRequired();
 
                     b.Property<int>("TakesPartInId");
 
