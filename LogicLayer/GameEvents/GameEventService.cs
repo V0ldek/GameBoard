@@ -38,7 +38,11 @@ namespace GameBoard.LogicLayer.GameEvents
                 Games = requestedGameEvent.Games.Select(g => new Game { Name = g }).ToList(),
                 Participations = new List<GameEventParticipation>()
             };
-            gameEvent.Participations.Add(creatorParticipation);
+
+            gameEvent.Participations.Add(creatorParticipation); // I don't know why, but it adds a participation with pendingInvitation status.
+            _repository.GameEvents.Add(gameEvent);
+
+            await _repository.SaveChangesAsync();
 
             await _repository.SaveChangesAsync();
         }
@@ -70,9 +74,9 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Include(ge => ge.Games)
                 .SingleAsync(ge => ge.Id == editedEvent.Id);
 
-            gameEvent.Name = editedEvent.Name ?? gameEvent.Name;
-            gameEvent.MeetingTime = editedEvent.MeetingTime ?? gameEvent.MeetingTime;
-            gameEvent.Place = editedEvent.Place ?? gameEvent.Place;
+            gameEvent.Name = editedEvent.Name ?? gameEvent.Name; // I think we should always overwrite the previous data.
+            gameEvent.MeetingTime = editedEvent.MeetingTime ?? gameEvent.MeetingTime; // Here too.
+            gameEvent.Place = editedEvent.Place ?? gameEvent.Place; // Here too.
 
             foreach (var game in gameEvent.Games)
             {
@@ -135,11 +139,11 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var userId = await _repository.GetUserIdByUserName(invitedUserName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId);
+                .SingleAsync(ge => ge.ParticipantId == userId); //Two queries, code repetition.
 
             if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
             {
-                throw new Exception(); //Here must come new Exception
+                throw new Exception(); //Here must come new Exception. I think it is unnecessary, a generic error will do.
             }
             participation.ParticipationStatus = ParticipationStatus.RejectedGuest;
 
@@ -151,11 +155,11 @@ namespace GameBoard.LogicLayer.GameEvents
         {
             var userId = await _repository.GetUserIdByUserName(invitedUserName);
             var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId);
+                .SingleAsync(ge => ge.ParticipantId == userId); //Two queries, code repetition.
 
             if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
             {
-                throw new Exception(); //Here i must invent a name for new exception            
+                throw new Exception(); //Here i must invent a name for new exception. I think it is unnecessary, a generic error will do.         
             }
             participation.ParticipationStatus = ParticipationStatus.AcceptedGuest;
 
@@ -165,11 +169,14 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
         {
-            var participantId = await _repository.GetUserIdByUserName(userName);
+            var userId = await _repository.GetUserIdByUserName(userName);
+            var participation = await _repository.GameEventParticipations
+                .SingleAsync(ge => ge.ParticipantId == userId); //Two queries, code repetition.
+
             var gameEventParticipation = new GameEventParticipation()
             {
                 TakesPartInId = gameEventId,
-                ParticipantId = participantId,
+                ParticipantId = userId,
                 ParticipationStatus = ParticipationStatus.PendingGuest
             };
             _repository.GameEventParticipations.Add(gameEventParticipation);

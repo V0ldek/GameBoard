@@ -8,7 +8,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
     {
         public int Id { get; }
 
-        [CanBeNull]
+        [CanBeNull] // I think it should be NotNull.
         public string Name { get; }
 
         [CanBeNull]
