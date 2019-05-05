@@ -32,17 +32,17 @@ CREATE TRIGGER TR_GameEventParticipation_InsteadOfDelete
   INSTEAD OF DELETE
 AS
   BEGIN
-	IF TRIGGER_NESTLEVEL(OBJECT_ID('TR_GameEventParticipation_InsteadOfDelete')) <= 1
+	IF TRIGGER_NESTLEVEL(OBJECT_ID('TR_GameEventParticipation_InsteadOfDelete')) <= 2
 	BEGIN
-      DELETE FROM GameEvent
-      FROM DELETED
-	  WHERE GameEvent.Id = DELETED.TakesPartInId
-		AND DELETED.ParticipationStatus = 'Creator';
-
 	  DELETE FROM GameEventParticipation
 	  FROM DELETED
 	  WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
 	    AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
+
+      DELETE FROM GameEvent
+      FROM DELETED
+	  WHERE GameEvent.Id = DELETED.TakesPartInId
+		AND DELETED.ParticipationStatus = 'Creator';
 	END;
   END;
 
@@ -60,6 +60,7 @@ AS
     DELETE FROM GameEventParticipation
 	FROM DELETED
 	WHERE GameEventParticipation.TakesPartInId = DELETED.Id
+	  AND GameEventParticipation.ParticipationStatus <> 'Creator';
 
 	DELETE FROM Game -- This DELETE could be replaced with CascadeDelete on Games, but it seems more consistent to put everything in one place.
 	FROM DELETED
