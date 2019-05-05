@@ -129,7 +129,10 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<Game>(
                 entity =>
                 {
-                    //Perhaps we could have an auto generated key and an enum which tells us whether the game is on the current list or it was deleted from it.
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
                     entity.Property(e => e.Name)
                         .IsRequired()
                         .HasMaxLength(128);
@@ -139,7 +142,13 @@ namespace GameBoard.DataLayer.Context
                         .HasForeignKey(e => e.GameEventId)
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    entity.HasKey(e => new { e.GameEventId, e.Name });
+                    entity.Property(e => e.GameStatus)
+                        .HasConversion(new EnumToStringConverter<GameStatus>())
+                        .IsRequired();
+
+                    entity.HasIndex(e => new {e.GameEventId, e.Name})
+                        .HasFilter("GameStatus = 'ExistsOnTheList'")
+                        .IsUnique();
 
                     entity.ToTable("Game");
                 });

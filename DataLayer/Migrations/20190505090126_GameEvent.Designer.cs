@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190504111041_GameEvent")]
+    [Migration("20190505090126_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,12 +99,24 @@ namespace GameBoard.DataLayer.Migrations
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("GameEventId");
 
+                    b.Property<string>("GameStatus")
+                        .IsRequired();
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(128);
 
-                    b.HasKey("GameEventId", "Name");
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameEventId", "Name")
+                        .IsUnique()
+                        .HasFilter("GameStatus = 'ExistsOnTheList'");
 
                     b.ToTable("Game");
                 });

@@ -1,10 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.IO;
 
 namespace GameBoard.DataLayer.Migrations
 {
     public partial class GameEvent : Migration
     {
+        private static readonly string MigrationUpScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/GameEvent_Up.sql");
+
+        private static readonly string MigrationDownScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/GameEvent_Down.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -26,12 +38,15 @@ namespace GameBoard.DataLayer.Migrations
                 name: "Game",
                 columns: table => new
                 {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
-                    GameEventId = table.Column<int>(nullable: false)
+                    GameEventId = table.Column<int>(nullable: false),
+                    GameStatus = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Game", x => new { x.GameEventId, x.Name });
+                    table.PrimaryKey("PK_Game", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Game_GameEvent_GameEventId",
                         column: x => x.GameEventId,
@@ -68,6 +83,13 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Game_GameEventId_Name",
+                table: "Game",
+                columns: new[] { "GameEventId", "Name" },
+                unique: true,
+                filter: "GameStatus = 'ExistsOnTheList'");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GameEventParticipation_ParticipantId",
                 table: "GameEventParticipation",
                 column: "ParticipantId");
@@ -85,6 +107,8 @@ namespace GameBoard.DataLayer.Migrations
                 columns: new[] { "TakesPartInId", "ParticipantId" },
                 unique: true,
                 filter: "ParticipationStatus <> 'RejectedGuest'");
+
+            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -97,6 +121,8 @@ namespace GameBoard.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "GameEvent");
+
+            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }

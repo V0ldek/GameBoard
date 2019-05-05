@@ -6,6 +6,7 @@ using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using Microsoft.EntityFrameworkCore;
+using Remotion.Linq.Clauses;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
@@ -31,7 +32,8 @@ namespace GameBoard.LogicLayer.GameEvents
                 Name = requestedGameEvent.Name,
                 MeetingTime = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
-                Games = requestedGameEvent.Games.Select(g => new Game { Name = g }).ToList(),
+                Games = requestedGameEvent.Games
+                    .Select(g => new Game { Name = g, GameStatus = GameStatus.ExistsOnTheList}).ToList(),
                 Participations = new List<GameEventParticipation>()
             };
 
@@ -43,19 +45,32 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
-            var gameEvent = await _repository.GameEvents
-                .Include(ge => ge.Games)
-                .SingleAsync(ge => ge.Id == editedEvent.Id);
+            var gameEventAndGames = await _repository.GameEvents
+                .Where(ge => ge.Id == editedEvent.Id)
+                .Select(ge => new
+                {
+                    GameEvent = ge,
+                    Games = ge.Games.Where(g => g.GameStatus == GameStatus.ExistsOnTheList)
+                })
+                .SingleAsync();
+
+            var gameEvent = gameEventAndGames.GameEvent;
+            var games = gameEventAndGames.Games;
 
             gameEvent.Name = editedEvent.Name;
             gameEvent.MeetingTime = editedEvent.MeetingTime;
             gameEvent.Place = editedEvent.Place;
 
-            foreach (var game in gameEvent.Games)
+            foreach (var game in games)
             {
-                _repository.Games.Remove(game); //not sure if it is correct to remove data. What is the other option then?
+                game.GameStatus = GameStatus.RemovedFromTheList; //Not sure if this is the right way to do this.
+                _repository.Games.Update(game);
             }
-            gameEvent.Games = editedEvent.Games.Select(g => new Game { Name = g }).ToList();
+
+            _repository.Games.AddRange(
+                editedEvent.Games.Select(
+                        g => new Game {Name = g, GameEventId = editedEvent.Id, GameStatus = GameStatus.ExistsOnTheList})
+                    .ToList());
 
             await _repository.SaveChangesAsync();
         }
@@ -93,16 +108,15 @@ namespace GameBoard.LogicLayer.GameEvents
                 await participants);
         }
 
-        public async Task<GameEventDto> GetGameEventAsync(int gameEventId)
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId)
         {
-            var gameEvent = await _repository.GameEvents
+            return  _repository.GameEvents
                 .Where(ge => ge.Id == gameEventId)
                 .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Paticipant)
+                .Select(ge => ge.ToGameEventDto()) // the conversion should be outside the query, but then the query won't be optimized (removed games will be included as well).
                 .SingleAsync();
-
-            return gameEvent.ToGameEventDto();
         }
     }
 }

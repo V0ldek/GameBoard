@@ -25,7 +25,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
                 gameEvent.Name,
                 gameEvent.MeetingTime,
                 gameEvent.Place,
-                gameEvent.Games.Select(g => g.Name),
+                gameEvent.Games.Where(g => g.GameStatus == GameStatus.ExistsOnTheList).Select(g => g.Name),
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.Creator).Single(),
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.PendingGuest),
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.AcceptedGuest)
