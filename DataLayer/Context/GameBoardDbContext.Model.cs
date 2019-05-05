@@ -84,9 +84,6 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.Place)
                         .HasMaxLength(128);
 
-                    entity.Property(e => e.MeetingTime)
-                        .HasConversion(new DateTimeToBinaryConverter());
-
                     entity.ToTable("GameEvent");
                 });
 

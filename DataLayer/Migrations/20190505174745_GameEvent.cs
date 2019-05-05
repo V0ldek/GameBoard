@@ -1,22 +1,11 @@
-﻿using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.IO;
 
 namespace GameBoard.DataLayer.Migrations
 {
     public partial class GameEvent : Migration
     {
-        private static readonly string MigrationUpScriptFilePath = Path.Combine(
-            AppContext.BaseDirectory,
-            "Migrations/Scripts/GameEvent_Up.sql");
-
-        private static readonly string MigrationDownScriptFilePath =
-            Path.Combine(
-                AppContext.BaseDirectory,
-                "Migrations/Scripts/GameEvent_Down.sql");
-
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -26,7 +15,7 @@ namespace GameBoard.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 48, nullable: true),
-                    MeetingTime = table.Column<long>(nullable: true),
+                    MeetingTime = table.Column<DateTime>(nullable: true),
                     Place = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
@@ -107,8 +96,6 @@ namespace GameBoard.DataLayer.Migrations
                 columns: new[] { "TakesPartInId", "ParticipantId" },
                 unique: true,
                 filter: "ParticipationStatus <> 'RejectedGuest'");
-
-            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -121,8 +108,6 @@ namespace GameBoard.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "GameEvent");
-
-            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }
