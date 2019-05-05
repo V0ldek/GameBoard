@@ -92,6 +92,8 @@ namespace GameBoard.LogicLayer.GameEventInvitations
             _repository.GameEventParticipations.Add(gameEventParticipation);
 
             await _repository.SaveChangesAsync();
+
+            //TODO: send email with an invitation
         }
     }
 }
