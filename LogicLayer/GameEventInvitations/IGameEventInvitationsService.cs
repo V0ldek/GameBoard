@@ -9,7 +9,7 @@ namespace GameBoard.LogicLayer.GameEventInvitations
 {
     public interface IGameEventInvitationsService
     {
-        Task SendGameEventInvitationAsync(CreateGameEventInvitationDto gameEventInvitationDto);
+        Task SendGameEventInvitationAsync([NotNull] CreateGameEventInvitationDto gameEventInvitationDto);
 
         Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
 

@@ -5,8 +5,8 @@ using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Remotion.Linq.Clauses;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
@@ -21,10 +21,12 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent)
         {
-            var creatorId = await _repository.GetUserIdByUserName(requestedGameEvent.CreatorUserName);
+            var creator = await _repository.ApplicationUsers.SingleAsync(
+                ApplicationUser.UserNameEquals(requestedGameEvent.CreatorUserName));
+
             var creatorParticipation = new GameEventParticipation
             {
-                ParticipantId = creatorId,
+                ParticipantId = creator.Id,
                 ParticipationStatus = ParticipationStatus.Creator
             };
             var gameEvent = new GameEvent
@@ -77,10 +79,12 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        private Task<List<GameEventListItemDto>> GetGameEventsWithSamePartitipationStatus(string userName, ParticipationStatus participationStatus)
+        private Task<List<GameEventListItemDto>> GetGameEventsWithSamePartitipationStatus(
+            [NotNull] string userName, 
+            ParticipationStatus participationStatus)
         {
-            var gameEvents = _repository
-                .GetUserByUserName(userName)
+            var gameEvents = _repository.ApplicationUsers
+                .Where(ApplicationUser.UserNameEquals(userName))
                 .Include(u => u.Participations)
                 .SelectMany(u => u.Participations)
                 .Where(p => p.ParticipationStatus == participationStatus)
@@ -90,7 +94,7 @@ namespace GameBoard.LogicLayer.GameEvents
             return gameEvents
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Paticipant)
-                .Select(ge => ge.ToGameEventListItemDto()) // the conversion should be outside the query, but then the query won't be optimized. Well... I don't know if it will be optimized with what we have right now. We need also a filtered index on Creator.
+                .Select(ge => ge.ToGameEventListItemDto()) // the conversion should be outside the query, but then the query won't be optimized. Well... I don't know if it will be optimized with what we have right now.
                 .ToListAsync();
         }
 
@@ -102,7 +106,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.PendingGuest);
             var participants =
                 GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.AcceptedGuest);
-            // Perhaps it should be only one query with the succeding conversion.
+            // Perhaps it should be only one query with the succeding selection of creator, pending guests and accepted guests.
 
             return new GameEventListDto(
                 await creatorGameEvents,

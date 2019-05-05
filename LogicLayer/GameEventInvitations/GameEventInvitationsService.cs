@@ -28,8 +28,8 @@ namespace GameBoard.LogicLayer.GameEventInvitations
             int gameEventId,
             [NotNull] string userName)
         {
-            return _repository
-                .GetUserByUserName(userName)
+            return _repository.ApplicationUsers
+                .Where(ApplicationUser.UserNameEquals(userName))
                 .Include(u => u.Participations)
                 .SelectMany(u => u.Participations)
                 .Where(p => p.TakesPartInId == gameEventId);

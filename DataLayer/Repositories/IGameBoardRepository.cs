@@ -14,9 +14,6 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<GameEventParticipation> GameEventParticipations { get; }
         DbSet<Game> Games { get; }
 
-        IQueryable<ApplicationUser> GetUserByUserName(string userName);
-        Task<string> GetUserIdByUserName(string userName);
-
         Task SaveChangesAsync();
     }
 }
