@@ -89,7 +89,6 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> EditGameEvent(EditGameEventViewModel editGameEventViewModel)
         {
-            // Here editGameEventViewModel.Date == null for every data. 
             await _gameEventService.EditGameEventAsync(editGameEventViewModel.ToDto());
 
             return RedirectToAction("GameEvent", "GameEvent", new {id = editGameEventViewModel.Id});
