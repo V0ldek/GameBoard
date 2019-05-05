@@ -3,8 +3,6 @@ using GameBoard.DataLayer.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameBoard.DataLayer.Context
 {

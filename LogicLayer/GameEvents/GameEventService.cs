@@ -65,11 +65,11 @@ namespace GameBoard.LogicLayer.GameEvents
 
             foreach (var game in games)
             {
-                game.GameStatus = GameStatus.RemovedFromTheList; //Not sure if this is the right way to do this.
+                game.GameStatus = GameStatus.RemovedFromTheList;
                 _repository.Games.Update(game);
             }
 
-            await _repository.SaveChangesAsync(); //If we try to remove this line, then the games won't be inserted into the database in the order specified by the user.
+            await _repository.SaveChangesAsync();
 
             _repository.Games.AddRange(
                 editedEvent.Games.Select(
@@ -94,7 +94,7 @@ namespace GameBoard.LogicLayer.GameEvents
             return gameEvents
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Paticipant)
-                .Select(ge => ge.ToGameEventListItemDto()) // the conversion should be outside the query, but then the query won't be optimized. Well... I don't know if it will be optimized with what we have right now.
+                .Select(ge => ge.ToGameEventListItemDto())
                 .ToListAsync();
         }
 
@@ -106,7 +106,6 @@ namespace GameBoard.LogicLayer.GameEvents
                 GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.PendingGuest);
             var participants =
                 GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.AcceptedGuest);
-            // Perhaps it should be only one query with the succeding selection of creator, pending guests and accepted guests.
 
             return new GameEventListDto(
                 await creatorGameEvents,
@@ -121,7 +120,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Paticipant)
-                .Select(ge => ge.ToGameEventDto()) // the conversion should be outside the query, but then the query won't be optimized (removed games will be included as well).
+                .Select(ge => ge.ToGameEventDto())
                 .SingleAsync();
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
 
