@@ -39,11 +39,12 @@
         </section>
     }
     @{
-        var dateString = Model.Date.ToString() ?? "TBD";
+        var dateString = Model.Date?.ToString() ?? "Unknown date";
+        var placeString = string.IsNullOrEmpty(Model.Place) ? "Unknown place" : Model.Place;
     }
     <section class="date">
         <h3 title="@dateString">@dateString</h3>
-        <h3 title="@Model.Place">@Model.Place</h3>
+        <h3 title="@placeString">@placeString</h3>
     </section>
     <section class="games">
         <h3>@Html.DisplayNameFor(m => m.Games)</h3>
