@@ -299,7 +299,7 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "GameEvent")
                         .WithMany("Games")
                         .HasForeignKey("GameEventId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
@@ -307,12 +307,12 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Paticipant")
                         .WithMany("Participations")
                         .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "TakesPartIn")
                         .WithMany("Participations")
                         .HasForeignKey("TakesPartInId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

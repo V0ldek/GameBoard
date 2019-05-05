@@ -98,13 +98,13 @@ namespace GameBoard.DataLayer.Context
                         .WithMany(u => u.Participations)
                         .HasForeignKey(e => e.ParticipantId)
                         .IsRequired()
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.HasOne(e => e.TakesPartIn)
                         .WithMany(ge => ge.Participations)
                         .HasForeignKey(e => e.TakesPartInId)
                         .IsRequired()
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.Property(e => e.ParticipationStatus)
                         .HasConversion(new EnumToStringConverter<ParticipationStatus>())
@@ -137,7 +137,7 @@ namespace GameBoard.DataLayer.Context
                     entity.HasOne(e => e.GameEvent)
                         .WithMany(g => g.Games)
                         .HasForeignKey(e => e.GameEventId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.Property(e => e.GameStatus)
                         .HasConversion(new EnumToStringConverter<GameStatus>())

@@ -41,7 +41,7 @@ namespace GameBoard.DataLayer.Migrations
                         column: x => x.GameEventId,
                         principalTable: "GameEvent",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,13 +62,13 @@ namespace GameBoard.DataLayer.Migrations
                         column: x => x.ParticipantId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_GameEventParticipation_GameEvent_TakesPartInId",
                         column: x => x.TakesPartInId,
                         principalTable: "GameEvent",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
