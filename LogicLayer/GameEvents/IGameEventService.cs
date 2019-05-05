@@ -18,11 +18,5 @@ namespace GameBoard.LogicLayer.GameEvents
         [NotNull]
         [ItemNotNull]
         Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName);
-
-        Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName);
-
-        Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
-
-        Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
     }
 }

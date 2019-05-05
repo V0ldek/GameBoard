@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using GameBoard.LogicLayer.GameEventInvitations;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +13,13 @@ namespace GameBoard.Controllers
     public class GameEventInvite : Controller
     {
         private readonly IGameEventService _gameEventService;
+        private readonly IGameEventInvitationsService _gameEventInvitationsService;
 
-        public GameEventInvite(IGameEventService gameEventService)
+        public GameEventInvite(
+            IGameEventInvitationsService gameEventInvitationsService, 
+            IGameEventService gameEventService)
         {
+            _gameEventInvitationsService = gameEventInvitationsService;
             _gameEventService = gameEventService;
         }
 
@@ -22,7 +27,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AcceptGameEventInvite(int gameEventId)
         {
-            await _gameEventService.AcceptGameEventInvitationAsync(gameEventId, User.Identity.Name);
+            await _gameEventInvitationsService.AcceptGameEventInvitationAsync(gameEventId, User.Identity.Name);
 
             return RedirectToAction("GameEvent", "GameEvent", new {id = gameEventId});
         }
@@ -31,7 +36,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RejectGameEventInvite(int gameEventId)
         {
-            await _gameEventService.RejectGameEventInvitationAsync(gameEventId, User.Identity.Name);
+            await _gameEventInvitationsService.RejectGameEventInvitationAsync(gameEventId, User.Identity.Name);
 
             return RedirectToAction("Index", "Home");
         }
@@ -76,7 +81,7 @@ namespace GameBoard.Controllers
 
             try
             {
-                await _gameEventService.SendGameEventInvitationAsync(gameEventId, userName);
+                await _gameEventInvitationsService.SendGameEventInvitationAsync(gameEventId, userName);
             }
             catch (ApplicationException exception)
             {

@@ -1,4 +1,5 @@
 ﻿using GameBoard.LogicLayer.Friends;
+using GameBoard.LogicLayer.GameEventInvitations;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,7 @@ namespace GameBoard.LogicLayer
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();
+            services.AddScoped<IGameEventInvitationsService, GameEventInvitationsService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>
