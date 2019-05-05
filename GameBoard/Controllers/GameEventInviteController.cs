@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using GameBoard.Configuration;
 using GameBoard.Errors;
 using GameBoard.LogicLayer.GameEventInvitations;
+using GameBoard.LogicLayer.GameEventInvitations.Dtos;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.Controllers
 {
@@ -15,13 +18,16 @@ namespace GameBoard.Controllers
     {
         private readonly IGameEventService _gameEventService;
         private readonly IGameEventInvitationsService _gameEventInvitationsService;
+        private readonly HostConfiguration _hostConfiguration;
 
         public GameEventInvite(
             IGameEventInvitationsService gameEventInvitationsService, 
-            IGameEventService gameEventService)
+            IGameEventService gameEventService,
+            IOptions<HostConfiguration> hostConfiguration)
         {
             _gameEventInvitationsService = gameEventInvitationsService;
             _gameEventService = gameEventService;
+            _hostConfiguration = hostConfiguration.Value;
         }
 
         [HttpPost]
@@ -47,6 +53,14 @@ namespace GameBoard.Controllers
         public async Task<IActionResult> CreateGameEventInvite(int gameEventId, string userName)
         {
             GameEventDto gameEvent;
+
+            var createGameEventInvitationDto = new CreateGameEventInvitationDto(
+                gameEventId,
+                userName,
+                eventId => _hostConfiguration.HostAddress + Url.Action(
+                    "GameEvent",
+                    "gameEvent",
+                    new { id = eventId }));
 
             try
             {
@@ -82,7 +96,7 @@ namespace GameBoard.Controllers
 
             try
             {
-                await _gameEventInvitationsService.SendGameEventInvitationAsync(gameEventId, userName);
+                await _gameEventInvitationsService.SendGameEventInvitationAsync(createGameEventInvitationDto);
             }
             catch (ApplicationException exception)
             {
