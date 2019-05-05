@@ -76,8 +76,7 @@ namespace GameBoard.LogicLayer.GameEventInvitations
                     case ParticipationStatus.AcceptedGuest:
                         throw new ApplicationException("This user already participates in this event.");
                     default:
-                        throw new ArgumentOutOfRangeException(); //maybe some message?
-
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 

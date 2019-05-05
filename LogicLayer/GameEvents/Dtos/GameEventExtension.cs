@@ -15,7 +15,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         {
             return gameEvent.Participations
                 .Where(p => p.ParticipationStatus == participationStatus)
-                .Select(p => p.Paticipant.ToUserDto());
+                .Select(p => p.Paticipant.ToDto());
         }
 
         public static GameEventDto ToGameEventDto(this GameEvent gameEvent)

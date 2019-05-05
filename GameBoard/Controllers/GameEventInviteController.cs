@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using GameBoard.Errors;
 using GameBoard.LogicLayer.GameEventInvitations;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
@@ -53,11 +54,11 @@ namespace GameBoard.Controllers
             }
             catch (ApplicationException exception)
             {
-                return this.ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
             }
             catch
             {
-                return this.ErrorJson(
+                return Error.FromController(this).ErrorJson(
                     "Error!",
                     "An unexpected error has occured while processing your request.",
                     HttpStatusCode.InternalServerError);
@@ -65,7 +66,7 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return this.ErrorJson(
+                return Error.FromController(this).ErrorJson(
                     "Error!",
                     "Specified game event does not exist.",
                     HttpStatusCode.NotFound);
@@ -73,7 +74,7 @@ namespace GameBoard.Controllers
 
             if (gameEvent.Creator.UserName != User.Identity.Name)
             {
-                return this.ErrorJson(
+                return Error.FromController(this).ErrorJson(
                     "Error!",
                     "You're unauthorized to perform this action.",
                     HttpStatusCode.Unauthorized);
@@ -85,11 +86,11 @@ namespace GameBoard.Controllers
             }
             catch (ApplicationException exception)
             {
-                return this.ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
             }
             catch
             {
-                return this.ErrorJson(
+                return Error.FromController(this).ErrorJson(
                     "Error!",
                     "An unexpected error has occured while processing your request.",
                     HttpStatusCode.InternalServerError);

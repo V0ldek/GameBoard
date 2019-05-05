@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using GameBoard.Errors;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.Models.GameEvent;
@@ -27,7 +28,7 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return this.Error("Error!", "Game event not found.", HttpStatusCode.NotFound);
+                return Error.FromController(this).Error("Error!", "Game event not found.", HttpStatusCode.NotFound);
             }
 
             var userName = User.Identity.Name;
@@ -40,7 +41,7 @@ namespace GameBoard.Controllers
                 case GameEventPermission.PendingInvitation:
                     return View("GameEvent", gameEvent.ToViewModel(permission));
                 case GameEventPermission.Forbidden:
-                    return this.AccessDenied();
+                    return Error.FromController(this).AccessDenied();
                 default:
                     throw new ArgumentOutOfRangeException($"Unexpected permission value {permission}.");
             }
@@ -73,12 +74,12 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return this.Error("Error!", "Game event you're trying to edit doesn't exist.", HttpStatusCode.NotFound);
+                return Error.FromController(this).Error("Error!", "Game event you're trying to edit doesn't exist.", HttpStatusCode.NotFound);
             }
 
             if (gameEvent.Creator.UserName != User.Identity.Name)
             {
-                return this.AccessDenied();
+                return Error.FromController(this).AccessDenied();
             }
 
             return View("EditGameEvent", gameEvent.ToEditViewModel());
