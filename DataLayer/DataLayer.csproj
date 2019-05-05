@@ -17,12 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190428141845_GameEvent.cs" />
-    <Compile Remove="Migrations\20190502102834_GameEvent.cs" />
-    <Compile Remove="Migrations\20190504093639_GameEvent.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
@@ -38,10 +32,10 @@
     <None Update="Migrations\Scripts\20190414094415_AddedApplicationUserAndFriendship_Up.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\GameEvent_Down.sql">
+    <None Update="Migrations\Scripts\20190505215025_GameEvent_Down.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\GameEvent_Up.sql">
+    <None Update="Migrations\Scripts\20190505215025_GameEvent_Up.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -6,6 +8,15 @@ namespace GameBoard.DataLayer.Migrations
 {
     public partial class GameEvent : Migration
     {
+        private static readonly string MigrationUpScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/20190505215025_GameEvent_Up.sql");
+
+        private static readonly string MigrationDownScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190505215025_GameEvent_Down.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -14,8 +25,8 @@ namespace GameBoard.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 48, nullable: true),
-                    MeetingTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 48, nullable: false),
+                    Date = table.Column<DateTime>(nullable: true),
                     Place = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
@@ -31,7 +42,7 @@ namespace GameBoard.DataLayer.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     GameEventId = table.Column<int>(nullable: false),
-                    GameStatus = table.Column<string>(nullable: false)
+                    GameStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,7 +52,7 @@ namespace GameBoard.DataLayer.Migrations
                         column: x => x.GameEventId,
                         principalTable: "GameEvent",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,7 +63,7 @@ namespace GameBoard.DataLayer.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ParticipantId = table.Column<string>(nullable: false),
                     TakesPartInId = table.Column<int>(nullable: false),
-                    ParticipationStatus = table.Column<string>(nullable: false)
+                    ParticipationStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,13 +73,13 @@ namespace GameBoard.DataLayer.Migrations
                         column: x => x.ParticipantId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GameEventParticipation_GameEvent_TakesPartInId",
                         column: x => x.TakesPartInId,
                         principalTable: "GameEvent",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -76,7 +87,7 @@ namespace GameBoard.DataLayer.Migrations
                 table: "Game",
                 columns: new[] { "GameEventId", "Name" },
                 unique: true,
-                filter: "GameStatus = 'ExistsOnTheList'");
+                filter: "GameStatus = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameEventParticipation_ParticipantId",
@@ -88,14 +99,16 @@ namespace GameBoard.DataLayer.Migrations
                 table: "GameEventParticipation",
                 column: "TakesPartInId",
                 unique: true,
-                filter: "ParticipationStatus = 'Creator'");
+                filter: "ParticipationStatus = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameEventParticipation_TakesPartInId_ParticipantId",
                 table: "GameEventParticipation",
                 columns: new[] { "TakesPartInId", "ParticipantId" },
                 unique: true,
-                filter: "ParticipationStatus <> 'RejectedGuest'");
+                filter: "ParticipationStatus <> 3");
+
+            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -108,6 +121,8 @@ namespace GameBoard.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "GameEvent");
+
+            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }

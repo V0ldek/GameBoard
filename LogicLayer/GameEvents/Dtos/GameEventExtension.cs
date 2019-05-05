@@ -15,7 +15,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         {
             return gameEvent.Participations
                 .Where(p => p.ParticipationStatus == participationStatus)
-                .Select(p => p.Paticipant.ToDto());
+                .Select(p => p.Participant.ToDto());
         }
 
         public static GameEventDto ToGameEventDto(this GameEvent gameEvent)
@@ -23,7 +23,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             return new GameEventDto(
                 gameEvent.Id,
                 gameEvent.Name,
-                gameEvent.MeetingTime,
+                gameEvent.Date,
                 gameEvent.Place,
                 gameEvent.Games.Where(g => g.GameStatus == GameStatus.ExistsOnTheList).Select(g => g.Name),
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.Creator).Single(),

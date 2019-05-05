@@ -32,7 +32,7 @@ namespace GameBoard.LogicLayer.GameEvents
             var gameEvent = new GameEvent
             {
                 Name = requestedGameEvent.Name,
-                MeetingTime = requestedGameEvent.MeetingTime,
+                Date = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games
                     .Select(g => new Game { Name = g, GameStatus = GameStatus.ExistsOnTheList}).ToList(),
@@ -60,7 +60,7 @@ namespace GameBoard.LogicLayer.GameEvents
             var games = gameEventAndGames.Games;
 
             gameEvent.Name = editedEvent.Name;
-            gameEvent.MeetingTime = editedEvent.MeetingTime;
+            gameEvent.Date = editedEvent.MeetingTime;
             gameEvent.Place = editedEvent.Place;
 
             foreach (var game in games)
@@ -93,7 +93,7 @@ namespace GameBoard.LogicLayer.GameEvents
 
             return gameEvents
                 .Include(ge => ge.Participations)
-                .ThenInclude(p => p.Paticipant)
+                .ThenInclude(p => p.Participant)
                 .Select(ge => ge.ToGameEventListItemDto())
                 .ToListAsync();
         }
@@ -119,7 +119,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Where(ge => ge.Id == gameEventId)
                 .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
-                .ThenInclude(p => p.Paticipant)
+                .ThenInclude(p => p.Participant)
                 .Select(ge => ge.ToGameEventDto())
                 .SingleAsync();
         }

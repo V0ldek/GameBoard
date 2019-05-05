@@ -7,7 +7,7 @@ namespace GameBoard.DataLayer.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime? MeetingTime { get; set; }
+        public DateTime? Date { get; set; }
         public string Place { get; set; }
 
         public ICollection<Game> Games { get; set; }

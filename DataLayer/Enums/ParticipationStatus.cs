@@ -6,9 +6,9 @@ namespace GameBoard.DataLayer.Enums
 {
     public enum ParticipationStatus
     {
-        Creator,
-        AcceptedGuest,
-        PendingGuest,
-        RejectedGuest
+        Creator = 0,
+        AcceptedGuest = 1,
+        PendingGuest = 2,
+        RejectedGuest = 3
     }
 }

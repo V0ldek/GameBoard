@@ -6,7 +6,7 @@ namespace GameBoard.DataLayer.Enums
 {
     public enum GameStatus
     {
-        RemovedFromTheList,
-        ExistsOnTheList
+        RemovedFromTheList = 0,
+        ExistsOnTheList = 1
     }
 }

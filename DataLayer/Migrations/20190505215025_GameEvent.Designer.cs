@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190505180615_GameEvent")]
+    [Migration("20190505215025_GameEvent")]
     partial class GameEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,8 +105,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<int>("GameEventId");
 
-                    b.Property<string>("GameStatus")
-                        .IsRequired();
+                    b.Property<int>("GameStatus");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -116,7 +115,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("GameEventId", "Name")
                         .IsUnique()
-                        .HasFilter("GameStatus = 'ExistsOnTheList'");
+                        .HasFilter("GameStatus = 0");
 
                     b.ToTable("Game");
                 });
@@ -127,9 +126,10 @@ namespace GameBoard.DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("MeetingTime");
+                    b.Property<DateTime?>("Date");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(48);
 
                     b.Property<string>("Place")
@@ -149,8 +149,7 @@ namespace GameBoard.DataLayer.Migrations
                     b.Property<string>("ParticipantId")
                         .IsRequired();
 
-                    b.Property<string>("ParticipationStatus")
-                        .IsRequired();
+                    b.Property<int>("ParticipationStatus");
 
                     b.Property<int>("TakesPartInId");
 
@@ -160,11 +159,11 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus = 'Creator'");
+                        .HasFilter("ParticipationStatus = 0");
 
                     b.HasIndex("TakesPartInId", "ParticipantId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus <> 'RejectedGuest'");
+                        .HasFilter("ParticipationStatus <> 3");
 
                     b.ToTable("GameEventParticipation");
                 });
@@ -301,20 +300,20 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "GameEvent")
                         .WithMany("Games")
                         .HasForeignKey("GameEventId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
                 {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Paticipant")
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Participant")
                         .WithMany("Participations")
                         .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "TakesPartIn")
                         .WithMany("Participations")
                         .HasForeignKey("TakesPartInId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

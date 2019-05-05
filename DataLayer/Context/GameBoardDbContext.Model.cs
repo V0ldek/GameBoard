@@ -34,7 +34,7 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.FriendshipStatus)
                         .IsRequired();
 
-                    entity.HasIndex(e => new { e.RequestedById, e.RequestedToId })
+                    entity.HasIndex(e => new {e.RequestedById, e.RequestedToId})
                         .HasFilter("FriendshipStatus <> 1") // <> rejected
                         .IsUnique();
 
@@ -79,6 +79,7 @@ namespace GameBoard.DataLayer.Context
                         .ValueGeneratedOnAdd();
 
                     entity.Property(e => e.Name)
+                        .IsRequired()
                         .HasMaxLength(48);
 
                     entity.Property(e => e.Place)
@@ -94,30 +95,29 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.Id)
                         .ValueGeneratedOnAdd();
 
-                    entity.HasOne(e => e.Paticipant)
+                    entity.HasOne(e => e.Participant)
                         .WithMany(u => u.Participations)
                         .HasForeignKey(e => e.ParticipantId)
                         .IsRequired()
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.HasOne(e => e.TakesPartIn)
                         .WithMany(ge => ge.Participations)
                         .HasForeignKey(e => e.TakesPartInId)
                         .IsRequired()
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.Property(e => e.ParticipationStatus)
-                        .HasConversion(new EnumToStringConverter<ParticipationStatus>())
                         .IsRequired();
 
-                    entity.HasIndex(e => new { e.TakesPartInId, e.ParticipantId })
-                        .HasFilter("ParticipationStatus <> 'RejectedGuest'")
+                    entity.HasIndex(e => new {e.TakesPartInId, e.ParticipantId})
+                        .HasFilter("ParticipationStatus <> 3") // <> RejectedGuest
                         .IsUnique();
 
                     entity.HasIndex(e => e.ParticipantId);
 
                     entity.HasIndex(e => e.TakesPartInId)
-                        .HasFilter("ParticipationStatus = 'Creator'")
+                        .HasFilter("ParticipationStatus = 0") // = Creator
                         .IsUnique();
 
                     entity.ToTable("GameEventParticipation");
@@ -137,14 +137,13 @@ namespace GameBoard.DataLayer.Context
                     entity.HasOne(e => e.GameEvent)
                         .WithMany(g => g.Games)
                         .HasForeignKey(e => e.GameEventId)
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.Property(e => e.GameStatus)
-                        .HasConversion(new EnumToStringConverter<GameStatus>())
                         .IsRequired();
 
                     entity.HasIndex(e => new {e.GameEventId, e.Name})
-                        .HasFilter("GameStatus = 'ExistsOnTheList'")
+                        .HasFilter("GameStatus = 0") // = ExistsOnTheList
                         .IsUnique();
 
                     entity.ToTable("Game");
