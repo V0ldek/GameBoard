@@ -13,9 +13,11 @@ namespace GameBoard.Controllers
     {
         private readonly IGroupsService _groupsService;
 
-        public GroupsController(IGroupsService groupsService)
+        public GroupsController(/*IGroupsService groupsService*/)
         {
-            _groupsService = groupsService;
+           // _groupsService = groupsService;
         }
+
+        public IActionResult ManageGroups() => View();
     }
 }
