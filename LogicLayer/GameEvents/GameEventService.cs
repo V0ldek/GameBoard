@@ -67,6 +67,8 @@ namespace GameBoard.LogicLayer.GameEvents
                 _repository.Games.Update(game);
             }
 
+            await _repository.SaveChangesAsync(); //If we try to remove this line, then the games won't be inserted into the database in the order specified by the user.
+
             _repository.Games.AddRange(
                 editedEvent.Games.Select(
                         g => new Game {Name = g, GameEventId = editedEvent.Id, GameStatus = GameStatus.ExistsOnTheList})
