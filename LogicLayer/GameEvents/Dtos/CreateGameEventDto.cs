@@ -13,7 +13,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public string Name { get; }
 
         [CanBeNull]
-        public DateTime? MeetingTime { get; } // It is not specified in the user story and I know we have a separate user story concerning this feature, but it won't work out most likely, so maybe we should put this in here for now.
+        public DateTime? MeetingTime { get; }
 
         [CanBeNull]
         public string Place { get; }

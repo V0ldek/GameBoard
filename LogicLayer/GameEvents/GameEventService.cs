@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEvents.Dtos;
-using JetBrains.Annotations;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +35,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 Participations = new List<GameEventParticipation>()
             };
 
-            gameEvent.Participations.Add(creatorParticipation); // I don't know why, but it adds a participation with pendingInvitation status.
+            gameEvent.Participations.Add(creatorParticipation);
             _repository.GameEvents.Add(gameEvent);
 
             await _repository.SaveChangesAsync();
@@ -49,9 +47,9 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Include(ge => ge.Games)
                 .SingleAsync(ge => ge.Id == editedEvent.Id);
 
-            gameEvent.Name = editedEvent.Name; // I think we should always overwrite the previous data.
-            gameEvent.MeetingTime = editedEvent.MeetingTime; // Here too.
-            gameEvent.Place = editedEvent.Place; // Here too.
+            gameEvent.Name = editedEvent.Name;
+            gameEvent.MeetingTime = editedEvent.MeetingTime;
+            gameEvent.Place = editedEvent.Place;
 
             foreach (var game in gameEvent.Games)
             {

@@ -22,11 +22,11 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         {
             return new GameEventDto(
                 gameEvent.Id,
-                gameEvent.Name, // strings are immutable so we don't have to create a new instance of the same object by ourselves
+                gameEvent.Name,
                 gameEvent.MeetingTime,
-                gameEvent.Place, // strings are immutable so we don't have to create a new instance of the same object by ourselves
-                gameEvent.Games.Select(g => g.Name), // strings are immutable so we don't have to create a new instance of the same object by ourselves
-                gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.Creator).Single(), //not sure if that is correct. Does include do the job?
+                gameEvent.Place,
+                gameEvent.Games.Select(g => g.Name),
+                gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.Creator).Single(),
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.PendingGuest),
                 gameEvent.GetUsersWithSamePartitipationStatus(ParticipationStatus.AcceptedGuest)
             );
