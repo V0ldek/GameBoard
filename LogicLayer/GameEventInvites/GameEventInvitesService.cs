@@ -7,17 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameBoard.LogicLayer.GameEventInvitations.Dtos;
+using GameBoard.LogicLayer.GameEventInvites.Dtos;
 using GameBoard.LogicLayer.Notifications;
 
-namespace GameBoard.LogicLayer.GameEventInvitations
+namespace GameBoard.LogicLayer.GameEventInvites
 {
-    internal class GameEventInvitationsService : IGameEventInvitationsService
+    internal class GameEventInvitesService : IGameEventInvitesService
     {
         private readonly IGameBoardRepository _repository;
         private readonly IMailSender _mailSender;
 
-        public GameEventInvitationsService(IGameBoardRepository repository, IMailSender mailSender)
+        public GameEventInvitesService(IGameBoardRepository repository, IMailSender mailSender)
         {
             _repository = repository;
             _mailSender = mailSender;

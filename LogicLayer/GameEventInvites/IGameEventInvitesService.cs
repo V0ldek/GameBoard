@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using GameBoard.LogicLayer.GameEventInvitations.Dtos;
+using GameBoard.LogicLayer.GameEventInvites.Dtos;
 
-namespace GameBoard.LogicLayer.GameEventInvitations
+namespace GameBoard.LogicLayer.GameEventInvites
 {
-    public interface IGameEventInvitationsService
+    public interface IGameEventInvitesService
     {
         Task SendGameEventInvitationAsync([NotNull] CreateGameEventInvitationDto gameEventInvitationDto);
 

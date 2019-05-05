@@ -3,8 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
 using GameBoard.Errors;
-using GameBoard.LogicLayer.GameEventInvitations;
-using GameBoard.LogicLayer.GameEventInvitations.Dtos;
+using GameBoard.LogicLayer.GameEventInvites;
+using GameBoard.LogicLayer.GameEventInvites.Dtos;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -17,11 +17,11 @@ namespace GameBoard.Controllers
     public class GameEventInvite : Controller
     {
         private readonly IGameEventService _gameEventService;
-        private readonly IGameEventInvitationsService _gameEventInvitationsService;
+        private readonly IGameEventInvitesService _gameEventInvitationsService;
         private readonly HostConfiguration _hostConfiguration;
 
         public GameEventInvite(
-            IGameEventInvitationsService gameEventInvitationsService, 
+            IGameEventInvitesService gameEventInvitationsService, 
             IGameEventService gameEventService,
             IOptions<HostConfiguration> hostConfiguration)
         {

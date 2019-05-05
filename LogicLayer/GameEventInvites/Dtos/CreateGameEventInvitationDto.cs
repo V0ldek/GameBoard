@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameBoard.LogicLayer.GameEventInvitations.Dtos
+namespace GameBoard.LogicLayer.GameEventInvites.Dtos
 {
     public sealed class CreateGameEventInvitationDto
     {
