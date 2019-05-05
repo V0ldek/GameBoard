@@ -1,6 +1,8 @@
 ﻿using System;
 using GameBoard.Configuration;
 using GameBoard.LogicLayer;
+using GameBoard.LogicLayer.Notifications;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,9 +68,12 @@ namespace GameBoard
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
                         options.User.RequireUniqueEmail = true;
+                        options.SignIn.RequireConfirmedEmail = true;
                     })
                 .AddDbContextStores();
 
+            services.AddTransient<IMailSender, MailSender>();
+            services.Configure<MailNotificationsConfiguration>(Configuration.GetSection(nameof(MailNotificationsConfiguration)));
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
 
             services.ConfigureApplicationCookie(

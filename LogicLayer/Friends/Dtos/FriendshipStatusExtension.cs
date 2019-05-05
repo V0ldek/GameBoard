@@ -1,13 +1,11 @@
 ﻿using System;
 using GameBoard.DataLayer.Enums;
 
-// I know that it is not the best namespace to put this in, but it did not work in other ones.
-
 namespace GameBoard.LogicLayer.Friends.Dtos
 {
     public static class FriendshipsStatusExtensions
     {
-        public static FriendRequestDto.FriendRequestStatus ToFriendRequest(this FriendshipStatus friendshipStatus)
+        public static FriendRequestDto.FriendRequestStatus ToDtoStatus(this FriendshipStatus friendshipStatus)
         {
             switch (friendshipStatus)
             {

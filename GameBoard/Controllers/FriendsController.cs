@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
+using GameBoard.Errors;
 using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.Models.FriendRequest;
@@ -36,7 +37,7 @@ namespace GameBoard.Controllers
 
             if (friendRequest == null)
             {
-                return this.Error(
+                return Error.FromController(this).Error(
                     "Friend request not found",
                     "The friend request you referenced does not exist in the system. " +
                     "Please, make sure the link you followed is identical with the one in the email.",
@@ -46,13 +47,13 @@ namespace GameBoard.Controllers
 
             if (friendRequest.UserTo.UserName != User.Identity.Name)
             {
-                return this.AccessDenied();
+                return Error.FromController(this).AccessDenied();
             }
 
             if (friendRequest.Status == FriendRequestDto.FriendRequestStatus.Accepted ||
                 friendRequest.Status == FriendRequestDto.FriendRequestStatus.Rejected)
             {
-                return this.Error(
+                return Error.FromController(this).Error(
                     "Friend request expired",
                     "The friend request you referenced has already been accepted or rejected.",
                     HttpStatusCode.Conflict,
@@ -98,11 +99,11 @@ namespace GameBoard.Controllers
             }
             catch (ApplicationException exception)
             {
-                return this.ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
             }
             catch
             {
-                return this.ErrorJson(
+                return Error.FromController(this).ErrorJson(
                     "Error!",
                     "An unexpected error has occured while processing your request.",
                     HttpStatusCode.InternalServerError);

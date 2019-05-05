@@ -17,42 +17,40 @@ namespace GameBoard.LogicLayer.UserSearch
             _repository = repository;
         }
 
-        public Task<UserDto> GetUserByUsernameAsync(string userName)
-        {
-            var normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
-
-            return user.Select(u => new UserDto(u.Id, u.UserName, u.Email)).SingleOrDefaultAsync();
-        }
-
         public async Task<IEnumerable<UserDto>> GetSearchCandidatesAsync(string userNameInput)
         {
             var normalizedUserNameInput = userNameInput.ToUpper();
+            var matchingPrefixesList = await GetMatchingPrefixesAsync(normalizedUserNameInput);
+            var usersToShowLeft = MaxUsersToShow - matchingPrefixesList.Count;
+            var matchingInfixesList =
+                await GetMatchingNonPrefixInfixesUpToACapAsync(normalizedUserNameInput, usersToShowLeft);
 
-            var matchingPrefixesList = await _repository.ApplicationUsers
+            return matchingPrefixesList.Concat(matchingInfixesList);
+        }
+
+        private async Task<List<UserDto>> GetMatchingPrefixesAsync(string normalizedUserNameInput) =>
+            await _repository.ApplicationUsers
                 .Where(u => u.NormalizedUserName.StartsWith(normalizedUserNameInput))
                 .Take(MaxUsersToShow)
                 .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                 .ToListAsync();
 
-            var usersToShowLeft = MaxUsersToShow - matchingPrefixesList.Count;
-
+        private async Task<List<UserDto>> GetMatchingNonPrefixInfixesUpToACapAsync(
+            string normalizedUserNameInput,
+            int usersToShowLeft)
+        {
             if (usersToShowLeft == 0)
             {
-                return matchingPrefixesList;
+                return new List<UserDto>();
             }
 
-            var matchingInfixesList = await _repository.ApplicationUsers
+            return await _repository.ApplicationUsers
                 .Where(
                     u => EF.Functions.Like(u.NormalizedUserName, $"_%{normalizedUserNameInput}%")
                         && !u.NormalizedUserName.StartsWith(normalizedUserNameInput))
                 .Take(usersToShowLeft)
                 .Select(u => new UserDto(u.Id, u.UserName, u.Email))
                 .ToListAsync();
-
-            matchingPrefixesList.AddRange(matchingInfixesList);
-
-            return matchingPrefixesList;
         }
     }
 }

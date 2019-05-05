@@ -6,6 +6,7 @@
 class PopoverGenerator {
     private static headerSuccessClass = "popover-header-success";
     private static headerErrorClass = "popover-header-error";
+    private static fadeoutTime = 5000;
 
     private getHtmlTemplate(headerClass: string) {
         return `<div class="popover rounded" role="tooltip">
@@ -34,6 +35,11 @@ class PopoverGenerator {
                 trigger: "focus",
                 template
             });
+
+        setTimeout(() => {
+                $(source).popover("hide");
+            },
+            PopoverGenerator.fadeoutTime);
         $(source).popover("show");
     }
 }
