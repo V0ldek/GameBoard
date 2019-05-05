@@ -10,6 +10,9 @@
                 <li class="active">@await Component.InvokeAsync("UserCard", new {user})</li>
             }
         </ul>
+        <button id ="friends-sidebar-manage-groups" class="btn btn-dark mt-1" type="button">
+            Manage groups
+        </button>
     </div>
     @await Component.InvokeAsync("UserSearchBox")
     <button id="friends-sidebar-collapse" class="btn btn-dark border-right border-top border-bottom border-left-0" type="button">
