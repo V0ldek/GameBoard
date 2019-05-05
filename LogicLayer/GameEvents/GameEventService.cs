@@ -45,27 +45,6 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task DeleteGameEventAsync(int gameEventId)
-        {
-            var gameEvent = await _repository.GameEvents
-                .Where(ge => ge.Id == gameEventId)
-                .Include(ge => ge.Participations)
-                .Include(ge => ge.Games)
-                .SingleAsync();
-
-            foreach (var game in gameEvent.Games)
-            {
-                _repository.Games.Remove(game);
-            }
-            foreach (var participation in gameEvent.Participations)
-            {
-                _repository.GameEventParticipations.Remove(participation);
-            }
-            _repository.GameEvents.Remove(gameEvent);
-
-            await _repository.SaveChangesAsync();
-        }
-
         public async Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
         {
             var gameEvent = await _repository.GameEvents

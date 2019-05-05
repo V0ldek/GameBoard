@@ -9,8 +9,6 @@ namespace GameBoard.LogicLayer.GameEvents
     {
         Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent);
 
-        Task DeleteGameEventAsync(int gameEventId);
-
         Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent);
 
         // Returns Task with null if game event does not exist.
