@@ -71,6 +71,5 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             Invitees = invitees;
             Participants = participants;
         }
-
     }
 }

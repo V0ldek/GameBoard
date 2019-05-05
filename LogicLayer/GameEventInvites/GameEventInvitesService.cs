@@ -23,16 +23,17 @@ namespace GameBoard.LogicLayer.GameEventInvites
             _mailSender = mailSender;
         }
 
-        private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
-            int gameEventId,
-            [NotNull] string userName)
-        {
-            return _repository.ApplicationUsers
-                .Where(ApplicationUser.UserNameEquals(userName))
-                .Include(u => u.Participations)
-                .SelectMany(u => u.Participations)
-                .Where(p => p.TakesPartInId == gameEventId);
-        }
+        public Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
+            ChangeGameEventInvitationStatusAsync(
+                gameEventId,
+                invitedUserName,
+                ParticipationStatus.RejectedGuest);
+
+        public Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
+            ChangeGameEventInvitationStatusAsync(
+                gameEventId,
+                invitedUserName,
+                ParticipationStatus.AcceptedGuest);
 
         private async Task ChangeGameEventInvitationStatusAsync(
             int gameEventId,
@@ -48,30 +49,12 @@ namespace GameBoard.LogicLayer.GameEventInvites
             await _repository.SaveChangesAsync();
         }
 
-        public Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName)
-        {
-            return ChangeGameEventInvitationStatusAsync(
-                gameEventId,
-                invitedUserName,
-                ParticipationStatus.RejectedGuest);
-        }
-
-        public Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName)
-        {
-            return ChangeGameEventInvitationStatusAsync(
-                gameEventId,
-                invitedUserName,
-                ParticipationStatus.AcceptedGuest);
-        }
-
         public async Task SendGameEventInvitationAsync(CreateGameEventInvitationDto gameEventInvitationDto)
         {
             var gameEventId = gameEventInvitationDto.GameEventId;
             var userNameTo = gameEventInvitationDto.UserNameTo;
 
-            var participation = await
-                GetGameEventParticipationsInOneEvent(gameEventId, userNameTo)
-                .SingleOrDefaultAsync(p => p.ParticipationStatus != ParticipationStatus.RejectedGuest);
+            var participation = await GetNotRejectedGameEventParticipation(gameEventId, userNameTo);
 
             if (participation != null)
             {
@@ -86,21 +69,47 @@ namespace GameBoard.LogicLayer.GameEventInvites
                 }
             }
 
-            var user = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userNameTo));
+            var userTo = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userNameTo));
 
+            await CreateNewGameEventParticipation(gameEventId, userTo);
+
+            await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
+        }
+
+        private Task<GameEventParticipation> GetNotRejectedGameEventParticipation(
+            int gameEventId,
+            [NotNull] string userName) =>
+                GetGameEventParticipationsInOneEvent(gameEventId, userName)
+                    .SingleOrDefaultAsync(p => p.ParticipationStatus != ParticipationStatus.RejectedGuest);
+
+        private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
+            int gameEventId,
+            [NotNull] string userName) =>
+            _repository.ApplicationUsers
+                .Where(ApplicationUser.UserNameEquals(userName))
+                .Include(u => u.Participations)
+                .SelectMany(u => u.Participations)
+                .Where(p => p.TakesPartInId == gameEventId);
+
+        private async Task CreateNewGameEventParticipation(int gameEventId, [NotNull] ApplicationUser userTo)
+        {
             var gameEventParticipation = new GameEventParticipation
             {
                 TakesPartInId = gameEventId,
-                ParticipantId = user.Id,
+                ParticipantId = userTo.Id,
                 ParticipationStatus = ParticipationStatus.PendingGuest
             };
             _repository.GameEventParticipations.Add(gameEventParticipation);
 
             await _repository.SaveChangesAsync();
-
-            await _mailSender.SendEventInvitationAsync(
-                new List<string>{user.Email},
-                gameEventInvitationDto.GenerateGameEventLink(gameEventId.ToString()));
         }
+
+        private Task SendGameEventInvitationAsync(
+            int gameEventId, 
+            [NotNull] ApplicationUser userTo, 
+            CreateGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
+            _mailSender.SendEventInvitationAsync(
+                new List<string> { userTo.Email },
+                gameEventLinkGenerator(gameEventId.ToString()));
     }
 }

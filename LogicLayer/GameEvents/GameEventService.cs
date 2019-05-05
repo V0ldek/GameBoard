@@ -79,8 +79,23 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        private Task<List<GameEventListItemDto>> GetGameEventsWithSamePartitipationStatus(
-            [NotNull] string userName, 
+        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
+        {
+            var creatorGameEvents =
+                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.Creator);
+            var invitees =
+                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.PendingGuest);
+            var participants =
+                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.AcceptedGuest);
+
+            return new GameEventListDto(
+                await participants,
+                await invitees,
+                await creatorGameEvents);
+        }
+
+        private Task<List<GameEventListItemDto>> GetGameEventsWithParticipationStatus(
+            [NotNull] string userName,
             ParticipationStatus participationStatus)
         {
             var gameEvents = _repository.ApplicationUsers
@@ -98,30 +113,13 @@ namespace GameBoard.LogicLayer.GameEvents
                 .ToListAsync();
         }
 
-        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
-        {
-            var creatorGameEvents =
-                GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.Creator);
-            var invitees =
-                GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.PendingGuest);
-            var participants =
-                GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.AcceptedGuest);
-
-            return new GameEventListDto(
-                await creatorGameEvents,
-                await invitees,
-                await participants);
-        }
-
-        public Task<GameEventDto> GetGameEventAsync(int gameEventId)
-        {
-            return  _repository.GameEvents
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
+            _repository.GameEvents
                 .Where(ge => ge.Id == gameEventId)
                 .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Participant)
                 .Select(ge => ge.ToGameEventDto())
-                .SingleAsync();
-        }
+                .SingleOrDefaultAsync();
     }
 }
