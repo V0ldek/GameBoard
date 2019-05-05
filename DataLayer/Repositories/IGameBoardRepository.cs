@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<GameEvent> GameEvents { get; }
         DbSet<GameEventParticipation> GameEventParticipations { get; }
         DbSet<Game> Games { get; }
+
+        IQueryable<ApplicationUser> GetUserByUserName(string userName);
         Task<string> GetUserIdByUserName(string userName);
 
         Task SaveChangesAsync();

@@ -8,12 +8,10 @@ using JetBrains.Annotations;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
-
 
 namespace GameBoard.LogicLayer.GameEvents
 {
-    class GameEventService : IGameEventService
+    internal class GameEventService : IGameEventService
     {
         private readonly IGameBoardRepository _repository;
 
@@ -22,15 +20,15 @@ namespace GameBoard.LogicLayer.GameEvents
             _repository = repository;
         }
 
-        public async Task CreateGameEventAsync([NotNull] CreateGameEventDto requestedGameEvent)
+        public async Task CreateGameEventAsync(CreateGameEventDto requestedGameEvent)
         {
             var creatorId = await _repository.GetUserIdByUserName(requestedGameEvent.CreatorUserName);
-            var creatorParticipation = new GameEventParticipation()
+            var creatorParticipation = new GameEventParticipation
             {
                 ParticipantId = creatorId,
                 ParticipationStatus = ParticipationStatus.Creator
             };
-            var gameEvent = new GameEvent()
+            var gameEvent = new GameEvent
             {
                 Name = requestedGameEvent.Name,
                 MeetingTime = requestedGameEvent.MeetingTime,
@@ -45,7 +43,7 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        public async Task EditGameEventAsync([NotNull] EditGameEventDto editedEvent)
+        public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
             var gameEvent = await _repository.GameEvents
                 .Include(ge => ge.Games)
@@ -64,13 +62,10 @@ namespace GameBoard.LogicLayer.GameEvents
             await _repository.SaveChangesAsync();
         }
 
-        private Task<List<GameEventListItemDto>> GetGameEventsWithSamePartitipationStatus([NotNull] string userName, ParticipationStatus participationStatus)
+        private Task<List<GameEventListItemDto>> GetGameEventsWithSamePartitipationStatus(string userName, ParticipationStatus participationStatus)
         {
-            var normalizedUserName = userName.ToUpper();
-            var user = _repository.ApplicationUsers
-                .Where(u => u.NormalizedUserName == normalizedUserName);
-
-            var gameEvents = user
+            var gameEvents = _repository
+                .GetUserByUserName(userName)
                 .Include(u => u.Participations)
                 .SelectMany(u => u.Participations)
                 .Where(p => p.ParticipationStatus == participationStatus)
@@ -84,7 +79,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .ToListAsync();
         }
 
-        public async Task<GameEventListDto> GetAccessibleGameEventsAsync([NotNull] string userName)
+        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
         {
             var creatorGameEvents =
                 GetGameEventsWithSamePartitipationStatus(userName, ParticipationStatus.Creator);
@@ -112,49 +107,52 @@ namespace GameBoard.LogicLayer.GameEvents
             return gameEvent.ToGameEventDto();
         }
 
-        public async Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
+        private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
+            int gameEventId,
+            [NotNull] string userName)
         {
-            var userId = await _repository.GetUserIdByUserName(invitedUserName);
-            var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId 
-                    && ge.Id == gameEventId 
-                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition.
-
-            if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
-            {
-                throw new Exception(); //Here must come new Exception. I think it is unnecessary, a generic error will do.
-            }
-            participation.ParticipationStatus = ParticipationStatus.RejectedGuest;
-
-            await _repository.SaveChangesAsync();
-            
+            return _repository
+                .GetUserByUserName(userName)
+                .Include(u => u.Participations)
+                .SelectMany(u => u.Participations)
+                .Where(p => p.TakesPartInId == gameEventId);
         }
 
-        public async Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName)
+        private async Task ChangeGameEventInvitationStatusAsync(
+            int gameEventId,
+            [NotNull] string invitedUserName,
+            ParticipationStatus participationStatus)
         {
-            var userId = await _repository.GetUserIdByUserName(invitedUserName);
-            var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId
-                    && ge.Id == gameEventId
-                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition.
+            var participation = await 
+                GetGameEventParticipationsInOneEvent(gameEventId, invitedUserName)
+                .SingleAsync(p => p.ParticipationStatus == ParticipationStatus.PendingGuest);
 
-            if (participation.ParticipationStatus != ParticipationStatus.PendingGuest)
-            {
-                throw new Exception(); //Here i must invent a name for new exception. I think it is unnecessary, a generic error will do.         
-            }
-            participation.ParticipationStatus = ParticipationStatus.AcceptedGuest;
+            participation.ParticipationStatus = participationStatus;
 
             await _repository.SaveChangesAsync();
-
         }
 
-        public async Task SendGameEventInvitationAsync(int gameEventId, [NotNull] string userName)
+        public Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName)
         {
-            var userId = await _repository.GetUserIdByUserName(userName);
-            var participation = await _repository.GameEventParticipations
-                .SingleAsync(ge => ge.ParticipantId == userId
-                    && ge.Id == gameEventId
-                    && ge.ParticipationStatus != ParticipationStatus.RejectedGuest); //Two queries, code repetition. Why there is a ParticipationStatus != Rejected ?
+            return ChangeGameEventInvitationStatusAsync(
+                gameEventId, 
+                invitedUserName, 
+                ParticipationStatus.RejectedGuest);
+        }
+
+        public Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName)
+        {
+            return ChangeGameEventInvitationStatusAsync(
+                gameEventId,
+                invitedUserName,
+                ParticipationStatus.AcceptedGuest);
+        }
+
+        public async Task SendGameEventInvitationAsync(int gameEventId, string userName)
+        {
+            var participation = await
+                GetGameEventParticipationsInOneEvent(gameEventId, userName)
+                .SingleOrDefaultAsync(p => p.ParticipationStatus != ParticipationStatus.RejectedGuest);
 
             if (participation != null)
             {
@@ -170,11 +168,13 @@ namespace GameBoard.LogicLayer.GameEvents
                 }
             }
 
-            var gameEventParticipation = new GameEventParticipation()
+            string userId = await _repository.GetUserIdByUserName(userName);
+
+            var gameEventParticipation = new GameEventParticipation
             {
                 TakesPartInId = gameEventId,
                 ParticipantId = userId,
-                ParticipationStatus = ParticipationStatus.PendingGuest // Now it is not reundant
+                ParticipationStatus = ParticipationStatus.PendingGuest
             };
             _repository.GameEventParticipations.Add(gameEventParticipation);
 

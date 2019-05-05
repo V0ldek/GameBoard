@@ -20,6 +20,13 @@ namespace GameBoard.DataLayer.Context
         public DbSet<GameEventParticipation> GameEventParticipations { get; set; }
         public DbSet<Game> Games { get; set; }
 
+        public IQueryable<ApplicationUser> GetUserByUserName(string userName)
+        {
+            var normalizedUserName = userName.ToUpper();
+
+            return ApplicationUsers.Where(u => u.NormalizedUserName == normalizedUserName);
+        }
+
         public Task<string> GetUserIdByUserName(string userName)
         {
             var normalizedUserName = userName.ToUpper();
