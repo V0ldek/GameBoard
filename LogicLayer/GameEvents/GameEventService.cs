@@ -47,17 +47,15 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
-            var gameEventAndGames = await _repository.GameEvents
-                .Where(ge => ge.Id == editedEvent.Id)
-                .Select(ge => new
-                {
-                    GameEvent = ge,
-                    Games = ge.Games.Where(g => g.GameStatus == GameStatus.ExistsOnTheList)
-                })
-                .SingleAsync();
+            var gameEvent = await _repository.GameEvents
+                .SingleAsync(ge => ge.Id == editedEvent.Id);
 
-            var gameEvent = gameEventAndGames.GameEvent;
-            var games = gameEventAndGames.Games;
+            var games = await _repository.GameEvents
+                .Where(ge => ge.Id == editedEvent.Id)
+                .Include(ge => ge.Games)
+                .SelectMany(ge => ge.Games)
+                .Where(g => g.GameStatus == GameStatus.ExistsOnTheList)
+                .ToListAsync();
 
             gameEvent.Name = editedEvent.Name;
             gameEvent.Date = editedEvent.MeetingTime;
