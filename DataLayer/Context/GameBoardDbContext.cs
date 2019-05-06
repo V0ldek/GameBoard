@@ -3,6 +3,7 @@ using GameBoard.DataLayer.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GameBoard.DataLayer.Context
 {
@@ -22,5 +23,7 @@ namespace GameBoard.DataLayer.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.ConfigureWarnings(
                 warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+
+        public IDbContextTransaction NewTransaction() => this.Database.BeginTransaction();
     }
 }
