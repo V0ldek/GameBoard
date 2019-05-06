@@ -41,10 +41,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                         throw new GameEventParticipationException("This user already participates in this event.");
                     case ParticipationStatus.Creator:
                         throw new GameEventParticipationException("You cannot invite yourself.");
-                    case ParticipationStatus.RejectedGuest:
-                        throw new ArgumentOutOfRangeException(
-                            nameof(ParticipationStatus.RejectedGuest),
-                            "We queried for a non-rejected participation, so maybe look for an error there");
+                    // Nothing else can be returned by GetActiveGameEventParticipation.
                     default:
                         throw new ArgumentOutOfRangeException(
                             nameof(participation.ParticipationStatus),
