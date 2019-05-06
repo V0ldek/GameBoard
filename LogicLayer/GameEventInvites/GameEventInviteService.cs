@@ -12,12 +12,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.GameEventInvites
 {
-    internal class GameEventInvitesService : IGameEventInvitesService
+    internal class GameEventInviteService : IGameEventInviteService
     {
         private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
 
-        public GameEventInvitesService(IGameBoardRepository repository, IMailSender mailSender)
+        public GameEventInviteService(IGameBoardRepository repository, IMailSender mailSender)
         {
             _repository = repository;
             _mailSender = mailSender;

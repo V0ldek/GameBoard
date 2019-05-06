@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEventInvites
 {
-    public interface IGameEventInvitesService
+    public interface IGameEventInviteService
     {
         Task SendGameEventInvitationAsync([NotNull] CreateGameEventInvitationDto gameEventInvitationDto);
 

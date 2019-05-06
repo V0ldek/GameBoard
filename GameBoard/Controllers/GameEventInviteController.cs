@@ -17,11 +17,11 @@ namespace GameBoard.Controllers
     public class GameEventInvite : Controller
     {
         private readonly IGameEventService _gameEventService;
-        private readonly IGameEventInvitesService _gameEventInvitationsService;
+        private readonly IGameEventInviteService _gameEventInvitationsService;
         private readonly HostConfiguration _hostConfiguration;
 
         public GameEventInvite(
-            IGameEventInvitesService gameEventInvitationsService, 
+            IGameEventInviteService gameEventInvitationsService, 
             IGameEventService gameEventService,
             IOptions<HostConfiguration> hostConfiguration)
         {
