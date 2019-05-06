@@ -14,7 +14,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public string Name { get; }
 
         [CanBeNull]
-        public DateTime? MeetingTime { get; }
+        public DateTime? Date { get; }
 
         [CanBeNull]
         public string Place { get; }
@@ -22,13 +22,13 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public EditGameEventDto(
             int id,
             [NotNull] string name,
-            [CanBeNull] DateTime? meetingTime,
+            [CanBeNull] DateTime? date,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games)
         {
             Id = id;
             Name = name;
-            MeetingTime = meetingTime;
+            Date = date;
             Place = place;
             Games = games;
         }

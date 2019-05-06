@@ -32,7 +32,7 @@ namespace GameBoard.LogicLayer.GameEvents
             var gameEvent = new GameEvent
             {
                 Name = requestedGameEvent.Name,
-                Date = requestedGameEvent.MeetingTime,
+                Date = requestedGameEvent.Date,
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games
                     .Select((game, index) => new Game {Name = game, PositionOnTheList = index}).ToList(),
@@ -58,7 +58,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .ToListAsync();
 
             gameEvent.Name = editedEvent.Name;
-            gameEvent.Date = editedEvent.MeetingTime;
+            gameEvent.Date = editedEvent.Date;
             gameEvent.Place = editedEvent.Place;
 
             foreach (var game in games)
@@ -68,19 +68,19 @@ namespace GameBoard.LogicLayer.GameEvents
 
             await _repository.SaveChangesAsync();
 
-            foreach (var it in editedEvent.Games.Select((gameName, index) => new {gameName, index}))
+            foreach (var (name, index) in editedEvent.Games.Select((g, i) => (g, i)))
             {
-                var game = games.FirstOrDefault(g => g.Name == it.gameName);
+                var game = games.FirstOrDefault(g => g.Name == name);
 
                 if (game == null)
                 {
                     _repository.Games.Add(
-                        new Game {Name = it.gameName, GameEventId = gameEvent.Id, PositionOnTheList = it.index});
+                        new Game {Name = name, GameEventId = gameEvent.Id, PositionOnTheList = index});
                 }
                 else
                 {
                     games.Remove(game);
-                    game.PositionOnTheList = it.index;
+                    game.PositionOnTheList = index;
                 }
             }
 

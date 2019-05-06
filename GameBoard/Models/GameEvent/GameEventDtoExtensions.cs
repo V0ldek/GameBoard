@@ -11,7 +11,7 @@ namespace GameBoard.Models.GameEvent
                 gameEventDto.Id,
                 gameEventDto.Name,
                 gameEventDto.Place,
-                gameEventDto.MeetingTime,
+                gameEventDto.Date,
                 permission,
                 gameEventDto.Games,
                 gameEventDto.Creator.ToViewModel(),
@@ -23,7 +23,7 @@ namespace GameBoard.Models.GameEvent
             {
                 Id = gameEventDto.Id,
                 Name = gameEventDto.Name,
-                Date = gameEventDto.MeetingTime,
+                Date = gameEventDto.Date,
                 Place = gameEventDto.Place,
                 Games = string.Join('\n', gameEventDto.Games)
             };
