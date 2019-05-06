@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using GameBoard.DataLayer.Entities;
-using GameBoard.LogicLayer.UserSearch.Dtos;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
-using System.Collections.Generic;
+using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
@@ -33,10 +32,9 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         public static GameEventListItemDto ToGameEventListItemDto(this GameEvent gameEvent) =>
             new GameEventListItemDto(
-                gameEvent.Id, 
-                gameEvent.Name, 
+                gameEvent.Id,
+                gameEvent.Name,
                 gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.Creator).Single()
             );
     }
 }
-

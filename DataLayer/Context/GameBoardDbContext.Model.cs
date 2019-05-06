@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
-using GameBoard.DataLayer.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameBoard.DataLayer.Context
 {

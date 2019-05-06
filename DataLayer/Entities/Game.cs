@@ -1,6 +1,4 @@
-﻿using GameBoard.DataLayer.Enums;
-
-namespace GameBoard.DataLayer.Entities
+﻿namespace GameBoard.DataLayer.Entities
 {
     public class Game
     {

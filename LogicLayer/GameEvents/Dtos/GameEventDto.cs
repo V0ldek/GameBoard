@@ -8,6 +8,12 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public sealed class GameEventDto
     {
+        [NotNull] [ItemNotNull] public IEnumerable<string> Games;
+
+        [NotNull] [ItemNotNull] public IEnumerable<UserDto> Invitees;
+
+        [NotNull] [ItemNotNull] public IEnumerable<UserDto> Participants;
+
         public int Id { get; }
 
         [NotNull]
@@ -20,37 +26,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
         public string Place { get; }
 
         [NotNull]
-        [ItemNotNull]
-        public IEnumerable<string> Games;
-
-        [NotNull]
         public UserDto Creator { get; }
-
-        [NotNull]
-        [ItemNotNull]
-        public IEnumerable<UserDto> Invitees;
-
-        [NotNull]
-        [ItemNotNull]
-        public IEnumerable<UserDto> Participants;
-
-        public GameEventPermission GetUserPermission([NotNull] string userName)
-        {
-            if (Creator.UserName == userName)
-            {
-                return GameEventPermission.Creator;
-            }
-            if (Participants.Any(participant => participant.UserName == userName))
-            {
-                return GameEventPermission.AcceptedInvitation;
-            }
-            if (Invitees.Any(invitee => invitee.UserName == userName))
-            {
-                return GameEventPermission.PendingInvitation;
-            }
-
-            return GameEventPermission.Forbidden;
-        }
 
         internal GameEventDto(
             int id,
@@ -70,6 +46,26 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             Creator = creator;
             Invitees = invitees;
             Participants = participants;
+        }
+
+        public GameEventPermission GetUserPermission([NotNull] string userName)
+        {
+            if (Creator.UserName == userName)
+            {
+                return GameEventPermission.Creator;
+            }
+
+            if (Participants.Any(participant => participant.UserName == userName))
+            {
+                return GameEventPermission.AcceptedInvitation;
+            }
+
+            if (Invitees.Any(invitee => invitee.UserName == userName))
+            {
+                return GameEventPermission.PendingInvitation;
+            }
+
+            return GameEventPermission.Forbidden;
         }
     }
 }

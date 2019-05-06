@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using GameBoard.DataLayer.Repositories;
-using GameBoard.LogicLayer.GameEvents.Dtos;
+using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
+using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +35,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 Date = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games
-                    .Select((game, index) => new Game { Name = game, PositionOnTheList = index }).ToList(),
+                    .Select((game, index) => new Game {Name = game, PositionOnTheList = index}).ToList(),
                 Participations = new List<GameEventParticipation>()
             };
 
@@ -102,6 +102,15 @@ namespace GameBoard.LogicLayer.GameEvents
                 await creatorGameEvents);
         }
 
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
+            _repository.GameEvents
+                .Where(ge => ge.Id == gameEventId)
+                .Include(ge => ge.Games)
+                .Include(ge => ge.Participations)
+                .ThenInclude(p => p.Participant)
+                .Select(ge => ge.ToGameEventDto())
+                .SingleOrDefaultAsync();
+
         private Task<List<GameEventListItemDto>> GetGameEventsWithParticipationStatus(
             [NotNull] string userName,
             ParticipationStatus participationStatus)
@@ -120,14 +129,5 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Select(ge => ge.ToGameEventListItemDto())
                 .ToListAsync();
         }
-
-        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
-            _repository.GameEvents
-                .Where(ge => ge.Id == gameEventId)
-                .Include(ge => ge.Games)
-                .Include(ge => ge.Participations)
-                .ThenInclude(p => p.Participant)
-                .Select(ge => ge.ToGameEventDto())
-                .SingleOrDefaultAsync();
     }
 }

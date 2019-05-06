@@ -13,14 +13,14 @@ namespace GameBoard.DataLayer.Context
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.ConfigureWarnings(
-                warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<GameEvent> GameEvents { get; set; }
         public DbSet<GameEventParticipation> GameEventParticipations { get; set; }
         public DbSet<Game> Games { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+            optionsBuilder.ConfigureWarnings(
+                warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
     }
 }

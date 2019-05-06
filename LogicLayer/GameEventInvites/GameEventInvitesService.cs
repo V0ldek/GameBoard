@@ -1,21 +1,21 @@
-﻿using GameBoard.DataLayer.Entities;
-using GameBoard.DataLayer.Enums;
-using GameBoard.DataLayer.Repositories;
-using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameBoard.DataLayer.Entities;
+using GameBoard.DataLayer.Enums;
+using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEventInvites.Dtos;
 using GameBoard.LogicLayer.Notifications;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.GameEventInvites
 {
     internal class GameEventInvitesService : IGameEventInvitesService
     {
-        private readonly IGameBoardRepository _repository;
         private readonly IMailSender _mailSender;
+        private readonly IGameBoardRepository _repository;
 
         public GameEventInvitesService(IGameBoardRepository repository, IMailSender mailSender)
         {
@@ -34,20 +34,6 @@ namespace GameBoard.LogicLayer.GameEventInvites
                 gameEventId,
                 invitedUserName,
                 ParticipationStatus.AcceptedGuest);
-
-        private async Task ChangeGameEventInvitationStatusAsync(
-            int gameEventId,
-            [NotNull] string invitedUserName,
-            ParticipationStatus participationStatus)
-        {
-            var participation = await
-                GetGameEventParticipationsInOneEvent(gameEventId, invitedUserName)
-                .SingleAsync(p => p.ParticipationStatus == ParticipationStatus.PendingGuest);
-
-            participation.ParticipationStatus = participationStatus;
-
-            await _repository.SaveChangesAsync();
-        }
 
         public async Task SendGameEventInvitationAsync(CreateGameEventInvitationDto gameEventInvitationDto)
         {
@@ -76,11 +62,25 @@ namespace GameBoard.LogicLayer.GameEventInvites
             await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
         }
 
+        private async Task ChangeGameEventInvitationStatusAsync(
+            int gameEventId,
+            [NotNull] string invitedUserName,
+            ParticipationStatus participationStatus)
+        {
+            var participation = await
+                GetGameEventParticipationsInOneEvent(gameEventId, invitedUserName)
+                    .SingleAsync(p => p.ParticipationStatus == ParticipationStatus.PendingGuest);
+
+            participation.ParticipationStatus = participationStatus;
+
+            await _repository.SaveChangesAsync();
+        }
+
         private Task<GameEventParticipation> GetNotRejectedGameEventParticipation(
             int gameEventId,
             [NotNull] string userName) =>
-                GetGameEventParticipationsInOneEvent(gameEventId, userName)
-                    .SingleOrDefaultAsync(p => p.ParticipationStatus != ParticipationStatus.RejectedGuest);
+            GetGameEventParticipationsInOneEvent(gameEventId, userName)
+                .SingleOrDefaultAsync(p => p.ParticipationStatus != ParticipationStatus.RejectedGuest);
 
         private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
             int gameEventId,
@@ -105,11 +105,11 @@ namespace GameBoard.LogicLayer.GameEventInvites
         }
 
         private Task SendGameEventInvitationAsync(
-            int gameEventId, 
-            [NotNull] ApplicationUser userTo, 
+            int gameEventId,
+            [NotNull] ApplicationUser userTo,
             CreateGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
             _mailSender.SendEventInvitationAsync(
-                new List<string> { userTo.Email },
+                new List<string> {userTo.Email},
                 gameEventLinkGenerator(gameEventId.ToString()));
     }
 }

@@ -1,9 +1,6 @@
-﻿using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GameBoard.LogicLayer.GameEventInvites.Dtos;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEventInvites
 {
