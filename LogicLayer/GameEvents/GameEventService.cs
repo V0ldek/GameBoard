@@ -8,6 +8,7 @@ using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
@@ -48,6 +49,8 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
+            var transaction = _repository.NewTransaction();
+
             await EditSingleGameEventProperties(editedEvent.Id, editedEvent.Name, editedEvent.Date, editedEvent.Place);
 
             var games = await GetGames(editedEvent.Id);
@@ -55,6 +58,7 @@ namespace GameBoard.LogicLayer.GameEvents
             await EditGames(editedEvent.Id, games, editedEvent.Games);
 
             await _repository.SaveChangesAsync();
+            transaction.Commit();
         }
 
         private async Task EditSingleGameEventProperties(
@@ -86,7 +90,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 game.PositionOnTheList = null;
             }
 
-            await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync(); 
 
             foreach (var (name, index) in newGamesList.Select((g, i) => (g, i)))
             {
