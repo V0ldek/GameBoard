@@ -2,7 +2,7 @@
 
 <h1 class="mb-4 mr-xl-5 pr-xl-5">Your game events</h1>
 <div id="game-events-container">
-    @if (!Model.Created.Any() && !Model.Created.Any() && !Model.Created.Any())
+    @if (!Model.Created.Any() && !Model.Accepted.Any() && !Model.Pending.Any())
     {
         <p>There are no events that you created or are invited to.</p>       
     }
