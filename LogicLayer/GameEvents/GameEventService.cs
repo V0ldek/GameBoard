@@ -57,7 +57,6 @@ namespace GameBoard.LogicLayer.GameEvents
 
             await EditGames(editedEvent.Id, games, editedEvent.Games);
 
-            await _repository.SaveChangesAsync();
             transaction.Commit();
         }
 
@@ -73,6 +72,7 @@ namespace GameBoard.LogicLayer.GameEvents
             gameEvent.Name = name;
             gameEvent.Date = date;
             gameEvent.Place = place;
+            await _repository.SaveChangesAsync();
         }
 
         private Task<List<Game>> GetGames(int gameEventId) =>
@@ -107,6 +107,7 @@ namespace GameBoard.LogicLayer.GameEvents
                     game.PositionOnTheList = index;
                 }
             }
+            await _repository.SaveChangesAsync();
         }
 
         public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
