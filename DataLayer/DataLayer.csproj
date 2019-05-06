@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>GameBoard.DataLayer</AssemblyName>
+    <RootNamespace>GameBoard.DataLayer</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\bin\Debug</OutputPath>
+    <IntermediateOutputPath>..\obj\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\bin\Release</OutputPath>
+    <IntermediateOutputPath>..\obj\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Migrations\Scripts\20190414094415_AddedApplicationUserAndFriendship_Down.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Migrations\Scripts\20190414094415_AddedApplicationUserAndFriendship_Up.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Migrations\Scripts\20190506010505_GameEvent_Down.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Migrations\Scripts\20190506010505_GameEvent_Up.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

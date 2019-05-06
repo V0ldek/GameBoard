@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "strictNullChecks": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6",
+    "moduleResolution": "node"
+  },
+  "files": [
+    "Autocomplete/autocomplete.ts",
+    "Collapsible/Collapsible.ts",
+    "ListInput/listInput.ts",
+    "Popovers/popoverGenerator.ts",
+    "Site/friendsSidebar.ts",
+    "Site/gameEvent.ts",
+    "Site/gameEventForm.ts",
+    "Site/gameEventInviteForm.ts",
+    "Site/gameEventList.ts",
+    "Site/userSearchBox.ts",
+    "productionConsoleSwitch.ts"
+  ],
+  "exclude": [
+    "../wwwroot/scripts"
+  ],
+  "compileOnSave": true
+}

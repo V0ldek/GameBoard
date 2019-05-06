@@ -1,0 +1,13 @@
+﻿@model GameBoard.Models.GameEventInviteForm.GameEventInviteFormViewModel
+
+<form class="game-event-invite-form" asp-action="SendGameEventInvite" asp-controller="GameEventParticipation"
+      data-ajax="true" data-ajax-method="POST"
+      data-ajax-success="gameEventInviteFormPopoverGenerator.generateSuccessPopover(document.querySelector('#game-event-invite-@Model.UserName'), xhr)"
+      data-ajax-failure="gameEventInviteFormPopoverGenerator.generateErrorPopover(document.querySelector('#game-event-invite-@Model.UserName'), xhr)">
+    <input type="hidden" asp-for="@Model.GameEventId"/>
+    <input type="hidden" asp-for="@Model.UserName"/>
+    <button id="game-event-invite-@Model.UserName" type="submit" class="btn btn-dark" data-toggle="popover" data-placement="right"
+            title="Invite @Model.UserName to the @Model.GameEventName event">
+        <i class="fa fa-send"></i>
+    </button>
+</form>

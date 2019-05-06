@@ -1,0 +1,19 @@
+﻿.popover {
+    background-color: transparent;
+    max-width: 40vw;
+}
+
+.popover-header-error {
+    background-color: #751a1a;
+    border-bottom: none;
+}
+
+.popover-header-success {
+    background-color: #1a751a;
+    border-bottom: none;
+}
+
+.popover-body {
+    background-color: #a5a8aa;
+    color: black;
+}

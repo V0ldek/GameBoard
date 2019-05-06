@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Threading;
+using GameBoard.Configuration;
+using GameBoard.DataLayer.Entities;
+using GameBoard.LogicLayer;
+using GameBoard.LogicLayer.Configurations;
+using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GameBoard.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,34 +17,95 @@ namespace GameBoard
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        private IHostingEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            ConfigureCookiePolicy(services);
+            ConfigureAntiforgery(services);
+            ConfigureLogicLayer(services);
+            ConfigureIdentity(services);
+            ConfigureInternalServices(services);
+            ConfigureCulture();
+            ConfigureMvc(services);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        private static void ConfigureMvc(IServiceCollection services) =>
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+        private static void ConfigureCulture() => CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-GB");
+
+        private void ConfigureInternalServices(IServiceCollection services)
+        {
+            services.AddTransient<IMailSender, MailSender>();
+            services.Configure<MailNotificationsConfiguration>(
+                Configuration.GetSection(nameof(MailNotificationsConfiguration)));
+            services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
+        }
+
+        private static void ConfigureIdentity(IServiceCollection services)
+        {
+            services.AddDefaultIdentity<ApplicationUser>(
+                    options =>
+                    {
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireDigit = false;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
+                        options.User.RequireUniqueEmail = true;
+                        options.SignIn.RequireConfirmedEmail = true;
+                    })
+                .AddDbContextStores();
+
+            services.ConfigureApplicationCookie(
+                options => { options.Cookie.Name = "GameBoard.Identity"; });
+        }
+
+        private void ConfigureLogicLayer(IServiceCollection services)
+        {
+            LogicLayer.Configuration.ConfigureDbContext(
+                services,
+                Configuration.GetConnectionString(
+                    Environment.IsStaging() ? "GameboardStaging" :
+                    Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
+
+            LogicLayer.Configuration.ConfigureServices(services);
+        }
+
+        private static void ConfigureAntiforgery(IServiceCollection services) => services.AddAntiforgery(
+            options =>
+            {
+                options.Cookie = new CookieBuilder
+                {
+                    Name = "GameBoard.Antiforgery",
+                    SameSite = SameSiteMode.None,
+                    HttpOnly = true,
+                    IsEssential = true
+                };
+            });
+
+        private static void ConfigureCookiePolicy(IServiceCollection services) =>
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                    options.ConsentCookie = new CookieBuilder
+                    {
+                        Name = "GameBoard.Consent",
+                        Expiration = TimeSpan.FromDays(365),
+                        IsEssential = true
+                    };
+                });
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -61,17 +121,19 @@ namespace GameBoard
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc(
+                routes =>
+                {
+                    routes.MapRoute(
+                        "default",
+                        "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }
