@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.LogicLayer.Friends;
+using GameBoard.LogicLayer.Groups;
+using GameBoard.Models.Groups;
 using GameBoard.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +10,8 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
 {
     public class FriendsSidebarViewComponent : ViewComponent
     {
-        private readonly IFriendsService _friendsService;
-
+       // private readonly IGroupsService _groupsService;
+       private readonly IFriendsService _friendsService;
         public FriendsSidebarViewComponent(IFriendsService friendsService)
         {
             _friendsService = friendsService;
@@ -22,9 +24,9 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                 return View("FriendsSidebarUnauthenticated");
             }
 
-            var friends = await _friendsService.GetFriendsByUserNameAsync(User.Identity.Name);
+            var groups = await _friendsService.GetFriendsByUserNameAsync(User.Identity.Name);
 
-            return View("FriendsSidebar", friends.Select(u => u.ToViewModel()));
+            return View("FriendsSidebar", groups.Select(u => u.ToViewModel()));
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿#group-add-form {
+    padding: 10px;
+    width: 250px; /* Fallback value. */
+    width: var(--sidebar-width);
+}
+
+#group-add-box {
+    width: 100%;
+}

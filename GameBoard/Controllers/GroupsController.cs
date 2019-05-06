@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameBoard.LogicLayer.Friends;
 using Microsoft.AspNetCore.Authorization;
 using GameBoard.LogicLayer.Groups;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace GameBoard.Controllers
     public class GroupsController : Controller
     {
         private readonly IGroupsService _groupsService;
+        private readonly IFriendsService _friendsService;
 
-        public GroupsController(/*IGroupsService groupsService*/)
+        public GroupsController(/*IGroupsService groupsService*/IFriendsService friendsService)
         {
-           // _groupsService = groupsService;
+            _friendsService = friendsService;
+            // _groupsService = groupsService;
         }
 
         public IActionResult ManageGroups() => View();
