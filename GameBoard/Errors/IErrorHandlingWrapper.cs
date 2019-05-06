@@ -8,7 +8,7 @@ namespace GameBoard.Errors
     {
         LocalRedirectResult AccessDenied(string handlerLocalUri = "/Identity/Account/AccessDenied");
 
-        ViewResult Error(string title, string message, HttpStatusCode statusCode, ILogger logger = null);
+        IActionResult Error(string title, string message, HttpStatusCode statusCode, ILogger logger = null);
 
         JsonResult ErrorJson(string title, string message, HttpStatusCode statusCode, ILogger logger = null);
     }
