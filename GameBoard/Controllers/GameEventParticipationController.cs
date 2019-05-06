@@ -72,7 +72,7 @@ namespace GameBoard.Controllers
         {
             GameEventDto gameEvent;
 
-            var createGameEventInvitationDto = new CreateGameEventInvitationDto(
+            var createGameEventInvitationDto = new SendGameEventInvitationDto(
                 gameEventId,
                 userName,
                 eventId => _hostConfiguration.HostAddress + Url.Action(
@@ -118,11 +118,11 @@ namespace GameBoard.Controllers
         private async Task<IActionResult> CreateGameEventInvitation(
             GameEventDto gameEvent,
             string userName,
-            CreateGameEventInvitationDto createGameEventInvitationDto)
+            SendGameEventInvitationDto sendGameEventInvitationDto)
         {
             try
             {
-                await _gameEventInvitationsService.SendGameEventInvitationAsync(createGameEventInvitationDto);
+                await _gameEventInvitationsService.SendGameEventInvitationAsync(sendGameEventInvitationDto);
             }
             catch (ApplicationException exception)
             {

@@ -49,7 +49,7 @@ namespace GameBoard.LogicLayer.Friends
             return allFriends.Select(u => u.ToDto());
         }
 
-        public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
+        public async Task SendFriendRequestAsync(SendFriendRequestDto friendRequest)
         {
             if (friendRequest.UserNameTo == friendRequest.UserNameFrom)
             {
@@ -100,7 +100,7 @@ namespace GameBoard.LogicLayer.Friends
         }
 
         private async Task SendFriendRequestEmailAsync(
-            CreateFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
+            SendFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
             Friendship friendship) =>
             await _mailSender.SendFriendInvitationAsync(
                 friendship.RequestedTo.Email,

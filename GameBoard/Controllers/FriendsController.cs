@@ -85,7 +85,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> CreateFriendRequest(string userNameFrom, string userNameTo)
         {
-            var createFriendRequestDto = new CreateFriendRequestDto(
+            var createFriendRequestDto = new SendFriendRequestDto(
                 userNameFrom,
                 userNameTo,
                 friendRequestId => _hostConfiguration.HostAddress + Url.Action(

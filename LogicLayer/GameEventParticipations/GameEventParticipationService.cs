@@ -6,13 +6,14 @@ using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEventParticipations.Dtos;
+using GameBoard.LogicLayer.GameEventParticipations.Exceptions;
 using GameBoard.LogicLayer.Notifications;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.GameEventParticipations
 {
-    internal class GameEventParticipationService : IGameEventParticipationService
+    internal sealed class GameEventParticipationService : IGameEventParticipationService
     {
         private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
@@ -23,23 +24,23 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             _mailSender = mailSender;
         }
 
-        public async Task SendGameEventInvitationAsync(CreateGameEventInvitationDto gameEventInvitationDto)
+        public async Task SendGameEventInvitationAsync(SendGameEventInvitationDto gameEventInvitationDto)
         {
             var gameEventId = gameEventInvitationDto.GameEventId;
             var userNameTo = gameEventInvitationDto.UserNameTo;
 
-            var participation = await GetNotRejectedGameEventParticipation(gameEventId, userNameTo);
+            var participation = await GetActiveGameEventParticipation(gameEventId, userNameTo);
 
             if (participation != null)
             {
                 switch (participation.ParticipationStatus)
                 {
                     case ParticipationStatus.PendingGuest:
-                        throw new ApplicationException("You have already invited this user to this event.");
+                        throw new GameEventParticipationException("You have already invited this user to this event.");
                     case ParticipationStatus.AcceptedGuest:
-                        throw new ApplicationException("This user already participates in this event.");
+                        throw new GameEventParticipationException("This user already participates in this event.");
                     case ParticipationStatus.Creator:
-                        throw new ApplicationException("You cannot invite yourself.");
+                        throw new GameEventParticipationException("You cannot invite yourself.");
                     case ParticipationStatus.RejectedGuest:
                         throw new ArgumentOutOfRangeException(
                             nameof(ParticipationStatus.RejectedGuest),
@@ -59,39 +60,58 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
         }
 
-        public Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
-            ChangeGameEventInvitationStatusAsync(
-                gameEventId,
-                invitedUserName,
+        public async Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName)
+        {
+            var userParticipation = await GetActiveGameEventParticipation(gameEventId, invitedUserName);
+            await ChangeGameEventParticipationStatusAsync(
+                userParticipation,
                 ParticipationStatus.AcceptedGuest);
+        }
 
-        public Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
-            ChangeGameEventInvitationStatusAsync(
-                gameEventId,
-                invitedUserName,
+        public async Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName)
+        {
+            var userParticipation = await GetActiveGameEventParticipation(gameEventId, invitedUserName);
+            await ChangeGameEventParticipationStatusAsync(
+                userParticipation,
                 ParticipationStatus.RejectedGuest);
+        }
 
-        public Task ExitGameEventAsync(int gameEventId, string userName) => throw new NotImplementedException();
+        public async Task ExitGameEventAsync(int gameEventId, string userName)
+        {
+            var userParticipation = await GetActiveGameEventParticipation(gameEventId, userName);
 
-        private async Task ChangeGameEventInvitationStatusAsync(
-            int gameEventId,
-            [NotNull] string invitedUserName,
+            switch (userParticipation.ParticipationStatus)
+            {
+                case ParticipationStatus.Creator:
+                    throw new GameEventParticipationException("As a creator, you cannot exit your own event.");
+                case ParticipationStatus.AcceptedGuest:
+                case ParticipationStatus.PendingGuest:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        nameof(userParticipation.ParticipationStatus),
+                        $"Unexpected value in ${nameof(ExitGameEventAsync)} - ${userParticipation.ParticipationStatus}");
+            }
+
+            await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.ExitedGuest);
+        }
+
+        private async Task ChangeGameEventParticipationStatusAsync(
+            GameEventParticipation participation,
             ParticipationStatus participationStatus)
         {
-            var participation = await
-                GetGameEventParticipationsInOneEvent(gameEventId, invitedUserName)
-                    .SingleAsync(p => p.ParticipationStatus == ParticipationStatus.PendingGuest);
-
             participation.ParticipationStatus = participationStatus;
 
             await _repository.SaveChangesAsync();
         }
 
-        private Task<GameEventParticipation> GetNotRejectedGameEventParticipation(
+        private Task<GameEventParticipation> GetActiveGameEventParticipation(
             int gameEventId,
             [NotNull] string userName) =>
             GetGameEventParticipationsInOneEvent(gameEventId, userName)
-                .SingleOrDefaultAsync(p => p.ParticipationStatus != ParticipationStatus.RejectedGuest);
+                .SingleOrDefaultAsync(
+                    p => p.ParticipationStatus != ParticipationStatus.RejectedGuest &&
+                        p.ParticipationStatus != ParticipationStatus.ExitedGuest);
 
         private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
             int gameEventId,
@@ -118,7 +138,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
         private Task SendGameEventInvitationAsync(
             int gameEventId,
             [NotNull] ApplicationUser userTo,
-            CreateGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
             _mailSender.SendEventInvitationAsync(
                 new List<string> {userTo.Email},
                 gameEventLinkGenerator(gameEventId.ToString()));
