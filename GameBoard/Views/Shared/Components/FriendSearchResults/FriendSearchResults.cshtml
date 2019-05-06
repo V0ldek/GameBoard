@@ -1,0 +1,21 @@
+﻿@model GameBoard.Models.Groups.GroupViewModel
+
+<div class="autocomplete-items">
+    @foreach (var user in Model.Users)
+    {
+        <div class="autocomplete-item user-result">
+            @await Component.InvokeAsync("UserCard", new { user, miniature = true })
+            <form asp-controller="Groups" asp-action="AddUserToGroup"
+                  class="invite-form"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="friendRequestPopoverGenerator.generateSuccessPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)"
+                  data-ajax-failure="friendRequestPopoverGenerator.generateErrorPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)">
+                <input readonly hidden name="userName" value="@user.UserName" />
+                <input readonly hidden name="groupId" value="@Model.GroupId" />
+                <button id="friend-request-button-@Model.GroupId" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
+                    <i class="fa fa-user-plus"></i>
+                </button>
+            </form>
+        </div>
+    }
+</div>

@@ -21,9 +21,9 @@ namespace GameBoard.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddUserToGroup(int id)
+        public async Task<IActionResult> AddUserToGroup(string userName, int groupId)
         {
-            await _groupsService.AddUserToGroupAsync(User.Identity.Name, id);
+            await _groupsService.AddUserToGroupAsync(userName, groupId);
 
             return RedirectToAction("Index", "Home");
         }
@@ -36,6 +36,5 @@ namespace GameBoard.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
     }
 }

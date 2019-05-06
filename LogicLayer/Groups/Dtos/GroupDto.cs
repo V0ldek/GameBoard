@@ -9,13 +9,17 @@ namespace GameBoard.LogicLayer.Groups.Dtos
     public sealed class GroupDto
     {
         [NotNull]
+        public int GroupId { get; }
+
+        [NotNull]
         public string GroupName { get; }
 
         [NotNull]
         public ICollection<ApplicationUser> Users { get; }
 
-        public GroupDto([NotNull] string groupName, [NotNull] ICollection<ApplicationUser> users)
+        public GroupDto([NotNull] int groupId, [NotNull] string groupName, [NotNull] ICollection<ApplicationUser> users)
         {
+            GroupId = groupId;
             GroupName = groupName;
             Users = users;
         }

@@ -8,12 +8,15 @@ namespace GameBoard.Models.Groups
 {
     public class GroupViewModel
     {
+        public int GroupId { get; }
+
         public string GroupName { get; }
 
         public ICollection<ApplicationUser> Users { get; }
 
-        public GroupViewModel(string groupName, ICollection<ApplicationUser> users)
+        public GroupViewModel(int groupId, string groupName, ICollection<ApplicationUser> users)
         {
+            GroupId = groupId;
             GroupName = groupName;
             Users = users;
         }
