@@ -13,14 +13,29 @@ namespace GameBoard.Controllers
     public class GroupsController : Controller
     {
         private readonly IGroupsService _groupsService;
-        private readonly IFriendsService _friendsService;
 
-        public GroupsController(/*IGroupsService groupsService*/IFriendsService friendsService)
+        public GroupsController(IGroupsService groupsService)
         {
-            _friendsService = friendsService;
-            // _groupsService = groupsService;
+            _groupsService = groupsService;
         }
 
-        public IActionResult ManageGroups() => View();
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddUserToGroup(int id)
+        {
+            await _groupsService.AddUserToGroupAsync(User.Identity.Name, id);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> CreateNewGroup(string groupName)
+        {
+            await _groupsService.AddGroupAsync(User.Identity.Name, groupName);
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

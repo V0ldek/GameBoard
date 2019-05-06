@@ -3,17 +3,32 @@
     <div id="friends-sidebar" class="bg border-top border-right box-shadow">
         <h3>Friends</h3>
         <hr/>
-        <ul class="list-unstyled components border-bottom">
+        <h5>Group1</h5>
+        <ul class="list-unstyled components border-top border-bottom">
             @foreach (var user in Model)
             {
                 <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
             }
         </ul>
-        <a id ="friends-sidebar-manage-groups" class="btn btn-dark mt-1" asp-area="" asp-controller="Groups" asp-action="ManageGroups">
-            Manage groups
-        </a>
+        @await Component.InvokeAsync("FriendSearchBox")
+        <h5>Group2</h5>
+        <ul class="list-unstyled components border-top border-bottom">
+            @foreach (var user in Model)
+            {
+                <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
+            }
+        </ul>
+        @await Component.InvokeAsync("FriendSearchBox")
+        <h5>Group3</h5>
+        <ul class="list-unstyled components border-top border-bottom">
+            @foreach (var user in Model)
+            {
+                <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
+            }
+        </ul>
+        @await Component.InvokeAsync("FriendSearchBox")
+        @await Component.InvokeAsync("GroupAddBox")
     </div>
-    @await Component.InvokeAsync("GroupAddBox")
     @await Component.InvokeAsync("UserSearchBox")
     <button id="friends-sidebar-collapse" class="btn btn-dark border-right border-top border-bottom border-left-0" type="button">
         <i id="friends-sidebar-collapse-icon" class="fa fa-angle-right"></i>
