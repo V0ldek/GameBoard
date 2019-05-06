@@ -10,12 +10,12 @@ namespace GameBoard.DataLayer.Migrations
     {
         private static readonly string MigrationUpScriptFilePath = Path.Combine(
             AppContext.BaseDirectory,
-            "Migrations/Scripts/20190505215025_GameEvent_Up.sql");
+            "Migrations/Scripts/20190506010505_GameEvent_Up.sql");
 
         private static readonly string MigrationDownScriptFilePath =
             Path.Combine(
                 AppContext.BaseDirectory,
-                "Migrations/Scripts/20190505215025_GameEvent_Down.sql");
+                "Migrations/Scripts/20190506010505_GameEvent_Down.sql");
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
