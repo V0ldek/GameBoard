@@ -10,11 +10,11 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
 {
     public class FriendsSidebarViewComponent : ViewComponent
     {
-       // private readonly IGroupsService _groupsService;
-       private readonly IFriendsService _friendsService;
-        public FriendsSidebarViewComponent(IFriendsService friendsService)
+       private readonly IGroupsService _groupsService;
+
+        public FriendsSidebarViewComponent(IGroupsService groupsService)
         {
-            _friendsService = friendsService;
+            _groupsService = groupsService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -24,7 +24,7 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                 return View("FriendsSidebarUnauthenticated");
             }
 
-            var groups = await _friendsService.GetFriendsByUserNameAsync(User.Identity.Name);
+            var groups = await _groupsService.GetGroupsByUserNameAsync(User.Identity.Name);
 
             return View("FriendsSidebar", groups.Select(u => u.ToViewModel()));
         }
