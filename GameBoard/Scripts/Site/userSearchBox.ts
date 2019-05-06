@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded",
         const searchBoxElement = document.querySelector("#user-search-box") as HTMLElement;
 
         if (!searchBoxElement) {
-            console.error("Cannot create the user search box - search box is null.");
+            console.warn("Cannot create the user search box - search box is null.");
             return;
         }
         if (!searchBoxInputElement) {
-            console.error("Cannot create the user search box - search box input is null.");
+            console.warn("Cannot create the user search box - search box input is null.");
             return;
         }
 

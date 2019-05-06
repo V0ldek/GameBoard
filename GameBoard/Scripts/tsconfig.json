@@ -11,8 +11,13 @@
   "files": [
     "Autocomplete/autocomplete.ts",
     "Collapsible/Collapsible.ts",
+    "ListInput/listInput.ts",
     "Popovers/popoverGenerator.ts",
     "Site/friendsSidebar.ts",
+    "Site/gameEvent.ts",
+    "Site/gameEventForm.ts",
+    "Site/gameEventInviteForm.ts",
+    "Site/gameEventList.ts",
     "Site/userSearchBox.ts",
     "productionConsoleSwitch.ts"
   ],

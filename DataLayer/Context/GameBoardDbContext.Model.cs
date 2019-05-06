@@ -68,6 +68,81 @@ namespace GameBoard.DataLayer.Context
 
             builder.Entity<IdentityRoleClaim<string>>(
                 entity => entity.ToTable("RoleClaim"));
+
+            builder.Entity<GameEvent>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
+                    entity.Property(e => e.Name)
+                        .IsRequired()
+                        .HasMaxLength(48);
+
+                    entity.Property(e => e.Place)
+                        .HasMaxLength(64);
+
+                    entity.ToTable("GameEvent");
+                });
+
+            builder.Entity<GameEventParticipation>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
+                    entity.HasOne(e => e.Participant)
+                        .WithMany(u => u.Participations)
+                        .HasForeignKey(e => e.ParticipantId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.HasOne(e => e.TakesPartIn)
+                        .WithMany(ge => ge.Participations)
+                        .HasForeignKey(e => e.TakesPartInId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.Property(e => e.ParticipationStatus)
+                        .IsRequired();
+
+                    entity.HasIndex(e => new {e.TakesPartInId, e.ParticipantId})
+                        .HasFilter("ParticipationStatus <> 3") // <> RejectedGuest
+                        .IsUnique();
+
+                    entity.HasIndex(e => e.ParticipantId);
+
+                    entity.HasIndex(e => e.TakesPartInId)
+                        .HasFilter("ParticipationStatus = 0") // = Creator
+                        .IsUnique();
+
+                    entity.ToTable("GameEventParticipation");
+                });
+
+            builder.Entity<Game>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
+                    entity.Property(e => e.Name)
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    entity.HasOne(e => e.GameEvent)
+                        .WithMany(g => g.Games)
+                        .HasForeignKey(e => e.GameEventId)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.HasIndex(e => new {e.GameEventId, e.PositionOnTheList})
+                        .HasFilter("PositionOnTheList IS NOT NULL")
+                        .IsUnique();
+
+                    entity.ToTable("Game");
+                });
         }
     }
 }

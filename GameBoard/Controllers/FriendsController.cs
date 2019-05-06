@@ -113,7 +113,7 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Invite sent.",
-                    message = $"An email with your invitation has be sent to {userNameTo}." +
+                    message = $"An email with your invitation has been sent to {userNameTo}." +
                         " Once it's accepted you'll see them in your Friends menu."
                 });
         }

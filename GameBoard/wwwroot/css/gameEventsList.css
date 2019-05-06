@@ -1,0 +1,25 @@
+﻿#game-events-container {
+    height: 60vh;
+    position: relative;
+}
+
+#game-events-table td {
+    font-size: 125%;
+    max-height: 5vh;
+    min-height: 5vh;
+    vertical-align: middle;
+}
+
+#game-events-table tbody tr:hover {
+    background-color: #505356;
+    cursor: pointer;
+}
+
+#game-events-table .user-card { padding: 2% 4%; }
+
+#game-events-table .user-card .gravatar { max-height: 64px }
+
+
+@media (min-width: 768px) {
+    #game-events-table .user-card { width: 75%; }
+}

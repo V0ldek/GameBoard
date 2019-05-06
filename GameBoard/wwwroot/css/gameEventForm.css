@@ -1,0 +1,13 @@
+﻿#games-preview-list {
+    height: 15vh;
+    max-height: 15vh;
+    padding: 1%;
+}
+
+/* This is a hack to make the field hidden but still validated. */
+
+#games-list-input {
+    height: 0;
+    visibility: hidden;
+    width: 0;
+}

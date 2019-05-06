@@ -10,11 +10,6 @@
         this.sidebar = sidebar;
         this.sidebarCollapse = sidebarCollapse;
 
-        $(this.sidebar)
-            .mCustomScrollbar({
-                theme: "minimal"
-            });
-
         this.sidebarCollapse.addEventListener("click",
             () => {
                 this.sidebarContainer.classList.toggle("toggled");
