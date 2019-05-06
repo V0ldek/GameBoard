@@ -80,12 +80,16 @@ namespace GameBoard.LogicLayer.GameEventParticipations
         {
             var userParticipation = await GetActiveGameEventParticipation(gameEventId, userName);
 
-            switch (userParticipation.ParticipationStatus)
+            switch (userParticipation?.ParticipationStatus)
             {
                 case ParticipationStatus.Creator:
                     throw new GameEventParticipationException("As a creator, you cannot exit your own event.");
-                case ParticipationStatus.AcceptedGuest:
                 case ParticipationStatus.PendingGuest:
+                case ParticipationStatus.ExitedGuest:
+                case ParticipationStatus.RejectedGuest:
+                case null:
+                    throw new GameEventParticipationException("You cannot exit an event you haven't entered.");
+                case ParticipationStatus.AcceptedGuest:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
