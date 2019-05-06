@@ -20,10 +20,10 @@ namespace GameBoard.DataLayer.Context
         public DbSet<GameEventParticipation> GameEventParticipations { get; set; }
         public DbSet<Game> Games { get; set; }
 
+        public IDbContextTransaction NewTransaction() => Database.BeginTransaction();
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.ConfigureWarnings(
                 warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-
-        public IDbContextTransaction NewTransaction() => this.Database.BeginTransaction();
     }
 }

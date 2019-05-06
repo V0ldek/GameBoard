@@ -8,7 +8,6 @@ using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
@@ -49,7 +48,7 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
-            var transaction = _repository.NewTransaction();
+            var transaction = _repository.BeginTransaction();
 
             await EditSingleGameEventProperties(editedEvent.Id, editedEvent.Name, editedEvent.Date, editedEvent.Place);
 
@@ -59,6 +58,30 @@ namespace GameBoard.LogicLayer.GameEvents
 
             transaction.Commit();
         }
+
+        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
+        {
+            var creatorGameEvents =
+                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.Creator);
+            var invitees =
+                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.PendingGuest);
+            var participants =
+                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.AcceptedGuest);
+
+            return new GameEventListDto(
+                await participants,
+                await invitees,
+                await creatorGameEvents);
+        }
+
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
+            _repository.GameEvents
+                .Where(ge => ge.Id == gameEventId)
+                .Include(ge => ge.Games)
+                .Include(ge => ge.Participations)
+                .ThenInclude(p => p.Participant)
+                .Select(ge => ge.ToGameEventDto())
+                .SingleOrDefaultAsync();
 
         private async Task EditSingleGameEventProperties(
             int gameEventId,
@@ -83,14 +106,17 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Where(g => g.PositionOnTheList != null)
                 .ToListAsync();
 
-        private async Task EditGames(int gameEventId, ICollection<Game> previousGamesList, IEnumerable<string> newGamesList)
+        private async Task EditGames(
+            int gameEventId,
+            ICollection<Game> previousGamesList,
+            IEnumerable<string> newGamesList)
         {
             foreach (var game in previousGamesList)
             {
                 game.PositionOnTheList = null;
             }
 
-            await _repository.SaveChangesAsync(); 
+            await _repository.SaveChangesAsync();
 
             foreach (var (name, index) in newGamesList.Select((g, i) => (g, i)))
             {
@@ -99,7 +125,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 if (game == null)
                 {
                     _repository.Games.Add(
-                        new Game { Name = name, GameEventId = gameEventId, PositionOnTheList = index });
+                        new Game {Name = name, GameEventId = gameEventId, PositionOnTheList = index});
                 }
                 else
                 {
@@ -107,22 +133,8 @@ namespace GameBoard.LogicLayer.GameEvents
                     game.PositionOnTheList = index;
                 }
             }
+
             await _repository.SaveChangesAsync();
-        }
-
-        public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
-        {
-            var creatorGameEvents =
-                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.Creator);
-            var invitees =
-                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.PendingGuest);
-            var participants =
-                GetGameEventsWithParticipationStatus(userName, ParticipationStatus.AcceptedGuest);
-
-            return new GameEventListDto(
-                await participants,
-                await invitees,
-                await creatorGameEvents);
         }
 
         private Task<List<GameEventListItemDto>> GetGameEventsWithParticipationStatus(
@@ -143,14 +155,5 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Select(ge => ge.ToGameEventListItemDto())
                 .ToListAsync();
         }
-
-        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
-            _repository.GameEvents
-                .Where(ge => ge.Id == gameEventId)
-                .Include(ge => ge.Games)
-                .Include(ge => ge.Participations)
-                .ThenInclude(p => p.Participant)
-                .Select(ge => ge.ToGameEventDto())
-                .SingleOrDefaultAsync();
     }
 }
