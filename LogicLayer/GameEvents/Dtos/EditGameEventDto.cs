@@ -21,7 +21,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         public EditGameEventDto(
             int id,
-            [CanBeNull] string name,
+            [NotNull] string name,
             [CanBeNull] DateTime? meetingTime,
             [CanBeNull] string place,
             [NotNull] [ItemNotNull] IEnumerable<string> games)
