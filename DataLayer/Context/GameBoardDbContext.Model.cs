@@ -109,7 +109,8 @@ namespace GameBoard.DataLayer.Context
                         .IsRequired();
 
                     entity.HasIndex(e => new {e.TakesPartInId, e.ParticipantId})
-                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4") // <> RejectedGuest, ExitedGuest
+                        .HasFilter(
+                            "ParticipationStatus <> 3 AND ParticipationStatus <> 4") // <> RejectedGuest, ExitedGuest
                         .IsUnique();
 
                     entity.HasIndex(e => e.ParticipantId);
