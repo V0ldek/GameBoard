@@ -102,15 +102,6 @@ namespace GameBoard.LogicLayer.GameEvents
                 await creatorGameEvents);
         }
 
-        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
-            _repository.GameEvents
-                .Where(ge => ge.Id == gameEventId)
-                .Include(ge => ge.Games)
-                .Include(ge => ge.Participations)
-                .ThenInclude(p => p.Participant)
-                .Select(ge => ge.ToGameEventDto())
-                .SingleOrDefaultAsync();
-
         private Task<List<GameEventListItemDto>> GetGameEventsWithParticipationStatus(
             [NotNull] string userName,
             ParticipationStatus participationStatus)
@@ -129,5 +120,14 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Select(ge => ge.ToGameEventListItemDto())
                 .ToListAsync();
         }
+
+        public Task<GameEventDto> GetGameEventAsync(int gameEventId) =>
+            _repository.GameEvents
+                .Where(ge => ge.Id == gameEventId)
+                .Include(ge => ge.Games)
+                .Include(ge => ge.Participations)
+                .ThenInclude(p => p.Participant)
+                .Select(ge => ge.ToGameEventDto())
+                .SingleOrDefaultAsync();
     }
 }

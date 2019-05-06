@@ -35,6 +35,20 @@ namespace GameBoard.LogicLayer.GameEventInvites
                 invitedUserName,
                 ParticipationStatus.AcceptedGuest);
 
+        private async Task ChangeGameEventInvitationStatusAsync(
+            int gameEventId,
+            [NotNull] string invitedUserName,
+            ParticipationStatus participationStatus)
+        {
+            var participation = await
+                GetGameEventParticipationsInOneEvent(gameEventId, invitedUserName)
+                    .SingleAsync(p => p.ParticipationStatus == ParticipationStatus.PendingGuest);
+
+            participation.ParticipationStatus = participationStatus;
+
+            await _repository.SaveChangesAsync();
+        }
+
         public async Task SendGameEventInvitationAsync(CreateGameEventInvitationDto gameEventInvitationDto)
         {
             var gameEventId = gameEventInvitationDto.GameEventId;
@@ -60,20 +74,6 @@ namespace GameBoard.LogicLayer.GameEventInvites
             await CreateNewGameEventParticipation(gameEventId, userTo);
 
             await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
-        }
-
-        private async Task ChangeGameEventInvitationStatusAsync(
-            int gameEventId,
-            [NotNull] string invitedUserName,
-            ParticipationStatus participationStatus)
-        {
-            var participation = await
-                GetGameEventParticipationsInOneEvent(gameEventId, invitedUserName)
-                    .SingleAsync(p => p.ParticipationStatus == ParticipationStatus.PendingGuest);
-
-            participation.ParticipationStatus = participationStatus;
-
-            await _repository.SaveChangesAsync();
         }
 
         private Task<GameEventParticipation> GetNotRejectedGameEventParticipation(
