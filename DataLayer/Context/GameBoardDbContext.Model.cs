@@ -83,7 +83,7 @@ namespace GameBoard.DataLayer.Context
                         .HasMaxLength(48);
 
                     entity.Property(e => e.Place)
-                        .HasMaxLength(128);
+                        .HasMaxLength(64);
 
                     entity.ToTable("GameEvent");
                 });
@@ -139,11 +139,8 @@ namespace GameBoard.DataLayer.Context
                         .HasForeignKey(e => e.GameEventId)
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    entity.Property(e => e.GameStatus)
-                        .IsRequired();
-
-                    entity.HasIndex(e => new {e.GameEventId, e.Name})
-                        .HasFilter("GameStatus = 0") // = ExistsOnTheList
+                    entity.HasIndex(e => new {e.GameEventId, e.PositionOnTheList})
+                        .HasFilter("PositionOnTheList IS NOT NULL")
                         .IsUnique();
 
                     entity.ToTable("Game");

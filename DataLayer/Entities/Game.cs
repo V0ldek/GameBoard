@@ -11,6 +11,6 @@ namespace GameBoard.DataLayer.Entities
         public int GameEventId { get; set; }
         public GameEvent GameEvent { get; set; }
 
-        public GameStatus GameStatus { get; set; }
+        public int? PositionOnTheList { get; set; }
     }
 }

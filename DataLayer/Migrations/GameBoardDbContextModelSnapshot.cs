@@ -103,17 +103,17 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<int>("GameEventId");
 
-                    b.Property<int>("GameStatus");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128);
 
+                    b.Property<int?>("PositionOnTheList");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("GameEventId", "Name")
+                    b.HasIndex("GameEventId", "PositionOnTheList")
                         .IsUnique()
-                        .HasFilter("GameStatus = 0");
+                        .HasFilter("PositionOnTheList IS NOT NULL");
 
                     b.ToTable("Game");
                 });
@@ -131,7 +131,7 @@ namespace GameBoard.DataLayer.Migrations
                         .HasMaxLength(48);
 
                     b.Property<string>("Place")
-                        .HasMaxLength(128);
+                        .HasMaxLength(64);
 
                     b.HasKey("Id");
 

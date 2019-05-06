@@ -35,7 +35,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 Date = requestedGameEvent.MeetingTime,
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games
-                    .Select(g => new Game { Name = g, GameStatus = GameStatus.ExistsOnTheList}).ToList(),
+                    .Select((game, index) => new Game { Name = game, PositionOnTheList = index }).ToList(),
                 Participations = new List<GameEventParticipation>()
             };
 
@@ -54,7 +54,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Where(ge => ge.Id == editedEvent.Id)
                 .Include(ge => ge.Games)
                 .SelectMany(ge => ge.Games)
-                .Where(g => g.GameStatus == GameStatus.ExistsOnTheList)
+                .Where(g => g.PositionOnTheList != null)
                 .ToListAsync();
 
             gameEvent.Name = editedEvent.Name;
@@ -63,16 +63,26 @@ namespace GameBoard.LogicLayer.GameEvents
 
             foreach (var game in games)
             {
-                game.GameStatus = GameStatus.RemovedFromTheList;
-                _repository.Games.Update(game);
+                game.PositionOnTheList = null;
             }
 
             await _repository.SaveChangesAsync();
 
-            _repository.Games.AddRange(
-                editedEvent.Games.Select(
-                        g => new Game {Name = g, GameEventId = editedEvent.Id, GameStatus = GameStatus.ExistsOnTheList})
-                    .ToList());
+            foreach (var it in editedEvent.Games.Select((gameName, index) => new {gameName, index}))
+            {
+                var game = games.FirstOrDefault(g => g.Name == it.gameName);
+
+                if (game == null)
+                {
+                    _repository.Games.Add(
+                        new Game {Name = it.gameName, GameEventId = gameEvent.Id, PositionOnTheList = it.index});
+                }
+                else
+                {
+                    games.Remove(game);
+                    game.PositionOnTheList = it.index;
+                }
+            }
 
             await _repository.SaveChangesAsync();
         }

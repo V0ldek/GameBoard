@@ -22,7 +22,10 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
                 gameEvent.Name,
                 gameEvent.Date,
                 gameEvent.Place,
-                gameEvent.Games.Where(g => g.GameStatus == GameStatus.ExistsOnTheList).Select(g => g.Name),
+                gameEvent.Games
+                    .Where(g => g.PositionOnTheList != null)
+                    .OrderBy(g => g.PositionOnTheList)
+                    .Select(g => g.Name),
                 gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.Creator).Single(),
                 gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.PendingGuest),
                 gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.AcceptedGuest)

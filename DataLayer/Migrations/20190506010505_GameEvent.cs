@@ -27,7 +27,7 @@ namespace GameBoard.DataLayer.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 48, nullable: false),
                     Date = table.Column<DateTime>(nullable: true),
-                    Place = table.Column<string>(maxLength: 128, nullable: true)
+                    Place = table.Column<string>(maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,7 +42,7 @@ namespace GameBoard.DataLayer.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     GameEventId = table.Column<int>(nullable: false),
-                    GameStatus = table.Column<int>(nullable: false)
+                    PositionOnTheList = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,11 +83,11 @@ namespace GameBoard.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Game_GameEventId_Name",
+                name: "IX_Game_GameEventId_PositionOnTheList",
                 table: "Game",
-                columns: new[] { "GameEventId", "Name" },
+                columns: new[] { "GameEventId", "PositionOnTheList" },
                 unique: true,
-                filter: "GameStatus = 0");
+                filter: "PositionOnTheList IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameEventParticipation_ParticipantId",
