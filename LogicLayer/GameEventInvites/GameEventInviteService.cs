@@ -64,8 +64,16 @@ namespace GameBoard.LogicLayer.GameEventInvites
                         throw new ApplicationException("You have already invited this user to this event.");
                     case ParticipationStatus.AcceptedGuest:
                         throw new ApplicationException("This user already participates in this event.");
+                    case ParticipationStatus.Creator:
+                        throw new ApplicationException("You cannot invite yourself.");
+                    case ParticipationStatus.RejectedGuest:
+                        throw new ArgumentOutOfRangeException(
+                            nameof(ParticipationStatus.RejectedGuest), 
+                            "We queried for a non-rejected participation, so maybe look for an error there");
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(
+                            nameof(participation.ParticipationStatus), 
+                            "ParticipationStatus does not include this value");
                 }
             }
 
