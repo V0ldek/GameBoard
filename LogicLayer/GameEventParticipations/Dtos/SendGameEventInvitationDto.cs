@@ -1,8 +1,8 @@
 ﻿using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.GameEventInvites.Dtos
+namespace GameBoard.LogicLayer.GameEventParticipations.Dtos
 {
-    public sealed class CreateGameEventInvitationDto
+    public sealed class SendGameEventInvitationDto
     {
         [NotNull]
         public delegate string GameEventLinkGenerator([NotNull] string id);
@@ -14,7 +14,7 @@ namespace GameBoard.LogicLayer.GameEventInvites.Dtos
         [NotNull]
         public string UserNameTo { get; }
 
-        public CreateGameEventInvitationDto(
+        public SendGameEventInvitationDto(
             int gameEventId,
             [NotNull] string userNameTo,
             [NotNull] GameEventLinkGenerator gameEventLinkGenerator)

@@ -35,7 +35,7 @@
 
 .game-event .invitees { grid-area: invitees; }
 
-.game-event .creator-control-panel { grid-area: control }
+.game-event .control-panel { grid-area: control }
 
 .game-event .name,
 .game-event .date,

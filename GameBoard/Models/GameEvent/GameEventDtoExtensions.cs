@@ -27,5 +27,12 @@ namespace GameBoard.Models.GameEvent
                 Place = gameEventDto.Place,
                 Games = string.Join('\n', gameEventDto.Games)
             };
+
+        public static ExitGameEventViewModel ToExitViewModel(this GameEventDto gameEventDto) =>
+            new ExitGameEventViewModel
+            {
+                Id = gameEventDto.Id,
+                Name = gameEventDto.Name
+            };
     }
 }

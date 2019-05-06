@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.GameEvents
 {
-    internal class GameEventService : IGameEventService
+    internal sealed class GameEventService : IGameEventService
     {
         private readonly IGameBoardRepository _repository;
 

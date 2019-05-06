@@ -3,10 +3,11 @@ using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
 using GameBoard.Errors;
-using GameBoard.LogicLayer.GameEventInvites;
-using GameBoard.LogicLayer.GameEventInvites.Dtos;
+using GameBoard.LogicLayer.GameEventParticipations;
+using GameBoard.LogicLayer.GameEventParticipations.Dtos;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
+using GameBoard.Models.GameEvent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -14,27 +15,44 @@ using Microsoft.Extensions.Options;
 namespace GameBoard.Controllers
 {
     [Authorize]
-    public class GameEventInvite : Controller
+    public class GameEventParticipation : Controller
     {
+        private readonly IGameEventParticipationService _gameEventParticipationService;
         private readonly IGameEventService _gameEventService;
-        private readonly IGameEventInviteService _gameEventInvitationsService;
         private readonly HostConfiguration _hostConfiguration;
 
-        public GameEventInvite(
-            IGameEventInviteService gameEventInvitationsService, 
+        public GameEventParticipation(
+            IGameEventParticipationService gameEventParticipationService,
             IGameEventService gameEventService,
             IOptions<HostConfiguration> hostConfiguration)
         {
-            _gameEventInvitationsService = gameEventInvitationsService;
+            _gameEventParticipationService = gameEventParticipationService;
             _gameEventService = gameEventService;
             _hostConfiguration = hostConfiguration.Value;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExitGameEvent(int id)
+        {
+            var gameEvent = await _gameEventService.GetGameEventAsync(id);
+
+            return View("ExitGameEvent", gameEvent.ToExitViewModel());
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ExitGameEvent(ExitGameEventViewModel exitGameEventViewModel)
+        {
+            await _gameEventParticipationService.ExitGameEventAsync(exitGameEventViewModel.Id, User.Identity.Name);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AcceptGameEventInvite(int gameEventId)
         {
-            await _gameEventInvitationsService.AcceptGameEventInvitationAsync(gameEventId, User.Identity.Name);
+            await _gameEventParticipationService.AcceptGameEventInvitationAsync(gameEventId, User.Identity.Name);
 
             return RedirectToAction("GameEvent", "GameEvent", new {id = gameEventId});
         }
@@ -43,24 +61,24 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RejectGameEventInvite(int gameEventId)
         {
-            await _gameEventInvitationsService.RejectGameEventInvitationAsync(gameEventId, User.Identity.Name);
+            await _gameEventParticipationService.RejectGameEventInvitationAsync(gameEventId, User.Identity.Name);
 
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CreateGameEventInvite(int gameEventId, string userName)
+        public async Task<IActionResult> SendGameEventInvite(int gameEventId, string userName)
         {
             GameEventDto gameEvent;
 
-            var createGameEventInvitationDto = new CreateGameEventInvitationDto(
+            var sendGameEventInvitationDto = new SendGameEventInvitationDto(
                 gameEventId,
                 userName,
                 eventId => _hostConfiguration.HostAddress + Url.Action(
                     "GameEvent",
                     "gameEvent",
-                    new { id = eventId }));
+                    new {id = eventId}));
 
             try
             {
@@ -94,9 +112,17 @@ namespace GameBoard.Controllers
                     HttpStatusCode.Unauthorized);
             }
 
+            return await SendGameEventInvitation(gameEvent, userName, sendGameEventInvitationDto);
+        }
+
+        private async Task<IActionResult> SendGameEventInvitation(
+            GameEventDto gameEvent,
+            string userName,
+            SendGameEventInvitationDto sendGameEventInvitationDto)
+        {
             try
             {
-                await _gameEventInvitationsService.SendGameEventInvitationAsync(createGameEventInvitationDto);
+                await _gameEventParticipationService.SendGameEventInvitationAsync(sendGameEventInvitationDto);
             }
             catch (ApplicationException exception)
             {

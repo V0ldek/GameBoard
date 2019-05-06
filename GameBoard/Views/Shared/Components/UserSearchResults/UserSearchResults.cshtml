@@ -5,7 +5,7 @@
     {
         <div class="autocomplete-item user-result">
             @await Component.InvokeAsync("UserCard", new {user, miniature = true})
-            <form asp-controller="Friends" asp-action="CreateFriendRequest"
+            <form asp-controller="Friends" asp-action="SendFriendRequest"
                   class="invite-form"
                   data-ajax="true" data-ajax-method="POST"
                   data-ajax-success="friendRequestPopoverGenerator.generateSuccessPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)"

@@ -30,7 +30,10 @@ namespace GameBoard.Areas.Identity.Pages.Account
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return Error.FromPage(this).Error("Error!", "User specified in the URL does not exist.", HttpStatusCode.NotFound);
+                return Error.FromPage(this).Error(
+                    "Error!",
+                    "User specified in the URL does not exist.",
+                    HttpStatusCode.NotFound);
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);

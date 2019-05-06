@@ -31,9 +31,6 @@
     <None Update="Notifications\Html\Inlined\email-confirmation.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Notifications\Html\Inlined\event-cancellation.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Notifications\Html\Inlined\event-confirmation.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -47,9 +44,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Notifications\Html\Raw\email-confirmation.html">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Notifications\Html\Raw\event-cancellation.html">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Notifications\Html\Raw\event-invitation.html">
