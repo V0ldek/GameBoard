@@ -89,6 +89,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                     throw new GameEventParticipationException("You cannot exit an event you haven't entered.");
                 case ParticipationStatus.AcceptedGuest:
                     break;
+                // Nothing else should be returned by GetActiveGameEventParticipation.
                 default:
                     throw new ArgumentOutOfRangeException(
                         nameof(userParticipation.ParticipationStatus),

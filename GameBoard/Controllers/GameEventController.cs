@@ -74,7 +74,10 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return Error.FromController(this).Error("Error!", "Game event you're trying to edit doesn't exist.", HttpStatusCode.NotFound);
+                return Error.FromController(this).Error(
+                    "Error!",
+                    "Game event you're trying to edit doesn't exist.",
+                    HttpStatusCode.NotFound);
             }
 
             if (gameEvent.Creator.UserName != User.Identity.Name)

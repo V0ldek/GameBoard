@@ -62,7 +62,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             var callbackUrl = Url.Page(
                 "/Account/ConfirmedEmail",
                 null,
-                new { userId = user.Id, code },
+                new {userId = user.Id, code},
                 Request.Scheme);
 
             await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));

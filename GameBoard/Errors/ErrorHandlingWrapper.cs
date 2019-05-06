@@ -2,9 +2,7 @@
 using GameBoard.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 
 namespace GameBoard.Errors
@@ -12,17 +10,13 @@ namespace GameBoard.Errors
     internal sealed class ErrorHandlingWrapper : IErrorHandlingWrapper
     {
         private readonly LocalRedirectHelper _localRedirect;
-        private readonly ViewComponentHelper _viewComponent;
 
         private readonly HttpResponse _response;
-        private readonly ITempDataDictionary _tempData;
-        private readonly ViewDataDictionary _viewData;
+        private readonly ViewComponentHelper _viewComponent;
 
         internal ErrorHandlingWrapper(Controller controller)
         {
             _response = controller.Response;
-            _viewData = controller.ViewData;
-            _tempData = controller.TempData;
             _localRedirect = controller.LocalRedirect;
             _viewComponent = controller.ViewComponent;
         }
@@ -30,8 +24,6 @@ namespace GameBoard.Errors
         internal ErrorHandlingWrapper(PageModel pageModel)
         {
             _response = pageModel.Response;
-            _viewData = pageModel.ViewData;
-            _tempData = pageModel.TempData;
             _localRedirect = pageModel.LocalRedirect;
             _viewComponent = pageModel.ViewComponent;
         }
