@@ -3,30 +3,45 @@
     <div id="friends-sidebar" class="bg border-top border-right box-shadow">
         <h3>Friends</h3>
         <hr/>
-        <h5>Group1</h5>
-        <ul class="list-unstyled components border-top border-bottom">
-            @foreach (var user in Model)
-            {
-                <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
-            }
-        </ul>
-        @await Component.InvokeAsync("FriendSearchBox")
-        <h5>Group2</h5>
-        <ul class="list-unstyled components border-top border-bottom">
-            @foreach (var user in Model)
-            {
-                <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
-            }
-        </ul>
-        @await Component.InvokeAsync("FriendSearchBox")
-        <h5>Group3</h5>
-        <ul class="list-unstyled components border-top border-bottom">
-            @foreach (var user in Model)
-            {
-                <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
-            }
-        </ul>
-        @await Component.InvokeAsync("FriendSearchBox")
+        <button id="group-collapse-btn1" class="btn btn-dark" type="button" data-toggle="collapse" href="#collapseGroup1">
+            Group1
+            <i class="fa fa-angle-double-down"></i>
+        </button>
+        <div class="collapse" id="collapseGroup1">
+            <ul class="list-unstyled components border-top border-bottom">
+                @foreach (var user in Model)
+                {
+                    <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
+                }
+            </ul>
+            @await Component.InvokeAsync("FriendSearchBox")
+        </div>
+        <button id="group-collapse-btn2" class="btn btn-dark" type="button" data-toggle="collapse" href="#collapseGroup2">
+            Group2
+            <i class="fa fa-angle-double-down"></i>
+        </button>
+        <div class="collapse" id="collapseGroup2">
+            <ul class="list-unstyled components border-top border-bottom">
+                @foreach (var user in Model)
+                {
+                    <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
+                }
+            </ul>
+            @await Component.InvokeAsync("FriendSearchBox")
+        </div>
+        <button id="group-collapse-btn3" class="btn btn-dark" type="button" data-toggle="collapse" href="#collapseGroup3">
+            Group3
+            <i class="fa fa-angle-double-down"></i>
+        </button>
+        <div class="collapse" id="collapseGroup3">
+            <ul class="list-unstyled components border-top border-bottom">
+                @foreach (var user in Model)
+                {
+                    <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
+                }
+            </ul>
+            @await Component.InvokeAsync("FriendSearchBox")
+        </div>
         @await Component.InvokeAsync("GroupAddBox")
     </div>
     @await Component.InvokeAsync("UserSearchBox")
