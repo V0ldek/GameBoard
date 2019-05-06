@@ -5,35 +5,23 @@ using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
-using GameBoard.LogicLayer.GameEventInvites.Dtos;
+using GameBoard.LogicLayer.GameEventParticipations.Dtos;
 using GameBoard.LogicLayer.Notifications;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace GameBoard.LogicLayer.GameEventInvites
+namespace GameBoard.LogicLayer.GameEventParticipations
 {
-    internal class GameEventInviteService : IGameEventInviteService
+    internal class GameEventParticipationService : IGameEventParticipationService
     {
         private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
 
-        public GameEventInviteService(IGameBoardRepository repository, IMailSender mailSender)
+        public GameEventParticipationService(IGameBoardRepository repository, IMailSender mailSender)
         {
             _repository = repository;
             _mailSender = mailSender;
         }
-
-        public Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
-            ChangeGameEventInvitationStatusAsync(
-                gameEventId,
-                invitedUserName,
-                ParticipationStatus.RejectedGuest);
-
-        public Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
-            ChangeGameEventInvitationStatusAsync(
-                gameEventId,
-                invitedUserName,
-                ParticipationStatus.AcceptedGuest);
 
         public async Task SendGameEventInvitationAsync(CreateGameEventInvitationDto gameEventInvitationDto)
         {
@@ -70,6 +58,20 @@ namespace GameBoard.LogicLayer.GameEventInvites
 
             await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
         }
+
+        public Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
+            ChangeGameEventInvitationStatusAsync(
+                gameEventId,
+                invitedUserName,
+                ParticipationStatus.AcceptedGuest);
+
+        public Task RejectGameEventInvitationAsync(int gameEventId, string invitedUserName) =>
+            ChangeGameEventInvitationStatusAsync(
+                gameEventId,
+                invitedUserName,
+                ParticipationStatus.RejectedGuest);
+
+        public Task ExitGameEventAsync(int gameEventId, string userName) => throw new NotImplementedException();
 
         private async Task ChangeGameEventInvitationStatusAsync(
             int gameEventId,

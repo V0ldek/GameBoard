@@ -1,15 +1,17 @@
 ﻿using System.Threading.Tasks;
-using GameBoard.LogicLayer.GameEventInvites.Dtos;
+using GameBoard.LogicLayer.GameEventParticipations.Dtos;
 using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.GameEventInvites
+namespace GameBoard.LogicLayer.GameEventParticipations
 {
-    public interface IGameEventInviteService
+    public interface IGameEventParticipationService
     {
         Task SendGameEventInvitationAsync([NotNull] CreateGameEventInvitationDto gameEventInvitationDto);
 
         Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
 
         Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
+
+        Task ExitGameEventAsync(int gameEventId, [NotNull] string userName);
     }
 }

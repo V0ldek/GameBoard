@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.GameEventInvites.Dtos
+namespace GameBoard.LogicLayer.GameEventParticipations.Dtos
 {
     public sealed class CreateGameEventInvitationDto
     {

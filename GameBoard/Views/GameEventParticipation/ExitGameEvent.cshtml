@@ -1,0 +1,19 @@
+﻿@model GameBoard.Models.GameEvent.ExitGameEventViewModel
+
+<article>
+    <h1>Exiting @Model.Name</h1>
+    <p>You're about to exit the @Model.Name event. You will be able to return later, if the event creator sends you another invitation. Are you sure?</p>
+    <form class="float-left mr-2" method="get">
+        <input type="hidden" asp-for="Id"/>
+        <button class="btn btn-dark" asp-action="GameEvent" asp-controller="GameEvent">
+            No, return
+        </button>
+    </form>
+    <form class="float-left" method="post">
+        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="Name"/>
+        <button class="btn btn-danger" asp-action="ExitGameEvent" asp-controller="GameEventParticipation">
+            Yes, exit
+        </button>
+    </form>
+</article>

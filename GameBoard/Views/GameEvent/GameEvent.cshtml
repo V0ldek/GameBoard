@@ -33,8 +33,8 @@
             <p>You have an invitation pending for this event.</p>
             <form class="form-inline" method="post">
                 <input type="hidden" asp-for="@Model.Id" name="gameEventId"/>
-                <button class="btn btn-dark mr-3" type="submit" asp-action="AcceptGameEventInvite" asp-controller="GameEventInvite">Accept</button>
-                <button class="btn btn-danger" type="submit" asp-action="RejectGameEventInvite" asp-controller="GameEventInvite">Reject</button>
+                <button class="btn btn-dark mr-3" type="submit" asp-action="AcceptGameEventInvite" asp-controller="GameEventParticipation">Accept</button>
+                <button class="btn btn-danger" type="submit" asp-action="RejectGameEventInvite" asp-controller="GameEventParticipation">Reject</button>
             </form>
         </section>
     }
@@ -87,10 +87,19 @@
     </section>
     @if (Model.IsCreator)
     {
-        <section class="creator-control-panel">
+        <section class="control-panel">
             <form asp-controller="GameEvent" asp-action="EditGameEvent" method="get">
                 <input type="hidden" asp-for="Id"/>
                 <button class="btn btn-dark" type="submit">Edit</button>
+            </form>
+        </section>
+    }
+    else
+    {
+        <section class="control-panel">
+            <form asp-controller="GameEventParticipation" asp-action="ExitGameEvent" method="get">
+                <input type="hidden" asp-for="Id"/>
+                <button class="btn btn-dark" type="submit">Exit</button>
             </form>
         </section>
     }
