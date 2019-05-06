@@ -53,7 +53,7 @@ namespace GameBoard.LogicLayer.Friends
         {
             if (friendRequest.UserNameTo == friendRequest.UserNameFrom)
             {
-                throw new InvitingYourselfException("You cannot invite yourself.");
+                throw new FriendRequestException("You cannot invite yourself.");
             }
 
             var userRequestedBy =
@@ -72,40 +72,6 @@ namespace GameBoard.LogicLayer.Friends
             await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
         }
 
-        private async Task SaveFriendshipAsync(Friendship friendship)
-        {
-            _repository.Friendships.Add(friendship);
-
-            try
-            {
-                await _repository.SaveChangesAsync();
-            }
-            catch (DbUpdateException e) when (e.InnerException is SqlException sqlException)
-            {
-                switch (sqlException.Number)
-                {
-                    case 50000:
-                        throw new FriendRequestAlreadyPendingException(
-                            "You have already been invited by this user. Check your inbox for the friend request.");
-                    case 50001:
-                        throw new FriendRequestAlreadyPendingException(
-                            "You have already sent this user a friend request.");
-                    case 50002:
-                        throw new FriendRequestAlreadyFinalizedException("You are already friends.");
-                    default:
-                        throw new ArgumentOutOfRangeException(
-                            $"Uncaught SQL Exception with error number {sqlException.Number} occured.");
-                }
-            }
-        }
-
-        private async Task SendFriendRequestEmailAsync(
-            SendFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
-            Friendship friendship) =>
-            await _mailSender.SendFriendInvitationAsync(
-                friendship.RequestedTo.Email,
-                requestLinkGenerator(friendship.Id.ToString()));
-
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
         {
             var friendship = await _repository.Friendships
@@ -121,6 +87,40 @@ namespace GameBoard.LogicLayer.Friends
 
         public Task RejectFriendRequestAsync(int friendRequestId) =>
             ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);
+
+        private async Task SaveFriendshipAsync(Friendship friendship)
+        {
+            _repository.Friendships.Add(friendship);
+
+            try
+            {
+                await _repository.SaveChangesAsync();
+            }
+            catch (DbUpdateException e) when (e.InnerException is SqlException sqlException)
+            {
+                switch (sqlException.Number)
+                {
+                    case 50000:
+                        throw new FriendRequestException(
+                            "You have already been invited by this user. Check your inbox for the friend request.");
+                    case 50001:
+                        throw new FriendRequestException(
+                            "You have already sent this user a friend request.");
+                    case 50002:
+                        throw new FriendRequestException("You are already friends.");
+                    default:
+                        throw new ArgumentOutOfRangeException(
+                            $"Uncaught SQL Exception with error number {sqlException.Number} occured.");
+                }
+            }
+        }
+
+        private async Task SendFriendRequestEmailAsync(
+            SendFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
+            Friendship friendship) =>
+            await _mailSender.SendFriendInvitationAsync(
+                friendship.RequestedTo.Email,
+                requestLinkGenerator(friendship.Id.ToString()));
 
         private async Task ChangeFriendRequestStatus(int friendRequestId, FriendshipStatus friendshipStatus)
         {
