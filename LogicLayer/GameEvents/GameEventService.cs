@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
@@ -47,44 +48,61 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
-            var gameEvent = await _repository.GameEvents
-                .SingleAsync(ge => ge.Id == editedEvent.Id);
+            await EditSingleGameEventProperties(editedEvent.Id, editedEvent.Name, editedEvent.Date, editedEvent.Place);
 
-            var games = await _repository.GameEvents
-                .Where(ge => ge.Id == editedEvent.Id)
+            var games = await GetGames(editedEvent.Id);
+
+            await EditGames(editedEvent.Id, games, editedEvent.Games);
+
+            await _repository.SaveChangesAsync();
+        }
+
+        private async Task EditSingleGameEventProperties(
+            int gameEventId,
+            [NotNull] string name,
+            [CanBeNull] DateTime? date,
+            [CanBeNull] string place)
+        {
+            var gameEvent = await _repository.GameEvents
+                .SingleAsync(ge => ge.Id == gameEventId);
+
+            gameEvent.Name = name;
+            gameEvent.Date = date;
+            gameEvent.Place = place;
+        }
+
+        private Task<List<Game>> GetGames(int gameEventId) =>
+            _repository.GameEvents
+                .Where(ge => ge.Id == gameEventId)
                 .Include(ge => ge.Games)
                 .SelectMany(ge => ge.Games)
                 .Where(g => g.PositionOnTheList != null)
                 .ToListAsync();
 
-            gameEvent.Name = editedEvent.Name;
-            gameEvent.Date = editedEvent.Date;
-            gameEvent.Place = editedEvent.Place;
-
-            foreach (var game in games)
+        private async Task EditGames(int gameEventId, ICollection<Game> previousGamesList, IEnumerable<string> newGamesList)
+        {
+            foreach (var game in previousGamesList)
             {
                 game.PositionOnTheList = null;
             }
 
             await _repository.SaveChangesAsync();
 
-            foreach (var (name, index) in editedEvent.Games.Select((g, i) => (g, i)))
+            foreach (var (name, index) in newGamesList.Select((g, i) => (g, i)))
             {
-                var game = games.FirstOrDefault(g => g.Name == name);
+                var game = previousGamesList.FirstOrDefault(g => g.Name == name);
 
                 if (game == null)
                 {
                     _repository.Games.Add(
-                        new Game {Name = name, GameEventId = gameEvent.Id, PositionOnTheList = index});
+                        new Game { Name = name, GameEventId = gameEventId, PositionOnTheList = index });
                 }
                 else
                 {
-                    games.Remove(game);
+                    previousGamesList.Remove(game);
                     game.PositionOnTheList = index;
                 }
             }
-
-            await _repository.SaveChangesAsync();
         }
 
         public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
