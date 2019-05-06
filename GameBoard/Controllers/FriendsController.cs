@@ -83,7 +83,7 @@ namespace GameBoard.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CreateFriendRequest(string userNameFrom, string userNameTo)
+        public async Task<IActionResult> SendFriendRequest(string userNameFrom, string userNameTo)
         {
             var createFriendRequestDto = new SendFriendRequestDto(
                 userNameFrom,

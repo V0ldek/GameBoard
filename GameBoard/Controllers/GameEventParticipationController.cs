@@ -17,16 +17,16 @@ namespace GameBoard.Controllers
     [Authorize]
     public class GameEventParticipation : Controller
     {
-        private readonly IGameEventParticipationService _gameEventInvitationsService;
+        private readonly IGameEventParticipationService _gameEventParticipationService;
         private readonly IGameEventService _gameEventService;
         private readonly HostConfiguration _hostConfiguration;
 
         public GameEventParticipation(
-            IGameEventParticipationService gameEventInvitationsService,
+            IGameEventParticipationService gameEventParticipationService,
             IGameEventService gameEventService,
             IOptions<HostConfiguration> hostConfiguration)
         {
-            _gameEventInvitationsService = gameEventInvitationsService;
+            _gameEventParticipationService = gameEventParticipationService;
             _gameEventService = gameEventService;
             _hostConfiguration = hostConfiguration.Value;
         }
@@ -43,7 +43,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> ExitGameEvent(ExitGameEventViewModel exitGameEventViewModel)
         {
-            await _gameEventInvitationsService.ExitGameEventAsync(exitGameEventViewModel.Id, User.Identity.Name);
+            await _gameEventParticipationService.ExitGameEventAsync(exitGameEventViewModel.Id, User.Identity.Name);
 
             return RedirectToAction("Index", "Home");
         }
@@ -52,7 +52,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AcceptGameEventInvite(int gameEventId)
         {
-            await _gameEventInvitationsService.AcceptGameEventInvitationAsync(gameEventId, User.Identity.Name);
+            await _gameEventParticipationService.AcceptGameEventInvitationAsync(gameEventId, User.Identity.Name);
 
             return RedirectToAction("GameEvent", "GameEvent", new {id = gameEventId});
         }
@@ -61,7 +61,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RejectGameEventInvite(int gameEventId)
         {
-            await _gameEventInvitationsService.RejectGameEventInvitationAsync(gameEventId, User.Identity.Name);
+            await _gameEventParticipationService.RejectGameEventInvitationAsync(gameEventId, User.Identity.Name);
 
             return RedirectToAction("Index", "Home");
         }
@@ -72,7 +72,7 @@ namespace GameBoard.Controllers
         {
             GameEventDto gameEvent;
 
-            var createGameEventInvitationDto = new SendGameEventInvitationDto(
+            var sendGameEventInvitationDto = new SendGameEventInvitationDto(
                 gameEventId,
                 userName,
                 eventId => _hostConfiguration.HostAddress + Url.Action(
@@ -112,17 +112,17 @@ namespace GameBoard.Controllers
                     HttpStatusCode.Unauthorized);
             }
 
-            return await CreateGameEventInvitation(gameEvent, userName, createGameEventInvitationDto);
+            return await SendGameEventInvitation(gameEvent, userName, sendGameEventInvitationDto);
         }
 
-        private async Task<IActionResult> CreateGameEventInvitation(
+        private async Task<IActionResult> SendGameEventInvitation(
             GameEventDto gameEvent,
             string userName,
             SendGameEventInvitationDto sendGameEventInvitationDto)
         {
             try
             {
-                await _gameEventInvitationsService.SendGameEventInvitationAsync(sendGameEventInvitationDto);
+                await _gameEventParticipationService.SendGameEventInvitationAsync(sendGameEventInvitationDto);
             }
             catch (ApplicationException exception)
             {
