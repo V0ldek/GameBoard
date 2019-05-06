@@ -39,7 +39,7 @@
         </section>
     }
     @{
-        var dateString = Model.Date?.ToString() ?? "Unknown date";
+        var dateString = Model.Date?.ToString("dd.MM.yyyy HH:mm") ?? "Unknown date";
         var placeString = string.IsNullOrEmpty(Model.Place) ? "Unknown place" : Model.Place;
     }
     <section class="date">
