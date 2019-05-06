@@ -10,11 +10,11 @@ AS
     DELETE FROM Friendship
     FROM DELETED
     WHERE RequestedById = DELETED.Id
-      OR RequestedToId = DELETED.Id;
+       OR RequestedToId = DELETED.Id;
 
-	DELETE FROM GameEventParticipation
-	FROM DELETED
-	WHERE GameEventParticipation.ParticipantId = DELETED.Id;
+    DELETE FROM GameEventParticipation
+    FROM DELETED
+    WHERE GameEventParticipation.ParticipantId = DELETED.Id;
 
     DELETE FROM [User]
     FROM DELETED
@@ -32,18 +32,18 @@ CREATE TRIGGER TR_GameEventParticipation_InsteadOfDelete
   INSTEAD OF DELETE
 AS
   BEGIN
-	IF TRIGGER_NESTLEVEL(OBJECT_ID('TR_GameEventParticipation_InsteadOfDelete')) <= 2
-	BEGIN
-	  DELETE FROM GameEventParticipation
-	  FROM DELETED
-	  WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
-	    AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
+    IF TRIGGER_NESTLEVEL(OBJECT_ID('TR_GameEventParticipation_InsteadOfDelete')) <= 2
+    BEGIN
+      DELETE FROM GameEventParticipation
+      FROM DELETED
+      WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
+        AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
 
       DELETE FROM GameEvent
       FROM DELETED
-	  WHERE GameEvent.Id = DELETED.TakesPartInId
-		AND DELETED.ParticipationStatus = 0; -- Creator
-	END;
+      WHERE GameEvent.Id = DELETED.TakesPartInId
+        AND DELETED.ParticipationStatus = 0; -- Creator
+    END;
   END;
 
 GO
@@ -58,16 +58,16 @@ CREATE TRIGGER TR_GameEvent_InsteadOfDelete
 AS
   BEGIN
     DELETE FROM GameEventParticipation
-	FROM DELETED
-	WHERE GameEventParticipation.TakesPartInId = DELETED.Id;
+    FROM DELETED
+    WHERE GameEventParticipation.TakesPartInId = DELETED.Id;
 
-	DELETE FROM Game -- This DELETE could be replaced with CascadeDelete on Games, but it seems more consistent to put everything in one place.
-	FROM DELETED
-	WHERE Game.GameEventId = DELETED.Id;
+    DELETE FROM Game -- This DELETE could be replaced with CascadeDelete on Games, but it seems more consistent to put everything in one place.
+    FROM DELETED
+    WHERE Game.GameEventId = DELETED.Id;
 
-	DELETE FROM GameEvent
-	FROM DELETED
-	WHERE GameEvent.Id = DELETED.Id;
+    DELETE FROM GameEvent
+    FROM DELETED
+    WHERE GameEvent.Id = DELETED.Id;
   END;
 
 GO
