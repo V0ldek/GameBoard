@@ -73,7 +73,7 @@ namespace GameBoard.LogicLayer.GameEventInvites
                     default:
                         throw new ArgumentOutOfRangeException(
                             nameof(participation.ParticipationStatus), 
-                            "ParticipationStatus does not include this value");
+                            $"{nameof(participation.ParticipationStatus)} is not included in this switch statement.");
                 }
             }
 
