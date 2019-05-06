@@ -32,22 +32,24 @@ CREATE TRIGGER TR_GameEventParticipation_InsteadOfDelete
   INSTEAD OF DELETE
 AS
   BEGIN
-    -- If I removed the following line, SQL Server would throw an excpetion:
+    -- If you removed the following four lines, SQL Server would throw an excpetion:
     -- "Maximum stored procedure, function, trigger, or view nesting level exceeded (limit 32)"
     -- This is because TR_GameEvent_InsteadOfDelete triggers TR_GameEventParticipation_InsteadOfDelete 
-    -- and that one triggers TR_GameEvent_InsteadOfDelete again and so on, indefinitely.
-    IF TRIGGER_NESTLEVEL(OBJECT_ID('TR_GameEventParticipation_InsteadOfDelete')) <= 2
+    -- and that one triggers TR_GameEvent_InsteadOfDelete again and so on, indefinitely (even if there is nothing to delete).
+    IF NOT EXISTS(SELECT * FROM DELETED)
     BEGIN
-      DELETE FROM GameEventParticipation
-      FROM DELETED
-      WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
-        AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
-
-      DELETE FROM GameEvent
-      FROM DELETED
-      WHERE GameEvent.Id = DELETED.TakesPartInId
-        AND DELETED.ParticipationStatus = 0; -- Creator
+      RETURN;
     END;
+
+    DELETE FROM GameEventParticipation
+    FROM DELETED
+    WHERE GameEventParticipation.ParticipantId = DELETED.ParticipantId
+      AND GameEventParticipation.TakesPartInId = DELETED.TakesPartInId;
+
+    DELETE FROM GameEvent
+    FROM DELETED
+    WHERE GameEvent.Id = DELETED.TakesPartInId
+      AND DELETED.ParticipationStatus = 0; -- Creator
   END;
 
 GO
