@@ -51,6 +51,27 @@ namespace GameBoard.DataLayer.Context
                     entity.ToTable("Friendship");
                 });
 
+            builder.Entity<Group>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
+                    entity.HasOne(e => e.Owner)
+                        .WithMany(u => u.UserGroups)
+                        .HasForeignKey(e => e.OwnerId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.Property(e => e.Name).HasMaxLength(64);
+
+                    entity.ToTable("Group");
+                });
+
+            builder.Entity<GroupUser>().HasKey(
+                entity => new {entity.GroupId, entity.UserId });
+
             builder.Entity<IdentityRole>(
                 entity => entity.ToTable("Role"));
 

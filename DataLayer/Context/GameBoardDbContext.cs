@@ -19,5 +19,7 @@ namespace GameBoard.DataLayer.Context
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupUser> GroupUser { get; set; }
     }
 }
