@@ -6,19 +6,11 @@
     width: 100%;
 }
 
-#group-collapse-btn1 {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
+#group-add-box-input {
+    width: 30%;
 }
 
-#group-collapse-btn2 {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
-}
-
-#group-collapse-btn3 {
+#group-collapse-btn {
     width: 100%;
     padding: 10px;
     margin-bottom: 5px;
