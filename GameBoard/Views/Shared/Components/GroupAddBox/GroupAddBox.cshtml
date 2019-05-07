@@ -1,7 +1,10 @@
 ﻿<div id="group-add-form" class="form-inline bg border-top border-right border-bottom border-left box-shadow mb-3">
     <label class="mb-2">Add groups</label>
-    <div id="group-add-box" class="user-search-autocomplete input-group">
-        <input id="group-add-box-input" autocomplete="off" class="form-control mr-2" type="text" placeholder="New group name" />
-        <i class="fa fa-plus input-group-append m-auto"></i>
-    </div>
+    <form asp-controller="Groups" asp-action="CreateNewGroup"
+          method="post">
+        <input id="friend-search-box-input" autocomplete="off" hidden-name="GroupName" class="form-control mr-2" type="text" placeholder="New group name" />
+        <button id="group-add-button" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
+            <i class="fa fa-user-plus"></i>
+        </button>   
+    </form>
 </div>
