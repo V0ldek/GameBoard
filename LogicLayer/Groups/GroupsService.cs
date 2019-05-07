@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Groups.Dtos;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.Groups
 {
@@ -43,18 +45,16 @@ namespace GameBoard.LogicLayer.Groups
                 User = user,
                 GroupId = groupId,
                 Group = group
-
             };
 
             _repository.GroupUser.Add(groupUser);
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsByUserNameAsync([NotNull] string userName)
-        {
-            var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
-
-            return _repository.Groups.Where(g => g.Owner.UserName == userName).ToList();
-        }
+        public async Task<IEnumerable<GroupDto>> GetGroupsByUserNameAsync(string userName) =>
+            await _repository.Groups
+                .Where(g => g.Owner.UserName == userName)
+                .Select(g => g.ToDto())
+                .ToListAsync();
     }
 }

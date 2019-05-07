@@ -3,7 +3,7 @@ using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.Friends.Dtos
 {
-    public static class FriendRequestExtension
+    public static class FriendshipExtensions
     {
         public static FriendRequestDto ToDto(this Friendship friendship) => new FriendRequestDto(
             friendship.Id.ToString(),

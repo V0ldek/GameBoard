@@ -8,7 +8,6 @@ namespace GameBoard.LogicLayer.Groups.Dtos
 {
     public sealed class GroupDto
     {
-        [NotNull]
         public int GroupId { get; }
 
         [NotNull]
@@ -17,7 +16,7 @@ namespace GameBoard.LogicLayer.Groups.Dtos
         [NotNull]
         public ICollection<ApplicationUser> Users { get; }
 
-        public GroupDto([NotNull] int groupId, [NotNull] string groupName, [NotNull] ICollection<ApplicationUser> users)
+        public GroupDto(int groupId, [NotNull] string groupName, [NotNull] ICollection<ApplicationUser> users)
         {
             GroupId = groupId;
             GroupName = groupName;
