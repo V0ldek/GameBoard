@@ -6,7 +6,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
     public static class FriendshipExtensions
     {
         public static FriendRequestDto ToDto(this Friendship friendship) => new FriendRequestDto(
-            friendship.Id.ToString(),
+            friendship.Id,
             friendship.RequestedBy.ToDto(),
             friendship.RequestedTo.ToDto(),
             friendship.FriendshipStatus.ToDtoStatus());

@@ -2,11 +2,11 @@
 {
     public class FriendRequestViewModel
     {
-        public string Id { get; }
+        public int Id { get; }
 
         public string UserNameFrom { get; }
 
-        public FriendRequestViewModel(string id, string userNameFrom)
+        public FriendRequestViewModel(int id, string userNameFrom)
         {
             Id = id;
             UserNameFrom = userNameFrom;
