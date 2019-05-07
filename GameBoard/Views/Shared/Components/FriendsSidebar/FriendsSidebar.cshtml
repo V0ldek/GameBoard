@@ -1,18 +1,17 @@
-﻿@model IEnumerable<GameBoard.Models.User.UserViewModel>
-
+﻿@model IEnumerable<GameBoard.Models.Groups.GroupViewModel>
 <div id="friends-sidebar-container">
     <div id="friends-sidebar" class="bg border-top border-right box-shadow">
         <h3>Friends</h3>
         <hr/>
-        <ul class="list-unstyled components border-bottom">
-            @foreach (var user in Model)
-            {
-                <li class="active">@await Component.InvokeAsync("UserCard", new {user})</li>
-            }
-        </ul>
+        @foreach (var group in Model)
+        {
+            @await Component.InvokeAsync("GroupCard");
+        }
+        @await Component.InvokeAsync("GroupAddBox")
     </div>
     @await Component.InvokeAsync("UserSearchBox")
     <button id="friends-sidebar-collapse" class="btn btn-dark border-right border-top border-bottom border-left-0" type="button">
         <i id="friends-sidebar-collapse-icon" class="fa fa-angle-right"></i>
     </button>
 </div>
+   

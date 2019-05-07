@@ -14,6 +14,7 @@
     "Popovers/popoverGenerator.ts",
     "Site/friendsSidebar.ts",
     "Site/userSearchBox.ts",
+    "Site/friendSearchBox.ts",
     "productionConsoleSwitch.ts"
   ],
   "exclude": [

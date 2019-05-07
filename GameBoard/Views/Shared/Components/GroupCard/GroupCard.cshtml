@@ -1,0 +1,15 @@
+﻿@model GameBoard.Models.Groups.GroupViewModel
+
+<button id="group-collapse-btn1" class="btn btn-dark" type="button" data-toggle="collapse" href="#collapseGroup1">
+    @Model.GroupName
+    <i class="fa fa-angle-double-down"></i>
+</button>
+<div class="collapse" id="collapseGroup1">
+    <ul class="list-unstyled components border-top border-bottom">
+        @foreach (var user in Model.Users)
+        {
+            <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
+        }
+    </ul>
+    @await Component.InvokeAsync("FriendSearchBox")
+</div>

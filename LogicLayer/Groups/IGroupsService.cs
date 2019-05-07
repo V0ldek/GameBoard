@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.LogicLayer.Groups.Dtos;
 
 namespace GameBoard.LogicLayer.Groups
 {
@@ -10,7 +11,7 @@ namespace GameBoard.LogicLayer.Groups
         // Gets groups created by this user(userName).
         [NotNull]
         [ItemNotNull]
-        Task<IEnumerable<Group>> GetGroupsByUserNameAsync([NotNull] string userName);
+        Task<IEnumerable<GroupDto>> GetGroupsByUserNameAsync([NotNull] string userName);
 
         // Adds new group created by user(userName).
         Task AddGroupAsync([NotNull] string userName, [NotNull] string groupName);
