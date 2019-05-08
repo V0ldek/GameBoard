@@ -156,7 +156,7 @@ namespace GameBoard.DataLayer.Context
 
                     entity.Property(e => e.Description)
                         .IsRequired()
-                        .IsUnicode();
+                        .IsUnicode();//Not sure if it's needed.
                 });
         }
     }
