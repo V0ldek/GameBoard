@@ -144,6 +144,20 @@ namespace GameBoard.DataLayer.Context
 
                     entity.ToTable("Game");
                 });
+
+            builder.Entity<DescriptionTab>(
+                entity =>
+                {
+                    entity.HasKey(e => e.DescriptionOfId);
+
+                    entity.HasOne(e => e.DescriptionOf)
+                        .WithOne(g => g.Description)
+                        .HasForeignKey<DescriptionTab>(e => e.DescriptionOfId);
+
+                    entity.Property(e => e.Description)
+                        .IsRequired()
+                        .IsUnicode();
+                });
         }
     }
 }
