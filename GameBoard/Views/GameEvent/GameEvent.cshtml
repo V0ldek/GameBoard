@@ -68,7 +68,7 @@
             }
             @foreach (var participant in Model.Participants)
             {
-                <li>@await Component.InvokeAsync("UserCard", new {user = participant})</li>
+                <li>@await Component.InvokeAsync("UserCard", new { user = participant })</li>
             }
         </ul>
     </section>
@@ -81,7 +81,26 @@
             }
             @foreach (var invitee in Model.Invitees)
             {
-                <li>@await Component.InvokeAsync("UserCard", new {user = invitee})</li>
+                <li>
+                 @if (Model.IsCreator)
+                 {
+                     @await Component.InvokeAsync("FriendsSidebar", new
+                     {
+                         toggled = true,
+                         subComponentName = "GameEventInviteForm",
+                         subComponentArgumentsProvider = (Func<string, object>) (userName => new
+                         {
+                             gameEventId = Model.Id,
+                             gameEventName = Model.Name,
+                             userName
+                         })
+                     })
+                 }
+                 else
+                 {
+                     @await Component.InvokeAsync("UserCard", new { user = invitee })
+                 }
+                </li>
             }
         </ul>
     </section>
