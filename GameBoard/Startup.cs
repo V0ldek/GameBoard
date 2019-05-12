@@ -75,6 +75,7 @@ namespace GameBoard
             services.AddTransient<IMailSender, MailSender>();
             services.Configure<MailNotificationsConfiguration>(Configuration.GetSection(nameof(MailNotificationsConfiguration)));
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
+            services.Configure<GroupsConfiguration>(Configuration.GetSection(nameof(GroupsConfiguration)));
 
             services.ConfigureApplicationCookie(
                 options => { options.Cookie.Name = "GameBoard.Identity"; });

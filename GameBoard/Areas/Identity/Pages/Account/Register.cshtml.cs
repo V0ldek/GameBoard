@@ -3,6 +3,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.Areas.Identity.Pages.Account
 {
@@ -20,6 +22,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         private readonly IMailSender _mailSender;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IGroupsService _groupsService;
+        private GroupsConfiguration GroupsOptions { get; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -28,12 +31,14 @@ namespace GameBoard.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
             IMailSender mailSender,
-            IGroupsService groupsService)
+            IGroupsService groupsService,
+            IOptions<GroupsConfiguration> groupsOptions)
         {
             _userManager = userManager;
             _logger = logger;
             _mailSender = mailSender;
             _groupsService = groupsService;
+            GroupsOptions = groupsOptions.Value;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -50,7 +55,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 _logger.LogInformation("User created a new account with password.");
                 SendRegistrationEmail(user);
 
-                await _groupsService.AddGroupAsync(user.UserName, "All");
+                await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
 
                 return RedirectToPage("/Account/ConfirmEmailInfo");
             }

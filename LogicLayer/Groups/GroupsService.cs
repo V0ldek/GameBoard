@@ -3,18 +3,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.LogicLayer.Groups
 {
     public class GroupsService : IGroupsService
     {
         private readonly IGameBoardRepository _repository;
+        private GroupsConfiguration GroupsOptions { get; }
 
-        public GroupsService(IGameBoardRepository repository)
+        public GroupsService(IGameBoardRepository repository, IOptions<GroupsConfiguration> groupsOptions)
         {
             _repository = repository;
+            GroupsOptions = groupsOptions.Value;
         }
 
         public async Task AddGroupAsync(string userName, string groupName)

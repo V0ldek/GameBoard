@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
 using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.LogicLayer.Friends
 {
@@ -20,12 +22,14 @@ namespace GameBoard.LogicLayer.Friends
         private readonly IGroupsService _groupsService;
         private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
+        private GroupsConfiguration GroupsOptions { get; }
 
-        public FriendsService(IGameBoardRepository repository, IMailSender mailSender, IGroupsService groupsService)
+        public FriendsService(IGameBoardRepository repository, IMailSender mailSender, IGroupsService groupsService, IOptions<GroupsConfiguration> groupsOptions)
         {
             _repository = repository;
             _mailSender = mailSender;
             _groupsService = groupsService;
+            GroupsOptions = groupsOptions.Value;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
@@ -96,10 +100,10 @@ namespace GameBoard.LogicLayer.Friends
                 throw new NullReferenceException("The friend request you referenced does not exist in the system.");
             }
 
-            var groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserFrom.UserName, "All");
+            var groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserFrom.UserName, GroupsOptions.AllFriendsGroupName);
             await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.GroupId);
 
-            groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserTo.UserName, "All");
+            groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserTo.UserName, GroupsOptions.AllFriendsGroupName);
             await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.GroupId);
            
         }
