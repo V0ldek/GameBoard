@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameBoard.LogicLayer.EventTabs;
+using GameBoard.LogicLayer.EventTabs.Dtos;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
@@ -40,7 +40,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             [NotNull] [ItemNotNull] IEnumerable<string> games,
             [NotNull] UserDto creator,
             [NotNull] [ItemNotNull] IEnumerable<UserDto> invitees,
-            [NotNull] [ItemNotNull] IEnumerable<UserDto> participants)
+            [NotNull] [ItemNotNull] IEnumerable<UserDto> participants,
+            [CanBeNull] DescriptionTabDto description)
         {
             Id = id;
             Name = name;
@@ -50,6 +51,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             Creator = creator;
             Invitees = invitees;
             Participants = participants;
+            Description = description;
         }
 
         public GameEventPermission GetUserPermission([NotNull] string userName)

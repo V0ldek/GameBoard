@@ -1,15 +1,18 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.EventTabs.Dtos
 {
-    public class CreateDescriptionTabDto
+    public class EditDescriptionTabDto
     {
         public int GameEventId { get; }
 
         [NotNull]
         public string Description { get; }
 
-        public CreateDescriptionTabDto(int gameEventId, [NotNull] string description)
+        public EditDescriptionTabDto(int gameEventId, [NotNull] string description)
         {
             GameEventId = gameEventId;
             Description = description;

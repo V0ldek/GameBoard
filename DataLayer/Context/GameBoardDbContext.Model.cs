@@ -148,11 +148,12 @@ namespace GameBoard.DataLayer.Context
             builder.Entity<DescriptionTab>(
                 entity =>
                 {
-                    entity.HasKey(e => e.DescriptionOfId);
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-                    entity.HasOne(e => e.DescriptionOf)
+                    entity.HasOne(e => e.GameEvent)
                         .WithOne(g => g.Description)
-                        .HasForeignKey<DescriptionTab>(e => e.DescriptionOfId);
+                        .HasForeignKey<DescriptionTab>(e => e.GameEventId);
 
                     entity.Property(e => e.Description)
                         .IsRequired()
