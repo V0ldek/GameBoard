@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190507003425_Groups")]
+    [Migration("20190512001346_Groups")]
     partial class Groups
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,6 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<int?>("GroupId");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -62,8 +60,6 @@ namespace GameBoard.DataLayer.Migrations
                         .HasMaxLength(16);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -247,13 +243,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.ToTable("UserToken");
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.Group")
-                        .WithMany("Users")
-                        .HasForeignKey("GroupId");
-                });
-
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Friendship", b =>
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedBy")
@@ -280,12 +269,12 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.Group", "Group")
                         .WithMany("GroupUser")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "User")
                         .WithMany("GroupUser")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

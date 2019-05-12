@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 using System.Threading.Tasks;
-using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.Groups.Dtos;
+using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.Groups
 {
@@ -12,6 +11,8 @@ namespace GameBoard.LogicLayer.Groups
         [NotNull]
         [ItemNotNull]
         Task<IEnumerable<GroupDto>> GetGroupsByUserNameAsync([NotNull] string userName);
+
+        Task<GroupDto> GetGroupByNamesAsync([NotNull] string owner, [NotNull] string groupName);
 
         // Adds new group created by user(userName).
         Task AddGroupAsync([NotNull] string userName, [NotNull] string groupName);

@@ -8,6 +8,7 @@ using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
+using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,15 @@ namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class FriendsService : IFriendsService
     {
+        private readonly IGroupsService _groupsService;
         private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
 
-        public FriendsService(IGameBoardRepository repository, IMailSender mailSender)
+        public FriendsService(IGameBoardRepository repository, IMailSender mailSender, IGroupsService groupsService)
         {
             _repository = repository;
             _mailSender = mailSender;
+            _groupsService = groupsService;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
@@ -72,6 +75,38 @@ namespace GameBoard.LogicLayer.Friends
             await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
         }
 
+        public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
+        {
+            var friendship = await _repository.Friendships
+                .Include(f => f.RequestedBy)
+                .Include(f => f.RequestedTo)
+                .SingleOrDefaultAsync(f => f.Id == friendRequestId);
+
+            return friendship?.ToDto();
+        }
+
+        public async Task AcceptFriendRequestAsync(int friendRequestId)
+        {
+            await ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
+
+            var friendship = await GetFriendRequestAsync(friendRequestId);
+
+            if (friendship == null)
+            {
+                throw new NullReferenceException("The friend request you referenced does not exist in the system.");
+            }
+
+            var groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserFrom.UserName, "All");
+            await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.GroupId);
+
+            groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserTo.UserName, "All");
+            await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.GroupId);
+           
+        }
+
+        public Task RejectFriendRequestAsync(int friendRequestId) =>
+            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);
+
         private async Task SaveFriendshipAsync(Friendship friendship)
         {
             _repository.Friendships.Add(friendship);
@@ -105,22 +140,6 @@ namespace GameBoard.LogicLayer.Friends
             await _mailSender.SendFriendInvitationAsync(
                 friendship.RequestedTo.Email,
                 requestLinkGenerator(friendship.Id.ToString()));
-
-        public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
-        {
-            var friendship = await _repository.Friendships
-                .Include(f => f.RequestedBy)
-                .Include(f => f.RequestedTo)
-                .SingleOrDefaultAsync(f => f.Id == friendRequestId);
-
-            return friendship?.ToDto();
-        }
-
-        public Task AcceptFriendRequestAsync(int friendRequestId) =>
-            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
-
-        public Task RejectFriendRequestAsync(int friendRequestId) =>
-            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);
 
         private async Task ChangeFriendRequestStatus(int friendRequestId, FriendshipStatus friendshipStatus)
         {

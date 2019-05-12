@@ -16,7 +16,7 @@ namespace GameBoard.DataLayer.Entities
 
         public ICollection<ApplicationUser> Users
         {
-            get => GroupUser.Select(gu => gu.User).ToList();
+            get => GroupUser?.Select(gu => gu.User).ToList();
             set => GroupUser = value.Select(
                 u => new GroupUser
                 {

@@ -1,8 +1,5 @@
-﻿using System;
+﻿using GameBoard.Models.User;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GameBoard.DataLayer.Entities;
 
 namespace GameBoard.Models.Groups
 {
@@ -12,9 +9,9 @@ namespace GameBoard.Models.Groups
 
         public string GroupName { get; }
 
-        public ICollection<ApplicationUser> Users { get; }
+        public IEnumerable<UserViewModel> Users { get; }
 
-        public GroupViewModel(int groupId, string groupName, ICollection<ApplicationUser> users)
+        public GroupViewModel(int groupId, string groupName, IEnumerable<UserViewModel> users)
         {
             GroupId = groupId;
             GroupName = groupName;

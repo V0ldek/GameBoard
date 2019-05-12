@@ -19,6 +19,12 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.UserName).HasMaxLength(16);
                     entity.Property(e => e.NormalizedUserName).HasMaxLength(16);
 
+                    entity.HasMany(u => u.GroupUser)
+                        .WithOne(gu => gu.User)
+                        .HasForeignKey(gu => gu.UserId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     entity.ToTable("User");
                 });
 
@@ -63,6 +69,14 @@ namespace GameBoard.DataLayer.Context
                         .HasForeignKey(e => e.OwnerId)
                         .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.HasMany(g => g.GroupUser)
+                        .WithOne(gu => gu.Group)
+                        .HasForeignKey(gu => gu.GroupId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.Ignore(g => g.Users);
 
                     entity.Property(e => e.Name).HasMaxLength(64);
 

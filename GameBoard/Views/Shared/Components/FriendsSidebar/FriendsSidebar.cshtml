@@ -5,7 +5,7 @@
         <hr/>
         @foreach (var group in Model)
         {
-            @await Component.InvokeAsync("GroupCard");
+            @await Component.InvokeAsync("GroupCard", new{group});
         }
         @await Component.InvokeAsync("GroupAddBox")
     </div>

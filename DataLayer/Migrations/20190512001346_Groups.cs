@@ -7,11 +7,6 @@ namespace GameBoard.DataLayer.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "GroupId",
-                table: "User",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Group",
                 columns: table => new
@@ -47,19 +42,14 @@ namespace GameBoard.DataLayer.Migrations
                         column: x => x.GroupId,
                         principalTable: "Group",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GroupUser_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_GroupId",
-                table: "User",
-                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Group_OwnerId",
@@ -70,35 +60,15 @@ namespace GameBoard.DataLayer.Migrations
                 name: "IX_GroupUser_UserId",
                 table: "GroupUser",
                 column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_Group_GroupId",
-                table: "User",
-                column: "GroupId",
-                principalTable: "Group",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_User_Group_GroupId",
-                table: "User");
-
             migrationBuilder.DropTable(
                 name: "GroupUser");
 
             migrationBuilder.DropTable(
                 name: "Group");
-
-            migrationBuilder.DropIndex(
-                name: "IX_User_GroupId",
-                table: "User");
-
-            migrationBuilder.DropColumn(
-                name: "GroupId",
-                table: "User");
         }
     }
 }

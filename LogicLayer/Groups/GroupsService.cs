@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Groups.Dtos;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.Groups
@@ -19,11 +17,11 @@ namespace GameBoard.LogicLayer.Groups
             _repository = repository;
         }
 
-        public async Task AddGroupAsync([NotNull] string userName, [NotNull] string groupName)
+        public async Task AddGroupAsync(string userName, string groupName)
         {
             var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
 
-            var group = new Group()
+            var group = new Group
             {
                 Name = groupName,
                 OwnerId = user.Id,
@@ -34,12 +32,12 @@ namespace GameBoard.LogicLayer.Groups
             await _repository.SaveChangesAsync();
         }
 
-        public async Task AddUserToGroupAsync([NotNull] string userName, int groupId)
+        public async Task AddUserToGroupAsync(string userName, int groupId)
         {
             var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
             var group = _repository.Groups.Single(g => g.Id == groupId);
 
-            var groupUser = new GroupUser()
+            var groupUser = new GroupUser
             {
                 UserId = user.Id,
                 User = user,
@@ -54,7 +52,17 @@ namespace GameBoard.LogicLayer.Groups
         public async Task<IEnumerable<GroupDto>> GetGroupsByUserNameAsync(string userName) =>
             await _repository.Groups
                 .Where(g => g.Owner.UserName == userName)
+                .Include(g => g.GroupUser)
+                .ThenInclude(gu => gu.User)
                 .Select(g => g.ToDto())
                 .ToListAsync();
+
+        public async Task<GroupDto> GetGroupByNamesAsync(string owner, string groupName) =>
+           await _repository.Groups
+                .Where(g => g.Owner.UserName == owner && g.Name == groupName)
+                .Include(g => g.GroupUser)
+                .ThenInclude(gu => gu.User)
+                .Select(g => g.ToDto())
+                .SingleAsync();
     }
 }

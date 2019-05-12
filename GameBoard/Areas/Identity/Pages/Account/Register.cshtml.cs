@@ -2,6 +2,8 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +19,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailSender _mailSender;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGroupsService _groupsService;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -24,11 +27,13 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
-            IMailSender mailSender)
+            IMailSender mailSender,
+            IGroupsService groupsService)
         {
             _userManager = userManager;
             _logger = logger;
             _mailSender = mailSender;
+            _groupsService = groupsService;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -44,6 +49,8 @@ namespace GameBoard.Areas.Identity.Pages.Account
             {
                 _logger.LogInformation("User created a new account with password.");
                 SendRegistrationEmail(user);
+
+                await _groupsService.AddGroupAsync(user.UserName, "All");
 
                 return RedirectToPage("/Account/ConfirmEmailInfo");
             }
