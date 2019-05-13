@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.EventTabs.Dtos
+namespace GameBoard.LogicLayer.DescriptionTabs.Dtos
 {
     public class DescriptionTabDto
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameBoard.LogicLayer.EventTabs.Dtos;
+using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;

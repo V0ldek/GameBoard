@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.EventTabs.Dtos
+namespace GameBoard.LogicLayer.DescriptionTabs.Dtos
 {
     public class EditDescriptionTabDto
     {
