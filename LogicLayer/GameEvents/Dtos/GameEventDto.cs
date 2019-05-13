@@ -40,7 +40,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             [NotNull] [ItemNotNull] IEnumerable<string> games,
             [NotNull] UserDto creator,
             [NotNull] [ItemNotNull] IEnumerable<UserDto> invitees,
-            [NotNull] [ItemNotNull] IEnumerable<UserDto> participants
+            [NotNull] [ItemNotNull] IEnumerable<UserDto> participants,
+            [CanBeNull] DescriptionTabDto descriptionTab
         )
         {
             Id = id;
@@ -51,6 +52,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             Creator = creator;
             Invitees = invitees;
             Participants = participants;
+            DescriptionTab = descriptionTab;
         }
 
         public GameEventPermission GetUserPermission([NotNull] string userName)
