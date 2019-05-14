@@ -37,7 +37,8 @@ namespace GameBoard.LogicLayer.GameEvents
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games
                     .Select((game, index) => new Game {Name = game, PositionOnTheList = index}).ToList(),
-                Participations = new List<GameEventParticipation>()
+                Participations = new List<GameEventParticipation>(),
+                Description = new DescriptionTab {Description = null}
             };
 
             gameEvent.Participations.Add(creatorParticipation);

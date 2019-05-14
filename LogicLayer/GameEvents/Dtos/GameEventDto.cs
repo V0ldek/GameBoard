@@ -16,7 +16,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         [NotNull] [ItemNotNull] public IEnumerable<UserDto> Participants;
 
-        [CanBeNull] public DescriptionTabDto DescriptionTab { get; }
+        [NotNull] public DescriptionTabDto DescriptionTab { get; }
 
         public int Id { get; }
 
