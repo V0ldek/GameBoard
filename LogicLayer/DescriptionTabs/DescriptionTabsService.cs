@@ -25,12 +25,5 @@ namespace GameBoard.LogicLayer.DescriptionTabs
 
                 await _repository.SaveChangesAsync();
         }
-
-        //This method seems pointless.
-        public Task<DescriptionTabDto> GetDescriptionTabAsync(int gameEventId) =>
-            _repository.DescriptionTabs
-                .Where(dt => dt.GameEventId == gameEventId)
-                .Select(dt => dt.ToDescriptionTabDto())
-                .SingleOrDefaultAsync();
     }
 }

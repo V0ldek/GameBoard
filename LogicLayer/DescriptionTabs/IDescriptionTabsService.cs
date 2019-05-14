@@ -8,8 +8,5 @@ namespace GameBoard.LogicLayer.DescriptionTabs
     {
         Task EditDescriptionTab([NotNull] EditDescriptionTabDto editDescriptionTabDto);
 
-        //Not sure if this is needed. 
-        Task<DescriptionTabDto> GetDescriptionTabAsync(int gameEventId);
-
     }
 }
