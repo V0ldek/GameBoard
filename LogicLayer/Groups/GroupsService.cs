@@ -7,6 +7,7 @@ using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using GameBoard.LogicLayer.Groups.Exceptions;
 
 namespace GameBoard.LogicLayer.Groups
 {
@@ -40,6 +41,11 @@ namespace GameBoard.LogicLayer.Groups
         {
             var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
             var group = _repository.Groups.Single(g => g.Id == groupId);
+
+            if (group.OwnerId == user.Id)
+            {
+                throw new GroupsException("You cannot add yourself to your group.");
+            }
 
             var groupUser = new GroupUser
             {

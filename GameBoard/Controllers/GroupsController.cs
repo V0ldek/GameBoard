@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GameBoard.LogicLayer.Friends;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using GameBoard.LogicLayer.Groups;
 using Microsoft.AspNetCore.Mvc;
