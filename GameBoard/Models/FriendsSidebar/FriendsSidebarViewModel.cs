@@ -1,19 +1,30 @@
-﻿
+using System;
 using System.Collections.Generic;
 using GameBoard.Models.Groups;
-using GameBoard.Models.User;
 
 namespace GameBoard.Models.FriendsSidebar
 {
     public class FriendsSidebarViewModel
     {
         public IEnumerable<GroupViewModel> Groups { get; }
-        public IEnumerable<UserViewModel> Users { get; }
 
-        public FriendsSidebarViewModel(IEnumerable<GroupViewModel> groups, IEnumerable<UserViewModel> users)
+        public bool Toggled { get; }
+
+        public string SubComponentName { get; }
+
+        public Func<string, object> SubComponentArguments { get; }
+
+        public FriendsSidebarViewModel(
+            IEnumerable<GroupViewModel> groups,
+            bool toggled,
+            string subComponentName,
+            Func<string, object> subComponentArguments)
         {
             Groups = groups;
-            Users = users;
+            Toggled = toggled;
+            SubComponentName = subComponentName;
+            SubComponentArguments = subComponentArguments;
         }
     }
 }
+

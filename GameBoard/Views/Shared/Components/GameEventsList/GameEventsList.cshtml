@@ -1,0 +1,42 @@
+﻿@model GameBoard.Models.GameEventList.GameEventListViewModel
+
+<h1 class="mb-4 mr-xl-5 pr-xl-5">Your game events</h1>
+<div id="game-events-container">
+    @if (!Model.Created.Any() && !Model.Accepted.Any() && !Model.Pending.Any())
+    {
+        <p>There are no events that you created or are invited to.</p>
+    }
+    else
+    {
+        <table id="game-events-table" class="table table-striped table-dark">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Creator</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var gameEvent in Model.Created.Concat(Model.Accepted))
+            {
+                <tr onclick="window.location.href = '/GameEvent/GameEvent/@gameEvent.Id'">
+                    <td>@gameEvent.Name</td>
+                    <td>@await Component.InvokeAsync("UserCard", new {user = gameEvent.Creator})</td>
+                    <td class="text-success">Active</td>
+                </tr>
+            }
+            @foreach (var gameEvent in Model.Pending)
+            {
+                <tr onclick="window.location.href = '/GameEvent/GameEvent/@gameEvent.Id'">
+                    <td> @gameEvent.Name</td>
+                    <td>@await Component.InvokeAsync("UserCard", new {user = gameEvent.Creator})</td>
+                    <td class="text-warning">Invitation pending</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+<form asp-action="CreateGameEvent" asp-controller="GameEvent" method="get" class="mt-3">
+    <button type="submit" class="btn btn-dark">Create new game event</button>
+</form>

@@ -1,0 +1,61 @@
+﻿@model GameBoard.Models.GameEvent.CreateGameEventViewModel
+
+<form asp-action="CreateGameEvent" asp-controller="GameEvent" method="post">
+    <h1>Create a new game event</h1>
+    <input type="hidden" asp-for="CreatorUserName" value="@Model.CreatorUserName"/>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col form-group">
+            <label asp-for="Place"></label>
+            <input class="form-control" asp-for="Place"/>
+            <span asp-validation-for="Place" class="text-danger"></span>
+        </div>
+        <div class="col form-group">
+            <label asp-for="Date"></label>
+            <div id="date-input-group" class="input-group date" data-target-input="nearest">
+                <input class="form-control" type="text" asp-for="Date" data-target="#date-input-group"/>
+                <div class="input-group-append" data-target="#date-input-group" data-toggle="datetimepicker">
+                    <div class="input-group-text">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+    </div>
+    <div id="games-form-group" class="row">
+        <div class="col form-group">
+            <label asp-for="Games"></label>
+            <textarea id="games-text-area" asp-for="Games" class="form-control" rows="6"></textarea>
+            <small class="form-text">Start each game in a new line.</small>
+            <span asp-validation-for="Games" class="text-danger"></span>
+        </div>
+        <div class="col form-group">
+            <label>Planned games - preview</label>
+            <div id="games-preview-container">
+                <ul id="games-preview-list" class="list-unstyled border-full" data-simplebar>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-dark">
+        Create
+    </button>
+</form>
+
+<!--
+Yes, this is ugly and against all best practices, but this datepicker has no @@types for TypeScript.
+If anyone wishes to spend some miserable hours on creating a .d.ts file or finding another datetimepicker
+then go ahead, I've had enough.
+-->
+
+@section Scripts
+{
+    <script>
+        $("#date-input-group").datetimepicker();
+    </script>
+}

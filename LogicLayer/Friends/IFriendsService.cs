@@ -14,7 +14,7 @@ namespace GameBoard.LogicLayer.Friends
 
         // Throws FriendRequestAlreadyPending if there exists a request between the two users
         // that was not accepted or rejected.
-        Task SendFriendRequestAsync([NotNull] CreateFriendRequestDto friendRequest);
+        Task SendFriendRequestAsync([NotNull] SendFriendRequestDto friendRequest);
 
         // Returns null if friend request does not exist.
         [ItemCanBeNull]

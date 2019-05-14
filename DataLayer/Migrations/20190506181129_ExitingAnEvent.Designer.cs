@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190512001346_Groups")]
-    partial class Groups
+    [Migration("20190506181129_ExitingAnEvent")]
+    partial class ExitingAnEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,36 +97,75 @@ namespace GameBoard.DataLayer.Migrations
                     b.ToTable("Friendship");
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(64);
+                    b.Property<int>("GameEventId");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired();
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.Property<int?>("PositionOnTheList");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("GameEventId", "PositionOnTheList")
+                        .IsUnique()
+                        .HasFilter("PositionOnTheList IS NOT NULL");
 
-                    b.ToTable("Group");
+                    b.ToTable("Game");
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEvent", b =>
                 {
-                    b.Property<int>("GroupId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserId");
+                    b.Property<DateTime?>("Date");
 
-                    b.HasKey("GroupId", "UserId");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(48);
 
-                    b.HasIndex("UserId");
+                    b.Property<string>("Place")
+                        .HasMaxLength(64);
 
-                    b.ToTable("GroupUser");
+                    b.HasKey("Id");
+
+                    b.ToTable("GameEvent");
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ParticipantId")
+                        .IsRequired();
+
+                    b.Property<int>("ParticipationStatus");
+
+                    b.Property<int>("TakesPartInId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("TakesPartInId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus = 0");
+
+                    b.HasIndex("TakesPartInId", "ParticipantId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
+
+                    b.ToTable("GameEventParticipation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -256,24 +295,24 @@ namespace GameBoard.DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
                 {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Owner")
-                        .WithMany("UserGroups")
-                        .HasForeignKey("OwnerId")
+                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "GameEvent")
+                        .WithMany("Games")
+                        .HasForeignKey("GameEventId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
                 {
-                    b.HasOne("GameBoard.DataLayer.Entities.Group", "Group")
-                        .WithMany("GroupUser")
-                        .HasForeignKey("GroupId")
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Participant")
+                        .WithMany("Participations")
+                        .HasForeignKey("ParticipantId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "User")
-                        .WithMany("GroupUser")
-                        .HasForeignKey("UserId")
+                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "TakesPartIn")
+                        .WithMany("Participations")
+                        .HasForeignKey("TakesPartInId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

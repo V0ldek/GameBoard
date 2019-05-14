@@ -83,9 +83,9 @@ namespace GameBoard.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CreateFriendRequest(string userNameFrom, string userNameTo)
+        public async Task<IActionResult> SendFriendRequest(string userNameFrom, string userNameTo)
         {
-            var createFriendRequestDto = new CreateFriendRequestDto(
+            var createFriendRequestDto = new SendFriendRequestDto(
                 userNameFrom,
                 userNameTo,
                 friendRequestId => _hostConfiguration.HostAddress + Url.Action(
@@ -113,7 +113,7 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Invite sent.",
-                    message = $"An email with your invitation has be sent to {userNameTo}." +
+                    message = $"An email with your invitation has been sent to {userNameTo}." +
                         " Once it's accepted you'll see them in your Friends menu."
                 });
         }

@@ -6,10 +6,25 @@
 </button>
 <div class="collapse" id="collapseGroup">
     <ul class="list-unstyled components border-top border-bottom">
-        @foreach (var user in Model.Users)
-        {
-            <li class="active">@await Component.InvokeAsync("UserCard", new { user })</li>
-        }
+            @foreach (var user in Model.Users)
+            {
+                <li class="active">
+                    @await Component.InvokeAsync("UserCard", new {user})
+                    @if (Model.SubComponentName != null)
+                    {
+                        <div class="sub-component">
+                            @if (Model.SubComponentArguments != null)
+                            {
+                                @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName))
+                            }
+                            else
+                            {
+                                @await Component.InvokeAsync(Model.SubComponentName)
+                            }
+                        </div>
+                    }
+                </li>
+            }
     </ul>
     @await Component.InvokeAsync("FriendSearchBox")
 </div>

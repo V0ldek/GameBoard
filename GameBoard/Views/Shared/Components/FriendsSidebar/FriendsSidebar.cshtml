@@ -1,17 +1,25 @@
-﻿@model IEnumerable<GameBoard.Models.Groups.GroupViewModel>
-<div id="friends-sidebar-container">
-    <div id="friends-sidebar" class="bg border-top border-right box-shadow">
+﻿@model GameBoard.Models.FriendsSidebar.FriendsSidebarViewModel
+
+<div id="friends-sidebar-container" @(Model.Toggled ? "class=toggled" : "")>
+    <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")">
         <h3>Friends</h3>
-        <hr/>
-        @foreach (var group in Model)
+        <hr />
+        @foreach (var group in Model.Groups)
         {
-            @await Component.InvokeAsync("GroupCard", new{group});
+            @await Component.InvokeAsync("GroupCard", new
+            {
+                GroupId = group.GroupId,
+                GroupName = group.GroupName,
+                Users = group.Users,
+                SubComponentName = Model.SubComponentName,
+                SubComponentArguments = Model.SubComponentArguments
+            });
         }
         @await Component.InvokeAsync("GroupAddBox")
     </div>
     @await Component.InvokeAsync("UserSearchBox")
     <button id="friends-sidebar-collapse" class="btn btn-dark border-right border-top border-bottom border-left-0" type="button">
-        <i id="friends-sidebar-collapse-icon" class="fa fa-angle-right"></i>
+        <i id="friends-sidebar-collapse-icon" class="fa @(Model.Toggled ? "fa-angle-left" : "fa-angle-right")"></i>
     </button>
 </div>
    
