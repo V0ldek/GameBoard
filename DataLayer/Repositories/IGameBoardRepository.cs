@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GameBoard.DataLayer.Repositories
 {
@@ -8,8 +9,12 @@ namespace GameBoard.DataLayer.Repositories
     {
         DbSet<ApplicationUser> ApplicationUsers { get; }
         DbSet<Friendship> Friendships { get; }
+        DbSet<GameEvent> GameEvents { get; }
+        DbSet<GameEventParticipation> GameEventParticipations { get; }
+        DbSet<Game> Games { get; }
         DbSet<Group> Groups { get; }
         DbSet<GroupUser> GroupUser { get; }
+        IDbContextTransaction BeginTransaction();
 
         Task SaveChangesAsync();
     }

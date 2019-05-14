@@ -2,7 +2,7 @@
 
 namespace GameBoard.LogicLayer.Friends.Dtos
 {
-    public sealed class CreateFriendRequestDto
+    public sealed class SendFriendRequestDto
     {
         [NotNull]
         public delegate string RequestLinkGenerator([NotNull] string id);
@@ -15,7 +15,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
         [NotNull]
         public string UserNameTo { get; }
 
-        public CreateFriendRequestDto(
+        public SendFriendRequestDto(
             [NotNull] string userNameFrom,
             [NotNull] string userNameTo,
             [NotNull] RequestLinkGenerator requestLinkGenerator)

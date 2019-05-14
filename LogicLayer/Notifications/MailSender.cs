@@ -28,15 +28,6 @@ namespace GameBoard.LogicLayer.Notifications
             return SendNotificationAsync(email, notification);
         }
 
-        public Task SendEventCancellationAsync(IEnumerable<string> emails, string link)
-        {
-            var notification = new Notification(
-                GetHtmlPath(MailNotificationsOptions.EventCancellationHtml),
-                link,
-                "Event Cancellation");
-            return SendNotificationAsync(emails, notification);
-        }
-
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
         {
             var notification = new Notification(

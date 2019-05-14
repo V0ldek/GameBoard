@@ -51,7 +51,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             var callbackUrl = Url.Page(
                 "/Account/ResetPassword",
                 null,
-                new { code, email },
+                new {code, email},
                 Request.Scheme);
 
             await _mailSender.SendPasswordResetAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));

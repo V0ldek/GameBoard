@@ -95,6 +95,77 @@ namespace GameBoard.DataLayer.Migrations
                     b.ToTable("Friendship");
                 });
 
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GameEventId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.Property<int?>("PositionOnTheList");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameEventId", "PositionOnTheList")
+                        .IsUnique()
+                        .HasFilter("PositionOnTheList IS NOT NULL");
+
+                    b.ToTable("Game");
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("Date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(48);
+
+                    b.Property<string>("Place")
+                        .HasMaxLength(64);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameEvent");
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ParticipantId")
+                        .IsRequired();
+
+                    b.Property<int>("ParticipationStatus");
+
+                    b.Property<int>("TakesPartInId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("TakesPartInId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus = 0");
+
+                    b.HasIndex("TakesPartInId", "ParticipantId")
+                        .IsUnique()
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
+
+                    b.ToTable("GameEventParticipation");
+                });
+
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -251,6 +322,27 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "RequestedTo")
                         .WithMany("ReceivedRequests")
                         .HasForeignKey("RequestedToId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.Game", b =>
+                {
+                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "GameEvent")
+                        .WithMany("Games")
+                        .HasForeignKey("GameEventId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("GameBoard.DataLayer.Entities.GameEventParticipation", b =>
+                {
+                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Participant")
+                        .WithMany("Participations")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "TakesPartIn")
+                        .WithMany("Participations")
+                        .HasForeignKey("TakesPartInId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

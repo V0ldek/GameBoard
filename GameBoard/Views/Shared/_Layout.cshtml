@@ -24,10 +24,16 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css"/>
         <link rel="stylesheet" href="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css"/>
+        <link rel="stylesheet" href="~/lib/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.css"/>
 
         <link rel="stylesheet" href="~/css/friendsSidebar.css"/>
+        <link rel="stylesheet" href="~/css/gameEvent.css"/>
+        <link rel="stylesheet" href="~/css/gameEventInviteForm.css"/>
+        <link rel="stylesheet" href="~/css/gameEventForm.css"/>
+        <link rel="stylesheet" href="~/css/gameEventsList.css"/>
         <link rel="stylesheet" href="~/css/usersSearchBox.css"/>
         <link rel="stylesheet" href="~/css/popovers.css"/>
+        <link rel="stylesheet" href="~/css/userCard.css"/>
         <link rel="stylesheet" href="~/css/main.css"/>
         <link rel="stylesheet" href="~/css/groupAddBox.css"/>
         <link rel="stylesheet" href="~/css/friendsSearchBox.css"/>
@@ -59,7 +65,8 @@
               asp-fallback-test-class="mCustomScrollBox" asp-fallback-test-property="position" asp-fallback-test-value="relative"
               crossorigin="anonymous"
               integrity="sha384-2Eef5h4vdx01fD0i6qvkDNrCPXRXiKc1D1fF12tgo1LvtNdDCWOOSJo2cgc0zivP"/>
-
+        <!-- This library is fucked and has different files on npm and cdnjs causing an integrity validation failure, so it has to be loaded from the server. -->
+        <link rel="stylesheet" href="~/lib/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css"/>
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
 </head>
@@ -105,12 +112,22 @@
 <environment include="Development">
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/moment/moment.js"></script>
+    <script src="~/lib/moment/locale/en-gb.js"></script>
     <script src="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js"></script>
+    <script src="~/lib/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.js"></script>
 
     <script src="~/scripts/Autocomplete/autocomplete.js"></script>
     <script src="~/scripts/Collapsible/collapsible.js"></script>
+    <script src="~/scripts/ListInput/listInput.js"></script>
     <script src="~/scripts/Popovers/popoverGenerator.js"></script>
     <script src="~/scripts/Site/friendsSidebar.js"></script>
+    <script src="~/scripts/Site/gameEvent.js"></script>
+    <script src="~/scripts/Site/gameEventForm.js"></script>
+    <script src="~/scripts/Site/gameEventInviteForm.js"></script>
+    <script src="~/scripts/Site/gameEventList.js"></script>
     <script src="~/scripts/Site/userSearchBox.js"></script>
     <script src="~/scripts/Site/friendSearchBox.js"></script>
 </environment>
@@ -121,13 +138,34 @@
             crossorigin="anonymous"
             integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl">
     </script>
-    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"
+            asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"
+            crossorigin="anonymous"
+            integrity="sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o+ok+t/SAKlL5mvXLr0OXNi1Hp">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js"
+            asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
+            crossorigin="anonymous"
+            integrity="sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
+            asp-fallback-src="~/lib/moment/min/moment.min.js"
+            asp-fallback-test="window.moment"
+            crossorigin="anonymous"
+            integrity="sha384-fYxN7HsDOBRo1wT/NSZ0LkoNlcXvpDpFy6WzB42LxuKAX7sBwgo7vuins+E1HCaw">
+    </script>
+    <script src="~/lib/moment/locale/en-gb.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"
             asp-fallback-src="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js"
             asp-fallback-test="window.jQuery && window.jQuery.mCustomScrollbar"
             crossorigin="anonymous"
             integrity="sha384-c8PYTi+wTlI/Gtx4H1LrGsuSV4JwEh6XwXiIX/qdSzQd4VknmE1kZrpwGAqmtevt"></script>
-
+    <!-- The cdnjs version doesn't work for no apparent reason. -->
+    <script src="~/lib/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="~/scripts/site.min.js" asp-append-version="true"></script>
 </environment>
 @RenderSection("Scripts", false)

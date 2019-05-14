@@ -1,4 +1,6 @@
 ﻿using GameBoard.LogicLayer.Friends;
+using GameBoard.LogicLayer.GameEventParticipations;
+using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +18,8 @@ namespace GameBoard.LogicLayer
             DataLayer.Configuration.ConfigureServices(services);
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IFriendsService, FriendsService>();
+            services.AddScoped<IGameEventService, GameEventService>();
+            services.AddScoped<IGameEventParticipationService, GameEventParticipationService>();
             services.AddScoped<IGroupsService, GroupsService>();
         }
 

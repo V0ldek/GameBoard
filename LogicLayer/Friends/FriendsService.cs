@@ -56,11 +56,11 @@ namespace GameBoard.LogicLayer.Friends
             return allFriends.Select(u => u.ToDto());
         }
 
-        public async Task SendFriendRequestAsync(CreateFriendRequestDto friendRequest)
+        public async Task SendFriendRequestAsync(SendFriendRequestDto friendRequest)
         {
             if (friendRequest.UserNameTo == friendRequest.UserNameFrom)
             {
-                throw new InvitingYourselfException("You cannot invite yourself.");
+                throw new FriendRequestException("You cannot invite yourself.");
             }
 
             var userRequestedBy =
@@ -124,13 +124,13 @@ namespace GameBoard.LogicLayer.Friends
                 switch (sqlException.Number)
                 {
                     case 50000:
-                        throw new FriendRequestAlreadyPendingException(
+                        throw new FriendRequestException(
                             "You have already been invited by this user. Check your inbox for the friend request.");
                     case 50001:
-                        throw new FriendRequestAlreadyPendingException(
+                        throw new FriendRequestException(
                             "You have already sent this user a friend request.");
                     case 50002:
-                        throw new FriendRequestAlreadyFinalizedException("You are already friends.");
+                        throw new FriendRequestException("You are already friends.");
                     default:
                         throw new ArgumentOutOfRangeException(
                             $"Uncaught SQL Exception with error number {sqlException.Number} occured.");
@@ -139,7 +139,7 @@ namespace GameBoard.LogicLayer.Friends
         }
 
         private async Task SendFriendRequestEmailAsync(
-            CreateFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
+            SendFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
             Friendship friendship) =>
             await _mailSender.SendFriendInvitationAsync(
                 friendship.RequestedTo.Email,
