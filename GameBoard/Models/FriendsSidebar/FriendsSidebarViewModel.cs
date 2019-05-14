@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using GameBoard.Models.Groups;
 
@@ -27,3 +27,4 @@ namespace GameBoard.Models.FriendsSidebar
         }
     }
 }
+
