@@ -4,10 +4,10 @@ namespace GameBoard.LogicLayer.DescriptionTabs.Dtos
 {
     public class DescriptionTabDto
     {
-        [NotNull]
+        [CanBeNull]
         public string Description { get; }
 
-        public DescriptionTabDto([NotNull] string description)
+        public DescriptionTabDto([CanBeNull] string description)
         {
             Description = description;
         }

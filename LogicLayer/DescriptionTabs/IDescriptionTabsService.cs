@@ -1,18 +1,11 @@
 ﻿using System.Threading.Tasks;
-using GameBoard.LogicLayer.EventTabs.Dtos;
+using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using JetBrains.Annotations;
 
-namespace GameBoard.LogicLayer.EventTabs
+namespace GameBoard.LogicLayer.DescriptionTabs
 {
     public interface IEventTypeService
     {
-        Task CreateGameEventDescriptionTabAsync([NotNull] CreateDescriptionTabDto createDescriptionTabDto);
-
-        Task<DescriptionTabDto> GetDescriptionTabAsync(int gameEventId);
-
-        Task AddDescriptionTabAsync([NotNull] CreateDescriptionTabDto createDescriptionTabDto);
-
         Task EditDescriptionTab([NotNull] EditDescriptionTabDto editDescriptionTabDto);
-
     }
 }
