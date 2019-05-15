@@ -13,6 +13,7 @@
 }
 
 #friends-sidebar-container {
+    margin-left: 0;
     margin-left: calc(var(--sidebar-width) * -1);
     margin-right: 3%;
     position: relative;
