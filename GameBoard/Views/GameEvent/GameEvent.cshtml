@@ -72,7 +72,7 @@
             }
         </ul>
     </section>
-    <section class="invitees">
+    <section class="invitees @(Model.IsCreator ? "with-remove" : "")">
         <h3>@Html.DisplayNameFor(m => m.Invitees)</h3>
         <ul class="invitee-list list-unstyled border-full p-1">
             @if (!Model.Invitees.Any())
@@ -82,24 +82,15 @@
             @foreach (var invitee in Model.Invitees)
             {
                 <li>
-                 @if (Model.IsCreator)
-                 {
-                     @await Component.InvokeAsync("FriendsSidebar", new
-                     {
-                         toggled = true,
-                         subComponentName = "GameEventInviteForm",
-                         subComponentArgumentsProvider = (Func<string, object>) (userName => new
-                         {
-                             gameEventId = Model.Id,
-                             gameEventName = Model.Name,
-                             userName
-                         })
-                     })
-                 }
-                 else
-                 {
-                     @await Component.InvokeAsync("UserCard", new { user = invitee })
-                 }
+                    @await Component.InvokeAsync("UserCard", new { user = invitee })
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new
+                        {
+                            Model.Id,
+                            invitee.UserName
+                        })
+                    }
                 </li>
             }
         </ul>

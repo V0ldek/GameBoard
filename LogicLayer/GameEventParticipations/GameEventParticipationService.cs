@@ -96,7 +96,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.ExitedGuest);
         }
 
-        public Task RemoveParticipantAsync(int gameEventId, string userName) => throw new NotImplementedException();
+        public Task RemoveFromGameEventAsync(int gameEventId, string userName) => throw new NotImplementedException();
 
         private async Task ChangeGameEventParticipationStatusAsync(
             GameEventParticipation participation,

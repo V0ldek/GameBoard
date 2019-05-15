@@ -48,6 +48,25 @@ namespace GameBoard.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> RemoveFromGameEvent(int id, string userName)
+        {
+            var gameEvent = await _gameEventService.GetGameEventAsync(id);
+
+            return View("RemoveFromGameEvent", new RemoveFromGameEventViewModel { GameEventId = id, UserName = userName }); //TODO: create a separate extension method
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> RemoveFromGameEvent(RemoveFromGameEventViewModel removeFromGameEventViewModel)
+        {
+            await _gameEventParticipationService.RemoveFromGameEventAsync(
+                removeFromGameEventViewModel.GameEventId,
+                removeFromGameEventViewModel.UserName);
+
+            return RedirectToAction("GameEvent", "GameEvent", new { id = removeFromGameEventViewModel.GameEventId });
+        }
+
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AcceptGameEventInvite(int gameEventId)

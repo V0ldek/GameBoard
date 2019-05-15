@@ -14,6 +14,6 @@ namespace GameBoard.LogicLayer.GameEventParticipations
 
         Task ExitGameEventAsync(int gameEventId, [NotNull] string userName);
 
-        Task RemoveParticipantAsync(int gameEventId, [NotNull] string userName);
+        Task RemoveFromGameEventAsync(int gameEventId, [NotNull] string userName);
     }
 }
