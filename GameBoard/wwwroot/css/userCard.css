@@ -1,4 +1,4 @@
-﻿.main-component {
+﻿.user-card {
     align-items: center;
     display: grid;
     grid-template-areas: "gravatar username";
@@ -9,9 +9,9 @@
     width: 100%;
 }
 
-.main-component .gravatar { grid-area: gravatar; }
+.user-card .gravatar { grid-area: gravatar; }
 
-.main-component .username {
+.user-card .username {
     font-size: 14px;
     grid-area: username;
     overflow: hidden;
@@ -19,23 +19,8 @@
     white-space: nowrap;
 }
 
-.user-card.with-sub-component {
-    display: grid;
-    grid-template-areas: "maincomponent subcomponent";
-    grid-template-columns: 80% 20%;
-    grid-template-rows: auto;
-}
-
-.user-card.with-sub-component .main-component {
-    grid-area: maincomponent
-}
-
-.user-card.with-sub-component .sub-component {
-    grid-area: subcomponent
-}
-
 @media (min-width: 768px) {
-    .main-component .username { font-size: 16px; }
+    .user-card .username { font-size: 16px; }
 }
 
-.main-component .username-container { width: 100%; }
+.user-card .username-container { width: 100%; }

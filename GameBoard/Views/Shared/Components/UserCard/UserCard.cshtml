@@ -1,13 +1,8 @@
 ﻿@model GameBoard.Models.User.UserViewModel
 
-<div class="user-card">
-    <section title="@Model.UserName" class="main-component btn btn-dark">
-        <img src="https://www.gravatar.com/avatar/@Model.EmailHash.Value" class="gravatar rounded img-fluid align-self-center mr-3" alt="gravatar"/>
-        <div class="username-container">
-            <h5 class="username">@Model.UserName</h5>
-        </div>
-    </section>
-    <section class="sub-component">
-
-    </section>
+<div title="@Model.UserName" class="user-card btn btn-dark">
+    <img src="https://www.gravatar.com/avatar/@Model.EmailHash.Value" class="gravatar rounded img-fluid align-self-center mr-3" alt="gravatar"/>
+    <div class="username-container">
+        <h5 class="username">@Model.UserName</h5>
+    </div>
 </div>
