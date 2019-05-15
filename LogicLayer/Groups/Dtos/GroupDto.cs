@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using JetBrains.Annotations;
 
@@ -13,9 +12,9 @@ namespace GameBoard.LogicLayer.Groups.Dtos
         public string GroupName { get; }
 
         [NotNull]
-        public ICollection<UserDto> Users { get; }
+        public IEnumerable<UserDto> Users { get; }
 
-        public GroupDto(int groupId, [NotNull] string groupName, [NotNull] ICollection<UserDto> users)
+        public GroupDto(int groupId, [NotNull] string groupName, [NotNull] IEnumerable<UserDto> users)
         {
             GroupId = groupId;
             GroupName = groupName;

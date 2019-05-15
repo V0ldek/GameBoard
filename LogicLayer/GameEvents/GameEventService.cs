@@ -48,15 +48,20 @@ namespace GameBoard.LogicLayer.GameEvents
 
         public async Task EditGameEventAsync(EditGameEventDto editedEvent)
         {
-            var transaction = _repository.BeginTransaction();
+            using (var transaction = _repository.BeginTransaction())
+            {
+                await EditSingleGameEventProperties(
+                    editedEvent.Id,
+                    editedEvent.Name,
+                    editedEvent.Date,
+                    editedEvent.Place);
 
-            await EditSingleGameEventProperties(editedEvent.Id, editedEvent.Name, editedEvent.Date, editedEvent.Place);
+                var games = await GetGames(editedEvent.Id);
 
-            var games = await GetGames(editedEvent.Id);
+                await EditGames(editedEvent.Id, games, editedEvent.Games);
 
-            await EditGames(editedEvent.Id, games, editedEvent.Games);
-
-            transaction.Commit();
+                transaction.Commit();
+            }
         }
 
         public async Task<GameEventListDto> GetAccessibleGameEventsAsync(string userName)
