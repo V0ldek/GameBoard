@@ -93,7 +93,9 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                         $"Unexpected value in ${nameof(ExitGameEventAsync)} - ${userParticipation.ParticipationStatus}");
             }
 
-            await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.ExitedGuest);
+            await ChangeGameEventParticipationStatusAsync(
+                userParticipation, 
+                ParticipationStatus.ExitedGuest);
         }
 
         public async Task RemoveFromGameEventAsync(int gameEventId, string userName)
