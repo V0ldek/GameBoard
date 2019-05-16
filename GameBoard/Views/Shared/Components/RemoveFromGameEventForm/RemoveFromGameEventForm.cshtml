@@ -2,7 +2,7 @@
 
 @*TODO: remove-from-game-event-form*@
 <form class="game-event-invite-form" asp-action="RemoveFromGameEvent" asp-controller="GameEventParticipation"
-      data-ajax="true" data-ajax-method="POST"
+      data-ajax="true" data-ajax-method="Get"
       data-ajax-success="removeFromGameEventFormPopoverGenerator.generateSuccessPopover(document.querySelector('#remove-from-game-event-@Model.UserName'), xhr)"
       data-ajax-failure="removeFromGameEventFormPopoverGenerator.generateErrorPopover(document.querySelector('#remove-from-game-event-@Model.UserName'), xhr)">
     <input type="hidden" asp-for="@Model.GameEventId" />
