@@ -7,8 +7,9 @@
 .remove-from-game-event-form button {
     height: 95%;
     width: 100%;
+    padding: 0;
 }
 
-.remove-from-game-event-form button.fa-remove {
-    color: red;
+.remove-from-game-event-form button .fa-remove {
+    font-size: 23px;
 }

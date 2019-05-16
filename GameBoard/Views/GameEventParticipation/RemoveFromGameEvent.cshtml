@@ -1,7 +1,7 @@
 ﻿@model GameBoard.Models.GameEvent.RemoveFromGameEventViewModel
 
 <article>
-    <h1>Removing @Model.UserName from the @Model.GameEventName</h1>
+    <h1>Removing @Model.UserName.</h1>
     <p>You're about to remove @Model.UserName from the @Model.GameEventName event. You will be able to send this user an invitation to this event later. Are you sure?</p>
     <form class="float-left mr-2" method="get">
         <input type="hidden" asp-for="GameEventId" name="id" />

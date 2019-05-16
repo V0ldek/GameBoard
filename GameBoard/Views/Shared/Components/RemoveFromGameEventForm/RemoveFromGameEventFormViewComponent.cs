@@ -10,8 +10,13 @@ namespace GameBoard.Views.Shared.Components.RemoveFromGameEventForm
 {
     public class RemoveFromGameEventFormViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(int gameEventId, string userName) =>
-            View("RemoveFromGameEventForm", new RemoveFromGameEventViewModel { GameEventId = gameEventId, UserName = userName }); //TODO:
+        public IViewComponentResult Invoke(int gameEventId, string gameEventName, string userName) =>
+            View("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+            {
+                GameEventId = gameEventId,
+                GameEventName = gameEventName,
+                UserName = userName
+            }); //TODO:
     }
 }
 
