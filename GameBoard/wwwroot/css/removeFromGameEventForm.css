@@ -8,3 +8,7 @@
     height: 95%;
     width: 100%;
 }
+
+.remove-from-game-event-form button.fa-remove {
+    color: red;
+}

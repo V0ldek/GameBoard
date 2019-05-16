@@ -49,11 +49,16 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RemoveFromGameEvent(int id, string userName)
+        public async Task<IActionResult> RemoveFromGameEvent(int gameEventId, string userName)
         {
-            var gameEvent = await _gameEventService.GetGameEventAsync(id);
+            var gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
 
-            return View("RemoveFromGameEvent", new RemoveFromGameEventViewModel { GameEventId = id, UserName = userName }); //TODO: create a separate extension method
+            return View("RemoveFromGameEvent", new RemoveFromGameEventViewModel
+                {
+                    GameEventId = gameEventId,
+                    GameEventName = gameEvent.Name,
+                    UserName = userName
+                }); //TODO: create a separate extension method, possible null
         }
 
         [HttpPost]

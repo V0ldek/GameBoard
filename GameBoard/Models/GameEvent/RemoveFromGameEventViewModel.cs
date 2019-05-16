@@ -4,6 +4,8 @@
     {
         public int GameEventId { get; set; }
 
+        public string GameEventName { get; set; }
+
         public string UserName { get; set; }
     }
 }
