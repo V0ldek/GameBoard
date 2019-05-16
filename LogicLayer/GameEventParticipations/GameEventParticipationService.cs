@@ -96,7 +96,28 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.ExitedGuest);
         }
 
-        public Task RemoveFromGameEventAsync(int gameEventId, string userName) => throw new NotImplementedException();
+        public async Task RemoveFromGameEventAsync(int gameEventId, string userName)
+        {
+            var userParticipation = await GetActiveGameEventParticipation(gameEventId, userName);
+
+            switch (userParticipation?.ParticipationStatus)
+            {
+                case ParticipationStatus.Creator:
+                    throw new GameEventParticipationException("You cannot remove the creator.");
+                case null:
+                    throw new GameEventParticipationException("You cannot remove a user that has not been invited.");
+                case ParticipationStatus.PendingGuest:
+                case ParticipationStatus.AcceptedGuest:
+                    break;
+                // Nothing else should be returned by GetActiveGameEventParticipation.
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        nameof(userParticipation.ParticipationStatus),
+                        $"Unexpected value in ${nameof(ExitGameEventAsync)} - ${userParticipation.ParticipationStatus}");
+            }
+
+            await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.RemovedGuest);
+        }
 
         private async Task ChangeGameEventParticipationStatusAsync(
             GameEventParticipation participation,
@@ -113,7 +134,8 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             GetGameEventParticipationsInOneEvent(gameEventId, userName)
                 .SingleOrDefaultAsync(
                     p => p.ParticipationStatus != ParticipationStatus.RejectedGuest &&
-                        p.ParticipationStatus != ParticipationStatus.ExitedGuest);
+                        p.ParticipationStatus != ParticipationStatus.ExitedGuest &&
+                        p.ParticipationStatus != ParticipationStatus.RemovedGuest);
 
         private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
             int gameEventId,
