@@ -89,7 +89,7 @@
     grid-area: usercard;
 }
 
-.game-event .participants.with-remove li .remove-from-game-event-form,
-.game-event .invitees.with-remove li .remove-from-game-event-form {
+.game-event .participants.with-remove li .game-event-invite-form, /*TODO: remove-from-game-event-form*/
+.game-event .invitees.with-remove li .game-event-invite-form { /*TODO: remove-from-game-event-form*/
     grid-area: remove-from-game-event;
 }
