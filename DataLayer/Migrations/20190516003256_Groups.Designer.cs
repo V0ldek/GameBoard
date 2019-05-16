@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190513212201_Groups")]
+    [Migration("20190516003256_Groups")]
     partial class Groups
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
