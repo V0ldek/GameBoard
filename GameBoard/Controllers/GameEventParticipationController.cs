@@ -36,6 +36,11 @@ namespace GameBoard.Controllers
         {
             var gameEvent = await _gameEventService.GetGameEventAsync(id);
 
+            if (gameEvent == null)
+            {
+                return Error.FromController(this).Error("Error!", "Game event you're trying to exit doesn't exist.", HttpStatusCode.NotFound);
+            }
+
             return View("ExitGameEvent", gameEvent.ToExitViewModel());
         }
 
@@ -53,12 +58,17 @@ namespace GameBoard.Controllers
         {
             var gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
 
+            if (gameEvent == null)
+            {
+                return Error.FromController(this).Error("Error!", "Game event you're trying to remove doesn't exist.", HttpStatusCode.NotFound);
+            }
+
             return View("RemoveFromGameEvent", new RemoveFromGameEventViewModel
                 {
                     GameEventId = gameEventId,
                     GameEventName = gameEvent.Name,
                     UserName = userName
-                }); //TODO: create a separate extension method, possible null
+                }); //TODO: create a separate extension method
         }
 
         [HttpPost]
