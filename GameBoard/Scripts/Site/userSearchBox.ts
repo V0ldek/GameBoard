@@ -1,5 +1,5 @@
 ﻿let friendRequestPopoverGenerator = new PopoverGenerator();
-let userSearchBox: Autocomplete;
+let userSearchBox: AutocompleteUsers;
 
 document.addEventListener("DOMContentLoaded",
     () => {
@@ -15,5 +15,5 @@ document.addEventListener("DOMContentLoaded",
             return;
         }
 
-        userSearchBox = new Autocomplete(searchBoxInputElement, searchBoxElement, "/User/SearchUser");
+        userSearchBox = new AutocompleteUsers(searchBoxInputElement, searchBoxElement, "/User/SearchUser");
     });

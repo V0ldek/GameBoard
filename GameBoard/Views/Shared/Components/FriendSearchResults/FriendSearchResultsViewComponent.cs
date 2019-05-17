@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameBoard.Models.FriendSearch;
 using GameBoard.Models.Groups;
 using GameBoard.Models.User;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace GameBoard.Views.Shared.Components.FriendSearchResults
     {
         private const int ResultsCap = 20;
 
-        public IViewComponentResult Invoke(GroupViewModel searchResults)
+        public IViewComponentResult Invoke(FriendSearchResultViewModel model)
         {
-            var cappedResults = searchResults.Users.Take(ResultsCap).ToList();
+            var cappedResults = model.Users.Take(ResultsCap).ToList();
 
-            return cappedResults.Any() ? View("FriendSearchResults", new GroupViewModel(searchResults.GroupId, searchResults.GroupName, cappedResults)) : View("FriendSearchResultsEmpty");
+            return cappedResults.Any() ? View("FriendSearchResults", new FriendSearchResultViewModel(cappedResults, model.GroupId)) : View("FriendSearchResultsEmpty");
         }
     }
 }

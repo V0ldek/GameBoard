@@ -1,18 +1,18 @@
-﻿@model GameBoard.Models.Groups.GroupViewModel
+﻿@model GameBoard.Models.FriendSearch.FriendSearchResultViewModel
 
-<div class="autocomplete-items">
+<div class="autocomplete-items-friends autocomplete-items">
     @foreach (var user in Model.Users)
     {
-        <div class="autocomplete-item user-result">
+        <div class="autocomplete-item friend-result">
             @await Component.InvokeAsync("UserCard", new { user, miniature = true })
             <form asp-controller="Groups" asp-action="AddUserToGroup"
                   class="invite-form"
                   data-ajax="true" data-ajax-method="POST"
-                  data-ajax-success="friendRequestPopoverGenerator.generateSuccessPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)"
-                  data-ajax-failure="friendRequestPopoverGenerator.generateErrorPopover(document.querySelector('#friend-request-button-@user.Id'), xhr)">
+                  data-ajax-success="groupAddPopoverGenerator.generateSuccessPopover(document.querySelector('#group-add-button-@user.Id'), xhr)"
+                  data-ajax-failure="groupAddPopoverGenerator.generateErrorPopover(document.querySelector('#group-add-button-@user.Id'), xhr)">
                 <input readonly hidden name="userName" value="@user.UserName" />
-                <input readonly hidden name="groupId" value="@Model.GroupId" />
-                <button id="group-add-button-@Model.GroupId" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
+                <input readonly hidden name="groupId" value="@Model.GroupId"/>
+                <button id="group-add-button-@user.Id" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
                     <i class="fa fa-user-plus"></i>
                 </button>
             </form>

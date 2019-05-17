@@ -22,11 +22,5 @@ namespace GameBoard.Controllers
             ViewComponent(
                 "UserSearchResults",
                 (await _userSearchService.GetSearchCandidatesAsync(input)).Select(u => u.ToViewModel()));
-
-        [HttpGet]
-        public async Task<IActionResult> SearchFriend(string input) =>
-            ViewComponent(
-                "FriendSearchResults",
-                (await _userSearchService.GetSearchCandidatesAsync(input)).Select(u => u.ToViewModel()));
     }
 }

@@ -1,15 +1,19 @@
-﻿class Autocomplete {
+﻿class AutocompleteFriends {
     private readonly source: HTMLInputElement;
     private readonly resultSource: HTMLElement;
     private readonly minimalCharactersThreshold: number;
     private readonly timeoutDuration: number;
     private readonly getUrl: string;
-    private static readonly autocompleteResultsClass = "autocomplete-items";
+    private readonly userName: string;
+    private readonly groupId : string;
+    private static readonly autocompleteResultsClass = "autocomplete-items-friends";
     private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,
         resultSource: HTMLElement,
         getUrl: string,
+        friendUserName: string,
+        groupId : string,
         minimalCharactersThreshold = 3,
         timeoutDuration = 500) {
         this.source = source;
@@ -54,10 +58,10 @@
             return;
         }
 
-        fetch(`${this.getUrl}?input=${value}`,
-                {
-                    method: "GET",
-                })
+        fetch(`${this.getUrl}?input=${value}&userName=${this.userName}&groupId=${this.groupId}`,
+            {
+                method: "GET",
+            })
             .then(response => this.createAutocompleteResults(response))
             .catch((reason) => this.createErrorResult(reason));
     }
@@ -94,7 +98,7 @@
         console.error(reason);
 
         const errorDiv = document.createElement("div");
-        errorDiv.classList.add("user-search-error", "text-danger", `${Autocomplete.autocompleteResultsClass}`);
+        errorDiv.classList.add("user-search-error", "text-danger", `${AutocompleteFriends.autocompleteResultsClass}`);
 
         const text = document.createElement("p");
         text.innerText = "There is an issue with the search service. Please, try again later.";
@@ -114,6 +118,6 @@
     }
 
     closeAllAutocompleteResults() {
-        document.querySelectorAll(`.${Autocomplete.autocompleteResultsClass}`).forEach((el) => el.remove());
+        document.querySelectorAll(`.${AutocompleteFriends.autocompleteResultsClass}`).forEach((el) => el.remove());
     }
 }

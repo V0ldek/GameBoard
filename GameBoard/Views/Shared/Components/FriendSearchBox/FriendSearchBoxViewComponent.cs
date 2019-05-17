@@ -1,4 +1,5 @@
-﻿using GameBoard.Models.Groups;
+﻿using System;
+using GameBoard.Models.Groups;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameBoard.Views.Shared.Components.GroupCard

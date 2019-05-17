@@ -1,7 +1,11 @@
-﻿<div id="friend-search-form" class="form-inline bg border-top border-right border-bottom border-left box-shadow mb-3">
+﻿@model GameBoard.Models.Groups.GroupViewModel
+
+<div id="friend-search-form-@Model.GroupId" class="form-inline bg border-top border-right border-bottom border-left box-shadow mb-3 friend-search-form">
     <label class="mb-2">Add friends to this group</label>
-    <div id="friend-search-box" class="user-search-autocomplete input-group">
-        <input id="friend-search-box-input" autocomplete="off" class="form-control mr-2" type="text" placeholder="Search for friends..." />
+    <div id="friend-search-box-@Model.GroupId" class="user-search-autocomplete input-group friend-search-box">
+        <input id="friend-search-box-input-@Model.GroupId" autocomplete="off" class="form-control mr-2 friend-search-box-input" type="text" placeholder="Search for friends..." />
+        <input readonly hidden name="groupId"  value="@Model.GroupId" class="group-id-input"/>
+        <input readonly hidden name="userName" value="@User.Identity.Name" class="user-name-input"/>
         <i class="fa fa-search input-group-append m-auto"></i>
     </div>
 </div>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
@@ -6,6 +7,8 @@ using GameBoard.Errors;
 using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.Models.FriendRequest;
+using GameBoard.Models.FriendSearch;
+using GameBoard.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,6 +31,15 @@ namespace GameBoard.Controllers
             _friendsService = friendsService;
             _logger = logger;
             _hostConfiguration = hostConfiguration.Value;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchFriendsForGroup(string input, string userName, string groupId)
+        {
+            var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
+            friends = friends.Where(x => x.UserName.Contains(input));
+            var model = new FriendSearchResultViewModel(friends.Select((u) => u.ToViewModel()), groupId);
+            return ViewComponent("FriendSearchResults", model);
         }
 
         [HttpGet]
