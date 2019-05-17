@@ -57,6 +57,27 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
         }
 
+        public async Task SendGameEventInvitationAsync(IEnumerable<SendGameEventInvitationDto> gameEventInvitationDtos)
+        {
+            using (var transaction = _repository.BeginTransaction())
+            {
+                foreach (var gameEventInvitationDto in gameEventInvitationDtos)
+                {
+                    try
+                    {
+                        await SendGameEventInvitationAsync(gameEventInvitationDto);
+                    }
+                    catch(ArgumentOutOfRangeException exception)
+                    {
+                        throw exception;
+                    }
+                    catch { }   
+                }
+
+                transaction.Commit();
+            }
+        }
+
         public async Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName)
         {
             var userParticipation = await GetActiveGameEventParticipation(gameEventId, invitedUserName);

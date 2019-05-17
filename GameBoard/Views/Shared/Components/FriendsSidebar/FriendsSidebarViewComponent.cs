@@ -37,7 +37,6 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                     toggled,
                     subComponentName,
                     subComponentArgumentsProvider));
-            //return View("FriendsSidebar", groups.Select(u => u.ToViewModel()));
         }
     }
 }

@@ -1,10 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using System.IO;
+using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameBoard.DataLayer.Migrations
 {
     public partial class Groups : Migration
     {
+        private static readonly string MigrationUpScriptFilePath = 
+            Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/20190516003256_Groups_Up.sql");
+
+        private static readonly string MigrationDownScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190516003256_Groups_Down.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -60,6 +73,8 @@ namespace GameBoard.DataLayer.Migrations
                 name: "IX_GroupUser_UserId",
                 table: "GroupUser",
                 column: "UserId");
+
+            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -69,6 +84,8 @@ namespace GameBoard.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Group");
+
+            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }

@@ -9,6 +9,6 @@ namespace GameBoard.LogicLayer.Groups.Dtos
         public static GroupDto ToDto(this Group group) => new GroupDto(
             group.Id,
             group.Name,
-            group.Users.Select(u => u.ToDto()).ToList());
+            group.Users.Select(u => u.ToDto()));
     }
 }

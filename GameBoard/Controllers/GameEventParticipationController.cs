@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
@@ -7,6 +9,7 @@ using GameBoard.LogicLayer.GameEventParticipations;
 using GameBoard.LogicLayer.GameEventParticipations.Dtos;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
+using GameBoard.LogicLayer.Groups.Dtos;
 using GameBoard.Models.GameEvent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -142,6 +145,87 @@ namespace GameBoard.Controllers
                     title = "Invite sent.",
                     message =
                         $"An email with your invitation to the {gameEvent.Name} event has been sent to {userName}."
+                });
+        }
+
+        //group Invite
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> SendGameEventInviteToGroup(int gameEventId, GroupDto group)
+        {
+            GameEventDto gameEvent;
+
+            var sendGameEventInvitationDtos = group.Users.Select(
+                u => new SendGameEventInvitationDto(
+                    gameEventId,
+                    u.UserName,
+                    eventId => _hostConfiguration.HostAddress + Url.Action(
+                        "GameEvent",
+                        "gameEvent",
+                        new { id = eventId })));
+            try
+            {
+                gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
+            }
+            catch (ApplicationException exception)
+            {
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+            }
+            catch
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
+            }
+
+            if (gameEvent == null)
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "Specified game event does not exist.",
+                    HttpStatusCode.NotFound);
+            }
+
+            if (gameEvent.Creator.UserName != User.Identity.Name)
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "You're unauthorized to perform this action.",
+                    HttpStatusCode.Unauthorized);
+            }
+
+            return await SendGameEventInvitationToGroup(gameEvent, group.GroupName, sendGameEventInvitationDtos);
+        }
+
+        private async Task<IActionResult> SendGameEventInvitationToGroup(
+            GameEventDto gameEvent,
+            string groupName,
+            IEnumerable<SendGameEventInvitationDto> sendGameEventInvitationDtos)
+        {
+            try
+            {
+                await _gameEventParticipationService.SendGameEventInvitationAsync(sendGameEventInvitationDtos);
+            }
+            catch (ApplicationException exception)
+            {
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+            }
+            catch
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
+            }
+
+            return Ok(
+                new
+                {
+                    title = "Invite sent.",
+                    message =
+                        $"An email with your invitation to the {gameEvent.Name} event has been sent to {groupName}."
                 });
         }
     }
