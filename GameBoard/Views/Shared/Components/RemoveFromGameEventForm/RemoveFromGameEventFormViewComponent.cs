@@ -16,7 +16,7 @@ namespace GameBoard.Views.Shared.Components.RemoveFromGameEventForm
                 GameEventId = gameEventId,
                 GameEventName = gameEventName,
                 UserName = userName
-            }); //TODO:
+            });
     }
 }
 

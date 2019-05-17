@@ -68,7 +68,7 @@ namespace GameBoard.Controllers
                     GameEventId = gameEventId,
                     GameEventName = gameEvent.Name,
                     UserName = userName
-                }); //TODO: create a separate extension method
+                });
         }
 
         [HttpPost]

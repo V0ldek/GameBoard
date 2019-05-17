@@ -59,7 +59,7 @@
         <h3>@Html.DisplayNameFor(m => m.Creator)</h3>
         @await Component.InvokeAsync("UserCard", new {user = Model.Creator})
     </section>
-    <section class="participants @(Model.IsCreator ? "with-remove" : "")">
+    <section class="participants">
         <h3>@Html.DisplayNameFor(m => m.Participants)</h3>
         <ul class="participant-list list-unstyled border-full p-1">
             @if (!Model.Participants.Any())
@@ -68,7 +68,7 @@
             }
             @foreach (var participant in Model.Participants)
             {
-                <li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
                     @await Component.InvokeAsync("UserCard", new {user = participant})
                     @if (Model.IsCreator)
                     {
@@ -83,7 +83,7 @@
             }
         </ul>
     </section>
-    <section class="invitees @(Model.IsCreator ? "with-remove" : "")">
+    <section class="invitees">
         <h3>@Html.DisplayNameFor(m => m.Invitees)</h3>
         <ul class="invitee-list list-unstyled border-full p-1">
             @if (!Model.Invitees.Any())
@@ -92,7 +92,7 @@
             }
             @foreach (var invitee in Model.Invitees)
             {
-                <li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
                     @await Component.InvokeAsync("UserCard", new { user = invitee })
                     @if (Model.IsCreator)
                     {
