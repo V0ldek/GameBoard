@@ -6,7 +6,7 @@
     private readonly getUrl: string;
     private readonly userName: string;
     private readonly groupId : string;
-    private static readonly autocompleteResultsClass = "autocomplete-items-friends";
+    private readonly autocompleteResultsId : string;
     private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,
@@ -21,6 +21,9 @@
         this.timeoutDuration = timeoutDuration;
         this.resultSource = resultSource;
         this.getUrl = getUrl;
+        this.userName = friendUserName;
+        this.groupId = groupId;
+        this.autocompleteResultsId = "autocomplete-" + groupId;
 
         if (!this.source) {
             throw new Error("Cannot setup autocomplete on a null source.");
@@ -98,7 +101,7 @@
         console.error(reason);
 
         const errorDiv = document.createElement("div");
-        errorDiv.classList.add("user-search-error", "text-danger", `${AutocompleteFriends.autocompleteResultsClass}`);
+        errorDiv.classList.add("user-search-error", "text-danger", `${this.autocompleteResultsId}`);
 
         const text = document.createElement("p");
         text.innerText = "There is an issue with the search service. Please, try again later.";
@@ -118,6 +121,6 @@
     }
 
     closeAllAutocompleteResults() {
-        document.querySelectorAll(`.${AutocompleteFriends.autocompleteResultsClass}`).forEach((el) => el.remove());
+        document.querySelectorAll(`#${this.autocompleteResultsId}`).forEach((el) => el.remove());
     }
 }

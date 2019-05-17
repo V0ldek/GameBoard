@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using GameBoard.Errors;
 using Microsoft.AspNetCore.Authorization;
 using GameBoard.LogicLayer.Groups;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +22,57 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddUserToGroup(string userName, int groupId)
         {
-            await _groupsService.AddUserToGroupAsync(userName, groupId);
+            try
+            {
+                await _groupsService.AddUserToGroupAsync(userName, groupId);
+            }
+            catch (ApplicationException exception)
+            {
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+            }
+            catch
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
+            }
 
-            return RedirectToAction("Index", "Home");
+            return Ok(
+                new
+                {
+                    title = "Invite sent.",
+                    message = $"User {userName} was added to this group." + 
+                        "Refresh this page to see changes."
+                });
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> CreateNewGroup(string groupName)
         {
-            await _groupsService.AddGroupAsync(User.Identity.Name, groupName);
+            try
+            {
+                await _groupsService.AddGroupAsync(User.Identity.Name, groupName);
+            }
+            catch (ApplicationException exception)
+            {
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+            }
+            catch
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
+            }
 
-            return RedirectToAction("Index", "Home");
+            return Ok(
+            new
+            {
+                title = "Invite sent.",
+                message = "New group was created"
+            });
         }
     }
 }
