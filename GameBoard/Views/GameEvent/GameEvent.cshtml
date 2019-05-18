@@ -1,4 +1,6 @@
-﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@using GameBoard.Models.GameEvent
+@using GameBoard.Models.GameEventInviteForm
+@model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -11,12 +13,8 @@
         {
             toggled = true,
             subComponentName = "GameEventInviteForm",
-            subComponentArgumentsProvider = (Func<string, object>) (userName => new
-            {
-                gameEventId = Model.Id,
-                gameEventName = Model.Name,
-                userName
-            })
+            subComponentArgumentsProvider = (Func<string, object>) (userName =>
+                new GameEventInviteFormViewModel(Model.Id, Model.Name, userName))
         })
     }
     else
@@ -68,7 +66,18 @@
             }
             @foreach (var participant in Model.Participants)
             {
-                <li>@await Component.InvokeAsync("UserCard", new {user = participant})</li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
+                    @await Component.InvokeAsync("UserCard", new {user = participant})
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+                        {
+                            Id = Model.Id,
+                            Name = Model.Name,
+                            UserName = participant.UserName
+                        })
+                    }
+                </li>
             }
         </ul>
     </section>
@@ -81,7 +90,18 @@
             }
             @foreach (var invitee in Model.Invitees)
             {
-                <li>@await Component.InvokeAsync("UserCard", new {user = invitee})</li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
+                    @await Component.InvokeAsync("UserCard", new {user = invitee})
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+                        {
+                            Id = Model.Id,
+                            Name = Model.Name,
+                            UserName = invitee.UserName
+                        })
+                    }
+                </li>
             }
         </ul>
     </section>
