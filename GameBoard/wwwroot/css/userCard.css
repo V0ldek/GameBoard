@@ -34,9 +34,7 @@
     padding: 0 10px 0 0;
 }
 
-.user-card-with-sub-component .user-card {
-    grid-area: usercard;
-}
+.user-card-with-sub-component .user-card { grid-area: usercard; }
 
 .user-card-with-sub-component .user-card-sub-component {
     grid-area: sub-component;
@@ -48,6 +46,6 @@
 
 .user-card-with-sub-component .user-card-sub-component button {
     height: 95%;
-    width: 100%;
     padding: 0;
+    width: 100%;
 }

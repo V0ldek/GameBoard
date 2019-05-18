@@ -35,7 +35,9 @@ namespace GameBoard.Models.GameEvent
                 Name = gameEventDto.Name
             };
 
-        public static RemoveFromGameEventViewModel ToRemoveFromGameEventViewModel(this GameEventDto gameEventDto, string userName) =>
+        public static RemoveFromGameEventViewModel ToRemoveFromGameEventViewModel(
+            this GameEventDto gameEventDto,
+            string userName) =>
             new RemoveFromGameEventViewModel
             {
                 Id = gameEventDto.Id,

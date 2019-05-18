@@ -38,7 +38,10 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return Error.FromController(this).Error("Error!", "Game event you're trying to exit doesn't exist.", HttpStatusCode.NotFound);
+                return Error.FromController(this).Error(
+                    "Error!",
+                    "Game event you're trying to exit doesn't exist.",
+                    HttpStatusCode.NotFound);
             }
 
             return View("ExitGameEvent", gameEvent.ToExitViewModel());
@@ -60,7 +63,10 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return Error.FromController(this).Error("Error!", "Game event you're trying to remove a user from doesn't exist.", HttpStatusCode.NotFound);
+                return Error.FromController(this).Error(
+                    "Error!",
+                    "Game event you're trying to remove a user from doesn't exist.",
+                    HttpStatusCode.NotFound);
             }
 
             return View("RemoveFromGameEvent", gameEvent.ToRemoveFromGameEventViewModel(userName));
@@ -74,7 +80,7 @@ namespace GameBoard.Controllers
                 removeFromGameEventViewModel.Id,
                 removeFromGameEventViewModel.UserName);
 
-            return RedirectToAction("GameEvent", "GameEvent", new { id = removeFromGameEventViewModel.Id });
+            return RedirectToAction("GameEvent", "GameEvent", new {id = removeFromGameEventViewModel.Id});
         }
 
         [HttpPost]

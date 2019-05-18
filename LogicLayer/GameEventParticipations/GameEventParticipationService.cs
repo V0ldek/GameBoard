@@ -94,7 +94,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             }
 
             await ChangeGameEventParticipationStatusAsync(
-                userParticipation, 
+                userParticipation,
                 ParticipationStatus.ExitedGuest);
         }
 

@@ -75,7 +75,7 @@
                         @await Component.InvokeAsync("RemoveFromGameEventForm", new
                         {
                             Model.Id,
-                            Model.Name, 
+                            Model.Name,
                             participant.UserName
                         })
                     }
@@ -93,13 +93,13 @@
             @foreach (var invitee in Model.Invitees)
             {
                 <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
-                    @await Component.InvokeAsync("UserCard", new { user = invitee })
+                    @await Component.InvokeAsync("UserCard", new {user = invitee})
                     @if (Model.IsCreator)
                     {
                         @await Component.InvokeAsync("RemoveFromGameEventForm", new
                         {
                             Model.Id,
-                            Model.Name, 
+                            Model.Name,
                             invitee.UserName
                         })
                     }
