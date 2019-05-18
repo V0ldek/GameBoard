@@ -20,6 +20,9 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
 
         public async Task<IViewComponentResult> InvokeAsync(
             bool toggled = false,
+            bool groupInviteEnabled = false,
+            int gameEventId = 0,
+            string gameEventName = null,
             string subComponentName = null,
             Func<string, object> subComponentArgumentsProvider = null)
         {
@@ -35,6 +38,9 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                 new FriendsSidebarViewModel(
                     groups.Select(g => g.ToViewModel()),
                     toggled,
+                    groupInviteEnabled,
+                    gameEventId,
+                    gameEventName,
                     subComponentName,
                     subComponentArgumentsProvider));
         }

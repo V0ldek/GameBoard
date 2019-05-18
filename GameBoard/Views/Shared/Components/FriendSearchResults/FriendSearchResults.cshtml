@@ -3,7 +3,7 @@
 <div class="autocomplete-@Model.GroupId autocomplete-items">
     @foreach (var user in Model.Users)
     {
-        <div class="autocomplete-item friend-result">
+        <div class="autocomplete-item user-result">
             @await Component.InvokeAsync("UserCard", new { user, miniature = true })
             <form asp-controller="Groups" asp-action="AddUserToGroup"
                   class="invite-form"

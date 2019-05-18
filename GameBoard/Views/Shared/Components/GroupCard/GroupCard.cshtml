@@ -1,9 +1,17 @@
 ﻿@model GameBoard.Models.Groups.GroupViewModel
 
-<button id="group-collapse-btn" class="btn btn-dark" type="button" data-toggle="collapse" href="#collapseGroup-@Model.GroupId">
-    @Model.GroupName
-    <i class="fa fa-angle-double-down"></i>
-</button>
+<div class="group-collapse">
+    <button id="group-collapse-btn-@Model.GroupId" class="btn btn-dark collapse-btn" type="button" data-toggle="collapse" href="#collapseGroup-@Model.GroupId">
+        @Model.GroupName
+        <i class="fa fa-angle-double-down"></i>
+    </button>
+
+    @if (Model.GroupInviteEnabled)
+    {
+        @await Component.InvokeAsync("GameEventInviteGroupForm", new{Model.GroupId, Model.GroupName, Model.Users})
+    }
+</div>
+
 <div class="collapse" id="collapseGroup-@Model.GroupId">
     <ul class="list-unstyled components border-top border-bottom">
         @foreach (var user in Model.Users)
@@ -26,8 +34,8 @@
             </li>
         }
     </ul>
-     @await Component.InvokeAsync("FriendSearchBox", new
-     {
-         group = Model
-     })
+    @await Component.InvokeAsync("FriendSearchBox", new
+    {
+        group = Model
+    })
 </div>

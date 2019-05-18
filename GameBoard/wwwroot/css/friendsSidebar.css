@@ -49,6 +49,13 @@
 
 #friends-sidebar ul.components li { padding: 0 10px; }
 
+#friends-sidebar.with-sub-component div.group-collapse {
+    display: grid;
+    grid-template-areas: "collapsebtn invite";
+    grid-template-columns: 80% 20%;
+    grid-template-rows: auto;
+}
+
 #friends-sidebar.with-sub-component ul.components li {
     display: grid;
     grid-template-areas: "usercard subcomponent";
@@ -60,6 +67,12 @@
 
 #friends-sidebar ul.components li .sub-component { grid-area: subcomponent }
 
+#friends-sidebar .collapse-btn { grid-area: collapsebtn}
+
+#friends-sidebar .game-event-invite-form {grid-area: invite}
 
 
-#friends-sidebar ul p { padding: 10px; }
+
+#friends-sidebar ul p {
+    padding: 10px;
+}

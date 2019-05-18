@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{2DF4E2C5-831E-489F-A9B8-E4E15209C814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CssInliner", "Tools\CssInliner\CssInliner.csproj", "{81EF05D6-BF70-4D00-863F-C9CCFBCEEAE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CssInliner", "Tools\CssInliner\CssInliner.csproj", "{81EF05D6-BF70-4D00-863F-C9CCFBCEEAE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

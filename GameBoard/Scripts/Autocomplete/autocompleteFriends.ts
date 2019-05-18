@@ -122,10 +122,6 @@
     }
 
     closeAllAutocompleteResults() {
-        document.querySelectorAll(`.${this.autocompleteResultsClass}`).forEach((el)=>
-        {
-            el.remove();
-            console.log(this.autocompleteResultsClass);
-        });
-    }
+        document.querySelectorAll(`.${this.autocompleteResultsClass}`).forEach((el) => el.remove())
+    };
 }

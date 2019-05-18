@@ -1,4 +1,5 @@
-﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@using Microsoft.Extensions.Logging
+@model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -10,7 +11,9 @@
         @await Component.InvokeAsync("FriendsSidebar", new
         {
             toggled = true,
+            groupInviteEnabled = true,
             subComponentName = "GameEventInviteForm",
+            EventId = Model.Id,
             subComponentArgumentsProvider = (Func<string, object>) (userName => new
             {
                 gameEventId = Model.Id,

@@ -38,7 +38,7 @@ namespace GameBoard.Controllers
         public async Task<IActionResult> SearchFriendsForGroup(string input, string userName, string groupId)
         {
             var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
-            friends = friends.Where(x => x.UserName == input);
+            friends = friends.Where(x => x.UserName.Contains(input));
             var model = new FriendSearchResultViewModel(friends.Select((u) => u.ToViewModel()), groupId);
             return ViewComponent("FriendSearchResults", model);
         }
