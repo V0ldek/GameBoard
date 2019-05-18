@@ -2,9 +2,9 @@
 {
     public class RemoveFromGameEventViewModel
     {
-        public int GameEventId { get; set; }
+        public int Id { get; set; }
 
-        public string GameEventName { get; set; }
+        public string Name { get; set; }
 
         public string UserName { get; set; }
     }

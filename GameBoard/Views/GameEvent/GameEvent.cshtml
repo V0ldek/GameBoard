@@ -74,9 +74,9 @@
                     {
                         @await Component.InvokeAsync("RemoveFromGameEventForm", new
                         {
-                            gameEventId = Model.Id,
-                            gameEventName = Model.Name, 
-                            userName = participant.UserName
+                            Model.Id,
+                            Model.Name, 
+                            participant.UserName
                         })
                     }
                 </li>
@@ -98,9 +98,9 @@
                     {
                         @await Component.InvokeAsync("RemoveFromGameEventForm", new
                         {
-                            gameEventId = Model.Id,
-                            gameEventName = Model.Name, 
-                            userName = invitee.UserName
+                            Model.Id,
+                            Model.Name, 
+                            invitee.UserName
                         })
                     }
                 </li>

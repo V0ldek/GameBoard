@@ -1,1 +1,0 @@
-﻿const removeFromGameEventFormPopoverGenerator = new PopoverGenerator();

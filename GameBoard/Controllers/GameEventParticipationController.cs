@@ -60,15 +60,10 @@ namespace GameBoard.Controllers
 
             if (gameEvent == null)
             {
-                return Error.FromController(this).Error("Error!", "Game event you're trying to remove doesn't exist.", HttpStatusCode.NotFound);
+                return Error.FromController(this).Error("Error!", "Game event you're trying to remove a user from doesn't exist.", HttpStatusCode.NotFound);
             }
 
-            return View("RemoveFromGameEvent", new RemoveFromGameEventViewModel
-                {
-                    GameEventId = gameEventId,
-                    GameEventName = gameEvent.Name,
-                    UserName = userName
-                });
+            return View("RemoveFromGameEvent", gameEvent.ToRemoveFromGameEventViewModel(userName));
         }
 
         [HttpPost]
@@ -76,10 +71,10 @@ namespace GameBoard.Controllers
         public async Task<IActionResult> RemoveFromGameEvent(RemoveFromGameEventViewModel removeFromGameEventViewModel)
         {
             await _gameEventParticipationService.RemoveFromGameEventAsync(
-                removeFromGameEventViewModel.GameEventId,
+                removeFromGameEventViewModel.Id,
                 removeFromGameEventViewModel.UserName);
 
-            return RedirectToAction("GameEvent", "GameEvent", new { id = removeFromGameEventViewModel.GameEventId });
+            return RedirectToAction("GameEvent", "GameEvent", new { id = removeFromGameEventViewModel.Id });
         }
 
         [HttpPost]

@@ -20,10 +20,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\Site\removeFromGameEventForm.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -47,7 +43,6 @@
     <TypeScriptCompile Include="Scripts\productionConsoleSwitch.ts" />
     <TypeScriptCompile Include="Scripts\Site\gameEventForm.ts" />
     <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
-    <TypeScriptCompile Include="Scripts\Site\removeFromGameEventForm.ts" />
     <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
   </ItemGroup>
 
