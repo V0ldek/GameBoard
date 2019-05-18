@@ -12,12 +12,8 @@
         {
             toggled = true,
             subComponentName = "GameEventInviteForm",
-            subComponentArgumentsProvider = (Func<string, object>) (userName => new GameEventInviteFormViewModel
-                (
-                Model.Id,
-                Model.Name,
-                userName
-                ))
+            subComponentArgumentsProvider = (Func<string, object>) (userName => 
+                new GameEventInviteFormViewModel(Model.Id, Model.Name, userName))
         })
     }
     else
