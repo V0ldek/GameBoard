@@ -1,7 +1,10 @@
 ﻿<div id="group-add-form" class="form-inline bg border-top border-right border-bottom border-left box-shadow mb-3">
     <label class="mb-2">Add groups</label>
     <form asp-controller="Groups" asp-action="CreateNewGroup"
-          method="post">
+          class="invite-form"
+          data-ajax="true" data-ajax-method="POST"
+          data-ajax-success="groupAddPopoverGenerator.generateSuccessPopover(document.querySelector('#group-add-button'), xhr)"
+          data-ajax-failure="groupAddPopoverGenerator.generateErrorPopover(document.querySelector('#group-add-button'), xhr)">
         <input id="group-add-box-input" autocomplete="off" name="groupName" class="form-control mr-4" type="text" placeholder="New group name" />
         <button id="group-add-button" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
             <i class="fa fa-plus"></i>

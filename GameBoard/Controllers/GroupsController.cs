@@ -41,7 +41,7 @@ namespace GameBoard.Controllers
             return Ok(
                 new
                 {
-                    title = "Invite sent.",
+                    title = "Group updated.",
                     message = $"User {userName} was added to this group." + 
                         "Refresh this page to see changes."
                 });
@@ -68,11 +68,11 @@ namespace GameBoard.Controllers
             }
 
             return Ok(
-            new
-            {
-                title = "Invite sent.",
-                message = "New group was created"
-            });
+                new
+                {
+                    title = "Group added.",
+                    message = "Refresh the page to see changes."
+                });
         }
     }
 }

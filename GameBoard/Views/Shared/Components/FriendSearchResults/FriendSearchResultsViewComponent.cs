@@ -15,7 +15,7 @@ namespace GameBoard.Views.Shared.Components.FriendSearchResults
         {
             var cappedResults = model.Users.Take(ResultsCap).ToList();
 
-            return cappedResults.Any() ? View("FriendSearchResults", new FriendSearchResultViewModel(cappedResults, model.GroupId)) : View("FriendSearchResultsEmpty");
+            return cappedResults.Any() ? View("FriendSearchResults", new FriendSearchResultViewModel(cappedResults, model.GroupId)) : View("FriendSearchResultsEmpty", new FriendSearchResultViewModel(cappedResults, model.GroupId));
         }
     }
 }

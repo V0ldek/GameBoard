@@ -1,6 +1,6 @@
 ﻿@model GameBoard.Models.FriendSearch.FriendSearchResultViewModel
 
-<div class="autocomplete-items-friends autocomplete-items" id="autocomplete-@Model.GroupId">
+<div class="autocomplete-@Model.GroupId autocomplete-items">
     @foreach (var user in Model.Users)
     {
         <div class="autocomplete-item friend-result">

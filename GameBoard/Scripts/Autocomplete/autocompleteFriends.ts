@@ -6,7 +6,7 @@
     private readonly getUrl: string;
     private readonly userName: string;
     private readonly groupId : string;
-    private readonly autocompleteResultsId : string;
+    private readonly autocompleteResultsClass : string;
     private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,
@@ -23,7 +23,7 @@
         this.getUrl = getUrl;
         this.userName = friendUserName;
         this.groupId = groupId;
-        this.autocompleteResultsId = "autocomplete-" + groupId;
+        this.autocompleteResultsClass = "autocomplete-" + groupId;
 
         if (!this.source) {
             throw new Error("Cannot setup autocomplete on a null source.");
@@ -38,6 +38,7 @@
         document.body.addEventListener("click",
             (e) => {
                 const targetElement = e.target as HTMLElement;
+                console.log(targetElement);
 
                 if (targetElement && !this.resultSource.contains(targetElement)) {
                     this.closeAllAutocompleteResults();
@@ -101,7 +102,7 @@
         console.error(reason);
 
         const errorDiv = document.createElement("div");
-        errorDiv.classList.add("user-search-error", "text-danger", `${this.autocompleteResultsId}`);
+        errorDiv.classList.add("user-search-error", "text-danger", `${this.autocompleteResultsClass}`);
 
         const text = document.createElement("p");
         text.innerText = "There is an issue with the search service. Please, try again later.";
@@ -121,6 +122,10 @@
     }
 
     closeAllAutocompleteResults() {
-        document.querySelectorAll(`#${this.autocompleteResultsId}`).forEach((el) => el.remove());
+        document.querySelectorAll(`.${this.autocompleteResultsClass}`).forEach((el)=>
+        {
+            el.remove();
+            console.log(this.autocompleteResultsClass);
+        });
     }
 }
