@@ -1,0 +1,1 @@
+﻿const gameEventInviteGroupFormPopoverGenerator = new PopoverGenerator();

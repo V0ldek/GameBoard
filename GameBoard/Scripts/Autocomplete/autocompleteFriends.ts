@@ -38,7 +38,6 @@
         document.body.addEventListener("click",
             (e) => {
                 const targetElement = e.target as HTMLElement;
-                console.log(targetElement);
 
                 if (targetElement && !this.resultSource.contains(targetElement)) {
                     this.closeAllAutocompleteResults();

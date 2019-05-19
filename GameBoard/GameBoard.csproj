@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <None Remove="Scripts\Autocomplete\file.ts" />
-    <None Remove="Scripts\Site\GameEventGroupInviteForm.ts" />
+    <None Remove="Scripts\Site\gameEventInviteGroupForm.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +49,7 @@
     <TypeScriptCompile Include="Scripts\productionConsoleSwitch.ts" />
     <TypeScriptCompile Include="Scripts\Site\gameEventForm.ts" />
     <TypeScriptCompile Include="Scripts\Site\friendsSidebar.ts" />
-    <TypeScriptCompile Include="Scripts\Site\gameEventGroupInviteForm.ts" />
+    <TypeScriptCompile Include="Scripts\Site\gameEventInviteGroupForm.ts" />
     <TypeScriptCompile Include="Scripts\Site\userSearchBox.ts" />
   </ItemGroup>
 

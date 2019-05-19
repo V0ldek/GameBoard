@@ -21,7 +21,7 @@
     "Site/gameEventList.ts",
     "Site/userSearchBox.ts",
     "Site/friendSearchBox.ts",
-    "Site/GameEventGroupInviteForm.ts",
+    "Site/gameEventInviteGroupForm.ts",
     "productionConsoleSwitch.ts"
   ],
   "exclude": [

@@ -8,7 +8,7 @@
 
     @if (Model.GroupInviteEnabled)
     {
-        @await Component.InvokeAsync("GameEventInviteGroupForm", new{Model.GroupId, Model.GroupName, Model.Users})
+        @await Component.InvokeAsync("GameEventInviteGroupForm", new{gameEventId = Model.GameEventId, gameEventName = Model.GameEventName, group = Model})
     }
 </div>
 

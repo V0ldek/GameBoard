@@ -11,6 +11,7 @@ using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.LogicLayer.Groups.Dtos;
 using GameBoard.Models.GameEvent;
+using GameBoard.Models.Groups;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -152,14 +153,15 @@ namespace GameBoard.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> SendGameEventInviteToGroup(int gameEventId, GroupDto group)
+        public async Task<IActionResult> SendGameEventInviteToGroup(int gameEventId, string groupName, IEnumerable<string> users)
         {
             GameEventDto gameEvent;
-
-            var sendGameEventInvitationDtos = group.Users.Select(
+            System.Diagnostics.Debug.WriteLine("here");
+ 
+            var sendGameEventInvitationDtos = users.Select(
                 u => new SendGameEventInvitationDto(
                     gameEventId,
-                    u.UserName,
+                    u,
                     eventId => _hostConfiguration.HostAddress + Url.Action(
                         "GameEvent",
                         "gameEvent",
@@ -180,6 +182,8 @@ namespace GameBoard.Controllers
                     HttpStatusCode.InternalServerError);
             }
 
+       
+
             if (gameEvent == null)
             {
                 return Error.FromController(this).ErrorJson(
@@ -196,7 +200,7 @@ namespace GameBoard.Controllers
                     HttpStatusCode.Unauthorized);
             }
 
-            return await SendGameEventInvitationToGroup(gameEvent, group.GroupName, sendGameEventInvitationDtos);
+            return await SendGameEventInvitationToGroup(gameEvent, groupName, sendGameEventInvitationDtos);
         }
 
         private async Task<IActionResult> SendGameEventInvitationToGroup(
