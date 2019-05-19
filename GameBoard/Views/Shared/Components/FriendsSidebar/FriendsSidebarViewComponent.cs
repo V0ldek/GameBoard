@@ -22,9 +22,10 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
             bool toggled = false,
             bool groupInviteEnabled = false,
             int gameEventId = 0,
+            int groupId = 0,
             string gameEventName = null,
             string subComponentName = null,
-            Func<string, object> subComponentArgumentsProvider = null)
+            Func<string, int, object> subComponentArgumentsProvider = null)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -41,6 +42,7 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                     groupInviteEnabled,
                     gameEventId,
                     gameEventName,
+                    groupId,
                     subComponentName,
                     subComponentArgumentsProvider));
         }

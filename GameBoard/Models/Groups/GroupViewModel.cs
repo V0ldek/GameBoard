@@ -20,12 +20,12 @@ namespace GameBoard.Models.Groups
 
         public string SubComponentName { get; }
 
-        public Func<string, object> SubComponentArguments { get; }
+        public Func<string, int, object> SubComponentArguments { get; }
 
         public GroupViewModel(int groupId, string groupName, IEnumerable<UserViewModel> users, bool groupInviteEnabled, int gameEventId, 
             string gameEventName,
             string subComponentName,
-            Func<string, object> subComponentArguments)
+            Func<string, int, object> subComponentArguments)
         {
             GroupId = groupId;
             GroupName = groupName;

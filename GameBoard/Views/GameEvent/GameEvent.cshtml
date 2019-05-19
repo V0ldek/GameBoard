@@ -14,11 +14,12 @@
             groupInviteEnabled = true,
             subComponentName = "GameEventInviteForm",
             gameEventId = Model.Id,
-            subComponentArgumentsProvider = (Func<string, object>) (userName => new
+            subComponentArgumentsProvider = (Func<string, int, object>) ((userName, groupId) => new
             {
                 gameEventId = Model.Id,
                 gameEventName = Model.Name,
-                userName
+                userName = userName,
+                groupId = groupId
             })
         })
     }
