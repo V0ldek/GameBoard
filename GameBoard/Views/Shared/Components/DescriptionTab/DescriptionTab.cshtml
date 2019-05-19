@@ -1,4 +1,27 @@
 ﻿@model GameBoard.Models.GameEvent.GameEventViewModel
-<p>
-    Description
-</p>
+
+<article class="game-event">
+    <h1 class="name" title="@Model.Name">@Model.Name</h1>
+    <section class="description">
+        <h3>@Html.DisplayNameFor(m => m.DescriptionTab)</h3>
+        <p class="text-body">@Model.DescriptionTab.Description</p>
+    </section>
+    @if (Model.IsCreator)
+    {
+        <section class="control-panel">
+            <form asp-controller="EventTab" asp-action="EditDescriptionTAb" method="get">
+                <input type="hidden" asp-for="Id" />
+                <button class="btn btn-dark" type="submit">Edit</button>
+            </form>
+        </section>
+    }
+    @else if (!Model.IsInvitePending)
+    {
+        <section class="control-panel">
+            <form asp-controller="GameEventParticipation" asp-action="ExitGameEvent" method="get">
+                <input type="hidden" asp-for="Id" />
+                <button class="btn btn-danger" type="submit">Exit</button>
+            </form>
+        </section>
+    }
+</article>

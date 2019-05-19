@@ -10,7 +10,6 @@ namespace GameBoard.Models.EventTab
     public class DescriptionTabViewModel
     {
         [CanBeNull]
-        [Display(Name = "Description")]
         public string Description { get; set; }
     }
 }
