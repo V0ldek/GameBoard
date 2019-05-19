@@ -15,7 +15,7 @@
             </form>
         </section>
     }
-    @else if (!Model.IsInvitePending)
+    else if (!Model.IsInvitePending)
     {
         <section class="control-panel">
             <form asp-controller="GameEventParticipation" asp-action="ExitGameEvent" method="get">
