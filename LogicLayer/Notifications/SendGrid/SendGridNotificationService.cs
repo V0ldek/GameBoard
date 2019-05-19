@@ -1,4 +1,5 @@
-﻿using GameBoard.LogicLayer.Configurations;
+﻿using System.Collections.Generic;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Notifications.NotificationBatch.SendGrid;
 using GameBoard.Notifications;
 using GameBoard.Notifications.NotificationBatch;
@@ -16,6 +17,9 @@ namespace GameBoard.LogicLayer.Notifications.SendGrid
         }
 
         public INotificationBatch CreateNotificationBatch(params INotification[] notifications) =>
+            CreateNotificationBatch(notifications as IEnumerable<INotification>);
+
+        public INotificationBatch CreateNotificationBatch(IEnumerable<INotification> notifications) =>
             new SendGridNotificationBatch(_configuration, notifications);
     }
 }

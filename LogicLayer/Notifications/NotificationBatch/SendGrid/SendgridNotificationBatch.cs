@@ -17,7 +17,7 @@ namespace GameBoard.LogicLayer.Notifications.NotificationBatch.SendGrid
 
         public SendGridNotificationBatch(
             MailNotificationsConfiguration configuration,
-            params INotification[] notifications)
+            IEnumerable<INotification> notifications)
         {
             _configuration = configuration;
             _notifications.AddRange(notifications);

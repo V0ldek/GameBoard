@@ -1,4 +1,5 @@
-﻿using GameBoard.LogicLayer.Friends;
+﻿using GameBoard.LogicLayer.EventReminders;
+using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.GameEventParticipations;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.Notifications;
@@ -18,6 +19,7 @@ namespace GameBoard.LogicLayer
         {
             DataLayer.Configuration.ConfigureServices(services);
             services.AddTransient<INotificationService, SendGridNotificationService>();
+            services.AddScoped<IEventReminderService, EventReminderService>();
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();
