@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace GameBoard.Models.EventTab
+namespace GameBoard.Models.DescriptionTab
 {
     public class DescriptionTabViewModel
     {
