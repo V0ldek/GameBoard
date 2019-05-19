@@ -12,8 +12,8 @@ namespace GameBoard.LogicLayer.Notifications.NotificationBatch.SendGrid
 {
     internal class SendGridNotificationBatch : INotificationBatch
     {
-        private readonly List<INotification> _notifications = new List<INotification>();
         private readonly MailNotificationsConfiguration _configuration;
+        private readonly List<INotification> _notifications = new List<INotification>();
 
         public SendGridNotificationBatch(
             MailNotificationsConfiguration configuration,

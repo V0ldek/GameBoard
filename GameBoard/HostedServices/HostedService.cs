@@ -6,8 +6,8 @@ namespace GameBoard.HostedServices
 {
     public abstract class HostedService : IHostedService
     {
-        private Task _executingTask;
         private CancellationTokenSource _cancellationTokenSource;
+        private Task _executingTask;
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -22,6 +22,7 @@ namespace GameBoard.HostedServices
             {
                 return;
             }
+
             _cancellationTokenSource.Cancel();
             await Task.WhenAny(_executingTask, Task.Delay(-1, cancellationToken));
             cancellationToken.ThrowIfCancellationRequested();

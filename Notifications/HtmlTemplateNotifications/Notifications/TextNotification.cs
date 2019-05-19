@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using GameBoard.Notifications.NotificationBatch;
 
 namespace GameBoard.Notifications.HtmlTemplateNotifications.Notifications
 {
@@ -8,7 +6,10 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications.Notifications
     {
         private readonly string[] _paragraphs;
 
-        protected TextNotification(string subject, IEnumerable<string> recipientsEmails, params string[] paragraphs) : base(subject, recipientsEmails)
+        protected TextNotification(
+            string subject,
+            IEnumerable<string> recipientsEmails,
+            params string[] paragraphs) : base(subject, recipientsEmails)
         {
             _paragraphs = paragraphs;
         }

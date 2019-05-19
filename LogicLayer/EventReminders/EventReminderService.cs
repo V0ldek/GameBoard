@@ -18,9 +18,9 @@ namespace GameBoard.LogicLayer.EventReminders
         [NotNull]
         public delegate string GameEventLinkGenerator([NotNull] string id);
 
-        private readonly IGameBoardRepository _repository;
-
         private readonly INotificationService _notificationService;
+
+        private readonly IGameBoardRepository _repository;
 
         public EventReminderService(IGameBoardRepository repository, INotificationService notificationService)
         {

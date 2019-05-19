@@ -7,19 +7,11 @@ namespace GameBoard.Notifications
 {
     public abstract class Notification : INotification
     {
-        public string Subject { get; }
-
-        public IEnumerable<string> RecipientsEmails { get; }
-
-        public string HtmlContent => _htmlContentLazy.Value;
-
-        public string PlainTextContent => PlainTextContentBuilder.ToString();
+        private readonly Lazy<string> _htmlContentLazy;
 
         protected readonly INotificationContentBuilder NotificationContentBuilder;
 
         protected readonly StringBuilder PlainTextContentBuilder = new StringBuilder();
-
-        private readonly Lazy<string> _htmlContentLazy;
 
         protected Notification(
             string subject,
@@ -31,6 +23,14 @@ namespace GameBoard.Notifications
             NotificationContentBuilder = notificationContentBuilder;
             _htmlContentLazy = new Lazy<string>(RenderContent);
         }
+
+        public string Subject { get; }
+
+        public IEnumerable<string> RecipientsEmails { get; }
+
+        public string HtmlContent => _htmlContentLazy.Value;
+
+        public string PlainTextContent => PlainTextContentBuilder.ToString();
 
         protected abstract void BuildContent();
 

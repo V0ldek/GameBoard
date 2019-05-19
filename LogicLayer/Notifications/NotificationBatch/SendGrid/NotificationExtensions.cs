@@ -6,7 +6,10 @@ namespace GameBoard.LogicLayer.Notifications.NotificationBatch.SendGrid
 {
     internal static class NotificationExtensions
     {
-        public static SendGridMessage ToSendGridMessage(this INotification notification, string senderEmail, string senderName) =>
+        public static SendGridMessage ToSendGridMessage(
+            this INotification notification,
+            string senderEmail,
+            string senderName) =>
             MailHelper.CreateSingleEmailToMultipleRecipients(
                 new EmailAddress(senderEmail, senderName),
                 notification.RecipientsEmails.Select(e => new EmailAddress(e)).ToList(),

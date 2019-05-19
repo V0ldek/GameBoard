@@ -9,10 +9,6 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
 {
     internal class HtmlTemplateNotificationContentBuilder : INotificationContentBuilder
     {
-        private string _title = "";
-
-        private readonly List<string> _content = new List<string>();
-
         private const string TemplateDirectoryRelativePath = "HtmlTemplateNotifications/HtmlTemplates";
 
         private const string BaseTemplateName = "layout-template.html";
@@ -24,6 +20,9 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
         private const string CssName = "styles.css";
 
         private static readonly Regex TemplateInjectionRegex = new Regex(@"\$\{([^}]*)}");
+
+        private readonly List<string> _content = new List<string>();
+        private string _title = "";
 
         public INotificationContentBuilder AddTitle(string title)
         {
@@ -51,7 +50,10 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
         {
             var template = LoadFromFile(BaseTemplateName);
             var content = string.Join('\n', _content);
-            var injectedHtml = InjectContentIntoTemplate(template, ("Layout-Title", _title), ("Layout-Content", content));
+            var injectedHtml = InjectContentIntoTemplate(
+                template,
+                ("Layout-Title", _title),
+                ("Layout-Content", content));
             return InlineCss(injectedHtml);
         }
 
@@ -67,7 +69,7 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
         {
             var injectedContentDictionary = injectedContent.ToDictionary(t => t.key, t => t.content);
             return TemplateInjectionRegex.Replace(
-                template, 
+                template,
                 m =>
                 {
                     var key = m.Groups[1].Value;

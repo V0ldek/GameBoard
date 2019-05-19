@@ -10,7 +10,7 @@ namespace GameBoard.HostedServices.EventReminders
 {
     internal class DayBeforeEventReminderCronScheduledService : CronScheduledService
     {
-        private const string CronSchedule = "36 21 * * *";
+        private const string CronSchedule = "0 20 * * *";
 
         public DayBeforeEventReminderCronScheduledService(IServiceScopeFactory serviceScopeFactory) : base(
             serviceScopeFactory,
