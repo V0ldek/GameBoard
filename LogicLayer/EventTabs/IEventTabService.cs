@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.EventTabs
 {
-    public interface IEventTypeService
+    public interface IEventTabService
     {
         Task EditDescriptionTab([NotNull] EditDescriptionTabDto editDescriptionTabDto);
     }

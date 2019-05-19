@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GameBoard.Views.Shared.Components.UserSearchBox
+namespace GameBoard.Views.Shared.Components.InfoTab
 {
     public class InfoTabViewComponent : ViewComponent
     {
