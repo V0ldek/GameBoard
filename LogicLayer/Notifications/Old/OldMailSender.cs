@@ -8,20 +8,20 @@ using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace GameBoard.LogicLayer.Notifications
+namespace GameBoard.LogicLayer.Notifications.Old
 {
-    public class MailSender : IMailSender
+    public class OldMailSender : IOldMailSender
     {
         private MailNotificationsConfiguration MailNotificationsOptions { get; }
 
-        public MailSender(IOptions<MailNotificationsConfiguration> mailNotificationsOptions)
+        public OldMailSender(IOptions<MailNotificationsConfiguration> mailNotificationsOptions)
         {
             MailNotificationsOptions = mailNotificationsOptions.Value;
         }
 
         public Task SendEmailConfirmationAsync(string email, string link)
         {
-            var notification = new Notification(
+            var notification = new Old.Notification(
                 GetHtmlPath(MailNotificationsOptions.EmailConfirmationHtml),
                 link,
                 "Email Confirmation");
@@ -30,7 +30,7 @@ namespace GameBoard.LogicLayer.Notifications
 
         public Task SendEventInvitationAsync(IEnumerable<string> emails, string link)
         {
-            var notification = new Notification(
+            var notification = new Old.Notification(
                 GetHtmlPath(MailNotificationsOptions.EventInvitationHtml),
                 link,
                 "Event Invitation");
@@ -39,7 +39,7 @@ namespace GameBoard.LogicLayer.Notifications
 
         public Task SendFriendInvitationAsync(string email, string link)
         {
-            var notification = new Notification(
+            var notification = new Old.Notification(
                 GetHtmlPath(MailNotificationsOptions.FriendInvitationHtml),
                 link,
                 "Friend Invitation");
@@ -48,14 +48,14 @@ namespace GameBoard.LogicLayer.Notifications
 
         public Task SendPasswordResetAsync(string email, string link)
         {
-            var notification = new Notification(
+            var notification = new Old.Notification(
                 GetHtmlPath(MailNotificationsOptions.PasswordResetHtml),
                 link,
                 "Password Reset");
             return SendNotificationAsync(email, notification);
         }
 
-        private Task SendNotificationAsync(string email, Notification notification)
+        private Task SendNotificationAsync(string email, Old.Notification notification)
         {
             var emails = new List<string>
             {
@@ -64,7 +64,7 @@ namespace GameBoard.LogicLayer.Notifications
             return SendNotificationAsync(emails, notification);
         }
 
-        private Task SendNotificationAsync(IEnumerable<string> emails, Notification notification)
+        private Task SendNotificationAsync(IEnumerable<string> emails, Old.Notification notification)
         {
             var client = new SendGridClient(MailNotificationsOptions.SendGridApiKey);
             var from = new EmailAddress(

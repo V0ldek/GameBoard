@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GameBoard.LogicLayer.Notifications
+namespace GameBoard.LogicLayer.Notifications.Old
 {
-    public interface IMailSender
+    public interface IOldMailSender
     {
         Task SendEmailConfirmationAsync(string email, string link);
         Task SendEventInvitationAsync(IEnumerable<string> emails, string link);

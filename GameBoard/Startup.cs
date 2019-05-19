@@ -6,6 +6,7 @@ using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.LogicLayer.Notifications.Old;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,9 +31,9 @@ namespace GameBoard
         {
             ConfigureCookiePolicy(services);
             ConfigureAntiforgery(services);
+            ConfigureInternalServices(services);
             ConfigureLogicLayer(services);
             ConfigureIdentity(services);
-            ConfigureInternalServices(services);
             ConfigureCulture();
             ConfigureMvc(services);
         }
@@ -44,7 +45,7 @@ namespace GameBoard
 
         private void ConfigureInternalServices(IServiceCollection services)
         {
-            services.AddTransient<IMailSender, MailSender>();
+            services.AddTransient<IOldMailSender, OldMailSender>();
             services.Configure<MailNotificationsConfiguration>(
                 Configuration.GetSection(nameof(MailNotificationsConfiguration)));
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));

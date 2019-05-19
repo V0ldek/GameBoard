@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace GameBoard.LogicLayer.Notifications
+namespace GameBoard.LogicLayer.Notifications.Old
 {
     public struct Notification
     {

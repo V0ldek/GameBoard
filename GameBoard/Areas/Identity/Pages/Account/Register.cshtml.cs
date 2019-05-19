@@ -3,6 +3,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.Notifications;
+using GameBoard.LogicLayer.Notifications.Old;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IMailSender _mailSender;
+        private readonly IOldMailSender _oldMailSender;
         private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
@@ -24,11 +25,11 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
-            IMailSender mailSender)
+            IOldMailSender oldMailSender)
         {
             _userManager = userManager;
             _logger = logger;
-            _mailSender = mailSender;
+            _oldMailSender = oldMailSender;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -65,7 +66,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 new {userId = user.Id, code},
                 Request.Scheme);
 
-            await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+            await _oldMailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
         }
 
         public class InputModel
