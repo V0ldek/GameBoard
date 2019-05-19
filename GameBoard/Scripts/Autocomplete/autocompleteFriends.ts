@@ -121,6 +121,6 @@
     }
 
     closeAllAutocompleteResults() {
-        document.querySelectorAll(`.${this.autocompleteResultsClass}`).forEach((el) => el.remove())
+        document.querySelectorAll(`.${this.autocompleteResultsClass}`).forEach((el) => el.remove());
     };
 }
