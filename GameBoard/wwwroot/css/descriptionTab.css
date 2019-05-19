@@ -17,6 +17,7 @@
 }
 
 .name {
+    text-align: center;
     grid-area: name;
 }
 
