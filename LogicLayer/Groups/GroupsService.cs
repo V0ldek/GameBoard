@@ -41,10 +41,15 @@ namespace GameBoard.LogicLayer.Groups
         {
             var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
             var group = _repository.Groups.Single(g => g.Id == groupId);
+            var groupUserAlreadyIn = _repository.GroupUser.Where(gu => gu.UserId == user.Id && gu.GroupId == group.Id);
 
             if (group.OwnerId == user.Id)
             {
                 throw new GroupsException("You cannot add yourself to your group.");
+            }
+            if (groupUserAlreadyIn.Any())
+            {
+                throw new GroupsException("User is already in this group.");
             }
 
             var groupUser = new GroupUser
