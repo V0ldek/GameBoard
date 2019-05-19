@@ -163,7 +163,7 @@ namespace GameBoard.Controllers
             {
                 return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
             }
-            catch
+            catch(Exception e)
             {
                 return Error.FromController(this).ErrorJson(
                     "Error!",

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -15,25 +15,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\email-confirmation.html">
+    <PackageReference Include="PreMailer.Net" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HtmlTemplateNotifications\HtmlTemplates\layout-template.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\event-invitation.html">
+    <None Update="HtmlTemplateNotifications\HtmlTemplates\link-content-template.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\friend-invitation.html">
+    <None Update="HtmlTemplateNotifications\HtmlTemplates\styles.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\password-reset.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\layout-template.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\link-content-template.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="HtmlTemplateNotifications\Html\Inlined\text-content-template.html">
+    <None Update="HtmlTemplateNotifications\HtmlTemplates\text-content-template.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

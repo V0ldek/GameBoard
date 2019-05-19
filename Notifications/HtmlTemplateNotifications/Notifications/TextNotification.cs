@@ -17,6 +17,7 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications.Notifications
             foreach (var paragraph in _paragraphs)
             {
                 NotificationContentBuilder.AddText(paragraph);
+                PlainTextContentBuilder.AppendLine(paragraph);
             }
         }
     }

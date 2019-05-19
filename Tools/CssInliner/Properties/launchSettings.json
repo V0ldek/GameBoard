@@ -2,7 +2,7 @@
   "profiles": {
     "CssInliner": {
       "commandName": "Project",
-      "commandLineArgs": "\"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\Html\\Raw\" \"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\Html\\Raw\\styles.css\" \"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\Inlined\""
+      "commandLineArgs": "\"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\HtmlTemplates\\Raw\" \"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\HtmlTemplates\\Raw\\styles.css\" \"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\HtmlTemplates\\Inlined\""
     }
   }
 }

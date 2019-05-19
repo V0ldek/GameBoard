@@ -55,7 +55,10 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             using (var transaction = _repository.BeginTransaction())
             {
                 await CreateNewGameEventParticipation(gameEventId, userTo.Id);
-                await SendGameEventInvitationAsync(gameEventInvitationDto.GameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
+                await SendGameEventInvitationAsync(
+                    gameEventInvitationDto.GameEventId,
+                    userTo,
+                    gameEventInvitationDto.GenerateGameEventLink);
                 transaction.Commit();
             }
         }
@@ -178,12 +181,15 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                     {
                         g.Id,
                         g.Name,
-                        SenderName = g.Participations.Single(p => p.ParticipationStatus == ParticipationStatus.Creator).Participant.UserName
+                        CreatorParticipations = g.Participations
+                            .Where(p => p.ParticipationStatus == ParticipationStatus.Creator)
                     }).SingleAsync();
+
+            var creatorName = gameEventData.CreatorParticipations.Single().Participant.UserName;
 
             var notification = new GameEventInvitationNotification(
                 gameEventData.Name,
-                gameEventData.SenderName,
+                creatorName,
                 userTo.UserName,
                 userTo.Email,
                 gameEventLinkGenerator(gameEventId.ToString()));

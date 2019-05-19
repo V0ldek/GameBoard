@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using GameBoard.Notifications.NotificationContentBuilder;
 
 namespace GameBoard.Notifications
@@ -12,9 +13,11 @@ namespace GameBoard.Notifications
 
         public string HtmlContent => _htmlContentLazy.Value;
 
-        public string PlainTextContent { get; } = "";
+        public string PlainTextContent => PlainTextContentBuilder.ToString();
 
         protected readonly INotificationContentBuilder NotificationContentBuilder;
+
+        protected readonly StringBuilder PlainTextContentBuilder = new StringBuilder();
 
         private readonly Lazy<string> _htmlContentLazy;
 

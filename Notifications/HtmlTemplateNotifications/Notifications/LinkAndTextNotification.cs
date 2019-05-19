@@ -23,6 +23,7 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications.Notifications
         {
             base.BuildContent();
             NotificationContentBuilder.AddLink(_linkHref, _linkText);
+            PlainTextContentBuilder.AppendLine(_linkText).AppendLine(_linkHref);
         }
     }
 }

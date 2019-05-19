@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using GameBoard.Areas.Identity.Pages.Account.Notifications;
 using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.Notifications;
-using GameBoard.LogicLayer.Notifications.Old;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IOldMailSender _oldMailSender;
+        private readonly INotificationService _notificationService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
@@ -25,11 +25,11 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
-            IOldMailSender oldMailSender)
+            INotificationService notificationService)
         {
             _userManager = userManager;
             _logger = logger;
-            _oldMailSender = oldMailSender;
+            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -66,7 +66,11 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 new {userId = user.Id, code},
                 Request.Scheme);
 
-            await _oldMailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+            var notification = new ConfirmEmailNotification(
+                user.UserName,
+                Input.Email,
+                HtmlEncoder.Default.Encode(callbackUrl));
+            await _notificationService.CreateNotificationBatch(notification).SendAsync();
         }
 
         public class InputModel

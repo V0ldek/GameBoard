@@ -13,13 +13,15 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
 
         private readonly List<string> _content = new List<string>();
 
-        private const string TemplateDirectoryRelativePath = "HtmlTemplateNotifications/Html/Inlined";
+        private const string TemplateDirectoryRelativePath = "HtmlTemplateNotifications/HtmlTemplates";
 
         private const string BaseTemplateName = "layout-template.html";
 
         private const string TextTemplateName = "text-content-template.html";
 
         private const string LinkTemplateName = "link-content-template.html";
+
+        private const string CssName = "styles.css";
 
         private static readonly Regex TemplateInjectionRegex = new Regex(@"\$\{([^}]*)}");
 
@@ -31,7 +33,7 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
 
         public INotificationContentBuilder AddText(string text)
         {
-            var template = LoadTemplateFromFile(TextTemplateName);
+            var template = LoadFromFile(TextTemplateName);
             var content = InjectContentIntoTemplate(template, ("Text-Content", text));
             _content.Add(content);
             return this;
@@ -39,7 +41,7 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
 
         public INotificationContentBuilder AddLink(string href, string text)
         {
-            var template = LoadTemplateFromFile(LinkTemplateName);
+            var template = LoadFromFile(LinkTemplateName);
             var content = InjectContentIntoTemplate(template, ("Link-Href", href), ("Link-Content", text));
             _content.Add(content);
             return this;
@@ -47,14 +49,15 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
 
         public string Build()
         {
-            var template = LoadTemplateFromFile(BaseTemplateName);
+            var template = LoadFromFile(BaseTemplateName);
             var content = string.Join('\n', _content);
-            return InjectContentIntoTemplate(template, ("Layout-Title", _title), ("Layout-Content", content));
+            var injectedHtml = InjectContentIntoTemplate(template, ("Layout-Title", _title), ("Layout-Content", content));
+            return InlineCss(injectedHtml);
         }
 
-        private static string LoadTemplateFromFile(string templateName)
+        private static string LoadFromFile(string name)
         {
-            var filePath = Path.Combine(AppContext.BaseDirectory, TemplateDirectoryRelativePath, templateName);
+            var filePath = Path.Combine(AppContext.BaseDirectory, TemplateDirectoryRelativePath, name);
             return File.ReadAllText(filePath);
         }
 
@@ -70,6 +73,12 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
                     var key = m.Groups[1].Value;
                     return injectedContentDictionary.ContainsKey(key) ? injectedContentDictionary[key] : "";
                 });
+        }
+
+        private static string InlineCss(string html)
+        {
+            var css = LoadFromFile(CssName);
+            return PreMailer.Net.PreMailer.MoveCssInline(html, css: css, ignoreElements: "link").Html;
         }
     }
 }
