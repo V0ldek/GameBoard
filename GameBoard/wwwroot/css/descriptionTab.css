@@ -28,3 +28,9 @@
 .control {
     grid-area: control;
 }
+
+/*EditDescriptionTab style*/
+
+#description-text-area {
+    height: 40vh;
+}
