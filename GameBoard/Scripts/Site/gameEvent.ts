@@ -19,3 +19,29 @@
                 theme: "minimal"
             });
     });
+
+var defaultOpenTabButton = document.getElementById("defaultOpenTabButton");
+
+if (defaultOpenTabButton != null) {
+    defaultOpenTabButton.click();
+}
+
+function openTab(evt: { currentTarget: { className: string; }; }, tabName: string) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].setAttribute("hidden", "true");
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    var tab = document.getElementById(tabName);
+
+    if (tab != null) {
+        tab.removeAttribute("hidden");
+    }
+
+    evt.currentTarget.className += " active";
+}
