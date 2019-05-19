@@ -1,10 +1,10 @@
 ﻿@model GameBoard.Models.GameEvent.GameEventViewModel
 
-<article class="game-event">
+<article class="description-tab">
     <h1 class="name" title="@Model.Name">@Model.Name</h1>
     <section class="description">
-        <h3>@Html.DisplayNameFor(m => m.DescriptionTab)</h3>
-        <p class="text-body">@Model.DescriptionTab.Description</p>
+        <h3 class="name">@Html.DisplayNameFor(m => m.DescriptionTab)</h3>
+        <p class="description-text text-body border-full">@Model.DescriptionTab.Description</p>
     </section>
     @if (Model.IsCreator)
     {

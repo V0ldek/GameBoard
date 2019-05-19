@@ -1,0 +1,29 @@
+﻿@media (min-width: 768px) {
+    .description-tab {
+        box-sizing: border-box;
+        display: grid;
+        grid-row-gap: 30px;
+        grid-template-areas: "name name name"
+                             "description description description"
+                             "control control control";
+        grid-template-columns: 25vw 25vw 25vw;
+        grid-template-rows: auto auto auto;
+
+    }
+}
+
+.description {
+    grid-area: description;
+}
+
+.name {
+    grid-area: name;
+}
+
+.description-text {
+    height: 40vh;
+}
+
+.control {
+    grid-area: control;
+}
