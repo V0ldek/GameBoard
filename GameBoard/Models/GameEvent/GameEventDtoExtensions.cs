@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using GameBoard.LogicLayer.GameEvents.Dtos;
-using GameBoard.Models.EventTab;
+using GameBoard.Models.DescriptionTab;
 using GameBoard.Models.User;
 
 namespace GameBoard.Models.GameEvent

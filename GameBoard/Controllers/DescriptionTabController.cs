@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using GameBoard.LogicLayer.EventTabs;
-using GameBoard.Models.EventTab;
+using GameBoard.Models.DescriptionTab;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameBoard.Controllers
 {
     [Authorize]
-    public class EventTabController : Controller
+    public class DescriptionTabController : Controller
     {
         private readonly IEventTabService _eventTabService;
 
-        public EventTabController(IEventTabService eventTabService)
+        public DescriptionTabController(IEventTabService eventTabService)
         {
             _eventTabService = eventTabService;
         }

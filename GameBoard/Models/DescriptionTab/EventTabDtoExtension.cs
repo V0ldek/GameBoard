@@ -1,6 +1,6 @@
 ﻿using GameBoard.LogicLayer.EventTabs.Dtos;
 
-namespace GameBoard.Models.EventTab
+namespace GameBoard.Models.DescriptionTab
 {
     public static class EventTabDtoExtension
     {
