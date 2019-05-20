@@ -99,3 +99,9 @@
     font-size: 17px;
     border-radius: 0;
 }
+
+@media (max-width: 768px) {
+    .tabs-bar button {
+        width: 100%;
+    }
+}
