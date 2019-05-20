@@ -5,9 +5,11 @@
           data-ajax="true" data-ajax-method="POST"
           data-ajax-success="groupAddPopoverGenerator.generateSuccessPopover(document.querySelector('#group-add-button'), xhr)"
           data-ajax-failure="groupAddPopoverGenerator.generateErrorPopover(document.querySelector('#group-add-button'), xhr)">
-        <input id="group-add-box-input" autocomplete="off" name="groupName" class="form-control mr-4" type="text" placeholder="New group name"/>
-        <button id="group-add-button" class="btn btn-dark mt-1" type="submit" data-toggle="popover">
-            <i class="fa fa-plus"></i>
-        </button>
+        <div class="input-group">
+            <input id="group-add-box-input" autocomplete="off" name="name" class="form-control mr-2" type="text" placeholder="New group name"/>
+            <button id="group-add-button" class="btn btn-dark input-group-append" type="submit" data-toggle="popover">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
     </form>
 </div>

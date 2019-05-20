@@ -71,7 +71,7 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Group added.",
-                    message = "Refresh the page to see changes."
+                    message = "Refresh this page to see changes."
                 });
         }
     }

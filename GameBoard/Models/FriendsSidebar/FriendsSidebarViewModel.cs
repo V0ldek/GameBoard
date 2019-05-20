@@ -16,11 +16,9 @@ namespace GameBoard.Models.FriendsSidebar
 
         public string GameEventName { get; }
 
-        public int GroupId { get; }
-
         public string SubComponentName { get; }
 
-        public Func<string, int, object> SubComponentArguments { get; }
+        public Func<string, object> SubComponentArguments { get; }
 
         public FriendsSidebarViewModel(
             IEnumerable<GroupViewModel> groups,
@@ -28,16 +26,14 @@ namespace GameBoard.Models.FriendsSidebar
             bool groupInviteEnabled,
             int gameEventId,
             string gameEventName,
-            int groupId,
             string subComponentName,
-            Func<string, int, object> subComponentArguments)
+            Func<string, object> subComponentArguments)
         {
             Groups = groups;
             Toggled = toggled;
             GroupInviteEnabled = groupInviteEnabled;
             GameEventId = gameEventId;
             GameEventName = gameEventName;
-            GroupId = groupId;
             SubComponentName = subComponentName;
             SubComponentArguments = subComponentArguments;
         }

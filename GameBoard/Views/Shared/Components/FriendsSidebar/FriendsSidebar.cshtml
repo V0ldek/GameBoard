@@ -10,7 +10,7 @@
                 <li class="active">
                     @await Component.InvokeAsync("GroupCard", new
                     {
-                        group.GroupId, group.GroupName, group.Users, Model.GroupInviteEnabled, Model.GameEventId, Model.SubComponentName, Model.SubComponentArguments
+                        GroupId = @group.Id, GroupName = @group.Name, group.Users, Model.GroupInviteEnabled, Model.GameEventId, Model.SubComponentName, Model.SubComponentArguments
                     })
                 </li>
             }

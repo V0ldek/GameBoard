@@ -20,8 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\Autocomplete\file.ts" />
-    <None Remove="Scripts\Site\gameEventInviteGroupForm.ts" />
+    <None Remove="Scripts\Autocomplete\autocomplete.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\Autocomplete\autocompleteUsers.ts" />
-    <TypeScriptCompile Include="Scripts\Autocomplete\autocompleteFriends.ts" />
+    <TypeScriptCompile Include="Scripts\Autocomplete\autocomplete.ts" />
     <TypeScriptCompile Include="Scripts\Collapsible\collapsible.ts" />
     <TypeScriptCompile Include="Scripts\ListInput\listInput.ts" />
     <TypeScriptCompile Include="Scripts\Popovers\popoverGenerator.ts" />
