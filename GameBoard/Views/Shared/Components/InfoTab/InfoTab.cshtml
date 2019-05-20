@@ -1,4 +1,5 @@
-﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@using GameBoard.Models.GameEvent
+@model GameBoard.Models.GameEvent.GameEventViewModel
 
 <article class="game-event">
     <h1 class="name" title="@Model.Name">@Model.Name</h1>
@@ -7,7 +8,7 @@
         <section class="pending-invite border-full p-3">
             <p>You have an invitation pending for this event.</p>
             <form class="form-inline" method="post">
-                <input type="hidden" asp-for="@Model.Id" name="gameEventId" />
+                <input type="hidden" asp-for="@Model.Id" name="gameEventId"/>
                 <button class="btn btn-dark mr-3" type="submit" asp-action="AcceptGameEventInvite" asp-controller="GameEventParticipation">Accept</button>
                 <button class="btn btn-danger" type="submit" asp-action="RejectGameEventInvite" asp-controller="GameEventParticipation">Reject</button>
             </form>
@@ -32,7 +33,7 @@
     </section>
     <section class="creator">
         <h3>@Html.DisplayNameFor(m => m.Creator)</h3>
-        @await Component.InvokeAsync("UserCard", new { user = Model.Creator })
+        @await Component.InvokeAsync("UserCard", new {user = Model.Creator})
     </section>
     <section class="participants">
         <h3>@Html.DisplayNameFor(m => m.Participants)</h3>
@@ -43,7 +44,18 @@
             }
             @foreach (var participant in Model.Participants)
             {
-                <li>@await Component.InvokeAsync("UserCard", new { user = participant })</li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
+                    @await Component.InvokeAsync("UserCard", new {user = participant})
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+                        {
+                            Id = Model.Id,
+                            Name = Model.Name,
+                            UserName = participant.UserName
+                        })
+                    }
+                </li>
             }
         </ul>
     </section>
@@ -56,7 +68,18 @@
             }
             @foreach (var invitee in Model.Invitees)
             {
-                <li>@await Component.InvokeAsync("UserCard", new { user = invitee })</li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
+                    @await Component.InvokeAsync("UserCard", new {user = invitee})
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+                        {
+                            Id = Model.Id,
+                            Name = Model.Name,
+                            UserName = invitee.UserName
+                        })
+                    }
+                </li>
             }
         </ul>
     </section>
@@ -64,7 +87,7 @@
     {
         <section class="control-panel">
             <form asp-controller="GameEvent" asp-action="EditGameEvent" method="get">
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Id"/>
                 <button class="btn btn-dark" type="submit">Edit</button>
             </form>
         </section>
@@ -73,7 +96,7 @@
     {
         <section class="control-panel">
             <form asp-controller="GameEventParticipation" asp-action="ExitGameEvent" method="get">
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Id"/>
                 <button class="btn btn-danger" type="submit">Exit</button>
             </form>
         </section>
