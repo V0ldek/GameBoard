@@ -6,12 +6,12 @@ namespace GameBoard.Models.FriendSearch
     public class FriendSearchResultViewModel
     {
         public IEnumerable<UserViewModel> Users { get; }
-        public string GroupId { get; }
+        public string Id { get; }
 
         public FriendSearchResultViewModel(IEnumerable<UserViewModel> users, string groupId)
         {
             Users = users;
-            GroupId = groupId;
+            Id = groupId;
         }
     }
 }
