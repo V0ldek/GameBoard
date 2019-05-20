@@ -1,7 +1,7 @@
 ﻿:root { --sidebar-width: 200px; }
 
 @media (min-width: 768px) {
-    :root { --sidebar-width: 240px      }
+    :root { --sidebar-width: 240px; }
 }
 
 @media (min-width: 1440px) {
@@ -9,7 +9,7 @@
 }
 
 @media (min-width: 2048px) {
-    :root { --sidebar-width: 320px      }
+    :root { --sidebar-width: 320px; }
 }
 
 #friends-sidebar-container {
