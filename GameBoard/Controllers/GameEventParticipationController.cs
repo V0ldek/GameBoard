@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,9 +10,7 @@ using GameBoard.LogicLayer.GameEventParticipations;
 using GameBoard.LogicLayer.GameEventParticipations.Dtos;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.GameEvents.Dtos;
-using GameBoard.LogicLayer.Groups.Dtos;
 using GameBoard.Models.GameEvent;
-using GameBoard.Models.Groups;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -153,11 +152,14 @@ namespace GameBoard.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> SendGameEventInviteToGroup(int gameEventId, string groupName, IEnumerable<string> users)
+        public async Task<IActionResult> SendGameEventInviteToGroup(
+            int gameEventId,
+            string groupName,
+            IEnumerable<string> users)
         {
             GameEventDto gameEvent;
-            System.Diagnostics.Debug.WriteLine("here");
- 
+            Debug.WriteLine("here");
+
             var sendGameEventInvitationDtos = users.Select(
                 u => new SendGameEventInvitationDto(
                     gameEventId,
@@ -165,7 +167,7 @@ namespace GameBoard.Controllers
                     eventId => _hostConfiguration.HostAddress + Url.Action(
                         "GameEvent",
                         "gameEvent",
-                        new { id = eventId })));
+                        new {id = eventId})));
             try
             {
                 gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
@@ -182,7 +184,6 @@ namespace GameBoard.Controllers
                     HttpStatusCode.InternalServerError);
             }
 
-       
 
             if (gameEvent == null)
             {

@@ -6,6 +6,8 @@ namespace GameBoard.Views.Shared.Components.GameEventInviteForm
     public class GameEventInviteFormViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke(int gameEventId, string gameEventName, string userName, int groupId) =>
-            View("GameEventInviteForm", new GameEventInviteFormViewModel(gameEventId, gameEventName, userName, groupId));
+            View(
+                "GameEventInviteForm",
+                new GameEventInviteFormViewModel(gameEventId, gameEventName, userName, groupId));
     }
 }

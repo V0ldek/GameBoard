@@ -1,8 +1,8 @@
-﻿using GameBoard.Models.Groups;
+﻿using System;
+using System.Collections.Generic;
+using GameBoard.Models.Groups;
 using GameBoard.Models.User;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
 namespace GameBoard.Views.Shared.Components.GroupCard
 {
@@ -17,6 +17,16 @@ namespace GameBoard.Views.Shared.Components.GroupCard
             string gameEventName,
             string subComponentName,
             Func<string, int, object> subComponentArguments) =>
-            View("GroupCard", new GroupViewModel(groupId, groupName, users, groupInviteEnabled, gameEventId, gameEventName, subComponentName, subComponentArguments));
+            View(
+                "GroupCard",
+                new GroupViewModel(
+                    groupId,
+                    groupName,
+                    users,
+                    groupInviteEnabled,
+                    gameEventId,
+                    gameEventName,
+                    subComponentName,
+                    subComponentArguments));
     }
 }

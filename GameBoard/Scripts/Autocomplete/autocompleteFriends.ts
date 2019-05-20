@@ -5,15 +5,15 @@
     private readonly timeoutDuration: number;
     private readonly getUrl: string;
     private readonly userName: string;
-    private readonly groupId : string;
-    private readonly autocompleteResultsClass : string;
+    private readonly groupId: string;
+    private readonly autocompleteResultsClass: string;
     private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,
         resultSource: HTMLElement,
         getUrl: string,
         friendUserName: string,
-        groupId : string,
+        groupId: string,
         minimalCharactersThreshold = 3,
         timeoutDuration = 500) {
         this.source = source;
@@ -23,7 +23,7 @@
         this.getUrl = getUrl;
         this.userName = friendUserName;
         this.groupId = groupId;
-        this.autocompleteResultsClass = "autocomplete-" + groupId;
+        this.autocompleteResultsClass = `autocomplete-${groupId}`;
 
         if (!this.source) {
             throw new Error("Cannot setup autocomplete on a null source.");
@@ -62,9 +62,9 @@
         }
 
         fetch(`${this.getUrl}?input=${value}&userName=${this.userName}&groupId=${this.groupId}`,
-            {
-                method: "GET",
-            })
+                {
+                    method: "GET",
+                })
             .then(response => this.createAutocompleteResults(response))
             .catch((reason) => this.createErrorResult(reason));
     }

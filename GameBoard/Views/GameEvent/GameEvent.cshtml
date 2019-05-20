@@ -1,5 +1,4 @@
-﻿@using Microsoft.Extensions.Logging
-@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -17,9 +16,7 @@
             subComponentArgumentsProvider = (Func<string, int, object>) ((userName, groupId) => new
             {
                 gameEventId = Model.Id,
-                gameEventName = Model.Name,
-                userName = userName,
-                groupId = groupId
+                gameEventName = Model.Name, userName, groupId
             })
         })
     }

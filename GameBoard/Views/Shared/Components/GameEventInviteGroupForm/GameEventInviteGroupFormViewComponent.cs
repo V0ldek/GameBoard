@@ -1,5 +1,4 @@
-﻿using GameBoard.LogicLayer.Groups.Dtos;
-using GameBoard.Models.GameEventInviteForm;
+﻿using GameBoard.Models.GameEventInviteForm;
 using GameBoard.Models.Groups;
 using Microsoft.AspNetCore.Mvc;
 

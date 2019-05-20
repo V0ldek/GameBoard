@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using GameBoard.Models.User;
 using GameBoard.LogicLayer.Groups.Dtos;
+using GameBoard.Models.User;
 
 namespace GameBoard.Models.Groups
 {

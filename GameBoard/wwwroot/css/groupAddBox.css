@@ -1,17 +1,11 @@
-﻿#group-add-form {
-    padding: 10px;
-}
+﻿#group-add-form { padding: 10px; }
 
-#group-add-box {
-    width: 100%;
-}
+#group-add-box { width: 100%; }
 
-#group-add-box-input {
-    width: 60%;
-}
+#group-add-box-input { width: 60%; }
 
 #group-collapse-btn {
-    width: 100%;
-    padding: 10px;
     margin-bottom: 5px;
+    padding: 10px;
+    width: 100%;
 }

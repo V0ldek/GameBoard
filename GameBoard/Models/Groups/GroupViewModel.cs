@@ -1,6 +1,6 @@
-﻿using GameBoard.Models.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GameBoard.Models.User;
 
 namespace GameBoard.Models.Groups
 {
@@ -22,7 +22,12 @@ namespace GameBoard.Models.Groups
 
         public Func<string, int, object> SubComponentArguments { get; }
 
-        public GroupViewModel(int groupId, string groupName, IEnumerable<UserViewModel> users, bool groupInviteEnabled, int gameEventId, 
+        public GroupViewModel(
+            int groupId,
+            string groupName,
+            IEnumerable<UserViewModel> users,
+            bool groupInviteEnabled,
+            int gameEventId,
             string gameEventName,
             string subComponentName,
             Func<string, int, object> subComponentArguments)

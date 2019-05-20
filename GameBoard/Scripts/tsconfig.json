@@ -1,31 +1,31 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "noEmitOnError": true,
-    "strictNullChecks": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es6",
-    "moduleResolution": "node"
-  },
-  "files": [
-    "Autocomplete/autocompleteUsers.ts",
-    "Autocomplete/autocompleteFriends.ts",
-    "Collapsible/Collapsible.ts",
-    "ListInput/listInput.ts",
-    "Popovers/popoverGenerator.ts",
-    "Site/friendsSidebar.ts",
-    "Site/gameEvent.ts",
-    "Site/gameEventForm.ts",
-    "Site/gameEventInviteForm.ts",
-    "Site/gameEventList.ts",
-    "Site/userSearchBox.ts",
-    "Site/friendSearchBox.ts",
-    "Site/gameEventInviteGroupForm.ts",
-    "productionConsoleSwitch.ts"
-  ],
-  "exclude": [
-    "../wwwroot/scripts"
-  ],
-  "compileOnSave": true
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "noEmitOnError": true,
+        "strictNullChecks": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "target": "es6",
+        "moduleResolution": "node"
+    },
+    "files": [
+        "Autocomplete/autocompleteUsers.ts",
+        "Autocomplete/autocompleteFriends.ts",
+        "Collapsible/Collapsible.ts",
+        "ListInput/listInput.ts",
+        "Popovers/popoverGenerator.ts",
+        "Site/friendsSidebar.ts",
+        "Site/gameEvent.ts",
+        "Site/gameEventForm.ts",
+        "Site/gameEventInviteForm.ts",
+        "Site/gameEventList.ts",
+        "Site/userSearchBox.ts",
+        "Site/friendSearchBox.ts",
+        "Site/gameEventInviteGroupForm.ts",
+        "productionConsoleSwitch.ts"
+    ],
+    "exclude": [
+        "../wwwroot/scripts"
+    ],
+    "compileOnSave": true
 }

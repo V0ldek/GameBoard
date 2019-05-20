@@ -1,5 +1,4 @@
-﻿using GameBoard.LogicLayer.Groups.Dtos;
-using GameBoard.Models.Groups;
+﻿using GameBoard.Models.Groups;
 
 namespace GameBoard.Models.GameEventInviteForm
 {
