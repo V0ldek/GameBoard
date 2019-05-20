@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded",
         const friendSearchBoxElements = document.querySelectorAll(".friend-search-box");
 
         for (let i = 0; i < friendSearchBoxElements.length; i++) {
-            const friendSearchBoxElement = <HTMLElement> friendSearchBoxElements[i];
+            const friendSearchBoxElement = friendSearchBoxElements[i] as HTMLElement;
             const friendSearchBoxInputElement =
-                <HTMLInputElement>friendSearchBoxElement.querySelector(".friend-search-box-input");
-            const groupId = <HTMLInputElement>friendSearchBoxElement.querySelector(".group-id-input");
-            const username = <HTMLInputElement>friendSearchBoxElement.querySelector(".user-name-input");
+                friendSearchBoxElement.querySelector(".friend-search-box-input") as HTMLInputElement;
+            const groupId = friendSearchBoxElement.querySelector(".group-id-input") as HTMLInputElement;
+            const username = friendSearchBoxElement.querySelector(".user-name-input") as HTMLInputElement;
 
             if (!friendSearchBoxElement) {
                 console.warn("Cannot create the friend search box - search box is null.");
