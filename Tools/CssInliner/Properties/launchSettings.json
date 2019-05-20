@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "CssInliner": {
-      "commandName": "Project",
-      "commandLineArgs": "\"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\HtmlTemplates\\Raw\" \"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\HtmlTemplates\\Raw\\styles.css\" \"..\\..\\..\\..\\..\\Notifications\\HtmlTemplateNotifications\\HtmlTemplates\\Inlined\""
-    }
-  }
-}
