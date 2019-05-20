@@ -24,7 +24,7 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
             int groupId = 0,
             string gameEventName = null,
             string subComponentName = null,
-            Func<string, int, object> subComponentArgumentsProvider = null)
+            Func<string, object> subComponentArgumentsProvider = null)
         {
             if (!User.Identity.IsAuthenticated)
             {

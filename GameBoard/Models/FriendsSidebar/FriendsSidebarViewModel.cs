@@ -18,7 +18,7 @@ namespace GameBoard.Models.FriendsSidebar
 
         public string SubComponentName { get; }
 
-        public Func<string, int, object> SubComponentArguments { get; }
+        public Func<string, object> SubComponentArguments { get; }
 
         public FriendsSidebarViewModel(
             IEnumerable<GroupViewModel> groups,
@@ -27,7 +27,7 @@ namespace GameBoard.Models.FriendsSidebar
             int gameEventId,
             string gameEventName,
             string subComponentName,
-            Func<string, int, object> subComponentArguments)
+            Func<string, object> subComponentArguments)
         {
             Groups = groups;
             Toggled = toggled;

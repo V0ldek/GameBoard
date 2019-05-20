@@ -23,7 +23,7 @@
                     <div class="sub-component">
                         @if (Model.SubComponentArguments != null)
                         {
-                            @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName, Model.Id))
+                            @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName))
                         }
                         else
                         {

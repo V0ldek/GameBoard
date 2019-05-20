@@ -16,7 +16,7 @@ namespace GameBoard.Views.Shared.Components.GroupCard
             int gameEventId,
             string gameEventName,
             string subComponentName,
-            Func<string, int, object> subComponentArguments) =>
+            Func<string, object> subComponentArguments) =>
             View(
                 "GroupCard",
                 new GroupViewModel(

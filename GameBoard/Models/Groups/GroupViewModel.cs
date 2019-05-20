@@ -20,7 +20,7 @@ namespace GameBoard.Models.Groups
 
         public string SubComponentName { get; }
 
-        public Func<string, int, object> SubComponentArguments { get; }
+        public Func<string, object> SubComponentArguments { get; }
 
         public GroupViewModel(
             int id,
@@ -30,7 +30,7 @@ namespace GameBoard.Models.Groups
             int gameEventId,
             string gameEventName,
             string subComponentName,
-            Func<string, int, object> subComponentArguments)
+            Func<string, object> subComponentArguments)
         {
             Id = id;
             Name = name;
