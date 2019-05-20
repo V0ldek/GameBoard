@@ -25,21 +25,21 @@ namespace GameBoard.LogicLayer.GameEventReminders
         }
 
         public async Task SendRemindersIfDateBetweenAsync(
-            DateTime dateTimeFrom,
-            DateTime dateTimeTo,
+            DateTime dateTimeFromInclusive,
+            DateTime dateTimeToExclusive,
             GameEventLinkGenerator gameEventLinkGenerator)
         {
-            var gameEvents = await GetEventsAndParticipationsWhereDateBetween(dateTimeFrom, dateTimeTo);
+            var gameEvents = await GetEventsAndParticipationsWhereDateBetween(dateTimeFromInclusive, dateTimeToExclusive);
             var sendTasks = gameEvents.Select(g => SendReminder(g, gameEventLinkGenerator));
             await Task.WhenAll(sendTasks);
         }
 
         private Task<List<GameEvent>> GetEventsAndParticipationsWhereDateBetween(
-            DateTime dateTimeFrom,
-            DateTime dateTimeTo) =>
+            DateTime dateTimeFromInclusive,
+            DateTime dateTimeToExclusive) =>
             _repository.GameEvents
                 .Where(
-                    g => g.Date.HasValue && g.Date.Value >= dateTimeFrom && g.Date.Value < dateTimeTo)
+                    g => g.Date.HasValue && g.Date.Value >= dateTimeFromInclusive && g.Date.Value < dateTimeToExclusive)
                 .Include(g => g.Participations)
                 .ThenInclude(g => g.Participant)
                 .ToListAsync();

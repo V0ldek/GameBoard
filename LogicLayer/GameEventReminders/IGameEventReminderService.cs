@@ -10,8 +10,8 @@ namespace GameBoard.LogicLayer.GameEventReminders
     public interface IGameEventReminderService
     {
         Task SendRemindersIfDateBetweenAsync(
-            DateTime dateTimeFrom,
-            DateTime dateTimeTo,
+            DateTime dateTimeFromInclusive,
+            DateTime dateTimeToExclusive,
             GameEventLinkGenerator gameEventLinkGenerator);
     }
 }
