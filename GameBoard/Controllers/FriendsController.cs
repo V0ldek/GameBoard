@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace GameBoard.Controllers
         {
             var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
             friends = friends.Where(x => x.UserName.ToUpper().Contains(input.ToUpper()));
-            var model = new FriendSearchResultViewModel(friends.Select((u) => u.ToViewModel()), groupId);
+            var model = new FriendSearchResultViewModel(friends.Select(u => u.ToViewModel()), groupId);
             return ViewComponent("FriendSearchResults", model);
         }
 

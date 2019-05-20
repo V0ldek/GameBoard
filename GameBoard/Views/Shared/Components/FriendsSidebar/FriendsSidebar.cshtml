@@ -3,24 +3,18 @@
 <div id="friends-sidebar-container" @(Model.Toggled ? "class=toggled" : "")>
     <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")">
         <h3>Friends</h3>
-        <hr />
+        <hr/>
         <ul class="list-unstyled components border-top border-bottom">
             @foreach (var group in Model.Groups)
             {
                 <li class="active">
                     @await Component.InvokeAsync("GroupCard", new
                     {
-                        GroupId = group.GroupId,
-                        GroupName = group.GroupName,
-                        Users = group.Users,
-                        GroupInviteEnabled = Model.GroupInviteEnabled,
-                        GameEventId = Model.GameEventId,
-                        SubComponentName = Model.SubComponentName,
-                        SubComponentArguments = Model.SubComponentArguments
+                        group.GroupId, group.GroupName, group.Users, Model.GroupInviteEnabled, Model.GameEventId, Model.SubComponentName, Model.SubComponentArguments
                     })
                 </li>
             }
-            </ul>
+        </ul>
         @await Component.InvokeAsync("GroupAddBox")
     </div>
     @await Component.InvokeAsync("UserSearchBox")
@@ -28,4 +22,3 @@
         <i id="friends-sidebar-collapse-icon" class="fa @(Model.Toggled ? "fa-angle-left" : "fa-angle-right")"></i>
     </button>
 </div>
-   

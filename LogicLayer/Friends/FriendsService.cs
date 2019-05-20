@@ -149,6 +149,11 @@ namespace GameBoard.LogicLayer.Friends
         {
             var friendship = await _repository.Friendships.SingleAsync(f => f.Id == friendRequestId);
 
+            if (friendship.FriendshipStatus != FriendshipStatus.PendingFriendRequest)
+            {
+                throw new InvalidOperationException("You can only change FriendshipStatus of a pending friendship.");
+            }
+
             friendship.FriendshipStatus = friendshipStatus;
 
             await _repository.SaveChangesAsync();

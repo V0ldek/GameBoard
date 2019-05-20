@@ -4,7 +4,7 @@
     @foreach (var user in Model.Users)
     {
         <div class="autocomplete-item user-result">
-            @await Component.InvokeAsync("UserCard", new { user, miniature = true })
+            @await Component.InvokeAsync("UserCard", new {user, miniature = true})
         </div>
     }
 </div>

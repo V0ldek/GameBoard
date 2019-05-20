@@ -1,4 +1,5 @@
-﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@using GameBoard.Models.GameEvent
+@model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -16,7 +17,9 @@
             subComponentArgumentsProvider = (Func<string, int, object>) ((userName, groupId) => new
             {
                 gameEventId = Model.Id,
-                gameEventName = Model.Name, userName, groupId
+                gameEventName = Model.Name,
+                userName,
+                groupId
             })
         })
     }
@@ -69,7 +72,18 @@
             }
             @foreach (var participant in Model.Participants)
             {
-                <li>@await Component.InvokeAsync("UserCard", new {user = participant})</li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
+                    @await Component.InvokeAsync("UserCard", new {user = participant})
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+                        {
+                            Id = Model.Id,
+                            Name = Model.Name,
+                            UserName = participant.UserName
+                        })
+                    }
+                </li>
             }
         </ul>
     </section>
@@ -82,7 +96,18 @@
             }
             @foreach (var invitee in Model.Invitees)
             {
-                <li>@await Component.InvokeAsync("UserCard", new {user = invitee})</li>
+                <li @(Model.IsCreator ? "class=user-card-with-sub-component" : "")>
+                    @await Component.InvokeAsync("UserCard", new {user = invitee})
+                    @if (Model.IsCreator)
+                    {
+                        @await Component.InvokeAsync("RemoveFromGameEventForm", new RemoveFromGameEventViewModel
+                        {
+                            Id = Model.Id,
+                            Name = Model.Name,
+                            UserName = invitee.UserName
+                        })
+                    }
+                </li>
             }
         </ul>
     </section>
