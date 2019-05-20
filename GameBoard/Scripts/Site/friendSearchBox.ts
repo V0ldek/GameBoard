@@ -1,5 +1,5 @@
 ﻿let groupAddPopoverGenerator = new PopoverGenerator();
-let friendSearchBoxes: AutocompleteFriends[] = [];
+let friendSearchBoxes: Autocomplete[] = [];
 
 document.addEventListener("DOMContentLoaded",
     () => {
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const friendSearchBox = new AutocompleteFriends(friendSearchBoxInputElement, friendSearchBoxElement, "/Friends/SearchFriendsForGroup", username.value, groupId.value);
+            const friendSearchBox = new Autocomplete(friendSearchBoxInputElement, friendSearchBoxElement, "/Friends/SearchFriendsForGroup", username.value, groupId.value);
             friendSearchBoxes.push(friendSearchBox);
         }
     });

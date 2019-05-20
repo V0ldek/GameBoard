@@ -6,6 +6,7 @@ using GameBoard.Configuration;
 using GameBoard.Errors;
 using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.Friends.Dtos;
+using GameBoard.LogicLayer.UserSearch;
 using GameBoard.Models.FriendRequest;
 using GameBoard.Models.FriendSearch;
 using GameBoard.Models.User;
@@ -19,15 +20,18 @@ namespace GameBoard.Controllers
     [Authorize]
     public class FriendsController : Controller
     {
+        private readonly IUserSearchService _userSearchService;
         private readonly IFriendsService _friendsService;
         private readonly HostConfiguration _hostConfiguration;
         private readonly ILogger<FriendsController> _logger;
 
         public FriendsController(
+            IUserSearchService userSearchService,
             IFriendsService friendsService,
             IOptions<HostConfiguration> hostConfiguration,
             ILogger<FriendsController> logger)
         {
+            _userSearchService = userSearchService;
             _friendsService = friendsService;
             _logger = logger;
             _hostConfiguration = hostConfiguration.Value;
@@ -38,7 +42,7 @@ namespace GameBoard.Controllers
         {
             var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
             friends = friends.Where(x => x.UserName.ToUpper().Contains(input.ToUpper()));
-            var model = new FriendSearchResultViewModel(friends.Select(u => u.ToViewModel()), groupId);
+            var model = new FriendSearchResultViewModel(friends.Select(u => u.ToViewModel()), Convert.ToInt32(groupId));
             return ViewComponent("FriendSearchResults", model);
         }
 

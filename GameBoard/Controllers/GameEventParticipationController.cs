@@ -183,8 +183,6 @@ namespace GameBoard.Controllers
                 });
         }
 
-        //group Invite
-
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SendGameEventInviteToGroup(
@@ -193,7 +191,6 @@ namespace GameBoard.Controllers
             IEnumerable<string> users)
         {
             GameEventDto gameEvent;
-            Debug.WriteLine("here");
 
             var sendGameEventInvitationDtos = users.Select(
                 u => new SendGameEventInvitationDto(

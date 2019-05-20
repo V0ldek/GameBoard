@@ -10,16 +10,13 @@ namespace GameBoard.Models.GameEventInviteForm
 
         public string UserName { get; }
 
-        public int GroupId { get; }
-
         public GroupViewModel Group { get; }
 
-        public GameEventInviteFormViewModel(int gameEventId, string gameEventName, string userName, int groupId)
+        public GameEventInviteFormViewModel(int gameEventId, string gameEventName, string userName)
         {
             GameEventId = gameEventId;
             GameEventName = gameEventName;
             UserName = userName;
-            GroupId = groupId;
         }
 
         public GameEventInviteFormViewModel(int gameEventId, string gameEventName, GroupViewModel group)

@@ -2,18 +2,18 @@
 
 <form class="game-event-invite-form game-event-group-invite-form" asp-action="SendGameEventInviteToGroup" asp-controller="GameEventParticipation"
       data-ajax="true" data-ajax-method="POST"
-      data-ajax-success="gameEventInviteGroupFormPopoverGenerator.generateSuccessPopover(document.querySelector('#game-event-invite-group-@Model.Group.GroupId'), xhr)"
-      data-ajax-failure="gameEventInviteGroupFormPopoverGenerator.generateErrorPopover(document.querySelector('#game-event-invite-group-@Model.Group.GroupId'), xhr)">
+      data-ajax-success="gameEventInviteGroupFormPopoverGenerator.generateSuccessPopover(document.querySelector('#game-event-invite-group-@Model.Group.Id'), xhr)"
+      data-ajax-failure="gameEventInviteGroupFormPopoverGenerator.generateErrorPopover(document.querySelector('#game-event-invite-group-@Model.Group.Id'), xhr)">
     <input type="hidden" asp-for="@Model.GameEventId" name="gameEventId"/>
-    <input type="hidden" asp-for="@Model.Group.GroupName" name="groupName"/>
+    <input type="hidden" asp-for="@Model.Group.Name" name="name"/>
     @{ var i = 0; }
     @foreach (var user in Model.Group.Users)
     {
         <input type="hidden" asp-for="@user.UserName" id="group-invite-username-@user.UserName" name="users[@i]"/>
         i++;
     }
-    <button id="game-event-invite-group-@Model.Group.GroupId" type="submit" class="btn btn-dark" data-toggle="popover" data-placement="right"
-            title="Invite group @Model.Group.GroupName to the @Model.GameEventName event">
+    <button id="game-event-invite-group-@Model.Group.Id" type="submit" class="btn btn-dark" data-toggle="popover" data-placement="right"
+            title="Invite group @Model.Group.Name to the @Model.GameEventName event">
         <i class="fa fa-send"></i>
     </button>
 </form>
