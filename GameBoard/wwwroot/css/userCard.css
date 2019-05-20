@@ -24,3 +24,28 @@
 }
 
 .user-card .username-container { width: 100%; }
+
+.user-card-with-sub-component {
+    display: grid;
+    grid-template-areas: "usercard sub-component";
+    grid-template-columns: 80% 20%;
+    grid-template-rows: auto;
+
+    padding: 0 10px 0 0;
+}
+
+.user-card-with-sub-component .user-card { grid-area: usercard; }
+
+.user-card-with-sub-component .user-card-sub-component {
+    grid-area: sub-component;
+
+    height: 100%;
+    margin-left: 10px;
+    width: 100%;
+}
+
+.user-card-with-sub-component .user-card-sub-component button {
+    height: 95%;
+    padding: 0;
+    width: 100%;
+}

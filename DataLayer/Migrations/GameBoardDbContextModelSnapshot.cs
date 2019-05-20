@@ -180,7 +180,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId", "ParticipantId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4 AND ParticipationStatus <> 5");
 
                     b.ToTable("GameEventParticipation");
                 });

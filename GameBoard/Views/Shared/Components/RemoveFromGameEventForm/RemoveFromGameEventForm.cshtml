@@ -1,0 +1,9 @@
+﻿@model GameBoard.Models.GameEvent.RemoveFromGameEventViewModel
+
+<form class="user-card-sub-component" asp-action="RemoveFromGameEvent" asp-controller="GameEventParticipation" method="get">
+    <input type="hidden" asp-for="@Model.Id" name="gameEventId"/>
+    <input type="hidden" asp-for="@Model.UserName"/>
+    <button type="submit" class="btn btn-dark" title="Remove @Model.UserName from the @Model.Name event">
+        <i class="fa fa-remove text-danger"></i>
+    </button>
+</form>

@@ -8,6 +8,7 @@ using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
+using GameBoard.LogicLayer.Friends.Notifications;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,13 @@ namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class FriendsService : IFriendsService
     {
-        private readonly IMailSender _mailSender;
+        private readonly INotificationService _notificationService;
         private readonly IGameBoardRepository _repository;
 
-        public FriendsService(IGameBoardRepository repository, IMailSender mailSender)
+        public FriendsService(IGameBoardRepository repository, INotificationService notificationService)
         {
             _repository = repository;
-            _mailSender = mailSender;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
@@ -68,8 +69,12 @@ namespace GameBoard.LogicLayer.Friends
                 FriendshipStatus = FriendshipStatus.PendingFriendRequest
             };
 
-            await SaveFriendshipAsync(friendship);
-            await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
+            using (var transaction = _repository.BeginTransaction())
+            {
+                await SaveFriendshipAsync(friendship);
+                await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
+                transaction.Commit();
+            }
         }
 
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
@@ -115,16 +120,26 @@ namespace GameBoard.LogicLayer.Friends
             }
         }
 
-        private async Task SendFriendRequestEmailAsync(
+        private Task SendFriendRequestEmailAsync(
             SendFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
-            Friendship friendship) =>
-            await _mailSender.SendFriendInvitationAsync(
+            Friendship friendship)
+        {
+            var notification = new FriendRequestNotification(
+                friendship.RequestedBy.UserName,
+                friendship.RequestedTo.UserName,
                 friendship.RequestedTo.Email,
                 requestLinkGenerator(friendship.Id.ToString()));
+            return _notificationService.CreateNotificationBatch(notification).SendAsync();
+        }
 
         private async Task ChangeFriendRequestStatus(int friendRequestId, FriendshipStatus friendshipStatus)
         {
             var friendship = await _repository.Friendships.SingleAsync(f => f.Id == friendRequestId);
+
+            if (friendship.FriendshipStatus != FriendshipStatus.PendingFriendRequest)
+            {
+                throw new InvalidOperationException("You can only change FriendshipStatus of a pending friendship.");
+            }
 
             friendship.FriendshipStatus = friendshipStatus;
 

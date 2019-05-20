@@ -1,4 +1,6 @@
-﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@using GameBoard.Models.GameEvent
+@using GameBoard.Models.GameEventInviteForm
+@model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -11,12 +13,8 @@
         {
             toggled = true,
             subComponentName = "GameEventInviteForm",
-            subComponentArgumentsProvider = (Func<string, object>) (userName => new
-            {
-                gameEventId = Model.Id,
-                gameEventName = Model.Name,
-                userName
-            })
+            subComponentArgumentsProvider = (Func<string, object>) (userName =>
+                new GameEventInviteFormViewModel(Model.Id, Model.Name, userName))
         })
     }
     else
