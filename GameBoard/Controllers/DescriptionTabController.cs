@@ -17,15 +17,20 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditDescriptionTab(int id) => View(
-            "EditDescriptionTab",
-            new EditDescriptionTabViewModel {GameEventId = id});
+        public async Task<IActionResult> EditDescriptionTab(int descriptionTabId)
+        {
+            var description = await _eventTabService.GetDescriptionTabAsync(descriptionTabId);
+
+            return View(
+                "EditDescriptionTab",
+                description.ToEditViewModel());
+        }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> EditDescriptionTab(EditDescriptionTabViewModel editDescriptionTabViewModel)
         {
-            await _eventTabService.EditDescriptionTab(editDescriptionTabViewModel.ToDto());
+            await _eventTabService.EditDescriptionTabAsync(editDescriptionTabViewModel.ToDto());
 
             return RedirectToAction("GameEvent", "GameEvent", new {id = editDescriptionTabViewModel.GameEventId});
         }
