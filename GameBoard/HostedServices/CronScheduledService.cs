@@ -38,7 +38,7 @@ namespace GameBoard.HostedServices
         }
 
         private async Task WaitUntilDueAsync(CancellationToken cancellationToken)
-        { 
+        {
             var timeToWait = _nextRun - DateTime.Now;
             if (timeToWait > TimeSpan.Zero)
             {
