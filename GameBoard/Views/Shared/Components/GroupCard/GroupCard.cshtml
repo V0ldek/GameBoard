@@ -1,8 +1,8 @@
 ﻿@model GameBoard.Models.Groups.GroupViewModel
 
 <div class="group-collapse">
-    <button id="group-collapse-btn-@Model.GroupId" class="btn btn-dark collapse-btn" type="button" data-toggle="collapse" href="#collapseGroup-@Model.GroupId">
-        @Model.GroupName
+    <button id="group-collapse-btn-@Model.Id" class="btn btn-dark collapse-btn" type="button" data-toggle="collapse" href="#collapseGroup-@Model.Id">
+        @Model.Name
         <i class="fa fa-angle-double-down"></i>
     </button>
 
@@ -12,7 +12,7 @@
     }
 </div>
 
-<div class="collapse" id="collapseGroup-@Model.GroupId">
+<div class="collapse" id="collapseGroup-@Model.Id">
     <ul class="list-unstyled components border-top border-bottom">
         @foreach (var user in Model.Users)
         {
@@ -23,7 +23,7 @@
                     <div class="sub-component">
                         @if (Model.SubComponentArguments != null)
                         {
-                            @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName, Model.GroupId))
+                            @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName, Model.Id))
                         }
                         else
                         {

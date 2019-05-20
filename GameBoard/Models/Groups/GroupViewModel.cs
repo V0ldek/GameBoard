@@ -1,14 +1,14 @@
-﻿using System;
+﻿using GameBoard.Models.User;
+using System;
 using System.Collections.Generic;
-using GameBoard.Models.User;
 
 namespace GameBoard.Models.Groups
 {
     public class GroupViewModel
     {
-        public int GroupId { get; }
+        public int Id { get; }
 
-        public string GroupName { get; }
+        public string Name { get; }
 
         public IEnumerable<UserViewModel> Users { get; }
 
@@ -23,8 +23,8 @@ namespace GameBoard.Models.Groups
         public Func<string, int, object> SubComponentArguments { get; }
 
         public GroupViewModel(
-            int groupId,
-            string groupName,
+            int id,
+            string name,
             IEnumerable<UserViewModel> users,
             bool groupInviteEnabled,
             int gameEventId,
@@ -32,8 +32,8 @@ namespace GameBoard.Models.Groups
             string subComponentName,
             Func<string, int, object> subComponentArguments)
         {
-            GroupId = groupId;
-            GroupName = groupName;
+            Id = id;
+            Name = name;
             Users = users;
             GroupInviteEnabled = groupInviteEnabled;
             GameEventId = gameEventId;
@@ -42,10 +42,10 @@ namespace GameBoard.Models.Groups
             SubComponentArguments = subComponentArguments;
         }
 
-        public GroupViewModel(int groupId, string groupName, IEnumerable<UserViewModel> users)
+        public GroupViewModel(int id, string name, IEnumerable<UserViewModel> users)
         {
-            GroupId = groupId;
-            GroupName = groupName;
+            Id = id;
+            Name = name;
             Users = users;
         }
     }
