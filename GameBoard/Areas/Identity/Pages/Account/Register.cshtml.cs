@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using GameBoard.Areas.Identity.Pages.Account.Notifications;
 using GameBoard.DataLayer.Entities;
+using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
@@ -19,10 +20,10 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly IGroupsService _groupsService;
         private readonly ILogger<RegisterModel> _logger;
         private readonly INotificationService _notificationService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGroupsService _groupsService;
         private GroupsConfiguration GroupsOptions { get; }
 
         [BindProperty]
@@ -51,19 +52,28 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
             var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
 
-            IdentityResult result;
-            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-                    await SendRegistrationEmailAsync(user);
-                    await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
-                    transaction.Complete();
+            var result = await _userManager.CreateAsync(user, Input.Password);
 
-                    return RedirectToPage("/Account/ConfirmEmailInfo");
+            try
+            {
+                using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
+                        await SendRegistrationEmailAsync(user);
+                        await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
+                        transaction.Complete();
+
+                        return RedirectToPage("/Account/ConfirmEmailInfo");
+                    }
                 }
+            }
+            catch
+            {
+                // There's no support for distributed transactions in EF Core so this is the best I came up with.
+                await _userManager.DeleteAsync(user);
+                throw;
             }
 
             foreach (var error in result.Errors)
