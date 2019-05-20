@@ -5,17 +5,6 @@
     {
         <div class="autocomplete-item user-result">
             @await Component.InvokeAsync("UserCard", new { user, miniature = true })
-            <form asp-controller="Groups" asp-action="AddUserToGroup"
-                  class="invite-form"
-                  data-ajax="true" data-ajax-method="POST"
-                  data-ajax-success="groupAddPopoverGenerator.generateSuccessPopover(document.querySelector('#group-add-button-@Model.GroupId-@user.Id'), xhr)"
-                  data-ajax-failure="groupAddPopoverGenerator.generateErrorPopover(document.querySelector('#group-add-button-@Model.GroupId-@user.Id'), xhr)">
-                <input type="hidden" name="userName" asp-for="@user.UserName" />
-                <input type="hidden" name="groupId" asp-for="@Model.GroupId"/>
-                <button id="group-add-button-@Model.GroupId-@user.Id" class="btn btn-dark mt-1 help" type="submit" data-toggle="popover" data-placement="right">
-                    <i class="fa fa-user-plus"></i>
-                </button>
-            </form>
         </div>
     }
 </div>
