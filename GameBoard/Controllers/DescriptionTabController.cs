@@ -9,9 +9,9 @@ namespace GameBoard.Controllers
     [Authorize]
     public class DescriptionTabController : Controller
     {
-        private readonly IDescriptionTabsService _eventTabService;
+        private readonly IDescriptionTabService _eventTabService;
 
-        public DescriptionTabController(IDescriptionTabsService eventTabService)
+        public DescriptionTabController(IDescriptionTabService eventTabService)
         {
             _eventTabService = eventTabService;
         }
