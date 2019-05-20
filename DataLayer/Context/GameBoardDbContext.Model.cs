@@ -153,11 +153,14 @@ namespace GameBoard.DataLayer.Context
 
                     entity.HasOne(e => e.GameEvent)
                         .WithOne(g => g.Description)
-                        .HasForeignKey<DescriptionTab>(e => e.GameEventId);
+                        .HasForeignKey<DescriptionTab>(e => e.GameEventId)
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.Property(e => e.Description)
                         .IsRequired()
                         .IsUnicode();//Not sure if it's needed.
+
+                    entity.ToTable("DescriptionTab");
                 });
         }
     }
