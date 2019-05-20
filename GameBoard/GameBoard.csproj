@@ -40,8 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\Autocomplete\autocompleteUsers.ts" />
-    <TypeScriptCompile Include="Scripts\Autocomplete\autocompleteFriends.ts" />
     <TypeScriptCompile Include="Scripts\Autocomplete\autocomplete.ts" />
     <TypeScriptCompile Include="Scripts\Collapsible\collapsible.ts" />
     <TypeScriptCompile Include="Scripts\ListInput\listInput.ts" />

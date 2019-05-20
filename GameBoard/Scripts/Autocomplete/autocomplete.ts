@@ -62,8 +62,8 @@
         }
         console.log((this.groupId)
             ? `${this.getUrl}?input=${value}&userName=${this.userName}&groupId=${this.groupId}`
-            : '${this.getUrl}?input=${value}');
-        fetch((this.groupId) ? `${this.getUrl}?input=${value}&userName=${this.userName}&groupId=${this.groupId}` : '${this.getUrl}?input=${value}',
+            : `${this.getUrl}?input=${value}`);
+        fetch((this.groupId) ? `${this.getUrl}?input=${value}&userName=${this.userName}&groupId=${this.groupId}` : `${this.getUrl}?input=${value}`,
                 {
                     method: "GET",
                 })

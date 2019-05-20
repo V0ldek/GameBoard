@@ -52,19 +52,19 @@ namespace GameBoard.Areas.Identity.Pages.Account
             var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
 
             IdentityResult result;
-            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
+       //     using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+       //     {
                 result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
                     await SendRegistrationEmailAsync(user);
                     await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
-                    transaction.Complete();
+    //                transaction.Complete();
 
                     return RedirectToPage("/Account/ConfirmEmailInfo");
                 }
-            }
+     //       }
 
             foreach (var error in result.Errors)
             {
