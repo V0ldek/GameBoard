@@ -26,7 +26,7 @@ if (defaultOpenTabButton != null) {
     defaultOpenTabButton.click();
 }
 
-function openTab(evt: { currentTarget: { className: string; }; }, tabName: string) {
+function openTab(evt: JQueryMouseEventObject, tabName: string) {
 
     Array.from(document.getElementsByClassName("tabcontent")).forEach(v => {
         v.setAttribute("hidden", "true");
