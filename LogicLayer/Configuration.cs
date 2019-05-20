@@ -19,7 +19,7 @@ namespace GameBoard.LogicLayer
         {
             DataLayer.Configuration.ConfigureServices(services);
             services.AddTransient<INotificationService, SendGridNotificationService>();
-            services.AddScoped<IGameEventReminderService, GameGameEventReminderService>();
+            services.AddScoped<IGameEventReminderService, GameEventReminderService>();
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();

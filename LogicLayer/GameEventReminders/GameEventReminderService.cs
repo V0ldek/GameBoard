@@ -12,13 +12,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.GameEventReminders
 {
-    public class GameGameEventReminderService : IGameEventReminderService
+    public class GameEventReminderService : IGameEventReminderService
     {
         private readonly INotificationService _notificationService;
 
         private readonly IGameBoardRepository _repository;
 
-        public GameGameEventReminderService(IGameBoardRepository repository, INotificationService notificationService)
+        public GameEventReminderService(IGameBoardRepository repository, INotificationService notificationService)
         {
             _repository = repository;
             _notificationService = notificationService;
