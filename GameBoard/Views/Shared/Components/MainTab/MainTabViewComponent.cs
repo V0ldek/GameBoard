@@ -4,6 +4,6 @@ namespace GameBoard.Views.Shared.Components.MainTab
 {
     public class MainTabViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke() => View("InfoTab");
+        public IViewComponentResult Invoke() => View("MainTab");
     }
 }
