@@ -3,13 +3,15 @@
         box-sizing: border-box;
         display: grid;
         grid-row-gap: 30px;
-        grid-template-areas: "name name name"
-                             "description description description"
-                             "control control control";
+        grid-template-areas: "name name name" "description description description" "control control control";
         grid-template-columns: 25vw 25vw 25vw;
         grid-template-rows: auto auto auto;
-
     }
+}
+
+.description-text {
+    height: auto;
+    min-height: 40vh;
 }
 
 .description {
@@ -19,10 +21,6 @@
 .name {
     text-align: center;
     grid-area: name;
-}
-
-.description-text {
-    height: 40vh;
 }
 
 .control {
