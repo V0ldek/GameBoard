@@ -77,7 +77,6 @@ namespace GameBoard.DataLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .IsUnicode(true);
 
                     b.Property<int>("GameEventId");

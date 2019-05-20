@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190513133325_DescriptionTab")]
+    [Migration("20190520094439_DescriptionTab")]
     partial class DescriptionTab
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,6 @@ namespace GameBoard.DataLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .IsUnicode(true);
 
                     b.Property<int>("GameEventId");

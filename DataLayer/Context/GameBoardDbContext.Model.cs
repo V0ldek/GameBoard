@@ -157,7 +157,6 @@ namespace GameBoard.DataLayer.Context
                         .OnDelete(DeleteBehavior.Restrict);
 
                     entity.Property(e => e.Description)
-                        .IsRequired()
                         .IsUnicode();//Not sure if it's needed.
 
                     entity.ToTable("DescriptionTab");

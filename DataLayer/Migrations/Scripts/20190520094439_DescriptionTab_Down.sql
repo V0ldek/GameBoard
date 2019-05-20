@@ -16,10 +16,6 @@ AS
     FROM DELETED
     WHERE Game.GameEventId = DELETED.Id;
 
-	DELETE FROM DescriptionTab
-	FROM DELETED
-	WHERE DescriptionTab.GameEventId = DELETED.Id;
-
     DELETE FROM GameEvent
     FROM DELETED
     WHERE GameEvent.Id = DELETED.Id;

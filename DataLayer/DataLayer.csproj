@@ -38,11 +38,9 @@
     <None Update="Migrations\Scripts\20190506010505_GameEvent_Up.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\20190513093809_DescriptionTab_Down.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Migrations\Scripts\20190520094439_DescriptionTab_Down.sql">
+      <CopyToOutputDirectory>PerserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\20190513093809_DescriptionTab_Up.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

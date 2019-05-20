@@ -15,14 +15,22 @@ AS
     FROM DELETED
     WHERE Game.GameEventId = DELETED.Id;
 
+    DELETE FROM GameEvent -- Why comment is not where it should be?
+    FROM DELETED
+    WHERE GameEvent.Id = DELETED.Id;
+
 	DELETE FROM DescriptionTab
 	FROM DELETED
 	WHERE DescriptionTab.GameEventId = DELETED.Id;
 
-    DELETE FROM GameEvent
-    FROM DELETED
-    WHERE GameEvent.Id = DELETED.Id;
-
   END;
+
+GO
+
+INSERT 
+INTO DescriptionTab(GameEventId)
+SELECT TMP.Id From 
+	(SELECT Id FROM GameEvent EXCEPT 
+	 SELECT GameEventId as ID FROM DescriptionTab) as TMP;
 
 GO
