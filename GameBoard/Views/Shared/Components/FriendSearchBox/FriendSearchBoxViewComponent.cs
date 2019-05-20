@@ -5,7 +5,7 @@ namespace GameBoard.Views.Shared.Components.GroupCard
 {
     public class FriendSearchBoxViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(GroupViewModel group, bool miniature = false) =>
+        public IViewComponentResult Invoke(GroupViewModel group) =>
             View("FriendsSearchBox", group);
     }
 }
