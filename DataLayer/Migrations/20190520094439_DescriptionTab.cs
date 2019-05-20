@@ -17,6 +17,11 @@ namespace GameBoard.DataLayer.Migrations
                 AppContext.BaseDirectory,
                 "Migrations/Scripts/20190520094439_DescriptionTab_Down.sql");
 
+        private static readonly string GameEventTriggerUpScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/20190506010505_GameEvent_GameEventTrigger_Up.sql");
+
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -54,6 +59,7 @@ namespace GameBoard.DataLayer.Migrations
                 name: "DescriptionTab");
 
             migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
+            migrationBuilder.RunSqlScript(GameEventTriggerUpScriptFilePath);
         }
     }
 }
