@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using System.Transactions;
+using GameBoard.Areas.Identity.Pages.Account.Notifications;
 using GameBoard.DataLayer.Entities;
-using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
@@ -18,10 +19,10 @@ namespace GameBoard.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IMailSender _mailSender;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IGroupsService _groupsService;
+        private readonly ILogger<RegisterModel> _logger;
+        private readonly INotificationService _notificationService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private GroupsConfiguration GroupsOptions { get; }
 
         [BindProperty]
@@ -30,15 +31,15 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
-            IMailSender mailSender,
             IGroupsService groupsService,
-            IOptions<GroupsConfiguration> groupsOptions)
+            IOptions<GroupsConfiguration> groupsOptions,
+            INotificationService notificationService)
         {
             _userManager = userManager;
             _logger = logger;
-            _mailSender = mailSender;
             _groupsService = groupsService;
             GroupsOptions = groupsOptions.Value;
+            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -49,15 +50,20 @@ namespace GameBoard.Areas.Identity.Pages.Account
             }
 
             var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
-            var result = await _userManager.CreateAsync(user, Input.Password);
-            if (result.Succeeded)
+
+            IdentityResult result;
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                _logger.LogInformation("User created a new account with password.");
-                SendRegistrationEmail(user);
+                result = await _userManager.CreateAsync(user, Input.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+                    await SendRegistrationEmailAsync(user);
+                    await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
+                    transaction.Complete();
 
-                await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
-
-                return RedirectToPage("/Account/ConfirmEmailInfo");
+                    return RedirectToPage("/Account/ConfirmEmailInfo");
+                }
             }
 
             foreach (var error in result.Errors)
@@ -68,7 +74,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async void SendRegistrationEmail(ApplicationUser user)
+        private async Task SendRegistrationEmailAsync(ApplicationUser user)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.Page(
@@ -77,7 +83,11 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 new {userId = user.Id, code},
                 Request.Scheme);
 
-            await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+            var notification = new ConfirmEmailNotification(
+                user.UserName,
+                Input.Email,
+                HtmlEncoder.Default.Encode(callbackUrl));
+            await _notificationService.CreateNotificationBatch(notification).SendAsync();
         }
 
         public class InputModel

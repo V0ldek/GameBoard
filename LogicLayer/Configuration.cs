@@ -1,7 +1,10 @@
 ﻿using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.GameEventParticipations;
+using GameBoard.LogicLayer.GameEventReminders;
 using GameBoard.LogicLayer.GameEvents;
 using GameBoard.LogicLayer.Groups;
+using GameBoard.LogicLayer.Notifications;
+using GameBoard.LogicLayer.Notifications.SendGrid;
 using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +19,8 @@ namespace GameBoard.LogicLayer
         public static void ConfigureServices(IServiceCollection services)
         {
             DataLayer.Configuration.ConfigureServices(services);
+            services.AddTransient<INotificationService, SendGridNotificationService>();
+            services.AddScoped<IGameEventReminderService, GameEventReminderService>();
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();

@@ -8,11 +8,17 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public sealed class GameEventDto
     {
-        [NotNull] [ItemNotNull] public IEnumerable<string> Games;
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<string> Games { get; }
 
-        [NotNull] [ItemNotNull] public IEnumerable<UserDto> Invitees;
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<UserDto> Invitees { get; }
 
-        [NotNull] [ItemNotNull] public IEnumerable<UserDto> Participants;
+        [NotNull]
+        [ItemNotNull]
+        public IEnumerable<UserDto> Participants { get; }
 
         public int Id { get; }
 

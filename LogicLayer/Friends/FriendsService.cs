@@ -9,6 +9,7 @@ using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
+using GameBoard.LogicLayer.Friends.Notifications;
 using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
@@ -20,14 +21,18 @@ namespace GameBoard.LogicLayer.Friends
     internal sealed class FriendsService : IFriendsService
     {
         private readonly IGroupsService _groupsService;
-        private readonly IMailSender _mailSender;
+        private readonly INotificationService _notificationService;
         private readonly IGameBoardRepository _repository;
         private GroupsConfiguration GroupsOptions { get; }
 
-        public FriendsService(IGameBoardRepository repository, IMailSender mailSender, IGroupsService groupsService, IOptions<GroupsConfiguration> groupsOptions)
+        public FriendsService(
+            IGameBoardRepository repository,
+            INotificationService notificationService,
+            IGroupsService groupsService,
+            IOptions<GroupsConfiguration> groupsOptions)
         {
             _repository = repository;
-            _mailSender = mailSender;
+            _notificationService = notificationService;
             _groupsService = groupsService;
             GroupsOptions = groupsOptions.Value;
         }
@@ -75,8 +80,12 @@ namespace GameBoard.LogicLayer.Friends
                 FriendshipStatus = FriendshipStatus.PendingFriendRequest
             };
 
-            await SaveFriendshipAsync(friendship);
-            await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
+            using (var transaction = _repository.BeginTransaction())
+            {
+                await SaveFriendshipAsync(friendship);
+                await SendFriendRequestEmailAsync(friendRequest.GenerateRequestLink, friendship);
+                transaction.Commit();
+            }
         }
 
         public async Task<FriendRequestDto> GetFriendRequestAsync(int friendRequestId)
@@ -100,12 +109,15 @@ namespace GameBoard.LogicLayer.Friends
                 throw new NullReferenceException("The friend request you referenced does not exist in the system.");
             }
 
-            var groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserFrom.UserName, GroupsOptions.AllFriendsGroupName);
+            var groupAll = await _groupsService.GetGroupByNamesAsync(
+                friendship.UserFrom.UserName,
+                GroupsOptions.AllFriendsGroupName);
             await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.GroupId);
 
-            groupAll = await _groupsService.GetGroupByNamesAsync(friendship.UserTo.UserName, GroupsOptions.AllFriendsGroupName);
+            groupAll = await _groupsService.GetGroupByNamesAsync(
+                friendship.UserTo.UserName,
+                GroupsOptions.AllFriendsGroupName);
             await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.GroupId);
-           
         }
 
         public Task RejectFriendRequestAsync(int friendRequestId) =>
@@ -138,12 +150,17 @@ namespace GameBoard.LogicLayer.Friends
             }
         }
 
-        private async Task SendFriendRequestEmailAsync(
+        private Task SendFriendRequestEmailAsync(
             SendFriendRequestDto.RequestLinkGenerator requestLinkGenerator,
-            Friendship friendship) =>
-            await _mailSender.SendFriendInvitationAsync(
+            Friendship friendship)
+        {
+            var notification = new FriendRequestNotification(
+                friendship.RequestedBy.UserName,
+                friendship.RequestedTo.UserName,
                 friendship.RequestedTo.Email,
                 requestLinkGenerator(friendship.Id.ToString()));
+            return _notificationService.CreateNotificationBatch(notification).SendAsync();
+        }
 
         private async Task ChangeFriendRequestStatus(int friendRequestId, FriendshipStatus friendshipStatus)
         {

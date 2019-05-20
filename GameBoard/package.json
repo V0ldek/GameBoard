@@ -5,7 +5,7 @@
   "dependencies": {
     "bootstrap": "4.3.1",
     "@types/bootstrap": "4.3.0",
-    "jquery": "3.3.1",
+    "jquery": "3.4.1",
     "@types/jquery": "3.3.29",
     "jquery-ajax-unobtrusive": "3.2.6",
     "jquery-validation": "1.19.0",
@@ -15,7 +15,8 @@
     "@types/mcustomscrollbar": "2.8.32",
     "popper.js": "1.14.7",
     "moment": "2.24.0",
-    "tempusdominus-bootstrap-4": "5.1.2"
+    "tempusdominus-bootstrap-4": "5.1.2",
+    "tempusdominus-core": "5.0.3"
   },
   "devDependencies": {
     "del": "4.1.0",
@@ -24,6 +25,7 @@
     "gulp-clean-css": "4.0.0",
     "gulp-terser": "1.1.7",
     "gulp-util": "3.0.8",
-    "merge-stream": "1.0.1"
+    "merge-stream": "1.0.1",
+    "typescript": "3.4.1"
   }
 }
