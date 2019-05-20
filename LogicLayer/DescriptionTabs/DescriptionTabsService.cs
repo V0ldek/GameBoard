@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +15,19 @@ namespace GameBoard.LogicLayer.DescriptionTabs
             _repository = repository;
         }
 
-        public async Task EditDescriptionTab(EditDescriptionTabDto editDescriptionTabDto)
+        public async Task EditDescriptionTabAsync(EditDescriptionTabDto editDescriptionTabDto)
         {
-                var oldDescriptionTab = await _repository.DescriptionTabs
-                    .SingleAsync(dt => dt.GameEventId == editDescriptionTabDto.GameEventId);
+            var descriptionTab = await _repository.DescriptionTabs
+                .SingleAsync(dt => dt.Id == editDescriptionTabDto.Id);
 
-                oldDescriptionTab.EditDescriptionTab(editDescriptionTabDto);
+            descriptionTab.Description = editDescriptionTabDto.Description;
 
-                await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
+
+        public Task<DescriptionTabDto> GetDescriptionTabAsync(int id) => _repository.DescriptionTabs
+            .Where(dt => dt.Id == id)
+            .Select(dt => dt.ToDescriptionTabDto())
+            .SingleAsync();
     }
 }

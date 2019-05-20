@@ -4,13 +4,15 @@ namespace GameBoard.LogicLayer.DescriptionTabs.Dtos
 {
     public class EditDescriptionTabDto
     {
+        public int Id { get; }
+
         public int GameEventId { get; }
 
-        [NotNull]
         public string Description { get; }
 
-        public EditDescriptionTabDto(int gameEventId, [NotNull] string description)
+        public EditDescriptionTabDto(int id, int gameEventId, string description)
         {
+            Id = id;
             GameEventId = gameEventId;
             Description = description;
         }

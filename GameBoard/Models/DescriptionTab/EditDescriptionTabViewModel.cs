@@ -5,6 +5,8 @@ namespace GameBoard.Models.DescriptionTab
 {
     public class EditDescriptionTabViewModel
     {
+        public int Id { get; set; }
+
         public int GameEventId { get; set; }
 
         [Required]
@@ -12,6 +14,6 @@ namespace GameBoard.Models.DescriptionTab
         public string Description { get; set; }
 
         internal EditDescriptionTabDto ToDto() =>
-            new EditDescriptionTabDto(GameEventId, Description);
+            new EditDescriptionTabDto(Id, GameEventId, Description);
     }
 }
