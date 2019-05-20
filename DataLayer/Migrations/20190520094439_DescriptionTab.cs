@@ -1,10 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using System.IO;
+using GameBoard.DataLayer.Migrations.MigrationBuilderExtensions;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameBoard.DataLayer.Migrations
 {
     public partial class DescriptionTab : Migration
     {
+        private static readonly string MigrationUpScriptFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "Migrations/Scripts/20190520094439_DescriptionTab_Up.sql");
+
+        private static readonly string MigrationDownScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190520094439_DescriptionTab_Down.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -32,12 +44,16 @@ namespace GameBoard.DataLayer.Migrations
                 table: "DescriptionTab",
                 column: "GameEventId",
                 unique: true);
+
+            migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "DescriptionTab");
+
+            migrationBuilder.RunSqlScript(MigrationDownScriptFilePath);
         }
     }
 }
