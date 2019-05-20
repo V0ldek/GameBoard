@@ -3,8 +3,8 @@
 GO
 
 CREATE TRIGGER TR_GameEvent_InsteadOfDelete
-  ON GameEvent
-  INSTEAD OF DELETE
+    ON GameEvent
+    INSTEAD OF DELETE
 AS
   BEGIN
     DELETE FROM GameEventParticipation
@@ -19,18 +19,16 @@ AS
     FROM DELETED
     WHERE GameEvent.Id = DELETED.Id;
 
-	DELETE FROM DescriptionTab
-	FROM DELETED
-	WHERE DescriptionTab.GameEventId = DELETED.Id;
+    DELETE FROM DescriptionTab
+    FROM DELETED
+    WHERE DescriptionTab.GameEventId = DELETED.Id;
 
-  END;
+END;
 
 GO
 
-INSERT 
-INTO DescriptionTab(GameEventId)
-SELECT TMP.Id From 
-	(SELECT Id FROM GameEvent EXCEPT 
-	 SELECT GameEventId as ID FROM DescriptionTab) as TMP;
+INSERT INTO DescriptionTab(GameEventId)
+    SELECT TMP.Id From 
+    (SELECT Id FROM GameEvent EXCEPT SELECT GameEventId as ID FROM DescriptionTab) as TMP;
 
 GO

@@ -150,7 +150,8 @@ namespace GameBoard.DataLayer.Context
                 entity =>
                 {
                     entity.HasKey(e => e.Id);
-                    entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
 
                     entity.HasOne(e => e.GameEvent)
                         .WithOne(g => g.Description)
