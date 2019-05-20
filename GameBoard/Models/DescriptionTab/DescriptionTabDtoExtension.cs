@@ -2,7 +2,7 @@
 
 namespace GameBoard.Models.DescriptionTab
 {
-    public static class EventTabDtoExtension
+    public static class DescriptionTabDtoExtension
     {
         public static DescriptionTabViewModel ToViewModel(this DescriptionTabDto descriptionTab) =>
             new DescriptionTabViewModel
