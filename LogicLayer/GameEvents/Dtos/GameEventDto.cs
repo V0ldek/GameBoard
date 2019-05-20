@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using GameBoard.LogicLayer.UserSearch.Dtos;
-using GameBoard.LogicLayer.GameEvents.Dtos;
 using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
@@ -16,7 +15,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 
         [NotNull] [ItemNotNull] public IEnumerable<UserDto> Participants;
 
-        [NotNull] public DescriptionTabDto DescriptionTab { get; }
+        [NotNull]
+        public DescriptionTabDto DescriptionTab { get; }
 
         public int Id { get; }
 

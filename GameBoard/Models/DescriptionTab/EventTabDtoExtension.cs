@@ -1,4 +1,4 @@
-﻿using GameBoard.LogicLayer.EventTabs.Dtos;
+﻿using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 
 namespace GameBoard.Models.DescriptionTab
 {

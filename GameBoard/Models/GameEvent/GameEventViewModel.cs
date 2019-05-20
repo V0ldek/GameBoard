@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using GameBoard.LogicLayer.EventTabs.Dtos;
+using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using GameBoard.LogicLayer.GameEvents.Dtos;
 using GameBoard.Models.DescriptionTab;
 using GameBoard.Models.User;

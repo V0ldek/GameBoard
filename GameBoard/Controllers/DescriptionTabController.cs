@@ -17,7 +17,9 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditDescriptionTab(int id) => View("EditDescriptionTab", new EditDescriptionTabViewModel(){GameEventId = id});
+        public IActionResult EditDescriptionTab(int id) => View(
+            "EditDescriptionTab",
+            new EditDescriptionTabViewModel {GameEventId = id});
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
