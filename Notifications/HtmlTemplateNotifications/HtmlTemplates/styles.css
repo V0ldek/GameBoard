@@ -60,6 +60,10 @@ body { background-color: #05080b; }
     padding: 20px;
 }
 
+.content p {
+    color: #e5e8ea;
+}
+
 /* -------------------------------------
     HEADER, FOOTER, MAIN
 ------------------------------------- */
