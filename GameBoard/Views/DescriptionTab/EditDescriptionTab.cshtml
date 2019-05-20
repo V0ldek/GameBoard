@@ -6,6 +6,7 @@
     <div class="col form-group">
         <label asp-for="Description"></label>
         <textarea id="description-text-area" asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-dark">
         Save

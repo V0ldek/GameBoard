@@ -1,11 +1,15 @@
 ﻿@model GameBoard.Models.GameEvent.GameEventViewModel
 
+@{
+    var description = String.IsNullOrEmpty(Model.DescriptionTab.Description) ? "None" : Model.DescriptionTab.Description;
+}
+
 <article class="description-tab">
     <h1 class="name" title="@Model.Name">@Model.Name</h1>
     <section class="description">
         <h3 class="name">@Html.DisplayNameFor(m => m.DescriptionTab.Description)</h3>
-        <p class="description-text p-1">
-            @Model.DescriptionTab.Description
+        <p class="description-text p-1 border-full">
+            @description
         </p>
     </section>
     @if (Model.IsCreator)

@@ -15,7 +15,7 @@ AS
     FROM DELETED
     WHERE Game.GameEventId = DELETED.Id;
 
-    DELETE FROM GameEvent -- Why comment is not where it should be?
+    DELETE FROM GameEvent
     FROM DELETED
     WHERE GameEvent.Id = DELETED.Id;
 

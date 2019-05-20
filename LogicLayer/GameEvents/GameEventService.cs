@@ -81,6 +81,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Participant)
+                .Include(ge => ge.Description)
                 .Select(ge => ge.ToGameEventDto())
                 .SingleOrDefaultAsync();
 

@@ -39,10 +39,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Migrations\Scripts\20190520094439_DescriptionTab_Down.sql">
-      <CopyToOutputDirectory>PerserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Migrations\Scripts\20190520094439_DescriptionTab_Up.sql">
-            <CopyToOutputDirectory>PerserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
