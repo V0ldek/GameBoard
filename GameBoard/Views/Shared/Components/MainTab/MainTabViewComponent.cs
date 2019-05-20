@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GameBoard.Views.Shared.Components.InfoTab
+namespace GameBoard.Views.Shared.Components.MainTab
 {
-    public class InfoTabViewComponent : ViewComponent
+    public class MainTabViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke() => View("InfoTab");
     }
