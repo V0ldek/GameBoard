@@ -183,8 +183,6 @@ namespace GameBoard.Controllers
                 });
         }
 
-        //group Invite
-
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SendGameEventInviteToGroup(
