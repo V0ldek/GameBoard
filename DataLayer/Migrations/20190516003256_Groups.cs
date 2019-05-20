@@ -18,6 +18,11 @@ namespace GameBoard.DataLayer.Migrations
                 AppContext.BaseDirectory,
                 "Migrations/Scripts/20190516003256_Groups_Down.sql");
 
+        private static readonly string MigrationAddAllGroupToUserAccountsScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190516003256_AddAllGroupToUserAccounts.sql");
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -75,6 +80,7 @@ namespace GameBoard.DataLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
+            migrationBuilder.RunSqlScript(MigrationAddAllGroupToUserAccountsScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
