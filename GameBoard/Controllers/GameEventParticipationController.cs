@@ -112,7 +112,7 @@ namespace GameBoard.Controllers
                 userName,
                 eventId => _hostConfiguration.HostAddress + Url.Action(
                     "GameEvent",
-                    "gameEvent",
+                    "GameEvent",
                     new {id = eventId}));
 
             try
