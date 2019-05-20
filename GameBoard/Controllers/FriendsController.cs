@@ -38,7 +38,7 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchFriendsForGroup(string input, string userName, string groupId)
+        public async Task<IActionResult> SearchFriendsForGroup(string userName, string groupId, string input)
         {
             var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
             friends = friends.Where(x => x.UserName.ToUpper().Contains(input.ToUpper()));
