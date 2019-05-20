@@ -34,7 +34,7 @@ function openTab(evt: { currentTarget: { className: string; }; }, tabName: strin
     }
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].classList.remove("active");
     }
 
     var tab = document.getElementById(tabName);
