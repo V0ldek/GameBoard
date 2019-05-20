@@ -5,9 +5,9 @@ using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups.Dtos;
+using GameBoard.LogicLayer.Groups.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using GameBoard.LogicLayer.Groups.Exceptions;
 
 namespace GameBoard.LogicLayer.Groups
 {
@@ -47,6 +47,7 @@ namespace GameBoard.LogicLayer.Groups
             {
                 throw new GroupsException("You cannot add yourself to your group.");
             }
+
             if (groupUserAlreadyIn.Any())
             {
                 throw new GroupsException("User is already in this group.");
@@ -73,7 +74,7 @@ namespace GameBoard.LogicLayer.Groups
                 .ToListAsync();
 
         public async Task<GroupDto> GetGroupByNamesAsync(string owner, string groupName) =>
-           await _repository.Groups
+            await _repository.Groups
                 .Where(g => g.Owner.UserName == owner && g.Name == groupName)
                 .Include(g => g.GroupUser)
                 .ThenInclude(gu => gu.User)

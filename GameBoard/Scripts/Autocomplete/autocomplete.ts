@@ -4,7 +4,7 @@
     private readonly minimalCharactersThreshold: number;
     private readonly timeoutDuration: number;
     private readonly getUrl: string;
-    private result : HTMLElement;
+    private result: HTMLElement;
     private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,

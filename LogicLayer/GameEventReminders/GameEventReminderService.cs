@@ -29,7 +29,9 @@ namespace GameBoard.LogicLayer.GameEventReminders
             DateTime dateTimeToExclusive,
             GameEventLinkGenerator gameEventLinkGenerator)
         {
-            var gameEvents = await GetEventsAndParticipationsWhereDateBetween(dateTimeFromInclusive, dateTimeToExclusive);
+            var gameEvents = await GetEventsAndParticipationsWhereDateBetween(
+                dateTimeFromInclusive,
+                dateTimeToExclusive);
             var sendTasks = gameEvents.Select(g => SendReminder(g, gameEventLinkGenerator));
             await Task.WhenAll(sendTasks);
         }
