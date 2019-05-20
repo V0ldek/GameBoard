@@ -27,15 +27,13 @@ if (defaultOpenTabButton != null) {
 }
 
 function openTab(evt: { currentTarget: { className: string; }; }, tabName: string) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].setAttribute("hidden", "true");
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-    }
+
+    Array.from(document.getElementsByClassName("tabcontent")).forEach(v => {
+        v.setAttribute("hidden", "true");
+    });
+    Array.from(document.getElementsByClassName("tablinks")).forEach(v => {
+         v.classList.remove("active");
+    });
 
     var tab = document.getElementById(tabName);
 
