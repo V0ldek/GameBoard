@@ -2,7 +2,7 @@
 
 namespace GameBoard.LogicLayer.GameEventParticipations.Notifications
 {
-    internal class GameEventInvitationNotification : LinkAndTextNotification
+    internal sealed class GameEventInvitationNotification : LinkAndTextNotification
     {
         public GameEventInvitationNotification(
             string gameEventName,

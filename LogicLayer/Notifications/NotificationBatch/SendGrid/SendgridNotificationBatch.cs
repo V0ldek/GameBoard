@@ -10,7 +10,7 @@ using SendGrid;
 
 namespace GameBoard.LogicLayer.Notifications.NotificationBatch.SendGrid
 {
-    internal class SendGridNotificationBatch : INotificationBatch
+    internal sealed class SendGridNotificationBatch : INotificationBatch
     {
         private readonly MailNotificationsConfiguration _configuration;
         private readonly List<INotification> _notifications = new List<INotification>();

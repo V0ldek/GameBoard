@@ -50,7 +50,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                 }
             }
 
-            var userTo = (await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userNameTo)));
+            var userTo = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userNameTo));
 
             using (var transaction = _repository.BeginTransaction())
             {

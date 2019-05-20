@@ -55,8 +55,12 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 new {code, email},
                 Request.Scheme);
 
-            var notification = new PasswordResetNotification(user.UserName, email, HtmlEncoder.Default.Encode(callbackUrl));
-            await _notificationService.CreateNotificationBatch(notification).SendAsync();;
+            var notification = new PasswordResetNotification(
+                user.UserName,
+                email,
+                HtmlEncoder.Default.Encode(callbackUrl));
+            await _notificationService.CreateNotificationBatch(notification).SendAsync();
+            ;
         }
 
         public class InputModel

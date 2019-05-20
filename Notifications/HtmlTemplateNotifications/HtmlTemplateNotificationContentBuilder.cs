@@ -19,9 +19,10 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
 
         private const string CssName = "styles.css";
 
+        // Looks for ${stuff} and matches the stuff as the first capture group.
         private static readonly Regex TemplateInjectionRegex = new Regex(@"\$\{([^}]*)}");
 
-        private readonly List<string> _content = new List<string>();
+        private readonly List<string> _contentSections = new List<string>();
         private string _title = "";
 
         public INotificationContentBuilder AddTitle(string title)
@@ -33,27 +34,27 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
         public INotificationContentBuilder AddText(string text)
         {
             var template = LoadFromFile(TextTemplateName);
-            var content = InjectContentIntoTemplate(template, ("Text-Content", text));
-            _content.Add(content);
+            var injected = InjectContentIntoTemplate(template, ("Text-Content", text));
+            _contentSections.Add(injected);
             return this;
         }
 
         public INotificationContentBuilder AddLink(string href, string text)
         {
             var template = LoadFromFile(LinkTemplateName);
-            var content = InjectContentIntoTemplate(template, ("Link-Href", href), ("Link-Content", text));
-            _content.Add(content);
+            var injected = InjectContentIntoTemplate(template, ("Link-Href", href), ("Link-Content", text));
+            _contentSections.Add(injected);
             return this;
         }
 
         public string Build()
         {
             var template = LoadFromFile(BaseTemplateName);
-            var content = string.Join('\n', _content);
+            var joinedSections = string.Join('\n', _contentSections);
             var injectedHtml = InjectContentIntoTemplate(
                 template,
                 ("Layout-Title", _title),
-                ("Layout-Content", content));
+                ("Layout-Content", content: joinedSections));
             return InlineCss(injectedHtml);
         }
 

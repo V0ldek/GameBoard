@@ -2,7 +2,7 @@
 
 namespace GameBoard.Areas.Identity.Pages.Account.Notifications
 {
-    internal class PasswordResetNotification : LinkAndTextNotification
+    internal sealed class PasswordResetNotification : LinkAndTextNotification
     {
         public PasswordResetNotification(string userName, string userEmail, string url) : base(
             "Reset password",

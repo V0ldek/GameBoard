@@ -2,7 +2,7 @@
 
 namespace GameBoard.LogicLayer.Friends.Notifications
 {
-    internal class FriendRequestNotification : LinkAndTextNotification
+    internal sealed class FriendRequestNotification : LinkAndTextNotification
     {
         public FriendRequestNotification(
             string senderUserName,

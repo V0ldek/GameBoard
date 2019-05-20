@@ -19,20 +19,31 @@ namespace GameBoard.HostedServices
             _nextRun = _schedule.GetNextOccurrence(DateTime.Now);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+        protected sealed override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            do
+            while (!cancellationToken.IsCancellationRequested)
             {
-                var now = DateTime.Now;
-                if (now >= _nextRun)
-                {
-                    await base.ExecuteAsync(cancellationToken);
-                    now = DateTime.Now;
-                    _nextRun = _schedule.GetNextOccurrence(now);
-                }
+                await RunIfDueAsync(cancellationToken);
+                await WaitUntilDueAsync(cancellationToken);
+            }
+        }
 
-                await Task.Delay((int) (_nextRun - now).TotalMilliseconds, cancellationToken);
-            } while (!cancellationToken.IsCancellationRequested);
+        private async Task RunIfDueAsync(CancellationToken cancellationToken)
+        {
+            if (DateTime.Now >= _nextRun)
+            {
+                await base.ExecuteAsync(cancellationToken);
+                _nextRun = _schedule.GetNextOccurrence(DateTime.Now);
+            }
+        }
+
+        private async Task WaitUntilDueAsync(CancellationToken cancellationToken)
+        {
+            var millisecondsToWait = (int) (_nextRun - DateTime.Now).TotalMilliseconds;
+            if (millisecondsToWait > 0)
+            {
+                await Task.Delay(millisecondsToWait, cancellationToken);
+            }
         }
     }
 }

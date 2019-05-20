@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
+﻿using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
 
 namespace GameBoard.Areas.Identity.Pages.Account.Notifications
 {
-    internal class ConfirmEmailNotification : LinkAndTextNotification
+    internal sealed class ConfirmEmailNotification : LinkAndTextNotification
     {
         public ConfirmEmailNotification(string userName, string userEmail, string url) : base(
             "Confirm your email",

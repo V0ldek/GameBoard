@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace GameBoard.LogicLayer.Notifications.SendGrid
 {
-    internal class SendGridNotificationService : INotificationService
+    internal sealed class SendGridNotificationService : INotificationService
     {
         private readonly MailNotificationsConfiguration _configuration;
 
