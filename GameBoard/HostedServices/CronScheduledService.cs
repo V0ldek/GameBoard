@@ -38,14 +38,11 @@ namespace GameBoard.HostedServices
         }
 
         private async Task WaitUntilDueAsync(CancellationToken cancellationToken)
-        {
-            // This is inherently inaccurate - we may wait a bit too long and the rounding can lose a millisecond,
-            // but cron jobs are accurate to a minute anyway.
-            // Worst real-life scenario I can see will run two Delays before one job, which is acceptable.
-            var millisecondsToWait = (int) (_nextRun - DateTime.Now).TotalMilliseconds;
-            if (millisecondsToWait > 0)
+        { 
+            var timeToWait = _nextRun - DateTime.Now;
+            if (timeToWait > TimeSpan.Zero)
             {
-                await Task.Delay(millisecondsToWait, cancellationToken);
+                await Task.Delay(timeToWait, cancellationToken);
             }
         }
     }
