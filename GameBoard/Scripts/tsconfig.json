@@ -9,8 +9,7 @@
         "moduleResolution": "node"
     },
     "files": [
-        "Autocomplete/autocompleteUsers.ts",
-        "Autocomplete/autocompleteFriends.ts",
+        "Autocomplete/autocomplete.ts",
         "Collapsible/Collapsible.ts",
         "ListInput/listInput.ts",
         "Popovers/popoverGenerator.ts",

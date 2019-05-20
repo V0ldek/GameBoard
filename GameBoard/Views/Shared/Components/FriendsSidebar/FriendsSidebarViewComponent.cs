@@ -41,7 +41,6 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                     groupInviteEnabled,
                     gameEventId,
                     gameEventName,
-                    groupId,
                     subComponentName,
                     subComponentArgumentsProvider));
         }

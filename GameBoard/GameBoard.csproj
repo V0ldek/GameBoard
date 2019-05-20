@@ -20,6 +20,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\Autocomplete\autocomplete.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -38,6 +42,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Autocomplete\autocompleteUsers.ts" />
     <TypeScriptCompile Include="Scripts\Autocomplete\autocompleteFriends.ts" />
+    <TypeScriptCompile Include="Scripts\Autocomplete\autocomplete.ts" />
     <TypeScriptCompile Include="Scripts\Collapsible\collapsible.ts" />
     <TypeScriptCompile Include="Scripts\ListInput\listInput.ts" />
     <TypeScriptCompile Include="Scripts\Popovers\popoverGenerator.ts" />
