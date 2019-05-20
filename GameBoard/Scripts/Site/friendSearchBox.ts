@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const friendSearchBox = new Autocomplete(friendSearchBoxInputElement, friendSearchBoxElement, `/Friends/SearchFriendsForGroup?userName=${username.value}&groupId=${groupId.value}&`);
+            const friendSearchBox = new Autocomplete(friendSearchBoxInputElement,
+                friendSearchBoxElement,
+                `/Friends/SearchFriendsForGroup?userName=${username.value}&groupId=${groupId.value}&`);
             friendSearchBoxes.push(friendSearchBox);
         }
     });

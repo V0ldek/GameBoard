@@ -11,8 +11,8 @@ namespace GameBoard.LogicLayer.UserSearch
     internal sealed class UserSearchService : IUserSearchService
     {
         private const int MaxUsersToShow = 100;
-        private readonly IGameBoardRepository _repository;
         private readonly IFriendsService _friendsService;
+        private readonly IGameBoardRepository _repository;
 
         public UserSearchService(IGameBoardRepository repository, IFriendsService friendsService)
         {

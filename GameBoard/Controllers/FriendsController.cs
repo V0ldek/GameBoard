@@ -20,10 +20,10 @@ namespace GameBoard.Controllers
     [Authorize]
     public class FriendsController : Controller
     {
-        private readonly IUserSearchService _userSearchService;
         private readonly IFriendsService _friendsService;
         private readonly HostConfiguration _hostConfiguration;
         private readonly ILogger<FriendsController> _logger;
+        private readonly IUserSearchService _userSearchService;
 
         public FriendsController(
             IUserSearchService userSearchService,
