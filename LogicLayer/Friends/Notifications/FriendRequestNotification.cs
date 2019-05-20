@@ -13,7 +13,7 @@ namespace GameBoard.LogicLayer.Friends.Notifications
             new[] {recipientEmail},
             friendRequestUrl,
             "See friend request",
-            $"Hello {recipientUserName}!",
+            $"Hello, {recipientUserName}!",
             $"You have received a friend request from {senderUserName}. Click on the link below to review it.")
         {
         }

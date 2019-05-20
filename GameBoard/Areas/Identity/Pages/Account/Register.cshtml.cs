@@ -49,7 +49,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    SendRegistrationEmail(user);
+                    await SendRegistrationEmailAsync(user);
                     transaction.Complete();
 
                     return RedirectToPage("/Account/ConfirmEmailInfo");
@@ -64,7 +64,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async void SendRegistrationEmail(ApplicationUser user)
+        private async Task SendRegistrationEmailAsync(ApplicationUser user)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.Page(

@@ -6,7 +6,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public sealed class CreateGameEventDto
     {
-        [NotNull] [ItemNotNull] public IEnumerable<string> Games;
+        [NotNull] [ItemNotNull]
+        public IEnumerable<string> Games { get; }
 
         [NotNull]
         public string CreatorUserName { get; }

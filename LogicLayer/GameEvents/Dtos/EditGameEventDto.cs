@@ -6,7 +6,8 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
 {
     public class EditGameEventDto
     {
-        [NotNull] [ItemNotNull] public IEnumerable<string> Games;
+        [NotNull] [ItemNotNull]
+        public IEnumerable<string> Games { get; }
 
         public int Id { get; }
 

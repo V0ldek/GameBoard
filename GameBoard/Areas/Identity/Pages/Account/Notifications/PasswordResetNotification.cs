@@ -9,7 +9,7 @@ namespace GameBoard.Areas.Identity.Pages.Account.Notifications
             new[] {userEmail},
             url,
             "Reset password",
-            $"Hello {userName}!",
+            $"Hello, {userName}!",
             $"We have received a password reset request for {userEmail}. Click below to reset your password.",
             "If you have not requested a password reset recently, please ignore this message.")
         {

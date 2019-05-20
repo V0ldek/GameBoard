@@ -14,7 +14,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations.Notifications
             new []{recipientEmail},
             gameEventUrl,
             "See event details",
-            $"Hello {recipientUserName}!",
+            $"Hello, {recipientUserName}!",
             $"You have been invited by {senderUserName} to the {gameEventName} event.",
             $"Click on the link below to see the event details.")
         {

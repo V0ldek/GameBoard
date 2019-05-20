@@ -1,7 +1,7 @@
 ﻿using System;
 using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
 
-namespace GameBoard.LogicLayer.EventReminders.Notifications
+namespace GameBoard.LogicLayer.GameEventReminders.Notifications
 {
     internal sealed class EventReminderNotification : LinkAndTextNotification
     {

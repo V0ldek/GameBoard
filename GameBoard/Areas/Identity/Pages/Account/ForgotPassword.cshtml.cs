@@ -40,12 +40,12 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
-            SendForgotPasswordEmail(user);
+            await SendForgotPasswordEmailAsync(user);
 
             return RedirectToPage("./ForgotPasswordConfirmation");
         }
 
-        private async void SendForgotPasswordEmail(ApplicationUser user)
+        private async Task SendForgotPasswordEmailAsync(ApplicationUser user)
         {
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var email = Input.Email;
@@ -60,7 +60,6 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 email,
                 HtmlEncoder.Default.Encode(callbackUrl));
             await _notificationService.CreateNotificationBatch(notification).SendAsync();
-            ;
         }
 
         public class InputModel

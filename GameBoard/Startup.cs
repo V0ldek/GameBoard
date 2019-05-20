@@ -61,7 +61,7 @@ namespace GameBoard
         }
 
         private static void ConfigureHostedServices(IServiceCollection services) =>
-            services.AddHostedService<DayBeforeEventReminderCronScheduledService>();
+            services.AddHostedService<DayBeforeGameEventReminderCronScheduledService>();
 
         private static void ConfigureIdentity(IServiceCollection services)
         {

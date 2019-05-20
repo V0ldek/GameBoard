@@ -54,7 +54,7 @@ namespace GameBoard.Notifications.HtmlTemplateNotifications
             var injectedHtml = InjectContentIntoTemplate(
                 template,
                 ("Layout-Title", _title),
-                ("Layout-Content", content: joinedSections));
+                ("Layout-Content", joinedSections));
             return InlineCss(injectedHtml);
         }
 
