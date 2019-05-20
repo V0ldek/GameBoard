@@ -41,6 +41,8 @@
     <None Update="Migrations\Scripts\20190520094439_DescriptionTab_Down.sql">
       <CopyToOutputDirectory>PerserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Migrations\Scripts\20190520094439_DescriptionTab_Up.sql">
+            <CopyToOutputDirectory>PerserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
