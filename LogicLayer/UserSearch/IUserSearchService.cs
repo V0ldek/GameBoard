@@ -10,5 +10,9 @@ namespace GameBoard.LogicLayer.UserSearch
         [NotNull]
         [ItemNotNull]
         Task<IEnumerable<UserDto>> GetSearchCandidatesAsync([NotNull] string userNameInput);
+
+        [NotNull]
+        [ItemNotNull]
+        Task<IEnumerable<UserDto>> GetSearchFriendCandidatesAsync(string userName, string input);
     }
 }
