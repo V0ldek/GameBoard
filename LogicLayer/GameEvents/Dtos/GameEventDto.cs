@@ -51,6 +51,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
             Creator = creator;
             Invitees = invitees;
             Participants = participants;
+            DescriptionTab = new DescriptionTabDto(null);
         }
 
         public GameEventPermission GetUserPermission([NotNull] string userName)
