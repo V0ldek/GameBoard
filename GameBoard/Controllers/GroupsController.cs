@@ -22,8 +22,6 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddUserToGroup(string userName, int groupId)
         {
-            System.Diagnostics.Debug.WriteLine(userName);
-            System.Diagnostics.Debug.WriteLine(groupId);
             try
             {
                 await _groupsService.AddUserToGroupAsync(userName, groupId);
