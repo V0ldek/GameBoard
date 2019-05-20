@@ -9,6 +9,8 @@
     }
 }
 
+.edit-description-tab .h1 {text-align: center}
+
 .description-text {
     height: auto;
     min-height: 40vh;

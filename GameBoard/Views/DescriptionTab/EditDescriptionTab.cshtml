@@ -1,7 +1,7 @@
 ﻿@model GameBoard.Models.DescriptionTab.EditDescriptionTabViewModel
 
-<form asp-action="EditDescriptionTab" asp-controller="DescriptionTab">
-    <h1 style="text-align: center">Edit description for your event</h1>
+<form asp-action="EditDescriptionTab" asp-controller="DescriptionTab" class="edit-description-tab">
+    <h1>Edit description for your event</h1>
     <input type="hidden" asp-for="GameEventId" value="@Model.GameEventId"/>
     <input type="hidden" asp-for="Id" value="@Model.Id"/>
     <div class="col form-group">
