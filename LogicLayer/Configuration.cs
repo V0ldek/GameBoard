@@ -25,7 +25,7 @@ namespace GameBoard.LogicLayer
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();
             services.AddScoped<IGameEventParticipationService, GameEventParticipationService>();
-            services.AddScoped<IDescriptionTabsService, DescriptionTabsService>();
+            services.AddScoped<IDescriptionTabService, DescriptionTabService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>

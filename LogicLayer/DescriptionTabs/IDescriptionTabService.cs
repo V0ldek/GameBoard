@@ -4,10 +4,10 @@ using JetBrains.Annotations;
 
 namespace GameBoard.LogicLayer.DescriptionTabs
 {
-    public interface IDescriptionTabsService
+    public interface IDescriptionTabService
     {
         Task EditDescriptionTabAsync([NotNull] EditDescriptionTabDto editDescriptionTabDto);
 
-        Task<DescriptionTabDto> GetDescriptionTabAsync(int gameEventId);
+        Task<DescriptionTabDto> GetDescriptionTabAsync(int Id);
     }
 }

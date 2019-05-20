@@ -21,9 +21,7 @@ namespace GameBoard.Controllers
         {
             var description = await _eventTabService.GetDescriptionTabAsync(descriptionTabId);
 
-            return View(
-                "EditDescriptionTab",
-                description.ToEditViewModel());
+            return View("EditDescriptionTab", description.ToEditViewModel());
         }
 
         [HttpPost]

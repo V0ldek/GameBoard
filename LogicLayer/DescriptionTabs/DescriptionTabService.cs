@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameBoard.LogicLayer.DescriptionTabs
 {
-    internal class DescriptionTabsService : IDescriptionTabsService
+    internal class DescriptionTabService : IDescriptionTabService
     {
         private readonly IGameBoardRepository _repository;
 
-        public DescriptionTabsService(IGameBoardRepository repository)
+        public DescriptionTabService(IGameBoardRepository repository)
         {
             _repository = repository;
         }
