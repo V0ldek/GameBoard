@@ -19,6 +19,19 @@
                 theme: "minimal"
             });
 
+        var defaultOpenTabButton = document.getElementById("defaultOpenTabButton");
+        var openDescriptionTabButton = document.getElementById("#openDescriptionTabButton");
+
+        if (defaultOpenTabButton) {
+            defaultOpenTabButton.addEventListener("click", (evt) => {
+                openTab(evt, "info");
+            });
+        }
+        if (openDescriptionTabButton) {
+            openDescriptionTabButton.addEventListener("click", (evt) => {
+                openTab(evt, "description");
+            });
+        }
     });
 
 var defaultOpenTabButton = document.getElementById("defaultOpenTabButton");
