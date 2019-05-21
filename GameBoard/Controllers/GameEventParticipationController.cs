@@ -187,7 +187,7 @@ namespace GameBoard.Controllers
         public async Task<IActionResult> SendGameEventInviteToGroup(
             int gameEventId,
             string groupName,
-            IEnumerable<string> users)
+            string[] users)
         {
             GameEventDto gameEvent;
 

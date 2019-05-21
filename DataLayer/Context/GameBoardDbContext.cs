@@ -21,6 +21,7 @@ namespace GameBoard.DataLayer.Context
         public DbSet<Game> Games { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupUser> GroupUsers { get; set; }
+        public DbSet<DescriptionTab> DescriptionTabs { get; set; }
 
         public IDbContextTransaction BeginTransaction() => Database.BeginTransaction();
 

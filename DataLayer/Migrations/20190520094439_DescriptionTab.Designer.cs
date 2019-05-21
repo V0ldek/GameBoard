@@ -4,14 +4,16 @@ using GameBoard.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    partial class GameBoardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520094439_DescriptionTab")]
+    partial class DescriptionTab
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,42 +182,9 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId", "ParticipantId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4 AND ParticipationStatus <> 5");
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
 
                     b.ToTable("GameEventParticipation");
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("OwnerId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Group");
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
-                {
-                    b.Property<int>("GroupId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("GroupId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GroupUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -371,27 +340,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "TakesPartIn")
                         .WithMany("Participations")
                         .HasForeignKey("TakesPartInId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Owner")
-                        .WithMany("Groups")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.Group", "Group")
-                        .WithMany("GroupUsers")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "User")
-                        .WithMany("GroupUsers")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

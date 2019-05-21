@@ -14,6 +14,8 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<Game> Games { get; }
         DbSet<Group> Groups { get; }
         DbSet<GroupUser> GroupUsers { get; }
+        DbSet<DescriptionTab> DescriptionTabs { get; }
+
         IDbContextTransaction BeginTransaction();
 
         Task SaveChangesAsync();

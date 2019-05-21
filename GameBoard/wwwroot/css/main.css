@@ -33,7 +33,7 @@ body {
 main {
     margin-left: 2%;
     margin-right: 2%;
-    padding: 3%;
+    padding: 2% 3% 3% 3%;
     padding-bottom: 5vh;
     width: 90%;
 }
@@ -168,7 +168,7 @@ button.accept-policy {
 
 .btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
 .show > .btn-dark.dropdown-toggle {
-    background-color: #35383a !important;
+    background-color: #555 !important;
     border-color: #1f2225 !important;
 }
 
