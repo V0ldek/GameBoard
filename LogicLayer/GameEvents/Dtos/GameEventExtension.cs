@@ -2,7 +2,6 @@
 using System.Linq;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
-using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 
 namespace GameBoard.LogicLayer.GameEvents.Dtos
@@ -28,8 +27,7 @@ namespace GameBoard.LogicLayer.GameEvents.Dtos
                     .Select(g => g.Name),
                 gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.Creator).Single(),
                 gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.PendingGuest),
-                gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.AcceptedGuest),
-                gameEvent.Description.ToDescriptionTabDto()
+                gameEvent.GetUsersWithParticipationStatus(ParticipationStatus.AcceptedGuest)
             );
 
         public static GameEventListItemDto ToGameEventListItemDto(this GameEvent gameEvent) =>

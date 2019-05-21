@@ -36,14 +36,6 @@ namespace GameBoard.Controllers
         {
             var gameEvent = await _gameEventService.GetGameEventAsync(id);
 
-            if (gameEvent == null)
-            {
-                return Error.FromController(this).Error(
-                    "Error!",
-                    "Game event you're trying to exit doesn't exist.",
-                    HttpStatusCode.NotFound);
-            }
-
             return View("ExitGameEvent", gameEvent.ToExitViewModel());
         }
 
@@ -54,33 +46,6 @@ namespace GameBoard.Controllers
             await _gameEventParticipationService.ExitGameEventAsync(exitGameEventViewModel.Id, User.Identity.Name);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> RemoveFromGameEvent(int gameEventId, string userName)
-        {
-            var gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
-
-            if (gameEvent == null)
-            {
-                return Error.FromController(this).Error(
-                    "Error!",
-                    "Game event you're trying to remove a user from doesn't exist.",
-                    HttpStatusCode.NotFound);
-            }
-
-            return View("RemoveFromGameEvent", gameEvent.ToRemoveFromGameEventViewModel(userName));
-        }
-
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> RemoveFromGameEvent(RemoveFromGameEventViewModel removeFromGameEventViewModel)
-        {
-            await _gameEventParticipationService.RemoveFromGameEventAsync(
-                removeFromGameEventViewModel.Id,
-                removeFromGameEventViewModel.UserName);
-
-            return RedirectToAction("GameEvent", "GameEvent", new {id = removeFromGameEventViewModel.Id});
         }
 
         [HttpPost]
@@ -112,7 +77,7 @@ namespace GameBoard.Controllers
                 userName,
                 eventId => _hostConfiguration.HostAddress + Url.Action(
                     "GameEvent",
-                    "GameEvent",
+                    "gameEvent",
                     new {id = eventId}));
 
             try

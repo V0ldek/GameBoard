@@ -3,17 +3,21 @@ using GameBoard.DataLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace GameBoard.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
+        private readonly ILogger<PersonalDataModel> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public PersonalDataModel(
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ILogger<PersonalDataModel> logger)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<IActionResult> OnGet()

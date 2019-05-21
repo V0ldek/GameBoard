@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using System.Transactions;
-using GameBoard.Areas.Identity.Pages.Account.Notifications;
 using GameBoard.DataLayer.Entities;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +15,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly ILogger<RegisterModel> _logger;
-        private readonly INotificationService _notificationService;
+        private readonly IMailSender _mailSender;
         private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
@@ -26,11 +24,11 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
-            INotificationService notificationService)
+            IMailSender mailSender)
         {
             _userManager = userManager;
             _logger = logger;
-            _notificationService = notificationService;
+            _mailSender = mailSender;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -41,19 +39,13 @@ namespace GameBoard.Areas.Identity.Pages.Account
             }
 
             var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
-
-            IdentityResult result;
-            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            var result = await _userManager.CreateAsync(user, Input.Password);
+            if (result.Succeeded)
             {
-                result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-                    await SendRegistrationEmailAsync(user);
-                    transaction.Complete();
+                _logger.LogInformation("User created a new account with password.");
+                SendRegistrationEmail(user);
 
-                    return RedirectToPage("/Account/ConfirmEmailInfo");
-                }
+                return RedirectToPage("/Account/ConfirmEmailInfo");
             }
 
             foreach (var error in result.Errors)
@@ -64,7 +56,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async Task SendRegistrationEmailAsync(ApplicationUser user)
+        private async void SendRegistrationEmail(ApplicationUser user)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.Page(
@@ -73,11 +65,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                 new {userId = user.Id, code},
                 Request.Scheme);
 
-            var notification = new ConfirmEmailNotification(
-                user.UserName,
-                Input.Email,
-                HtmlEncoder.Default.Encode(callbackUrl));
-            await _notificationService.CreateNotificationBatch(notification).SendAsync();
+            await _mailSender.SendEmailConfirmationAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
         }
 
         public class InputModel

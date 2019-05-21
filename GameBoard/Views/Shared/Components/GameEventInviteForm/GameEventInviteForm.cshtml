@@ -1,6 +1,6 @@
 ﻿@model GameBoard.Models.GameEventInviteForm.GameEventInviteFormViewModel
 
-<form class="user-card-sub-component" asp-action="SendGameEventInvite" asp-controller="GameEventParticipation"
+<form class="game-event-invite-form" asp-action="SendGameEventInvite" asp-controller="GameEventParticipation"
       data-ajax="true" data-ajax-method="POST"
       data-ajax-success="gameEventInviteFormPopoverGenerator.generateSuccessPopover(document.querySelector('#game-event-invite-@Model.UserName'), xhr)"
       data-ajax-failure="gameEventInviteFormPopoverGenerator.generateErrorPopover(document.querySelector('#game-event-invite-@Model.UserName'), xhr)">

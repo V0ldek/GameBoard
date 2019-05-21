@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using GameBoard.LogicLayer.DescriptionTabs.Dtos;
 using GameBoard.LogicLayer.GameEvents.Dtos;
-using GameBoard.Models.DescriptionTab;
 using GameBoard.Models.User;
 
 namespace GameBoard.Models.GameEvent
@@ -31,8 +29,6 @@ namespace GameBoard.Models.GameEvent
         [Display(Name = "Participants")]
         public IEnumerable<UserViewModel> Participants { get; }
 
-        public DescriptionTabViewModel DescriptionTab { get; }
-
         public bool IsCreator => _permission == GameEventPermission.Creator;
 
         public bool IsInvitePending => _permission == GameEventPermission.PendingInvitation;
@@ -46,8 +42,7 @@ namespace GameBoard.Models.GameEvent
             IEnumerable<string> games,
             UserViewModel creator,
             IEnumerable<UserViewModel> invitees,
-            IEnumerable<UserViewModel> participants,
-            DescriptionTabViewModel descriptionTab)
+            IEnumerable<UserViewModel> participants)
         {
             Id = id;
             Name = name;
@@ -58,7 +53,6 @@ namespace GameBoard.Models.GameEvent
             Creator = creator;
             Invitees = invitees;
             Participants = participants;
-            DescriptionTab = descriptionTab;
         }
     }
 }

@@ -1,10 +1,6 @@
-﻿using GameBoard.LogicLayer.DescriptionTabs;
-using GameBoard.LogicLayer.Friends;
+﻿using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.GameEventParticipations;
-using GameBoard.LogicLayer.GameEventReminders;
 using GameBoard.LogicLayer.GameEvents;
-using GameBoard.LogicLayer.Notifications;
-using GameBoard.LogicLayer.Notifications.SendGrid;
 using GameBoard.LogicLayer.UserSearch;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,13 +15,10 @@ namespace GameBoard.LogicLayer
         public static void ConfigureServices(IServiceCollection services)
         {
             DataLayer.Configuration.ConfigureServices(services);
-            services.AddTransient<INotificationService, SendGridNotificationService>();
-            services.AddScoped<IGameEventReminderService, GameEventReminderService>();
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();
             services.AddScoped<IGameEventParticipationService, GameEventParticipationService>();
-            services.AddScoped<IDescriptionTabService, DescriptionTabService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>

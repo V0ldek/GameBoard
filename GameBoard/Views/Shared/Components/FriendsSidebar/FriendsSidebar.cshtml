@@ -1,24 +1,26 @@
 ﻿@model GameBoard.Models.FriendsSidebar.FriendsSidebarViewModel
 
 <div id="friends-sidebar-container" @(Model.Toggled ? "class=toggled" : "")>
-    <div id="friends-sidebar" class="bg border-top border-right box-shadow">
+    <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")">
         <h3>Friends</h3>
         <hr/>
         <ul class="list-unstyled components border-bottom">
             @foreach (var user in Model.Friends)
             {
-                <li class="active @(Model.Toggled ? "user-card-with-sub-component" : "")">
+                <li class="active">
                     @await Component.InvokeAsync("UserCard", new {user})
                     @if (Model.SubComponentName != null)
                     {
-                        if (Model.SubComponentArguments != null)
-                        {
-                            @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName))
-                        }
-                        else
-                        {
-                            @await Component.InvokeAsync(Model.SubComponentName)
-                        }
+                        <div class="sub-component">
+                            @if (Model.SubComponentArguments != null)
+                            {
+                                @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName))
+                            }
+                            else
+                            {
+                                @await Component.InvokeAsync(Model.SubComponentName)
+                            }
+                        </div>
                     }
                 </li>
             }

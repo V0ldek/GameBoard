@@ -51,10 +51,13 @@ namespace GameBoard.Areas.Identity.Pages.Account.Manage
             }
 
             RequirePassword = await _userManager.HasPasswordAsync(user);
-            if (RequirePassword && !await _userManager.CheckPasswordAsync(user, Input.Password))
+            if (RequirePassword)
             {
-                ModelState.AddModelError(string.Empty, "Password not correct.");
-                return Page();
+                if (!await _userManager.CheckPasswordAsync(user, Input.Password))
+                {
+                    ModelState.AddModelError(string.Empty, "Password not correct.");
+                    return Page();
+                }
             }
 
             var result = await _userManager.DeleteAsync(user);

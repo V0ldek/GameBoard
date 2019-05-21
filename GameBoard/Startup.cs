@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using GameBoard.Configuration;
 using GameBoard.DataLayer.Entities;
-using GameBoard.HostedServices.EventReminders;
 using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Configurations;
+using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,10 +30,9 @@ namespace GameBoard
         {
             ConfigureCookiePolicy(services);
             ConfigureAntiforgery(services);
-            LoadConfiguration(services);
             ConfigureLogicLayer(services);
-            ConfigureHostedServices(services);
             ConfigureIdentity(services);
+            ConfigureInternalServices(services);
             ConfigureCulture();
             ConfigureMvc(services);
         }
@@ -42,26 +42,13 @@ namespace GameBoard
 
         private static void ConfigureCulture() => CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-GB");
 
-        private void LoadConfiguration(IServiceCollection services)
+        private void ConfigureInternalServices(IServiceCollection services)
         {
+            services.AddTransient<IMailSender, MailSender>();
             services.Configure<MailNotificationsConfiguration>(
                 Configuration.GetSection(nameof(MailNotificationsConfiguration)));
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
         }
-
-        private void ConfigureLogicLayer(IServiceCollection services)
-        {
-            LogicLayer.Configuration.ConfigureDbContext(
-                services,
-                Configuration.GetConnectionString(
-                    Environment.IsStaging() ? "GameboardStaging" :
-                    Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
-
-            LogicLayer.Configuration.ConfigureServices(services);
-        }
-
-        private static void ConfigureHostedServices(IServiceCollection services) =>
-            services.AddHostedService<DayBeforeGameEventReminderCronScheduledService>();
 
         private static void ConfigureIdentity(IServiceCollection services)
         {
@@ -80,6 +67,17 @@ namespace GameBoard
 
             services.ConfigureApplicationCookie(
                 options => { options.Cookie.Name = "GameBoard.Identity"; });
+        }
+
+        private void ConfigureLogicLayer(IServiceCollection services)
+        {
+            LogicLayer.Configuration.ConfigureDbContext(
+                services,
+                Configuration.GetConnectionString(
+                    Environment.IsStaging() ? "GameboardStaging" :
+                    Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
+
+            LogicLayer.Configuration.ConfigureServices(services);
         }
 
         private static void ConfigureAntiforgery(IServiceCollection services) => services.AddAntiforgery(

@@ -26,8 +26,7 @@ const paths = {
         "node_modules/overlayscrollbars/**/*",
         "node_modules/popper.js/**/*",
         "node_modules/moment/**/*",
-        "node_modules/tempusdominus-bootstrap-4/**/*",
-        "node_modules/tempusdominus-core/**/*"
+        "node_modules/tempusdominus-bootstrap-4/**/*"
     ]
 };
 

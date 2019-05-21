@@ -13,7 +13,5 @@ namespace GameBoard.LogicLayer.GameEventParticipations
         Task RejectGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
 
         Task ExitGameEventAsync(int gameEventId, [NotNull] string userName);
-
-        Task RemoveFromGameEventAsync(int gameEventId, [NotNull] string userName);
     }
 }

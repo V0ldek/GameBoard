@@ -70,25 +70,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.DescriptionTab", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsUnicode(true);
-
-                    b.Property<int>("GameEventId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameEventId")
-                        .IsUnique();
-
-                    b.ToTable("DescriptionTab");
-                });
-
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Friendship", b =>
                 {
                     b.Property<int>("Id")
@@ -180,7 +161,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId", "ParticipantId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4 AND ParticipationStatus <> 5");
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
 
                     b.ToTable("GameEventParticipation");
                 });
@@ -297,14 +278,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserToken");
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.DescriptionTab", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "GameEvent")
-                        .WithOne("Description")
-                        .HasForeignKey("GameBoard.DataLayer.Entities.DescriptionTab", "GameEventId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Friendship", b =>

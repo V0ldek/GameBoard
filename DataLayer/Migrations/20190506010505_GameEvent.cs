@@ -12,10 +12,6 @@ namespace GameBoard.DataLayer.Migrations
             AppContext.BaseDirectory,
             "Migrations/Scripts/20190506010505_GameEvent_Up.sql");
 
-        private static readonly string GameEventTriggerUpScriptFilePath = Path.Combine(
-            AppContext.BaseDirectory,
-            "Migrations/Scripts/20190506010505_GameEvent_GameEventTrigger_Up.sql");
-
         private static readonly string MigrationDownScriptFilePath =
             Path.Combine(
                 AppContext.BaseDirectory,
@@ -113,7 +109,6 @@ namespace GameBoard.DataLayer.Migrations
                 filter: "ParticipationStatus <> 3");
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
-            migrationBuilder.RunSqlScript(GameEventTriggerUpScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

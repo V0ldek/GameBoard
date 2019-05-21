@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
@@ -6,7 +7,6 @@ using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
 using GameBoard.LogicLayer.GameEventParticipations.Dtos;
 using GameBoard.LogicLayer.GameEventParticipations.Exceptions;
-using GameBoard.LogicLayer.GameEventParticipations.Notifications;
 using GameBoard.LogicLayer.Notifications;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +15,13 @@ namespace GameBoard.LogicLayer.GameEventParticipations
 {
     internal sealed class GameEventParticipationService : IGameEventParticipationService
     {
-        private readonly INotificationService _notificationService;
+        private readonly IMailSender _mailSender;
         private readonly IGameBoardRepository _repository;
 
-        public GameEventParticipationService(IGameBoardRepository repository, INotificationService notificationService)
+        public GameEventParticipationService(IGameBoardRepository repository, IMailSender mailSender)
         {
             _repository = repository;
-            _notificationService = notificationService;
+            _mailSender = mailSender;
         }
 
         public async Task SendGameEventInvitationAsync(SendGameEventInvitationDto gameEventInvitationDto)
@@ -52,15 +52,9 @@ namespace GameBoard.LogicLayer.GameEventParticipations
 
             var userTo = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userNameTo));
 
-            using (var transaction = _repository.BeginTransaction())
-            {
-                await CreateNewGameEventParticipation(gameEventId, userTo.Id);
-                await SendGameEventInvitationAsync(
-                    gameEventInvitationDto.GameEventId,
-                    userTo,
-                    gameEventInvitationDto.GenerateGameEventLink);
-                transaction.Commit();
-            }
+            await CreateNewGameEventParticipation(gameEventId, userTo);
+
+            await SendGameEventInvitationAsync(gameEventId, userTo, gameEventInvitationDto.GenerateGameEventLink);
         }
 
         public async Task AcceptGameEventInvitationAsync(int gameEventId, string invitedUserName)
@@ -99,32 +93,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                         $"Unexpected value in ${nameof(ExitGameEventAsync)} - ${userParticipation.ParticipationStatus}");
             }
 
-            await ChangeGameEventParticipationStatusAsync(
-                userParticipation,
-                ParticipationStatus.ExitedGuest);
-        }
-
-        public async Task RemoveFromGameEventAsync(int gameEventId, string userName)
-        {
-            var userParticipation = await GetActiveGameEventParticipation(gameEventId, userName);
-
-            switch (userParticipation?.ParticipationStatus)
-            {
-                case ParticipationStatus.Creator:
-                    throw new GameEventParticipationException("You cannot remove the creator.");
-                case null:
-                    throw new GameEventParticipationException("You cannot remove a user that has not been invited.");
-                case ParticipationStatus.PendingGuest:
-                case ParticipationStatus.AcceptedGuest:
-                    break;
-                // Nothing else should be returned by GetActiveGameEventParticipation.
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(userParticipation.ParticipationStatus),
-                        $"Unexpected value in ${nameof(ExitGameEventAsync)} - ${userParticipation.ParticipationStatus}");
-            }
-
-            await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.RemovedGuest);
+            await ChangeGameEventParticipationStatusAsync(userParticipation, ParticipationStatus.ExitedGuest);
         }
 
         private async Task ChangeGameEventParticipationStatusAsync(
@@ -142,8 +111,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             GetGameEventParticipationsInOneEvent(gameEventId, userName)
                 .SingleOrDefaultAsync(
                     p => p.ParticipationStatus != ParticipationStatus.RejectedGuest &&
-                        p.ParticipationStatus != ParticipationStatus.ExitedGuest &&
-                        p.ParticipationStatus != ParticipationStatus.RemovedGuest);
+                        p.ParticipationStatus != ParticipationStatus.ExitedGuest);
 
         private IQueryable<GameEventParticipation> GetGameEventParticipationsInOneEvent(
             int gameEventId,
@@ -154,12 +122,12 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                 .SelectMany(u => u.Participations)
                 .Where(p => p.TakesPartInId == gameEventId);
 
-        private async Task CreateNewGameEventParticipation(int gameEventId, string userToId)
+        private async Task CreateNewGameEventParticipation(int gameEventId, [NotNull] ApplicationUser userTo)
         {
             var gameEventParticipation = new GameEventParticipation
             {
                 TakesPartInId = gameEventId,
-                ParticipantId = userToId,
+                ParticipantId = userTo.Id,
                 ParticipationStatus = ParticipationStatus.PendingGuest
             };
             _repository.GameEventParticipations.Add(gameEventParticipation);
@@ -167,34 +135,12 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await _repository.SaveChangesAsync();
         }
 
-        private async Task SendGameEventInvitationAsync(
+        private Task SendGameEventInvitationAsync(
             int gameEventId,
             [NotNull] ApplicationUser userTo,
-            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator)
-        {
-            var gameEventData = await _repository.GameEvents
-                .Where(g => g.Id == gameEventId)
-                .Include(g => g.Participations)
-                .ThenInclude(p => p.Participant)
-                .Select(
-                    g => new
-                    {
-                        g.Id,
-                        g.Name,
-                        CreatorParticipations = g.Participations
-                            .Where(p => p.ParticipationStatus == ParticipationStatus.Creator)
-                    }).SingleAsync();
-
-            var creatorName = gameEventData.CreatorParticipations.Single().Participant.UserName;
-
-            var notification = new GameEventInvitationNotification(
-                gameEventData.Name,
-                creatorName,
-                userTo.UserName,
-                userTo.Email,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
+            _mailSender.SendEventInvitationAsync(
+                new List<string> {userTo.Email},
                 gameEventLinkGenerator(gameEventId.ToString()));
-
-            await _notificationService.CreateNotificationBatch(notification).SendAsync();
-        }
     }
 }
