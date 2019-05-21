@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Errors;
-using Microsoft.AspNetCore.Authorization;
 using GameBoard.LogicLayer.Groups;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameBoard.Controllers
@@ -42,7 +43,7 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Group updated.",
-                    message = $"User {userName} was added to this group." + 
+                    message = $"User {userName} was added to this group." +
                         "Refresh this page to see changes."
                 });
         }
@@ -51,6 +52,7 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> CreateNewGroup(string groupName)
         {
+            Debug.WriteLine(groupName);
             try
             {
                 await _groupsService.AddGroupAsync(User.Identity.Name, groupName);

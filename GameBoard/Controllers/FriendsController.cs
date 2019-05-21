@@ -20,10 +20,10 @@ namespace GameBoard.Controllers
     [Authorize]
     public class FriendsController : Controller
     {
-        private readonly IUserSearchService _userSearchService;
         private readonly IFriendsService _friendsService;
         private readonly HostConfiguration _hostConfiguration;
         private readonly ILogger<FriendsController> _logger;
+        private readonly IUserSearchService _userSearchService;
 
         public FriendsController(
             IUserSearchService userSearchService,
@@ -38,10 +38,9 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchFriendsForGroup(string input, string userName, string groupId)
+        public async Task<IActionResult> SearchFriendsForGroup(string userName, string groupId, string input)
         {
-            var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
-            friends = friends.Where(x => x.UserName.ToUpper().Contains(input.ToUpper()));
+            var friends = await _userSearchService.GetSearchFriendCandidatesAsync(userName, input);
             var model = new FriendSearchResultViewModel(friends.Select(u => u.ToViewModel()), Convert.ToInt32(groupId));
             return ViewComponent("FriendSearchResults", model);
         }

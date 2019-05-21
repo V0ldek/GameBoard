@@ -4,17 +4,13 @@
     <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")">
         <h3>Friends</h3>
         <hr/>
-        <ul class="list-unstyled components border-top border-bottom">
-            @foreach (var group in Model.Groups)
+        @foreach (var group in Model.Groups)
+        {
+            @await Component.InvokeAsync("GroupCard", new
             {
-                <li class="active">
-                    @await Component.InvokeAsync("GroupCard", new
-                    {
-                        GroupId = @group.Id, GroupName = @group.Name, group.Users, Model.GroupInviteEnabled, Model.GameEventId, Model.SubComponentName, Model.SubComponentArguments
-                    })
-                </li>
-            }
-        </ul>
+                GroupId = group.Id, GroupName = group.Name, group.Users, Model.GroupInviteEnabled, Model.GameEventId, Model.SubComponentName, Model.SubComponentArguments
+            })
+        }
         @await Component.InvokeAsync("GroupAddBox")
     </div>
     @await Component.InvokeAsync("UserSearchBox")

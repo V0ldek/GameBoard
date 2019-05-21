@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +11,13 @@ namespace GameBoard.LogicLayer.UserSearch
     internal sealed class UserSearchService : IUserSearchService
     {
         private const int MaxUsersToShow = 100;
+        private readonly IFriendsService _friendsService;
         private readonly IGameBoardRepository _repository;
 
-        public UserSearchService(IGameBoardRepository repository)
+        public UserSearchService(IGameBoardRepository repository, IFriendsService friendsService)
         {
             _repository = repository;
+            _friendsService = friendsService;
         }
 
         public async Task<IEnumerable<UserDto>> GetSearchCandidatesAsync(string userNameInput)
@@ -26,6 +29,12 @@ namespace GameBoard.LogicLayer.UserSearch
                 await GetMatchingNonPrefixInfixesUpToACapAsync(normalizedUserNameInput, usersToShowLeft);
 
             return matchingPrefixesList.Concat(matchingInfixesList);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetSearchFriendCandidatesAsync(string userName, string input)
+        {
+            var friends = await _friendsService.GetFriendsByUserNameAsync(userName);
+            return friends.Where(x => x.UserName.ToUpper().Contains(input.ToUpper()));
         }
 
         private async Task<List<UserDto>> GetMatchingPrefixesAsync(string normalizedUserNameInput) =>

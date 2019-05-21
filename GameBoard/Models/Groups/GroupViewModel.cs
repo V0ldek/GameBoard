@@ -1,6 +1,6 @@
-﻿using GameBoard.Models.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GameBoard.Models.User;
 
 namespace GameBoard.Models.Groups
 {

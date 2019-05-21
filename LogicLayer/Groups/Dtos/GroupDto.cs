@@ -6,18 +6,18 @@ namespace GameBoard.LogicLayer.Groups.Dtos
 {
     public sealed class GroupDto
     {
-        public int GroupId { get; }
+        public int Id { get; }
 
         [NotNull]
-        public string GroupName { get; }
+        public string Name { get; }
 
         [NotNull]
         public IEnumerable<UserDto> Users { get; }
 
-        public GroupDto(int groupId, [NotNull] string groupName, [NotNull] IEnumerable<UserDto> users)
+        public GroupDto(int id, [NotNull] string name, [NotNull] IEnumerable<UserDto> users)
         {
-            GroupId = groupId;
-            GroupName = groupName;
+            Id = id;
+            Name = name;
             Users = users;
         }
     }
