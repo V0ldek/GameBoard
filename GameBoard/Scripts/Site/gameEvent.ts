@@ -20,7 +20,7 @@
             });
 
         var defaultOpenTabButton = document.getElementById("defaultOpenTabButton");
-        var openDescriptionTabButton = document.getElementById("#openDescriptionTabButton");
+        var openDescriptionTabButton = document.getElementById("openDescriptionTabButton");
 
         if (defaultOpenTabButton) {
             defaultOpenTabButton.addEventListener("click", (evt) => {
