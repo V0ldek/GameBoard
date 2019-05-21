@@ -85,8 +85,13 @@ namespace GameBoard.DataLayer.Context
                     entity.ToTable("Group");
                 });
 
-            builder.Entity<GroupUser>().HasKey(
-                entity => new {entity.GroupId, entity.UserId });
+            builder.Entity<GroupUser>(
+                entity =>
+                {
+                    entity.HasKey(e => new {e.GroupId, e.UserId});
+
+                    entity.ToTable("GroupUser");
+                });
 
             builder.Entity<IdentityRole>(
                 entity => entity.ToTable("Role"));

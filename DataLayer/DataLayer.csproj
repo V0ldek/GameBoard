@@ -38,13 +38,13 @@
     <None Update="Migrations\Scripts\20190506010505_GameEvent_Up.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\20190516003256_AddAllGroupToUserAccounts.sql">
+    <None Update="Migrations\Scripts\20190521021135_AddAllGroupToUserAccounts.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\20190516003256_Groups_Down.sql">
+    <None Update="Migrations\Scripts\20190521021135_Groups_Down.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Migrations\Scripts\20190516003256_Groups_Up.sql">
+    <None Update="Migrations\Scripts\20190521021135_Groups_Up.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
