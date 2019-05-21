@@ -76,7 +76,8 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                     }
                     catch (GameEventParticipationException)
                     {
-                        // there is no need in throwing this exception in this context, becasue such situation aren't intrusive
+                        // There is no need in throwing this exception,
+                        // it means that some of the members of the group cannot be invited, so we invite all we can.
                     }
                 }
 

@@ -15,6 +15,5 @@ namespace GameBoard.DataLayer.Entities
         public ICollection<GroupUser> GroupUsers { get; set; }
 
         public IEnumerable<ApplicationUser> Users => GroupUsers?.Select(gu => gu.User);
-        
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
-using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups.Dtos;
 using GameBoard.LogicLayer.Groups.Exceptions;
 using Microsoft.EntityFrameworkCore;

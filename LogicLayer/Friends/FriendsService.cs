@@ -114,12 +114,14 @@ namespace GameBoard.LogicLayer.Friends
                 var groupAll = await _groupsService.GetGroupByNamesAsync(
                     friendship.UserFrom.UserName,
                     _groupsOptions.AllFriendsGroupName);
-                await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.GroupId);
+                await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.Id);
 
                 groupAll = await _groupsService.GetGroupByNamesAsync(
                     friendship.UserTo.UserName,
                     _groupsOptions.AllFriendsGroupName);
-                await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.GroupId);
+                await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.Id);
+
+                transaction.Commit();
             }
         }
 
