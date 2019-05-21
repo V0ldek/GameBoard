@@ -1,4 +1,6 @@
-﻿@model GameBoard.Models.GameEvent.GameEventViewModel
+﻿@using GameBoard.Models.GameEvent
+@using GameBoard.Models.GameEventInviteForm
+@model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -11,12 +13,8 @@
         {
             toggled = true,
             subComponentName = "GameEventInviteForm",
-            subComponentArgumentsProvider = (Func<string, object>) (userName => new
-            {
-                gameEventId = Model.Id,
-                gameEventName = Model.Name,
-                userName
-            })
+            subComponentArgumentsProvider = (Func<string, object>) (userName =>
+                new GameEventInviteFormViewModel(Model.Id, Model.Name, userName))
         })
     }
     else
@@ -25,82 +23,15 @@
     }
 }
 
-<article class="game-event">
-    <h1 class="name" title="@Model.Name">@Model.Name</h1>
-    @if (Model.IsInvitePending)
-    {
-        <section class="pending-invite border-full p-3">
-            <p>You have an invitation pending for this event.</p>
-            <form class="form-inline" method="post">
-                <input type="hidden" asp-for="@Model.Id" name="gameEventId"/>
-                <button class="btn btn-dark mr-3" type="submit" asp-action="AcceptGameEventInvite" asp-controller="GameEventParticipation">Accept</button>
-                <button class="btn btn-danger" type="submit" asp-action="RejectGameEventInvite" asp-controller="GameEventParticipation">Reject</button>
-            </form>
-        </section>
-    }
-    @{
-        var dateString = Model.Date?.ToString("dd.MM.yyyy HH:mm") ?? "Unknown date";
-        var placeString = string.IsNullOrEmpty(Model.Place) ? "Unknown place" : Model.Place;
-    }
-    <section class="date">
-        <h3 title="@dateString">@dateString</h3>
-        <h3 title="@placeString">@placeString</h3>
-    </section>
-    <section class="games">
-        <h3>@Html.DisplayNameFor(m => m.Games)</h3>
-        <ul class="game-list list-unstyled border-full p-1">
-            @foreach (var game in Model.Games)
-            {
-                <li title="@game">@game</li>
-            }
-        </ul>
-    </section>
-    <section class="creator">
-        <h3>@Html.DisplayNameFor(m => m.Creator)</h3>
-        @await Component.InvokeAsync("UserCard", new {user = Model.Creator})
-    </section>
-    <section class="participants">
-        <h3>@Html.DisplayNameFor(m => m.Participants)</h3>
-        <ul class="participant-list list-unstyled border-full p-1">
-            @if (!Model.Participants.Any())
-            {
-                <li>None</li>
-            }
-            @foreach (var participant in Model.Participants)
-            {
-                <li>@await Component.InvokeAsync("UserCard", new {user = participant})</li>
-            }
-        </ul>
-    </section>
-    <section class="invitees">
-        <h3>@Html.DisplayNameFor(m => m.Invitees)</h3>
-        <ul class="invitee-list list-unstyled border-full p-1">
-            @if (!Model.Invitees.Any())
-            {
-                <li>None</li>
-            }
-            @foreach (var invitee in Model.Invitees)
-            {
-                <li>@await Component.InvokeAsync("UserCard", new {user = invitee})</li>
-            }
-        </ul>
-    </section>
-    @if (Model.IsCreator)
-    {
-        <section class="control-panel">
-            <form asp-controller="GameEvent" asp-action="EditGameEvent" method="get">
-                <input type="hidden" asp-for="Id"/>
-                <button class="btn btn-dark" type="submit">Edit</button>
-            </form>
-        </section>
-    }
-    else if (!Model.IsInvitePending)
-    {
-        <section class="control-panel">
-            <form asp-controller="GameEventParticipation" asp-action="ExitGameEvent" method="get">
-                <input type="hidden" asp-for="Id"/>
-                <button class="btn btn-danger" type="submit">Exit</button>
-            </form>
-        </section>
-    }
-</article>
+<div class="tabs-bar">
+    <button id="defaultOpenTabButton" class="btn btn-dark tablinks">Info</button>
+    <button id="openDescriptionTabButton" class="btn btn-dark tablinks">Description</button>
+</div>
+
+<div id="info" class="tabcontent">
+    @await Component.InvokeAsync("MainTab")
+</div>
+
+<div id="description" class="tabcontent" hidden>
+    @await Component.InvokeAsync("DescriptionTab")
+</div>
