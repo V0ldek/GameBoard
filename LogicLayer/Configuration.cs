@@ -1,4 +1,5 @@
-﻿using GameBoard.LogicLayer.Friends;
+﻿using GameBoard.LogicLayer.DescriptionTabs;
+using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.GameEventParticipations;
 using GameBoard.LogicLayer.GameEventReminders;
 using GameBoard.LogicLayer.GameEvents;
@@ -24,6 +25,7 @@ namespace GameBoard.LogicLayer
             services.AddScoped<IFriendsService, FriendsService>();
             services.AddScoped<IGameEventService, GameEventService>();
             services.AddScoped<IGameEventParticipationService, GameEventParticipationService>();
+            services.AddScoped<IDescriptionTabService, DescriptionTabService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>

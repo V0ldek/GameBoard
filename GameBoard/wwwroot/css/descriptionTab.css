@@ -1,0 +1,51 @@
+﻿@media (min-width: 768px) {
+    .description-tab {
+        box-sizing: border-box;
+        display: grid;
+        grid-row-gap: 30px;
+        grid-template-areas: "name name name" "description description description" "control control control";
+        grid-template-columns: 25vw 25vw 25vw;
+        grid-template-rows: auto auto auto;
+    }
+}
+
+.edit-description-tab .h1 {text-align: center}
+
+.description-text {
+    height: auto;
+    min-height: 40vh;
+    color: #e0e8ef;
+    font-family: 
+        -apple-system, 
+        BlinkMacSystemFont, 
+        "Segoe UI", 
+        Roboto, 
+        "Helvetica Neue", 
+        Arial, 
+        "Noto Sans", 
+        sans-serif, 
+        "Apple Color Emoji", 
+        "Segoe UI Emoji", 
+        "Segoe UI Symbol", 
+        "Noto Color Emoji";
+    font-size: 100%;
+}
+
+.description {
+    grid-area: description;
+}
+
+.name {
+    text-align: center;
+    grid-area: name;
+}
+
+.control {
+    grid-area: control;
+}
+
+/*EditDescriptionTab style*/
+
+#description-text-area {
+    height: 40vh;
+}

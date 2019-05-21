@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using GameBoard.LogicLayer.GameEvents.Dtos;
+using GameBoard.Models.DescriptionTab;
 using GameBoard.Models.User;
 
 namespace GameBoard.Models.GameEvent
@@ -16,7 +17,8 @@ namespace GameBoard.Models.GameEvent
                 gameEventDto.Games,
                 gameEventDto.Creator.ToViewModel(),
                 gameEventDto.Invitees.Select(u => u.ToViewModel()),
-                gameEventDto.Participants.Select(u => u.ToViewModel()));
+                gameEventDto.Participants.Select(u => u.ToViewModel()),
+                gameEventDto.DescriptionTab.ToViewModel());
 
         public static EditGameEventViewModel ToEditViewModel(this GameEventDto gameEventDto) =>
             new EditGameEventViewModel

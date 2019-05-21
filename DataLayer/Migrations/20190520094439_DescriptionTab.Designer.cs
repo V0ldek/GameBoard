@@ -4,14 +4,16 @@ using GameBoard.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    partial class GameBoardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520094439_DescriptionTab")]
+    partial class DescriptionTab
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +182,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId", "ParticipantId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4 AND ParticipationStatus <> 5");
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
 
                     b.ToTable("GameEventParticipation");
                 });

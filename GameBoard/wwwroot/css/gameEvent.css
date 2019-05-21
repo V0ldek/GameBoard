@@ -62,6 +62,10 @@
     .game-event .games .game-list,
     .game-event .participants .participant-list,
     .game-event .invitees .invitee-list { height: 80%; }
+
+    .control-panel button {
+        margin-top: -5vh;
+    }
 }
 
 /* User cards
@@ -76,3 +80,19 @@
 .game-event .invitees .user-card .gravatar { max-height: 48px; }
 
 .user-card-with-sub-component .user-card-sub-component button .fa-remove { font-size: 23px; }
+
+.tabs-bar { overflow: hidden; }
+
+
+.tabs-bar button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    color: #ffffff;
+    font-size: 17px;
+    border-radius: 0;
+}
