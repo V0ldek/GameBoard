@@ -22,11 +22,11 @@ JOIN [Group] ON [User].Id = [Group].OwnerId AND [Group].Name = 'All';
 INSERT INTO [GroupUser] (GroupId, UserId)
 SELECT UsersWithAllGroupId.AllGroupId, [Friendship].RequestedById
 FROM @UsersWithAllGroupId AS UsersWithAllGroupId 
-JOIN [Friendship] ON UsersWithAllGroupId.UserId = [Friendship].RequestedToId;
+JOIN [Friendship] ON UsersWithAllGroupId.UserId = [Friendship].RequestedToId AND [Friendship].FriendshipStatus = 2;
 
 --Add all friends that friendship were requested by users
 
 INSERT INTO [GroupUser] (GroupId, UserId)
 SELECT UsersWithAllGroupId.AllGroupId, [Friendship].RequestedToId
 FROM @UsersWithAllGroupId AS UsersWithAllGroupId 
-JOIN [Friendship] ON UsersWithAllGroupId.UserId = [Friendship].RequestedById;
+JOIN [Friendship] ON UsersWithAllGroupId.UserId = [Friendship].RequestedById AND [Friendship].FriendshipStatus = 2;
