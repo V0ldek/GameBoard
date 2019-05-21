@@ -9,7 +9,7 @@ namespace GameBoard.LogicLayer.DescriptionTabs
         
         Task EditDescriptionTabAsync([NotNull] EditDescriptionTabDto editDescriptionTabDto);
         
-        [NotNull]
+        [ItemNotNull]
         //Method throws Exception if Description is not found.
         Task<DescriptionTabDto> GetDescriptionTabAsync(int id);
     }
