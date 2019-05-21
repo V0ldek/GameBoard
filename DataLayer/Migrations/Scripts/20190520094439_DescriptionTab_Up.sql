@@ -28,7 +28,7 @@ END;
 GO
 
 INSERT INTO DescriptionTab(GameEventId)
-    SELECT TMP.Id From 
-    (SELECT Id FROM GameEvent EXCEPT SELECT GameEventId as ID FROM DescriptionTab) as TMP;
+    SELECT EventsWithoutDescription.Id From 
+    (SELECT Id FROM GameEvent EXCEPT SELECT GameEventId as ID FROM DescriptionTab) as EventsWithoutDescription;
 
 GO
