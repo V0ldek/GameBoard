@@ -74,12 +74,9 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                     {
                         await SendGameEventInvitationAsync(gameEventInvitationDto);
                     }
-                    catch (ArgumentOutOfRangeException exception)
+                    catch (GameEventParticipationException)
                     {
-                        throw exception;
-                    }
-                    catch
-                    {
+                        // there is no need in throwing this exception in this context, becasue such situation aren't intrusive
                     }
                 }
 

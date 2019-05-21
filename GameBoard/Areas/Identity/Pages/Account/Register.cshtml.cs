@@ -24,7 +24,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
         private readonly INotificationService _notificationService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IGroupsService _groupsService;
-        private GroupsConfiguration GroupsOptions { get; }
+        private readonly GroupsConfiguration _groupsOptions;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -39,7 +39,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
             _userManager = userManager;
             _logger = logger;
             _groupsService = groupsService;
-            GroupsOptions = groupsOptions.Value;
+            _groupsOptions = groupsOptions.Value;
             _notificationService = notificationService;
         }
 
@@ -62,7 +62,7 @@ namespace GameBoard.Areas.Identity.Pages.Account
                     {
                         _logger.LogInformation("User created a new account with password.");
                         await SendRegistrationEmailAsync(user);
-                        await _groupsService.AddGroupAsync(user.UserName, GroupsOptions.AllFriendsGroupName);
+                        await _groupsService.AddGroupAsync(user.UserName, _groupsOptions.AllFriendsGroupName);
                         transaction.Complete();
 
                         return RedirectToPage("/Account/ConfirmEmailInfo");

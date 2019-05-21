@@ -13,7 +13,7 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<GameEventParticipation> GameEventParticipations { get; }
         DbSet<Game> Games { get; }
         DbSet<Group> Groups { get; }
-        DbSet<GroupUser> GroupUser { get; }
+        DbSet<GroupUser> GroupUsers { get; }
         IDbContextTransaction BeginTransaction();
 
         Task SaveChangesAsync();

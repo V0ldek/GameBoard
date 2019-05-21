@@ -166,38 +166,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.ToTable("GameEventParticipation");
                 });
 
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("OwnerId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Group");
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
-                {
-                    b.Property<int>("GroupId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("GroupId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GroupUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -343,27 +311,6 @@ namespace GameBoard.DataLayer.Migrations
                     b.HasOne("GameBoard.DataLayer.Entities.GameEvent", "TakesPartIn")
                         .WithMany("Participations")
                         .HasForeignKey("TakesPartInId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Owner")
-                        .WithMany("UserGroups")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
-                {
-                    b.HasOne("GameBoard.DataLayer.Entities.Group", "Group")
-                        .WithMany("GroupUser")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "User")
-                        .WithMany("GroupUser")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
