@@ -11,7 +11,7 @@ namespace GameBoard.LogicLayer.DescriptionTabs.Dtos
         [CanBeNull]
         public string Description { get; }
 
-        public DescriptionTabDto(int id, int gameEventId ,[CanBeNull] string description)
+        public DescriptionTabDto(int id, int gameEventId, [CanBeNull] string description)
         {
             Id = id;
             GameEventId = gameEventId;
