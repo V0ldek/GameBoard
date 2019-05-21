@@ -52,7 +52,6 @@ namespace GameBoard.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> CreateNewGroup(string groupName)
         {
-            Debug.WriteLine(groupName);
             try
             {
                 await _groupsService.AddGroupAsync(User.Identity.Name, groupName);
