@@ -8,20 +8,20 @@ namespace GameBoard.DataLayer.Migrations
 {
     public partial class Groups : Migration
     {
-        private static readonly string MigrationUpScriptFilePath = 
+        private static readonly string MigrationUpScriptFilePath =
             Path.Combine(
-            AppContext.BaseDirectory,
-            "Migrations/Scripts/20190516003256_Groups_Up.sql");
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190521021135_Groups_Up.sql");
+
+        private static readonly string AddAllGroupToUserAccountsScriptFilePath =
+            Path.Combine(
+                AppContext.BaseDirectory,
+                "Migrations/Scripts/20190521021135_AddAllGroupToUserAccounts.sql");
 
         private static readonly string MigrationDownScriptFilePath =
             Path.Combine(
                 AppContext.BaseDirectory,
-                "Migrations/Scripts/20190516003256_Groups_Down.sql");
-
-        private static readonly string MigrationAddAllGroupToUserAccountsScriptFilePath =
-            Path.Combine(
-                AppContext.BaseDirectory,
-                "Migrations/Scripts/20190516003256_AddAllGroupToUserAccounts.sql");
+                "Migrations/Scripts/20190521021135_Groups_Down.sql");
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,9 +30,11 @@ namespace GameBoard.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation(
+                            "SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     OwnerId = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 64, nullable: true)
+                    Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +56,7 @@ namespace GameBoard.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupUser", x => new { x.GroupId, x.UserId });
+                    table.PrimaryKey("PK_GroupUser", x => new {x.GroupId, x.UserId});
                     table.ForeignKey(
                         name: "FK_GroupUser_Group_GroupId",
                         column: x => x.GroupId,
@@ -80,7 +82,7 @@ namespace GameBoard.DataLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.RunSqlScript(MigrationUpScriptFilePath);
-            migrationBuilder.RunSqlScript(MigrationAddAllGroupToUserAccountsScriptFilePath);
+            migrationBuilder.RunSqlScript(AddAllGroupToUserAccountsScriptFilePath);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

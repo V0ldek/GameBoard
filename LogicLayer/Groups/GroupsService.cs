@@ -3,28 +3,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
-using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Groups.Dtos;
 using GameBoard.LogicLayer.Groups.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace GameBoard.LogicLayer.Groups
 {
     public class GroupsService : IGroupsService
     {
         private readonly IGameBoardRepository _repository;
-        private GroupsConfiguration GroupsOptions { get; }
 
-        public GroupsService(IGameBoardRepository repository, IOptions<GroupsConfiguration> groupsOptions)
+        public GroupsService(IGameBoardRepository repository)
         {
             _repository = repository;
-            GroupsOptions = groupsOptions.Value;
         }
 
         public async Task AddGroupAsync(string userName, string groupName)
         {
-            var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
+            var user = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userName));
 
             var group = new Group
             {
@@ -39,16 +35,18 @@ namespace GameBoard.LogicLayer.Groups
 
         public async Task AddUserToGroupAsync(string userName, int groupId)
         {
-            var user = _repository.ApplicationUsers.Single(ApplicationUser.UserNameEquals(userName));
-            var group = _repository.Groups.Single(g => g.Id == groupId);
-            var groupUserAlreadyIn = _repository.GroupUser.Where(gu => gu.UserId == user.Id && gu.GroupId == group.Id);
+            var user = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userName));
+            var group = await _repository.Groups.SingleAsync(g => g.Id == groupId);
+            var isUserAlreadyInThisGroup = await _repository.GroupUsers
+                .Where(gu => gu.UserId == user.Id && gu.GroupId == group.Id)
+                .AnyAsync();
 
             if (group.OwnerId == user.Id)
             {
                 throw new GroupsException("You cannot add yourself to your group.");
             }
 
-            if (groupUserAlreadyIn.Any())
+            if (isUserAlreadyInThisGroup)
             {
                 throw new GroupsException("User is already in this group.");
             }
@@ -61,14 +59,14 @@ namespace GameBoard.LogicLayer.Groups
                 Group = group
             };
 
-            _repository.GroupUser.Add(groupUser);
+            _repository.GroupUsers.Add(groupUser);
             await _repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<GroupDto>> GetGroupsByUserNameAsync(string userName) =>
             await _repository.Groups
                 .Where(g => g.Owner.UserName == userName)
-                .Include(g => g.GroupUser)
+                .Include(g => g.GroupUsers)
                 .ThenInclude(gu => gu.User)
                 .Select(g => g.ToDto())
                 .ToListAsync();
@@ -76,7 +74,7 @@ namespace GameBoard.LogicLayer.Groups
         public async Task<GroupDto> GetGroupByNamesAsync(string owner, string groupName) =>
             await _repository.Groups
                 .Where(g => g.Owner.UserName == owner && g.Name == groupName)
-                .Include(g => g.GroupUser)
+                .Include(g => g.GroupUsers)
                 .ThenInclude(gu => gu.User)
                 .Select(g => g.ToDto())
                 .SingleAsync();

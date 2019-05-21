@@ -23,7 +23,7 @@ namespace GameBoard.LogicLayer.Friends
         private readonly IGroupsService _groupsService;
         private readonly INotificationService _notificationService;
         private readonly IGameBoardRepository _repository;
-        private GroupsConfiguration GroupsOptions { get; }
+        private readonly GroupsConfiguration _groupsOptions;
 
         public FriendsService(
             IGameBoardRepository repository,
@@ -34,7 +34,7 @@ namespace GameBoard.LogicLayer.Friends
             _repository = repository;
             _notificationService = notificationService;
             _groupsService = groupsService;
-            GroupsOptions = groupsOptions.Value;
+            _groupsOptions = groupsOptions.Value;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
@@ -100,24 +100,29 @@ namespace GameBoard.LogicLayer.Friends
 
         public async Task AcceptFriendRequestAsync(int friendRequestId)
         {
-            await ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
-
-            var friendship = await GetFriendRequestAsync(friendRequestId);
-
-            if (friendship == null)
+            using (var transaction = _repository.BeginTransaction())
             {
-                throw new NullReferenceException("The friend request you referenced does not exist in the system.");
+                await ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
+
+                var friendship = await GetFriendRequestAsync(friendRequestId);
+
+                if (friendship == null)
+                {
+                    throw new FriendRequestException("The friend request you referenced does not exist in the system.");
+                }
+
+                var groupAll = await _groupsService.GetGroupByNamesAsync(
+                    friendship.UserFrom.UserName,
+                    _groupsOptions.AllFriendsGroupName);
+                await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.Id);
+
+                groupAll = await _groupsService.GetGroupByNamesAsync(
+                    friendship.UserTo.UserName,
+                    _groupsOptions.AllFriendsGroupName);
+                await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.Id);
+
+                transaction.Commit();
             }
-
-            var groupAll = await _groupsService.GetGroupByNamesAsync(
-                friendship.UserFrom.UserName,
-                GroupsOptions.AllFriendsGroupName);
-            await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.Id);
-
-            groupAll = await _groupsService.GetGroupByNamesAsync(
-                friendship.UserTo.UserName,
-                GroupsOptions.AllFriendsGroupName);
-            await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.Id);
         }
 
         public Task RejectFriendRequestAsync(int friendRequestId) =>

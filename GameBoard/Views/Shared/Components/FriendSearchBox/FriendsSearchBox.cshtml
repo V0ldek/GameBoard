@@ -8,9 +8,12 @@
               data-ajax="true" data-ajax-method="POST"
               data-ajax-success="groupAddPopoverGenerator.generateSuccessPopover(document.querySelector('#group-add-button-@Model.Id'), xhr)"
               data-ajax-failure="groupAddPopoverGenerator.generateErrorPopover(document.querySelector('#group-add-button-@Model.Id'), xhr)">
+            <input type="hidden" name="groupId" value="@Model.Id" asp-for="@Model.Id" class="group-id-input" />
             <div class="input-group">
-                <input name="userName" id="friend-search-box-input-@Model.Id" autocomplete="off" class="form-control mr-2 friend-search-box-input" type="text" placeholder="Search for friends..."/>
-                <i class="fa fa-search input-group-append m-auto"></i>
+                <input name="userName" id="friend-search-box-input-@Model.Id" autocomplete="off" class="form-control mr-2 friend-search-box-input" type="text" placeholder="Search for friends..." />
+                <button id="group-add-button-@Model.Id" class="btn btn-dark input-group-append" type="submit" data-toggle="popover" data-placement="right">
+                    <i class="fa fa-user-plus"></i>
+                </button>
             </div>
             <input type="hidden" name="groupId" value="@Model.Id" asp-for="@Model.Id" class="group-id-input"/>
             <button id="group-add-button-@Model.Id" class="btn btn-dark mt-1" type="submit" data-toggle="popover" data-placement="right">

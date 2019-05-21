@@ -74,12 +74,10 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                     {
                         await SendGameEventInvitationAsync(gameEventInvitationDto);
                     }
-                    catch (ArgumentOutOfRangeException exception)
+                    catch (GameEventParticipationException)
                     {
-                        throw exception;
-                    }
-                    catch
-                    {
+                        // There is no need in throwing this exception,
+                        // it means that some of the members of the group cannot be invited, so we invite all we can.
                     }
                 }
 

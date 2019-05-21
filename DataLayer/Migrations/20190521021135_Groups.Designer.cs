@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameBoard.DataLayer.Migrations
 {
     [DbContext(typeof(GameBoardDbContext))]
-    [Migration("20190516003256_Groups")]
+    [Migration("20190521021135_Groups")]
     partial class Groups
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,7 +163,7 @@ namespace GameBoard.DataLayer.Migrations
 
                     b.HasIndex("TakesPartInId", "ParticipantId")
                         .IsUnique()
-                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4");
+                        .HasFilter("ParticipationStatus <> 3 AND ParticipationStatus <> 4 AND ParticipationStatus <> 5");
 
                     b.ToTable("GameEventParticipation");
                 });
@@ -175,6 +175,7 @@ namespace GameBoard.DataLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<string>("OwnerId")
@@ -351,7 +352,7 @@ namespace GameBoard.DataLayer.Migrations
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Owner")
-                        .WithMany("UserGroups")
+                        .WithMany("Groups")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -359,12 +360,12 @@ namespace GameBoard.DataLayer.Migrations
             modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.Group", "Group")
-                        .WithMany("GroupUser")
+                        .WithMany("GroupUsers")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "User")
-                        .WithMany("GroupUser")
+                        .WithMany("GroupUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

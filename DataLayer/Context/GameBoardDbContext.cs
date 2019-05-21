@@ -20,7 +20,7 @@ namespace GameBoard.DataLayer.Context
         public DbSet<GameEventParticipation> GameEventParticipations { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupUser> GroupUser { get; set; }
+        public DbSet<GroupUser> GroupUsers { get; set; }
 
         public IDbContextTransaction BeginTransaction() => Database.BeginTransaction();
 

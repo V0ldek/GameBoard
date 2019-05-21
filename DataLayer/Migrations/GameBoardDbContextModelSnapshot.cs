@@ -173,6 +173,7 @@ namespace GameBoard.DataLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<string>("OwnerId")
@@ -349,7 +350,7 @@ namespace GameBoard.DataLayer.Migrations
             modelBuilder.Entity("GameBoard.DataLayer.Entities.Group", b =>
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "Owner")
-                        .WithMany("UserGroups")
+                        .WithMany("Groups")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -357,12 +358,12 @@ namespace GameBoard.DataLayer.Migrations
             modelBuilder.Entity("GameBoard.DataLayer.Entities.GroupUser", b =>
                 {
                     b.HasOne("GameBoard.DataLayer.Entities.Group", "Group")
-                        .WithMany("GroupUser")
+                        .WithMany("GroupUsers")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GameBoard.DataLayer.Entities.ApplicationUser", "User")
-                        .WithMany("GroupUser")
+                        .WithMany("GroupUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

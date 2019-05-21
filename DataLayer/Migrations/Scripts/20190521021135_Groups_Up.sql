@@ -21,7 +21,7 @@ AS
 	WHERE GroupUser.UserId = DELETED.Id;
 
 	DELETE FROM [Group]
-	FROM DELETED
+    FROM DELETED
 	WHERE [Group].OwnerId = DELETED.Id;
 
     DELETE FROM [User]
@@ -40,7 +40,7 @@ CREATE TRIGGER TR_Group_InsteadOfDelete
   INSTEAD OF DELETE
 AS
   BEGIN
-    DELETE FROM GroupUser
+	DELETE FROM GroupUser
 	FROM DELETED
 	WHERE GroupUser.GroupId = DELETED.Id;
 

@@ -11,6 +11,8 @@ namespace GameBoard.LogicLayer.Groups
         [ItemNotNull]
         Task<IEnumerable<GroupDto>> GetGroupsByUserNameAsync([NotNull] string userName);
 
+        // Throws InvalidOperationException if such group doesn't exist.
+        [ItemNotNull]
         Task<GroupDto> GetGroupByNamesAsync([NotNull] string owner, [NotNull] string groupName);
 
         Task AddGroupAsync([NotNull] string userName, [NotNull] string groupName);
