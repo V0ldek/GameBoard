@@ -5,7 +5,7 @@
       data-ajax-success="gameEventInviteGroupFormPopoverGenerator.generateSuccessPopover(document.querySelector('#game-event-invite-group-@Model.Group.Id'), xhr)"
       data-ajax-failure="gameEventInviteGroupFormPopoverGenerator.generateErrorPopover(document.querySelector('#game-event-invite-group-@Model.Group.Id'), xhr)">
     <input type="hidden" asp-for="@Model.GameEventId" name="gameEventId"/>
-    <input type="hidden" asp-for="@Model.Group.Name" name="name"/>
+    <input type="hidden" asp-for="@Model.Group.Name" name="groupName"/>
     @{ var i = 0; }
     @foreach (var user in Model.Group.Users)
     {
