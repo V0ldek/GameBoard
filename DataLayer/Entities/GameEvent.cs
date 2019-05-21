@@ -12,6 +12,8 @@ namespace GameBoard.DataLayer.Entities
 
         public ICollection<Game> Games { get; set; }
 
+        public DescriptionTab Description { get; set; }
+
         public ICollection<GameEventParticipation> Participations { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<GameEvent> GameEvents { get; }
         DbSet<GameEventParticipation> GameEventParticipations { get; }
         DbSet<Game> Games { get; }
+        DbSet<DescriptionTab> DescriptionTabs { get; }
 
         IDbContextTransaction BeginTransaction();
 

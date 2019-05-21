@@ -110,7 +110,8 @@ namespace GameBoard.DataLayer.Context
 
                     entity.HasIndex(e => new {e.TakesPartInId, e.ParticipantId})
                         .HasFilter(
-                            "ParticipationStatus <> 3 AND ParticipationStatus <> 4") // <> RejectedGuest, ExitedGuest
+                            "ParticipationStatus <> 3 AND ParticipationStatus <> 4 AND ParticipationStatus <> 5")
+                        // <> RejectedGuest, ExitedGuest, RemovedGuest
                         .IsUnique();
 
                     entity.HasIndex(e => e.ParticipantId);
@@ -143,6 +144,24 @@ namespace GameBoard.DataLayer.Context
                         .IsUnique();
 
                     entity.ToTable("Game");
+                });
+
+            builder.Entity<DescriptionTab>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
+                    entity.HasOne(e => e.GameEvent)
+                        .WithOne(g => g.Description)
+                        .HasForeignKey<DescriptionTab>(e => e.GameEventId)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.Property(e => e.Description)
+                        .IsUnicode();//Not sure if it's needed.
+
+                    entity.ToTable("DescriptionTab");
                 });
         }
     }

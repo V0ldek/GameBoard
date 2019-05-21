@@ -37,7 +37,8 @@ namespace GameBoard.LogicLayer.GameEvents
                 Place = requestedGameEvent.Place,
                 Games = requestedGameEvent.Games
                     .Select((game, index) => new Game {Name = game, PositionOnTheList = index}).ToList(),
-                Participations = new List<GameEventParticipation>()
+                Participations = new List<GameEventParticipation>(),
+                Description = new DescriptionTab()
             };
 
             gameEvent.Participations.Add(creatorParticipation);
@@ -80,6 +81,7 @@ namespace GameBoard.LogicLayer.GameEvents
                 .Include(ge => ge.Games)
                 .Include(ge => ge.Participations)
                 .ThenInclude(p => p.Participant)
+                .Include(ge => ge.Description)
                 .Select(ge => ge.ToGameEventDto())
                 .SingleOrDefaultAsync();
 
