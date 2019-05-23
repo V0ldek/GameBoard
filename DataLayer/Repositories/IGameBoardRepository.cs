@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
+using GameBoard.DataLayer.Transactions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GameBoard.DataLayer.Repositories
 {
@@ -16,7 +16,7 @@ namespace GameBoard.DataLayer.Repositories
         DbSet<GroupUser> GroupUsers { get; }
         DbSet<DescriptionTab> DescriptionTabs { get; }
 
-        IDbContextTransaction BeginTransaction();
+        ITransaction BeginTransaction();
 
         Task SaveChangesAsync();
     }

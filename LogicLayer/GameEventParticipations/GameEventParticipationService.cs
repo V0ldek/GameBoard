@@ -25,7 +25,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             _notificationService = notificationService;
         }
 
-        public async Task SendGameEventInvitationAsync(SendGameEventInvitationDto gameEventInvitationDto)
+        public async Task CreateGameEventParticipationAsync(SendGameEventInvitationDto gameEventInvitationDto)
         {
             var gameEventId = gameEventInvitationDto.GameEventId;
             var userNameTo = gameEventInvitationDto.UserNameTo;
@@ -64,23 +64,35 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             }
         }
 
-        public async Task SendGameEventInvitationAsync(IEnumerable<SendGameEventInvitationDto> gameEventInvitationDtos)
+        public async Task CreateGameEventParticipationAsync(
+            int gameEventId,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator,
+            IEnumerable<string> users)
         {
+            var usersToInvite = new List<ApplicationUser>();
+
+            foreach (var user in users)
+            {
+                var participation = await GetActiveGameEventParticipation(gameEventId, user);
+
+                if (participation == null)
+                {
+                    usersToInvite.Add(
+                        await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(user)));
+                }
+            }
+
             using (var transaction = _repository.BeginTransaction())
             {
-                foreach (var gameEventInvitationDto in gameEventInvitationDtos)
+                foreach (var user in usersToInvite)
                 {
-                    try
-                    {
-                        await SendGameEventInvitationAsync(gameEventInvitationDto);
-                    }
-                    catch (GameEventParticipationException)
-                    {
-                        // There is no need in throwing this exception,
-                        // it means that some of the members of the group cannot be invited, so we invite all we can.
-                    }
+                    await CreateNewGameEventParticipation(gameEventId, user.Id);
                 }
 
+                await SendGameEventInvitationsAsync(
+                    gameEventId,
+                    usersToInvite,
+                    gameEventLinkGenerator);
                 transaction.Commit();
             }
         }
@@ -189,9 +201,15 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await _repository.SaveChangesAsync();
         }
 
-        private async Task SendGameEventInvitationAsync(
+        private Task SendGameEventInvitationAsync(
             int gameEventId,
             [NotNull] ApplicationUser userTo,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) => 
+                SendGameEventInvitationsAsync(gameEventId, new[] {userTo}, gameEventLinkGenerator);
+
+        private async Task SendGameEventInvitationsAsync(
+            int gameEventId,
+            [NotNull] IEnumerable<ApplicationUser> usersTo,
             SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator)
         {
             var gameEventData = await _repository.GameEvents
@@ -209,14 +227,15 @@ namespace GameBoard.LogicLayer.GameEventParticipations
 
             var creatorName = gameEventData.CreatorParticipations.Single().Participant.UserName;
 
-            var notification = new GameEventInvitationNotification(
-                gameEventData.Name,
-                creatorName,
-                userTo.UserName,
-                userTo.Email,
-                gameEventLinkGenerator(gameEventId.ToString()));
+            var notifications = usersTo.Select(
+                u => new GameEventInvitationNotification(
+                    gameEventData.Name,
+                    creatorName,
+                    u.UserName,
+                    u.Email,
+                    gameEventLinkGenerator(gameEventId.ToString())));
 
-            await _notificationService.CreateNotificationBatch(notification).SendAsync();
+            await _notificationService.CreateNotificationBatch(notifications).SendAsync();
         }
     }
 }

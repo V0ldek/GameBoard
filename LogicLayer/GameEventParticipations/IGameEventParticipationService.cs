@@ -7,9 +7,12 @@ namespace GameBoard.LogicLayer.GameEventParticipations
 {
     public interface IGameEventParticipationService
     {
-        Task SendGameEventInvitationAsync([NotNull] SendGameEventInvitationDto gameEventInvitationDto);
+        Task CreateGameEventParticipationAsync([NotNull] SendGameEventInvitationDto gameEventInvitationDto);
 
-        Task SendGameEventInvitationAsync([NotNull] IEnumerable<SendGameEventInvitationDto> gameEventInvitationDtos);
+        Task CreateGameEventParticipationAsync(
+            int gameEventId,
+            [NotNull] SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator,
+            [NotNull] IEnumerable<string> users);
 
         Task AcceptGameEventInvitationAsync(int gameEventId, [NotNull] string invitedUserName);
 

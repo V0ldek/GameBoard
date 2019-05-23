@@ -1,4 +1,5 @@
-﻿using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
+﻿using System.Collections.Generic;
+using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
 
 namespace GameBoard.LogicLayer.GameEventParticipations.Notifications
 {

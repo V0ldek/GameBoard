@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
@@ -159,7 +158,7 @@ namespace GameBoard.Controllers
         {
             try
             {
-                await _gameEventParticipationService.SendGameEventInvitationAsync(sendGameEventInvitationDto);
+                await _gameEventParticipationService.CreateGameEventParticipationAsync(sendGameEventInvitationDto);
             }
             catch (ApplicationException exception)
             {
@@ -187,18 +186,10 @@ namespace GameBoard.Controllers
         public async Task<IActionResult> SendGameEventInviteToGroup(
             int gameEventId,
             string groupName,
-            string[] users)
+            IEnumerable<string> users)
         {
             GameEventDto gameEvent;
 
-            var sendGameEventInvitationDtos = users.Select(
-                u => new SendGameEventInvitationDto(
-                    gameEventId,
-                    u,
-                    eventId => _hostConfiguration.HostAddress + Url.Action(
-                        "GameEvent",
-                        "gameEvent",
-                        new {id = eventId})));
             try
             {
                 gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
@@ -232,17 +223,28 @@ namespace GameBoard.Controllers
                     HttpStatusCode.Unauthorized);
             }
 
-            return await SendGameEventInvitationToGroup(gameEvent, groupName, sendGameEventInvitationDtos);
+            return await CreateGameEventParticipationForGroup(
+                gameEvent,
+                groupName,
+                users,
+                eventId => _hostConfiguration.HostAddress + Url.Action(
+                    "GameEvent",
+                    "gameEvent",
+                    new {id = eventId}));
         }
 
-        private async Task<IActionResult> SendGameEventInvitationToGroup(
+        private async Task<IActionResult> CreateGameEventParticipationForGroup(
             GameEventDto gameEvent,
             string groupName,
-            IEnumerable<SendGameEventInvitationDto> sendGameEventInvitationDtos)
+            IEnumerable<string> users,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator)
         {
             try
             {
-                await _gameEventParticipationService.SendGameEventInvitationAsync(sendGameEventInvitationDtos);
+                await _gameEventParticipationService.CreateGameEventParticipationAsync(
+                    gameEvent.Id,
+                    gameEventLinkGenerator,
+                    users);
             }
             catch (ApplicationException exception)
             {
