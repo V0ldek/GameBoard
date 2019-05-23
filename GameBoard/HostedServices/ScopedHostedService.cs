@@ -7,16 +7,16 @@ namespace GameBoard.HostedServices
 {
     public abstract class ScopedHostedService : HostedService
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        protected readonly IServiceScopeFactory ServiceScopeFactory;
 
         protected ScopedHostedService(IServiceScopeFactory serviceScopeFactory)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            ServiceScopeFactory = serviceScopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var scope = _serviceScopeFactory.CreateScope())
+            using (var scope = ServiceScopeFactory.CreateScope())
             {
                 await ExecuteInScope(scope.ServiceProvider, cancellationToken);
             }

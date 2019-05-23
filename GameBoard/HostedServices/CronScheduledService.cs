@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using GameBoard.HostedServices.KeepAlive;
 using Microsoft.Extensions.DependencyInjection;
 using NCrontab;
 
@@ -8,6 +9,7 @@ namespace GameBoard.HostedServices
 {
     public abstract class CronScheduledService : ScopedHostedService
     {
+        private static readonly TimeSpan MaximalIdleTime = TimeSpan.FromMinutes(15);
         private readonly CrontabSchedule _schedule;
         private DateTime _nextRun;
 
@@ -24,6 +26,7 @@ namespace GameBoard.HostedServices
             while (!cancellationToken.IsCancellationRequested)
             {
                 await RunIfDueAsync(cancellationToken);
+                await KeepAliveAsync(cancellationToken);
                 await WaitUntilDueAsync(cancellationToken);
             }
         }
@@ -37,12 +40,22 @@ namespace GameBoard.HostedServices
             }
         }
 
+        private async Task KeepAliveAsync(CancellationToken cancellationToken)
+        {
+            using (var scope = ServiceScopeFactory.CreateScope())
+            {
+                var keepAlive = scope.ServiceProvider.GetService<IKeepAlive>();
+                await keepAlive.KeepAliveAsync(cancellationToken);
+            }
+        }
+
         private async Task WaitUntilDueAsync(CancellationToken cancellationToken)
         {
             var timeToWait = _nextRun - DateTime.Now;
             if (timeToWait > TimeSpan.Zero)
             {
-                await Task.Delay(timeToWait, cancellationToken);
+                var idleTime = timeToWait <= MaximalIdleTime ? timeToWait : MaximalIdleTime;
+                await Task.Delay(idleTime, cancellationToken);
             }
         }
     }

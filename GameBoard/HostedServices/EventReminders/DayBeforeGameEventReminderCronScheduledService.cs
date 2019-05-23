@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace GameBoard.HostedServices.EventReminders
 {
-    internal class DayBeforeGameEventReminderCronScheduledService : CronScheduledService
+    internal sealed class DayBeforeGameEventReminderCronScheduledService : CronScheduledService
     {
         private const string CronSchedule = "0 20 * * *";
 
