@@ -7,21 +7,21 @@ namespace GameBoard.HostedServices
 {
     public abstract class ScopedHostedService : HostedService
     {
-        protected readonly IServiceScopeFactory ServiceScopeFactory;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         protected ScopedHostedService(IServiceScopeFactory serviceScopeFactory)
         {
-            ServiceScopeFactory = serviceScopeFactory;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var scope = ServiceScopeFactory.CreateScope())
+            using (var scope = _serviceScopeFactory.CreateScope())
             {
-                await ExecuteInScope(scope.ServiceProvider, cancellationToken);
+                await ExecuteInScopeAsync(scope.ServiceProvider, cancellationToken);
             }
         }
 
-        protected abstract Task ExecuteInScope(IServiceProvider serviceProvider, CancellationToken cancellationToken);
+        protected abstract Task ExecuteInScopeAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken);
     }
 }

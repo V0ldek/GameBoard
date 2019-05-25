@@ -25,29 +25,31 @@ namespace GameBoard.HostedServices
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await RunIfDueAsync(cancellationToken);
-                await KeepAliveAsync(cancellationToken);
+                await base.ExecuteAsync(cancellationToken);
                 await WaitUntilDueAsync(cancellationToken);
             }
         }
 
-        private async Task RunIfDueAsync(CancellationToken cancellationToken)
+        protected sealed override async Task ExecuteInScopeAsync(
+            IServiceProvider serviceProvider,
+            CancellationToken cancellationToken)
         {
+            await KeepAliveAsync(serviceProvider, cancellationToken);
+
             if (DateTime.Now >= _nextRun)
             {
-                await base.ExecuteAsync(cancellationToken);
+                await ExecuteCronJobAsync(serviceProvider, cancellationToken);
                 _nextRun = _schedule.GetNextOccurrence(DateTime.Now);
             }
         }
 
-        private async Task KeepAliveAsync(CancellationToken cancellationToken)
+        private static async Task KeepAliveAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            using (var scope = ServiceScopeFactory.CreateScope())
-            {
-                var keepAlive = scope.ServiceProvider.GetService<IKeepAlive>();
-                await keepAlive.KeepAliveAsync(cancellationToken);
-            }
+            var keepAlive = serviceProvider.GetService<IKeepAlive>();
+            await keepAlive.KeepAliveAsync(cancellationToken);
         }
+
+        protected abstract Task ExecuteCronJobAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken);
 
         private async Task WaitUntilDueAsync(CancellationToken cancellationToken)
         {

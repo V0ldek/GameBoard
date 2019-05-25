@@ -10,7 +10,7 @@ namespace GameBoard.HostedServices.EventReminders
 {
     internal sealed class DayBeforeGameEventReminderCronScheduledService : CronScheduledService
     {
-        private const string CronSchedule = "0 20 * * *";
+        private const string CronSchedule = "0 18 * * *";   // 6pm server time is 8pm local time.
 
         public DayBeforeGameEventReminderCronScheduledService(IServiceScopeFactory serviceScopeFactory) : base(
             serviceScopeFactory,
@@ -18,7 +18,7 @@ namespace GameBoard.HostedServices.EventReminders
         {
         }
 
-        protected override Task ExecuteInScope(IServiceProvider serviceProvider, CancellationToken cancellationToken)
+        protected override Task ExecuteCronJobAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
             var hostConfiguration = serviceProvider.GetService<IOptions<HostConfiguration>>().Value;
             var eventReminderService = serviceProvider.GetService<IGameEventReminderService>();
