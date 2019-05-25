@@ -18,10 +18,10 @@ namespace GameBoard.HostedServices
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                await ExecuteInScope(scope.ServiceProvider, cancellationToken);
+                await ExecuteInScopeAsync(scope.ServiceProvider, cancellationToken);
             }
         }
 
-        protected abstract Task ExecuteInScope(IServiceProvider serviceProvider, CancellationToken cancellationToken);
+        protected abstract Task ExecuteInScopeAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken);
     }
 }
