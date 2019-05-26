@@ -64,7 +64,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             }
         }
 
-        public async Task CreateGameEventParticipationAsync(
+        public async Task CreateGameEventParticipationsIgnoringErrorsAsync(
             int gameEventId,
             SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator,
             IEnumerable<string> users)

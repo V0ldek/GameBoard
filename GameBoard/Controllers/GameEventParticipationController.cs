@@ -241,7 +241,7 @@ namespace GameBoard.Controllers
         {
             try
             {
-                await _gameEventParticipationService.CreateGameEventParticipationAsync(
+                await _gameEventParticipationService.CreateGameEventParticipationsIgnoringErrorsAsync(
                     gameEvent.Id,
                     gameEventLinkGenerator,
                     users);

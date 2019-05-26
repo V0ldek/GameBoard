@@ -9,7 +9,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
     {
         Task CreateGameEventParticipationAsync([NotNull] SendGameEventInvitationDto gameEventInvitationDto);
 
-        Task CreateGameEventParticipationAsync(
+        Task CreateGameEventParticipationsIgnoringErrorsAsync(
             int gameEventId,
             [NotNull] SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator,
             [NotNull] IEnumerable<string> users);
