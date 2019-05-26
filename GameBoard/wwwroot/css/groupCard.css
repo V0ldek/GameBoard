@@ -1,3 +1,6 @@
-﻿.collapse-btn { width: 100%; }
+﻿.collapse-btn {
+    width: 100%;
+    margin-bottom: 1%;
+}
 
 .group-collapse { padding: 0 10px; }
