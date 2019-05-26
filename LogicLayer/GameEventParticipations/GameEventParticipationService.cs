@@ -69,30 +69,21 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator,
             IEnumerable<string> users)
         {
-            var usersToInvite = new List<ApplicationUser>();
+            var usersAlreadyInvitedForEvent = await GetUserNamesOfUsersInvitedForGameEvent(gameEventId);
+            var userNamesOfUsersToInvite = users.Where(u => !usersAlreadyInvitedForEvent.Contains(u)).ToList();
 
-            foreach (var user in users)
-            {
-                var participation = await GetActiveGameEventParticipation(gameEventId, user);
-
-                if (participation == null)
-                {
-                    usersToInvite.Add(
-                        await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(user)));
-                }
-            }
+            var usersToInvite = await _repository.ApplicationUsers
+                .Where(u => userNamesOfUsersToInvite.Contains(u.UserName)).ToListAsync();
 
             using (var transaction = _repository.BeginTransaction())
             {
-                foreach (var user in usersToInvite)
-                {
-                    await CreateNewGameEventParticipation(gameEventId, user.Id);
-                }
+                await CreateNewGameEventParticipations(gameEventId, usersToInvite.Select(u => u.Id));
 
                 await SendGameEventInvitationsAsync(
                     gameEventId,
                     usersToInvite,
                     gameEventLinkGenerator);
+
                 transaction.Commit();
             }
         }
@@ -188,6 +179,16 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                 .SelectMany(u => u.Participations)
                 .Where(p => p.TakesPartInId == gameEventId);
 
+        private async Task<IEnumerable<string>> GetUserNamesOfUsersInvitedForGameEvent(
+            int gameEventId) => await _repository.GameEventParticipations
+            .Where(p => p.TakesPartInId == gameEventId)
+            .Where(
+                p => p.ParticipationStatus != ParticipationStatus.RejectedGuest &&
+                    p.ParticipationStatus != ParticipationStatus.ExitedGuest &&
+                    p.ParticipationStatus != ParticipationStatus.RemovedGuest)
+            .Include(p => p.Participant)
+            .Select(p => p.Participant.UserName).ToListAsync();
+
         private async Task CreateNewGameEventParticipation(int gameEventId, string userToId)
         {
             var gameEventParticipation = new GameEventParticipation
@@ -201,11 +202,25 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await _repository.SaveChangesAsync();
         }
 
+        private async Task CreateNewGameEventParticipations(int gameEventId, IEnumerable<string> usersToIds)
+        {
+            _repository.GameEventParticipations.AddRange(
+                usersToIds.Select(
+                    id => new GameEventParticipation
+                    {
+                        TakesPartInId = gameEventId,
+                        ParticipantId = id,
+                        ParticipationStatus = ParticipationStatus.PendingGuest
+                    }));
+
+            await _repository.SaveChangesAsync();
+        }
+
         private Task SendGameEventInvitationAsync(
             int gameEventId,
             [NotNull] ApplicationUser userTo,
-            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) => 
-                SendGameEventInvitationsAsync(gameEventId, new[] {userTo}, gameEventLinkGenerator);
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
+            SendGameEventInvitationsAsync(gameEventId, new[] {userTo}, gameEventLinkGenerator);
 
         private async Task SendGameEventInvitationsAsync(
             int gameEventId,

@@ -1,9 +1,9 @@
 ﻿using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Repositories;
-using GameBoard.DataLayer.Transactions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GameBoard.DataLayer.Context
 {
@@ -23,17 +23,7 @@ namespace GameBoard.DataLayer.Context
         public DbSet<GroupUser> GroupUsers { get; set; }
         public DbSet<DescriptionTab> DescriptionTabs { get; set; }
 
-        private ITransaction _transaction;
-
-        public ITransaction BeginTransaction()
-        {
-            if (_transaction == null || _transaction.TransactionFinished())
-            {
-                _transaction = new Transaction(Database.BeginTransaction());
-            }
-
-            return _transaction;
-        }
+        public IDbContextTransaction BeginTransaction() => Database.BeginTransaction();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.ConfigureWarnings(
