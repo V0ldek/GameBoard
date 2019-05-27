@@ -3,6 +3,7 @@ using System.Globalization;
 using GameBoard.Configuration;
 using GameBoard.DataLayer.Entities;
 using GameBoard.HostedServices.EventReminders;
+using GameBoard.HostedServices.KeepAlive;
 using GameBoard.LogicLayer;
 using GameBoard.LogicLayer.Configurations;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +28,7 @@ namespace GameBoard
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             ConfigureCookiePolicy(services);
             ConfigureAntiforgery(services);
             LoadConfiguration(services);
@@ -61,8 +63,12 @@ namespace GameBoard
             LogicLayer.Configuration.ConfigureServices(services);
         }
 
-        private static void ConfigureHostedServices(IServiceCollection services) =>
+        private static void ConfigureHostedServices(IServiceCollection services)
+        {
+            services.AddHttpClient();
+            services.AddScoped<IKeepAlive, HttpRequestKeepAlive>();
             services.AddHostedService<DayBeforeGameEventReminderCronScheduledService>();
+        }
 
         private static void ConfigureIdentity(IServiceCollection services)
         {
