@@ -14,14 +14,14 @@ AS
     DELETE FROM Game -- This DELETE could be replaced with CascadeDelete on Games, but it seems more consistent to put everything in one place.
     FROM DELETED
     WHERE Game.GameEventId = DELETED.Id;
+	
+    DELETE FROM DescriptionTab
+    FROM DELETED
+    WHERE DescriptionTab.GameEventId = DELETED.Id;
 
     DELETE FROM GameEvent
     FROM DELETED
     WHERE GameEvent.Id = DELETED.Id;
-
-    DELETE FROM DescriptionTab
-    FROM DELETED
-    WHERE DescriptionTab.GameEventId = DELETED.Id;
 
 END;
 
