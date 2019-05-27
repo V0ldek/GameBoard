@@ -1,9 +1,9 @@
 ﻿@model GameBoard.Models.FriendsSidebar.FriendsSidebarViewModel
 
 <div id="friends-sidebar-container" @(Model.Toggled ? "class=toggled" : "")>
-    <div id="friends-sidebar" class="bg border-top border-right box-shadow">
+    <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")">
         <h3>Friends</h3>
-        <hr/>
+        <hr />
         @foreach (var group in Model.Groups)
         {
             @await Component.InvokeAsync("GroupCard", new
