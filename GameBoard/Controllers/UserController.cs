@@ -18,7 +18,7 @@ namespace GameBoard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string input) =>
+        public async Task<IActionResult> SearchUser(string input) =>
             ViewComponent(
                 "UserSearchResults",
                 (await _userSearchService.GetSearchCandidatesAsync(input)).Select(u => u.ToViewModel()));

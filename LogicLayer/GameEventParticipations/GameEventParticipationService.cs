@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
@@ -24,7 +25,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             _notificationService = notificationService;
         }
 
-        public async Task SendGameEventInvitationAsync(SendGameEventInvitationDto gameEventInvitationDto)
+        public async Task CreateGameEventParticipationAsync(SendGameEventInvitationDto gameEventInvitationDto)
         {
             var gameEventId = gameEventInvitationDto.GameEventId;
             var userNameTo = gameEventInvitationDto.UserNameTo;
@@ -59,6 +60,30 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                     gameEventInvitationDto.GameEventId,
                     userTo,
                     gameEventInvitationDto.GenerateGameEventLink);
+                transaction.Commit();
+            }
+        }
+
+        public async Task CreateGameEventParticipationsIgnoringErrorsAsync(
+            int gameEventId,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator,
+            IEnumerable<string> users)
+        {
+            var usersAlreadyInvitedForEvent = await GetUserNamesOfUsersInvitedForGameEvent(gameEventId);
+            var userNamesOfUsersToInvite = users.Where(u => !usersAlreadyInvitedForEvent.Contains(u)).ToList();
+
+            var usersToInvite = await _repository.ApplicationUsers
+                .Where(u => userNamesOfUsersToInvite.Contains(u.UserName)).ToListAsync();
+
+            using (var transaction = _repository.BeginTransaction())
+            {
+                await CreateNewGameEventParticipations(gameEventId, usersToInvite.Select(u => u.Id));
+
+                await SendGameEventInvitationsAsync(
+                    gameEventId,
+                    usersToInvite,
+                    gameEventLinkGenerator);
+
                 transaction.Commit();
             }
         }
@@ -154,6 +179,16 @@ namespace GameBoard.LogicLayer.GameEventParticipations
                 .SelectMany(u => u.Participations)
                 .Where(p => p.TakesPartInId == gameEventId);
 
+        private async Task<IEnumerable<string>> GetUserNamesOfUsersInvitedForGameEvent(
+            int gameEventId) => await _repository.GameEventParticipations
+            .Where(p => p.TakesPartInId == gameEventId)
+            .Where(
+                p => p.ParticipationStatus != ParticipationStatus.RejectedGuest &&
+                    p.ParticipationStatus != ParticipationStatus.ExitedGuest &&
+                    p.ParticipationStatus != ParticipationStatus.RemovedGuest)
+            .Include(p => p.Participant)
+            .Select(p => p.Participant.UserName).ToListAsync();
+
         private async Task CreateNewGameEventParticipation(int gameEventId, string userToId)
         {
             var gameEventParticipation = new GameEventParticipation
@@ -167,9 +202,29 @@ namespace GameBoard.LogicLayer.GameEventParticipations
             await _repository.SaveChangesAsync();
         }
 
-        private async Task SendGameEventInvitationAsync(
+        private async Task CreateNewGameEventParticipations(int gameEventId, IEnumerable<string> usersToIds)
+        {
+            _repository.GameEventParticipations.AddRange(
+                usersToIds.Select(
+                    id => new GameEventParticipation
+                    {
+                        TakesPartInId = gameEventId,
+                        ParticipantId = id,
+                        ParticipationStatus = ParticipationStatus.PendingGuest
+                    }));
+
+            await _repository.SaveChangesAsync();
+        }
+
+        private Task SendGameEventInvitationAsync(
             int gameEventId,
             [NotNull] ApplicationUser userTo,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator) =>
+            SendGameEventInvitationsAsync(gameEventId, new[] {userTo}, gameEventLinkGenerator);
+
+        private async Task SendGameEventInvitationsAsync(
+            int gameEventId,
+            [NotNull] IEnumerable<ApplicationUser> usersTo,
             SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator)
         {
             var gameEventData = await _repository.GameEvents
@@ -187,14 +242,15 @@ namespace GameBoard.LogicLayer.GameEventParticipations
 
             var creatorName = gameEventData.CreatorParticipations.Single().Participant.UserName;
 
-            var notification = new GameEventInvitationNotification(
-                gameEventData.Name,
-                creatorName,
-                userTo.UserName,
-                userTo.Email,
-                gameEventLinkGenerator(gameEventId.ToString()));
+            var notifications = usersTo.Select(
+                u => new GameEventInvitationNotification(
+                    gameEventData.Name,
+                    creatorName,
+                    u.UserName,
+                    u.Email,
+                    gameEventLinkGenerator(gameEventId.ToString())));
 
-            await _notificationService.CreateNotificationBatch(notification).SendAsync();
+            await _notificationService.CreateNotificationBatch(notifications).SendAsync();
         }
     }
 }

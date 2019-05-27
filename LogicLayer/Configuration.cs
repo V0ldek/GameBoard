@@ -3,6 +3,7 @@ using GameBoard.LogicLayer.Friends;
 using GameBoard.LogicLayer.GameEventParticipations;
 using GameBoard.LogicLayer.GameEventReminders;
 using GameBoard.LogicLayer.GameEvents;
+using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.Notifications.SendGrid;
 using GameBoard.LogicLayer.UserSearch;
@@ -26,6 +27,7 @@ namespace GameBoard.LogicLayer
             services.AddScoped<IGameEventService, GameEventService>();
             services.AddScoped<IGameEventParticipationService, GameEventParticipationService>();
             services.AddScoped<IDescriptionTabService, DescriptionTabService>();
+            services.AddScoped<IGroupsService, GroupsService>();
         }
 
         public static IdentityBuilder AddDbContextStores(this IdentityBuilder builder) =>

@@ -81,8 +81,11 @@
 
 .user-card-with-sub-component .user-card-sub-component button .fa-remove { font-size: 23px; }
 
-.tabs-bar { overflow: hidden; }
-
+.tabs-bar {
+    overflow: hidden;
+    display: inline-block;
+    border-radius: 3.75px;
+}
 
 .tabs-bar button {
     background-color: inherit;
@@ -95,4 +98,13 @@
     color: #ffffff;
     font-size: 17px;
     border-radius: 0;
+}
+
+@media (max-width: 768px) {
+    .tabs-bar {
+        width: 100%;
+    }
+    .tabs-bar button {
+        width: 100%;
+    }
 }

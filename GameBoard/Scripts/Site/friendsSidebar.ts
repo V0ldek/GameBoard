@@ -21,7 +21,10 @@ document.addEventListener("DOMContentLoaded",
 
         $(friendsSidebarElement)
             .mCustomScrollbar({
-                theme: "minimal"
+                theme: "minimal",
+                advanced: {
+                    autoScrollOnFocus: false
+                }
             });
 
         friendsSidebar =

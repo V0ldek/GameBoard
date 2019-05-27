@@ -1,0 +1,7 @@
+﻿DROP TRIGGER IF EXISTS TR_User_InsteadOfDelete;
+
+GO
+
+DROP TRIGGER IF EXISTS TR_Group_InsteadOfDelete;
+
+GO

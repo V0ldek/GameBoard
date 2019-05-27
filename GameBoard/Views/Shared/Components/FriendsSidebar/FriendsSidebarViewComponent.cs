@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GameBoard.LogicLayer.Friends;
+using GameBoard.LogicLayer.Groups;
 using GameBoard.Models.FriendsSidebar;
-using GameBoard.Models.User;
+using GameBoard.Models.Groups;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameBoard.Views.Shared.Components.FriendsSidebar
 {
     public class FriendsSidebarViewComponent : ViewComponent
     {
-        private readonly IFriendsService _friendsService;
+        private readonly IGroupsService _groupsService;
 
-        public FriendsSidebarViewComponent(IFriendsService friendsService)
+        public FriendsSidebarViewComponent(IGroupsService groupsService)
         {
-            _friendsService = friendsService;
+            _groupsService = groupsService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(
             bool toggled = false,
+            bool groupInviteEnabled = false,
+            int gameEventId = 0,
+            int groupId = 0,
+            string gameEventName = null,
             string subComponentName = null,
             Func<string, object> subComponentArgumentsProvider = null)
         {
@@ -27,13 +31,16 @@ namespace GameBoard.Views.Shared.Components.FriendsSidebar
                 return View("FriendsSidebarUnauthenticated");
             }
 
-            var friends = await _friendsService.GetFriendsByUserNameAsync(User.Identity.Name);
+            var groups = await _groupsService.GetGroupsByUserNameAsync(User.Identity.Name);
 
             return View(
                 "FriendsSidebar",
                 new FriendsSidebarViewModel(
-                    friends.Select(u => u.ToViewModel()),
+                    groups.Select(g => g.ToViewModel()),
                     toggled,
+                    groupInviteEnabled,
+                    gameEventId,
+                    gameEventName,
                     subComponentName,
                     subComponentArgumentsProvider));
         }

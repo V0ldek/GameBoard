@@ -6,24 +6,35 @@ using System.Threading.Tasks;
 using GameBoard.DataLayer.Entities;
 using GameBoard.DataLayer.Enums;
 using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Configurations;
 using GameBoard.LogicLayer.Friends.Dtos;
 using GameBoard.LogicLayer.Friends.Exceptions;
 using GameBoard.LogicLayer.Friends.Notifications;
+using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using GameBoard.LogicLayer.UserSearch.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.LogicLayer.Friends
 {
     internal sealed class FriendsService : IFriendsService
     {
+        private readonly IGroupsService _groupsService;
         private readonly INotificationService _notificationService;
         private readonly IGameBoardRepository _repository;
+        private readonly GroupsConfiguration _groupsOptions;
 
-        public FriendsService(IGameBoardRepository repository, INotificationService notificationService)
+        public FriendsService(
+            IGameBoardRepository repository,
+            INotificationService notificationService,
+            IGroupsService groupsService,
+            IOptions<GroupsConfiguration> groupsOptions)
         {
             _repository = repository;
             _notificationService = notificationService;
+            _groupsService = groupsService;
+            _groupsOptions = groupsOptions.Value;
         }
 
         public async Task<IEnumerable<UserDto>> GetFriendsByUserNameAsync(string userName)
@@ -87,8 +98,32 @@ namespace GameBoard.LogicLayer.Friends
             return friendship?.ToDto();
         }
 
-        public Task AcceptFriendRequestAsync(int friendRequestId) =>
-            ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
+        public async Task AcceptFriendRequestAsync(int friendRequestId)
+        {
+            using (var transaction = _repository.BeginTransaction())
+            {
+                await ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Lasts);
+
+                var friendship = await GetFriendRequestAsync(friendRequestId);
+
+                if (friendship == null)
+                {
+                    throw new FriendRequestException("The friend request you referenced does not exist in the system.");
+                }
+
+                var groupAll = await _groupsService.GetGroupByNamesAsync(
+                    friendship.UserFrom.UserName,
+                    _groupsOptions.AllFriendsGroupName);
+                await _groupsService.AddUserToGroupAsync(friendship.UserTo.UserName, groupAll.Id);
+
+                groupAll = await _groupsService.GetGroupByNamesAsync(
+                    friendship.UserTo.UserName,
+                    _groupsOptions.AllFriendsGroupName);
+                await _groupsService.AddUserToGroupAsync(friendship.UserFrom.UserName, groupAll.Id);
+
+                transaction.Commit();
+            }
+        }
 
         public Task RejectFriendRequestAsync(int friendRequestId) =>
             ChangeFriendRequestStatus(friendRequestId, FriendshipStatus.Rejected);

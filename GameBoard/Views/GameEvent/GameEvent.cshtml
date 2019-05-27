@@ -1,5 +1,4 @@
 ﻿@using GameBoard.Models.GameEvent
-@using GameBoard.Models.GameEventInviteForm
 @model GameBoard.Models.GameEvent.GameEventViewModel
 @{
     ViewData["Title"] = Model.Name;
@@ -12,9 +11,15 @@
         @await Component.InvokeAsync("FriendsSidebar", new
         {
             toggled = true,
+            groupInviteEnabled = true,
             subComponentName = "GameEventInviteForm",
-            subComponentArgumentsProvider = (Func<string, object>) (userName =>
-                new GameEventInviteFormViewModel(Model.Id, Model.Name, userName))
+            gameEventId = Model.Id,
+            subComponentArgumentsProvider = (Func<string, object>) (userName => new
+            {
+                gameEventId = Model.Id,
+                gameEventName = Model.Name,
+                userName
+            })
         })
     }
     else
@@ -24,7 +29,7 @@
 }
 
 <div class="tabs-bar">
-    <button id="defaultOpenTabButton" class="btn btn-dark tablinks">Info</button>
+    <button id="defaultOpenTabButton" class="btn btn-dark tablinks active">Info</button>
     <button id="openDescriptionTabButton" class="btn btn-dark tablinks">Description</button>
 </div>
 

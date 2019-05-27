@@ -12,8 +12,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
             Rejected
         }
 
-        [NotNull]
-        public string Id { get; }
+        public int Id { get; }
 
         [NotNull]
         public UserDto UserFrom { get; }
@@ -24,7 +23,7 @@ namespace GameBoard.LogicLayer.Friends.Dtos
         public FriendRequestStatus Status { get; }
 
         public FriendRequestDto(
-            [NotNull] string id,
+            int id,
             [NotNull] UserDto userFrom,
             [NotNull] UserDto userTo,
             FriendRequestStatus status)
