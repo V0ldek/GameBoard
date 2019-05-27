@@ -43,7 +43,7 @@ namespace GameBoard.Controllers
                 new
                 {
                     title = "Group updated.",
-                    message = $"User {userName} was added to this group." +
+                    message = $"User {userName} was added to this group. " +
                         "Refresh this page to see changes."
                 });
         }

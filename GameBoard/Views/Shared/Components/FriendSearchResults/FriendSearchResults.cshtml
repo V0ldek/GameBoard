@@ -4,16 +4,16 @@
     @foreach (var user in Model.Users)
     {
         var formGuid = Guid.NewGuid();
-        <div class="autocomplete-item user-result">
+        <div class="autocomplete-item user-result input-group-append">
             @await Component.InvokeAsync("UserCard", new {user, miniature = true})
             <form asp-controller="Groups" asp-action="AddUserToGroup"
-                  class="invite-form"
+                  class="invite-form input-group-append"
                   data-ajax="true" data-ajax-method="POST"
                   data-ajax-success="groupAddPopoverGenerator.generateSuccessPopover(document.querySelector('#group-add-button-@formGuid'), xhr)"
                   data-ajax-failure="groupAddPopoverGenerator.generateErrorPopover(document.querySelector('#group-add-button-@formGuid'), xhr)">
                 <input type="hidden" name="groupId" value="@Model.GroupId" asp-for="@Model.GroupId"/>
                 <input type="hidden" name="userName" value="@user.UserName" id="friend-search-box-input-@Model.GroupId"/>
-                <button id="group-add-button-@formGuid" class="btn btn-dark input-group-append" type="submit" data-toggle="popover" data-placement="right">
+                <button id="group-add-button-@formGuid" class="btn btn-dark" type="submit" data-toggle="popover" data-placement="right">
                     <i class="fa fa-user-plus"></i>
                 </button>
             </form>
