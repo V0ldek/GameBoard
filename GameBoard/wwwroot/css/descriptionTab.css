@@ -9,43 +9,37 @@
     }
 }
 
-.edit-description-tab .h1 {text-align: center}
+.edit-description-tab .h1 { text-align: center }
 
 .description-text {
+    color: #e0e8ef;
+    font-family:
+               -apple-system,
+               BlinkMacSystemFont,
+               "Segoe UI",
+               Roboto,
+               "Helvetica Neue",
+               Arial,
+               "Noto Sans",
+               sans-serif,
+               "Apple Color Emoji",
+               "Segoe UI Emoji",
+               "Segoe UI Symbol",
+               "Noto Color Emoji";
+    font-size: 100%;
     height: auto;
     min-height: 40vh;
-    color: #e0e8ef;
-    font-family: 
-        -apple-system, 
-        BlinkMacSystemFont, 
-        "Segoe UI", 
-        Roboto, 
-        "Helvetica Neue", 
-        Arial, 
-        "Noto Sans", 
-        sans-serif, 
-        "Apple Color Emoji", 
-        "Segoe UI Emoji", 
-        "Segoe UI Symbol", 
-        "Noto Color Emoji";
-    font-size: 100%;
 }
 
-.description {
-    grid-area: description;
-}
+.description { grid-area: description; }
 
 .name {
-    text-align: center;
     grid-area: name;
+    text-align: center;
 }
 
-.control {
-    grid-area: control;
-}
+.control { grid-area: control; }
 
 /*EditDescriptionTab style*/
 
-#description-text-area {
-    height: 40vh;
-}
+#description-text-area { height: 40vh; }

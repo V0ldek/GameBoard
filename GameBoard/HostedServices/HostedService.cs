@@ -13,7 +13,7 @@ namespace GameBoard.HostedServices
         {
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _executingTask = ExecuteAsync(_cancellationTokenSource.Token);
-            return Task.CompletedTask;
+            return _executingTask.IsCompleted ? _executingTask : Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
