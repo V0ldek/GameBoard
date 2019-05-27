@@ -20,6 +20,11 @@ namespace GameBoard.LogicLayer.Groups
 
         public async Task AddGroupAsync(string userName, string groupName)
         {
+            if (string.IsNullOrEmpty(groupName))
+            {
+                throw new GroupsException("Group name cannot be empty.");
+            }
+
             var user = await _repository.ApplicationUsers.SingleAsync(ApplicationUser.UserNameEquals(userName));
 
             var group = new Group

@@ -270,3 +270,4 @@ __pycache__/
 *.pyc
 /GameBoard/wwwroot/lib/malihu-custom-scrollbar-plugin
 /GameBoard/wwwroot/lib
+/.sonarqube
