@@ -1,4 +1,7 @@
-﻿@model GameBoard.Models.Groups.GroupViewModel
+﻿@using GameBoard.LogicLayer.Configurations
+@using Microsoft.Extensions.Options
+@model GameBoard.Models.Groups.GroupViewModel
+@inject IOptions<GroupsConfiguration> groupsConfiguration
 
 <div class="group-collapse">
     <button id="group-collapse-btn-@Model.Id" class="btn btn-dark collapse-btn" type="button" data-toggle="collapse" href="#collapseGroup-@Model.Id">
@@ -34,8 +37,11 @@
             </li>
         }
     </ul>
-    @await Component.InvokeAsync("FriendSearchBox", new
+    @if (groupsConfiguration.Value == null || groupsConfiguration.Value.AllFriendsGroupName != Model.Name)
     {
-        group = Model
-    })
+        @await Component.InvokeAsync("FriendSearchBox", new
+        {
+            group = Model
+        })
+    }
 </div>
