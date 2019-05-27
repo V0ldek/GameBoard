@@ -70,20 +70,6 @@ namespace GameBoard
             services.AddHostedService<DayBeforeGameEventReminderCronScheduledService>();
         }
 
-        private void ConfigureLogicLayer(IServiceCollection services)
-        {
-            LogicLayer.Configuration.ConfigureDbContext(
-                services,
-                Configuration.GetConnectionString(
-                    Environment.IsStaging() ? "GameboardStaging" :
-                    Environment.IsProduction() ? "GameboardRelease" : "DefaultConnection"));
-
-            LogicLayer.Configuration.ConfigureServices(services);
-        }
-
-        private static void ConfigureHostedServices(IServiceCollection services) =>
-            services.AddHostedService<DayBeforeGameEventReminderCronScheduledService>();
-
         private static void ConfigureIdentity(IServiceCollection services)
         {
             services.AddDefaultIdentity<ApplicationUser>(
