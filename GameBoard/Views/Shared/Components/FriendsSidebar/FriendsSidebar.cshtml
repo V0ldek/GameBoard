@@ -1,28 +1,17 @@
 ﻿@model GameBoard.Models.FriendsSidebar.FriendsSidebarViewModel
 
 <div id="friends-sidebar-container" @(Model.Toggled ? "class=toggled" : "")>
-    <div id="friends-sidebar" class="bg border-top border-right box-shadow">
+    <div id="friends-sidebar" class="bg border-top border-right box-shadow @(Model.Toggled ? "with-sub-component" : "")">
         <h3>Friends</h3>
         <hr/>
-        <ul class="list-unstyled components border-bottom">
-            @foreach (var user in Model.Friends)
+        @foreach (var group in Model.Groups)
+        {
+            @await Component.InvokeAsync("GroupCard", new
             {
-                <li class="active @(Model.Toggled ? "user-card-with-sub-component" : "")">
-                    @await Component.InvokeAsync("UserCard", new {user})
-                    @if (Model.SubComponentName != null)
-                    {
-                        if (Model.SubComponentArguments != null)
-                        {
-                            @await Component.InvokeAsync(Model.SubComponentName, Model.SubComponentArguments(user.UserName))
-                        }
-                        else
-                        {
-                            @await Component.InvokeAsync(Model.SubComponentName)
-                        }
-                    }
-                </li>
-            }
-        </ul>
+                GroupId = group.Id, GroupName = group.Name, group.Users, Model.GroupInviteEnabled, Model.GameEventId, Model.SubComponentName, Model.SubComponentArguments
+            })
+        }
+        @await Component.InvokeAsync("GroupAddBox")
     </div>
     @await Component.InvokeAsync("UserSearchBox")
     <button id="friends-sidebar-collapse" class="btn btn-dark border-right border-top border-bottom border-left-0" type="button">

@@ -4,12 +4,16 @@ using System.Threading.Tasks;
 using System.Transactions;
 using GameBoard.Areas.Identity.Pages.Account.Notifications;
 using GameBoard.DataLayer.Entities;
+using GameBoard.DataLayer.Repositories;
+using GameBoard.LogicLayer.Configurations;
+using GameBoard.LogicLayer.Groups;
 using GameBoard.LogicLayer.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.Areas.Identity.Pages.Account
 {
@@ -19,6 +23,8 @@ namespace GameBoard.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly INotificationService _notificationService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGroupsService _groupsService;
+        private readonly GroupsConfiguration _groupsOptions;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -26,10 +32,14 @@ namespace GameBoard.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             ILogger<RegisterModel> logger,
+            IGroupsService groupsService,
+            IOptions<GroupsConfiguration> groupsOptions,
             INotificationService notificationService)
         {
             _userManager = userManager;
             _logger = logger;
+            _groupsService = groupsService;
+            _groupsOptions = groupsOptions.Value;
             _notificationService = notificationService;
         }
 
@@ -42,18 +52,28 @@ namespace GameBoard.Areas.Identity.Pages.Account
 
             var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
 
-            IdentityResult result;
-            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-                    await SendRegistrationEmailAsync(user);
-                    transaction.Complete();
+            var result = await _userManager.CreateAsync(user, Input.Password);
 
-                    return RedirectToPage("/Account/ConfirmEmailInfo");
+            try
+            {
+                using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
+                        await SendRegistrationEmailAsync(user);
+                        await _groupsService.AddGroupAsync(user.UserName, _groupsOptions.AllFriendsGroupName);
+                        transaction.Complete();
+
+                        return RedirectToPage("/Account/ConfirmEmailInfo");
+                    }
                 }
+            }
+            catch
+            {
+                // There's no support for distributed transactions in EF Core so this is the best I came up with.
+                await _userManager.DeleteAsync(user);
+                throw;
             }
 
             foreach (var error in result.Errors)

@@ -4,7 +4,7 @@
     private readonly minimalCharactersThreshold: number;
     private readonly timeoutDuration: number;
     private readonly getUrl: string;
-    private static readonly autocompleteResultsClass = "autocomplete-items";
+    private result: HTMLElement;
     private currentTimeout: number | null = null;
 
     public constructor(source: HTMLInputElement,
@@ -53,8 +53,8 @@
         if (!value || value.length < this.minimalCharactersThreshold) {
             return;
         }
-
-        fetch(`${this.getUrl}?input=${value}`,
+        console.log(`${this.getUrl}input=${value}`);
+        fetch(`${this.getUrl}input=${value}`,
                 {
                     method: "GET",
                 })
@@ -78,6 +78,8 @@
                     console.error("Autocomplete - could not create a results div from response.");
                 }
 
+                this.result = resultDiv;
+
                 this.resultSource.prepend(resultDiv);
 
                 $(resultDiv)
@@ -94,7 +96,8 @@
         console.error(reason);
 
         const errorDiv = document.createElement("div");
-        errorDiv.classList.add("user-search-error", "text-danger", `${Autocomplete.autocompleteResultsClass}`);
+        this.result = errorDiv;
+        errorDiv.classList.add("user-search-error", "text-danger");
 
         const text = document.createElement("p");
         text.innerText = "There is an issue with the search service. Please, try again later.";
@@ -114,6 +117,7 @@
     }
 
     closeAllAutocompleteResults() {
-        document.querySelectorAll(`.${Autocomplete.autocompleteResultsClass}`).forEach((el) => el.remove());
-    }
+        if (this.result)
+            this.result.remove();
+    };
 }

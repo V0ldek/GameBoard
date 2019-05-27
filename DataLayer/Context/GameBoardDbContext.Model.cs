@@ -19,6 +19,12 @@ namespace GameBoard.DataLayer.Context
                     entity.Property(e => e.UserName).HasMaxLength(16);
                     entity.Property(e => e.NormalizedUserName).HasMaxLength(16);
 
+                    entity.HasMany(u => u.GroupUsers)
+                        .WithOne(gu => gu.User)
+                        .HasForeignKey(gu => gu.UserId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     entity.ToTable("User");
                 });
 
@@ -49,6 +55,42 @@ namespace GameBoard.DataLayer.Context
                         .OnDelete(DeleteBehavior.Restrict);
 
                     entity.ToTable("Friendship");
+                });
+
+            builder.Entity<Group>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Id)
+                        .ValueGeneratedOnAdd();
+
+                    entity.HasOne(e => e.Owner)
+                        .WithMany(u => u.Groups)
+                        .HasForeignKey(e => e.OwnerId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.HasMany(g => g.GroupUsers)
+                        .WithOne(gu => gu.Group)
+                        .HasForeignKey(gu => gu.GroupId)
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.Ignore(g => g.Users);
+
+                    entity.Property(e => e.Name)
+                        .HasMaxLength(64)
+                        .IsRequired();
+
+                    entity.ToTable("Group");
+                });
+
+            builder.Entity<GroupUser>(
+                entity =>
+                {
+                    entity.HasKey(e => new {e.GroupId, e.UserId});
+
+                    entity.ToTable("GroupUser");
                 });
 
             builder.Entity<IdentityRole>(

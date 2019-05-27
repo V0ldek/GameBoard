@@ -19,6 +19,7 @@ namespace GameBoard.LogicLayer.GameEventParticipations.Dtos
             [NotNull] string userNameTo,
             [NotNull] GameEventLinkGenerator gameEventLinkGenerator)
         {
+            System.Diagnostics.Debug.WriteLine(userNameTo);
             GameEventId = gameEventId;
             UserNameTo = userNameTo;
             _gameEventLinkGenerator = gameEventLinkGenerator;

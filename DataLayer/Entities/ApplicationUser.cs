@@ -11,6 +11,10 @@ namespace GameBoard.DataLayer.Entities
         public ICollection<Friendship> ReceivedRequests { get; set; }
         public ICollection<GameEventParticipation> Participations { get; set; }
 
+        public ICollection<Group> Groups { get; set; }
+
+        public ICollection<GroupUser> GroupUsers { get; set; }
+
         public static Expression<Func<ApplicationUser, bool>> UserNameEquals(string userName) =>
             u => u.NormalizedUserName == userName.ToUpper();
     }

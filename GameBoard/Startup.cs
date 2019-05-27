@@ -49,6 +49,7 @@ namespace GameBoard
             services.Configure<MailNotificationsConfiguration>(
                 Configuration.GetSection(nameof(MailNotificationsConfiguration)));
             services.Configure<HostConfiguration>(Configuration.GetSection(nameof(HostConfiguration)));
+            services.Configure<GroupsConfiguration>(Configuration.GetSection(nameof(GroupsConfiguration)));
         }
 
         private void ConfigureLogicLayer(IServiceCollection services)

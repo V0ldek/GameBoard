@@ -37,11 +37,11 @@
     grid-template-rows: auto;
 }
 
-.user-result .user-card-mini { grid-area: user-card }
+.friend-result .user-result .user-card-mini { grid-area: user-card }
 
-.user-result .invite-form { grid-area: invite; }
+.friend-result .user-result .invite-form { grid-area: invite; }
 
-.user-result .username {
+.friend-result .user-result .username {
     grid-area: username;
     overflow: hidden;
     text-overflow: ellipsis;

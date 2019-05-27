@@ -1,0 +1,13 @@
+﻿.game-event-invite-form {
+    height: 100%;
+    margin-left: 10px;
+    width: 100%;
+}
+
+.game-event-invite-form button {
+    height: 95%;
+    margin-right: 5px;
+    width: 100%;
+}
+
+.game-event-group-invite-form { margin-bottom: 5px; }

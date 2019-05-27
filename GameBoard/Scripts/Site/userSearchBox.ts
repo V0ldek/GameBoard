@@ -15,5 +15,5 @@ document.addEventListener("DOMContentLoaded",
             return;
         }
 
-        userSearchBox = new Autocomplete(searchBoxInputElement, searchBoxElement, "/User/Search");
+        userSearchBox = new Autocomplete(searchBoxInputElement, searchBoxElement, "/User/SearchUser?");
     });

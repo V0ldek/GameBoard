@@ -1,4 +1,5 @@
-﻿using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
+﻿using System.Collections.Generic;
+using GameBoard.Notifications.HtmlTemplateNotifications.Notifications;
 
 namespace GameBoard.LogicLayer.GameEventParticipations.Notifications
 {
@@ -11,12 +12,12 @@ namespace GameBoard.LogicLayer.GameEventParticipations.Notifications
             string recipientEmail,
             string gameEventUrl) : base(
             "Game event invitation",
-            new []{recipientEmail},
+            new[] {recipientEmail},
             gameEventUrl,
             "See event details",
             $"Hello, {recipientUserName}!",
             $"You have been invited by {senderUserName} to the {gameEventName} event.",
-            $"Click on the link below to see the event details.")
+            "Click on the link below to see the event details.")
         {
         }
     }

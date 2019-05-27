@@ -34,12 +34,6 @@
         }
     });
 
-var defaultOpenTabButton = document.getElementById("defaultOpenTabButton");
-
-if (defaultOpenTabButton != null) {
-    defaultOpenTabButton.click();
-}
-
 function openTab(evt: Event, tabName: string) {
     var target = (evt.target as Element);
     Array.from(document.getElementsByClassName("tabcontent")).forEach(v => {

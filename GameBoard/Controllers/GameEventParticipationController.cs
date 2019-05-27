@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
@@ -157,7 +158,7 @@ namespace GameBoard.Controllers
         {
             try
             {
-                await _gameEventParticipationService.SendGameEventInvitationAsync(sendGameEventInvitationDto);
+                await _gameEventParticipationService.CreateGameEventParticipationAsync(sendGameEventInvitationDto);
             }
             catch (ApplicationException exception)
             {
@@ -177,6 +178,92 @@ namespace GameBoard.Controllers
                     title = "Invite sent.",
                     message =
                         $"An email with your invitation to the {gameEvent.Name} event has been sent to {userName}."
+                });
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> SendGameEventInviteToGroup(
+            int gameEventId,
+            string groupName,
+            IEnumerable<string> users)
+        {
+            GameEventDto gameEvent;
+
+            try
+            {
+                gameEvent = await _gameEventService.GetGameEventAsync(gameEventId);
+            }
+            catch (ApplicationException exception)
+            {
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+            }
+            catch
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
+            }
+
+
+            if (gameEvent == null)
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "Specified game event does not exist.",
+                    HttpStatusCode.NotFound);
+            }
+
+            if (gameEvent.Creator.UserName != User.Identity.Name)
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "You're unauthorized to perform this action.",
+                    HttpStatusCode.Unauthorized);
+            }
+
+            return await CreateGameEventParticipationForGroup(
+                gameEvent,
+                groupName,
+                users,
+                eventId => _hostConfiguration.HostAddress + Url.Action(
+                    "GameEvent",
+                    "gameEvent",
+                    new {id = eventId}));
+        }
+
+        private async Task<IActionResult> CreateGameEventParticipationForGroup(
+            GameEventDto gameEvent,
+            string groupName,
+            IEnumerable<string> users,
+            SendGameEventInvitationDto.GameEventLinkGenerator gameEventLinkGenerator)
+        {
+            try
+            {
+                await _gameEventParticipationService.CreateGameEventParticipationsIgnoringErrorsAsync(
+                    gameEvent.Id,
+                    gameEventLinkGenerator,
+                    users);
+            }
+            catch (ApplicationException exception)
+            {
+                return Error.FromController(this).ErrorJson("Error!", exception.Message, HttpStatusCode.BadRequest);
+            }
+            catch
+            {
+                return Error.FromController(this).ErrorJson(
+                    "Error!",
+                    "An unexpected error has occured while processing your request.",
+                    HttpStatusCode.InternalServerError);
+            }
+
+            return Ok(
+                new
+                {
+                    title = "Invite sent.",
+                    message =
+                        $"An email with your invitation to the {gameEvent.Name} event has been sent to {groupName}."
                 });
         }
     }

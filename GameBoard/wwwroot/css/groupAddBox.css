@@ -1,0 +1,9 @@
+﻿#group-add-form { padding: 10px; }
+
+#group-add-box { width: 100%; }
+
+#group-collapse-btn {
+    margin-bottom: 5px;
+    padding: 10px;
+    width: 100%;
+}
