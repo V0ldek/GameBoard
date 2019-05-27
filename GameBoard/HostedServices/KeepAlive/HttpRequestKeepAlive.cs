@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GameBoard.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace GameBoard.HostedServices.KeepAlive
 {
@@ -10,9 +11,9 @@ namespace GameBoard.HostedServices.KeepAlive
         private readonly HostConfiguration _hostConfiguration;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public HttpRequestKeepAlive(HostConfiguration hostConfiguration, IHttpClientFactory httpClientFactory)
+        public HttpRequestKeepAlive(IOptions<HostConfiguration> hostConfiguration, IHttpClientFactory httpClientFactory)
         {
-            _hostConfiguration = hostConfiguration;
+            _hostConfiguration = hostConfiguration.Value;
             _httpClientFactory = httpClientFactory;
         }
 
